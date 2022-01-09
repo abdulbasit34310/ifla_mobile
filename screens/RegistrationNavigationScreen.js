@@ -21,7 +21,4 @@ const RegistrationNavigationScreen = ({ navigation }) => (
         />
     </RegistrationStack.Navigator>
 );
-
 export default RegistrationNavigationScreen;
-
-//initialRouteName={'SignUpScreen'}

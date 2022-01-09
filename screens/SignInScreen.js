@@ -1,51 +1,127 @@
 import * as React from 'react';
 import {
-    View,
-    Image,
-    Text,
-    TouchableOpacity,
-    StyleSheet,
-    TextInput, Alert,
-    Platform,
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  TextInput,
+  Image,
+  Alert,
+  Platform,
 } from 'react-native';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
-import logo from './images/Falas.png';
 
 import { AuthContext } from '../components/context';
+import logo from './images/Falas.png';
+
+
+const FIREBASE_API_ENDPOINT =
+  'https://madproject-61e88-default-rtdb.firebaseio.com/';
+
+var arr = [];
 
 const SignInScreen = ({ navigation }) => {
-  const signIn = React.useContext( AuthContext );
-
   const [data, setData] = React.useState({
-    username: '',
+    email: '',
     password: '',
-    check_textInputChange: false,
+    checkEmailChange: false,
+    checkPasswordChange: false,
+    notValidEmail: true,
+    notValidPassword: true,
     secureTextEntry: true,
   });
+  const { signIn } = React.useContext(AuthContext);
 
-  const textInputChange = (val) => {
-    if (val.length != 0) {
+  const getCredentials = async () => {
+    const response = await fetch(
+      `${FIREBASE_API_ENDPOINT}/userCredentials.json`
+    );
+    const data = await response.json();
+
+    var keyValues = Object.keys(data);
+
+    for (let i = 0; i < keyValues.length; i++) {
+      let key = keyValues[i];
+      let credential = {
+        email: data[key].email,
+        password: data[key].password,
+      };
+      arr.push(credential);
+    }
+    console.log('ARR');
+    console.log(typeof arr);
+    // var a = 'A1';
+    // var b = 'T1';
+
+    // const foundUser = arr.filter((obj) => {
+    //   return a == obj.email && b == obj.password;
+    // });
+    // console.log(foundUser);
+  };
+
+  React.useEffect(() => {
+    getCredentials();
+  }, []);
+
+  const sendSignInCredentials = (e, p) => {
+    const foundUser = arr.filter((item) => {
+      return e == item.email && p == item.password;
+    });
+
+    // Click Sign In without entering data in any field.
+    if (data.email.length == 0 || data.password.length == 0) {
+      Alert.alert(
+        'Wrong Input!',
+        'Username or password field cannot be empty.',
+        [{ text: 'Okay' }]
+      );
+      return;
+    }
+    // If email & password is incorrect.
+    if (foundUser.length == 0) {
+      Alert.alert('Invalid User!', 'Username or password is incorrect.', [
+        { text: 'Okay' },
+      ]);
+      return;
+    }
+    signIn(foundUser);
+  };
+
+  const emailChange = (text) => {
+    const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if (reg.test(String(text).toLowerCase())) {
       setData({
         ...data,
-        email: val,
-        check_textInputChange: true,
+        email: text,
+        checkEmailChange: true,
+        notValidEmail: true,
       });
     } else {
       setData({
         ...data,
-        email: val,
-        check_textInputChange: false,
+        email: text,
+        checkEmailChange: false,
+        notValidEmail: false,
       });
     }
   };
 
-  const handlePasswordChange = (val) => {
-    setData({
-      ...data,
-      password: val,
-    });
+  const passwordChange = (text) => {
+    if (text.length >= 3) {
+      setData({
+        ...data,
+        password: text,
+        notValidPassword: true,
+      });
+    } else {
+      setData({
+        ...data,
+        password: text,
+        notValidPassword: false,
+      });
+    }
   };
 
   const updateSecureTextEntry = () => {
@@ -57,28 +133,35 @@ const SignInScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}></View>
+      <View style={styles.header}>
+        <Image
+          source={logo}
+          style={styles.logo}
+        />
+      </View>
 
       <View style={styles.footer}>
-        <Text style={styles.title}>Email</Text>
         <View style={styles.action}>
           <FontAwesome name="user-o" color="#009387" size={25} />
           <TextInput
             style={styles.ti}
             placeholder="Your Email"
-            onChangeText={(val) => textInputChange(val)}></TextInput>
-          {data.check_textInputChange ? (
+            onChangeText={(text) => emailChange(text)}></TextInput>
+          {data.checkEmailChange ? (
             <Feather name="check-circle" color="green" size={25} />
           ) : null}
         </View>
-        <Text style={styles.title}>Password</Text>
+        {data.notValidEmail ? null : (
+          <Text style={styles.errorMessage}>Email Syntax is not Correct</Text>
+        )}
+
         <View style={styles.action}>
           <FontAwesome name="lock" color="#009387" size={25} />
           <TextInput
             style={styles.ti}
             placeholder="Your Password"
             secureTextEntry={data.secureTextEntry ? true : false}
-            onChangeText={(val) => handlePasswordChange(val)}></TextInput>
+            onChangeText={(text) => passwordChange(text)}></TextInput>
           <TouchableOpacity onPress={updateSecureTextEntry}>
             {data.secureTextEntry ? (
               <Feather name="eye-off" color="grey" size={25} />
@@ -87,6 +170,10 @@ const SignInScreen = ({ navigation }) => {
             )}
           </TouchableOpacity>
         </View>
+        {data.notValidPassword ? null : (
+          <Text style={styles.errorMessage}>Password must be of length 8</Text>
+        )}
+
         <TouchableOpacity
           onPress={() => navigation.navigate('ForgotPasswordScreen')}>
           <Text style={{ color: '#009387', marginTop: 15 }}>
@@ -97,7 +184,7 @@ const SignInScreen = ({ navigation }) => {
         <View>
           <TouchableOpacity
             onPress={() => {
-              signIn(data.username, data.password);
+              sendSignInCredentials(data.email, data.password);
             }}
             style={[styles.button, { backgroundColor: '#009387' }]}>
             <Text
@@ -145,18 +232,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 30,
   },
-  // text_header: {
-  //     color: '#fff',
-  //     fontWeight: 'bold',
-  //     fontSize: 30,
-  // },
-  // text_footer: {
-  //     color: '#05375a',
-  //     fontSize: 18,
-  // },
+  logo: {
+    marginLeft: '35%',
+    width: 80,
+    height: 80,
+    borderRadius: 50,
+  },
   action: {
     flexDirection: 'row',
-    marginTop: 10,
+    marginTop: 15,
     borderBottomWidth: 1,
     borderBottomColor: '#f2f2f2',
     paddingBottom: 5,
@@ -174,10 +258,10 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     color: '#05375a',
   },
-  // errorMsg: {
-  //     color: '#FF0000',
-  //     fontSize: 14,
-  // },
+  errorMessage: {
+    color: '#FF0000',
+    fontSize: 12,
+  },
   button: {
     width: '100%',
     height: 40,

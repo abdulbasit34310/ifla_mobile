@@ -1,34 +1,36 @@
 import * as React from 'react';
 import {
-    View,
-    Text,
-    TouchableOpacity,
-    StyleSheet,
-    TextInput,
-    Image,
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  TextInput,
+  Platform,
 } from 'react-native';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 
+import { AuthContext } from '../components/context';
 import logo from './images/Falas.png';
-
-//import { AuthContext } from '../components/context';
 
 const FIREBASE_API_ENDPOINT =
   'https://madproject-61e88-default-rtdb.firebaseio.com/';
 
 const SignUpScreen = ({ navigation }) => {
-
   const [data, setData] = React.useState({
     name: '',
-    username: '',
+    email: '',
     password: '',
     confirmPassword: '',
     checkNameChange: false,
     checkEmailChange: false,
     checkPasswordChange: false,
     checkConfirmPasswordChange: false,
+    notValidName: true,
+    notValidEmail: true,
+    notValidPassword: true,
     secureTextEntry: true,
   });
 
@@ -37,64 +39,82 @@ const SignUpScreen = ({ navigation }) => {
       method: 'POST',
       body: JSON.stringify({
         name: data.name,
-        username: data.username,
+        email: data.email,
         password: data.password,
       }),
     };
 
-    fetch(`${FIREBASE_API_ENDPOINT}/madProject.json`, requestOptions)
+    fetch(`${FIREBASE_API_ENDPOINT}/userCredentials.json`, requestOptions)
       .then((response) => response.json())
       .then((result) => console.log(result))
       .catch((error) => console.log('error', error));
   };
 
+  // React.useEffect(() => {
+  //   postData();
+  // }, []);
+
   const nameChange = (val) => {
-    if (val.length != 0) {
+    if (val.trim().length != 2) {
       setData({
         ...data,
         name: val,
         checkNameChange: true,
+        notValidName: true,
       });
     } else {
       setData({
         ...data,
         name: val,
         checkNameChange: false,
+        notValidName: false,
       });
     }
   };
 
   const emailChange = (val) => {
-    if (val.length != 0) {
+    const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if (reg.test(String(val).toLowerCase())) {
       setData({
         ...data,
         email: val,
         checkEmailChange: true,
+        notValidEmail: true,
       });
     } else {
       setData({
         ...data,
         email: val,
         checkEmailChange: false,
+        notValidEmail: false,
       });
     }
   };
 
-  const PasswordChange = (val) => {
-    setData({
-      ...data,
-      password: val,
-    });
+  const passwordChange = (val) => {
+    if (val.trim().length >= 3) {
+      setData({
+        ...data,
+        password: val,
+        notValidPassword: true,
+      });
+    } else {
+      setData({
+        ...data,
+        password: val,
+        notValidPassword: false,
+      });
+    }
   };
 
-  const ConfrimPasswordChange = (val) => {
+  const confirmPasswordChange = (val) => {
     setData({
       ...data,
       confirmPassword: val,
     });
   };
 
-  const updateSecureTextEntry = () => {
+  const hideOrUnhideEye = () => {
     setData({
       ...data,
       secureTextEntry: !data.secureTextEntry,
@@ -103,10 +123,14 @@ const SignUpScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}></View>
+      <View style={styles.header}>
+        <Image
+          source={logo}
+          style={styles.logo}
+        />
+      </View>
 
       <View style={styles.footer}>
-        <Text style={styles.title}>Name</Text>
         <View style={styles.action}>
           <FontAwesome name="user-o" color="#009387" size={25} />
           <TextInput
@@ -117,6 +141,11 @@ const SignUpScreen = ({ navigation }) => {
             <Feather name="check-circle" color="green" size={25} />
           ) : null}
         </View>
+        {data.notValidName ? null : (
+          <View duration={500}>
+            <Text style={styles.errorMsg}>Name must be 2 characters long.</Text>
+          </View>
+        )}
 
         <View style={styles.action}>
           <FontAwesome name="user-o" color="#009387" size={25} />
@@ -129,16 +158,23 @@ const SignUpScreen = ({ navigation }) => {
           ) : null}
         </View>
 
-        <Text style={styles.title}>Password</Text>
+        {data.notValidEmail ? null : (
+          <View duration={500}>
+            <Text style={styles.errorMessage}>
+              Email Syntax is not correct.
+            </Text>
+          </View>
+        )}
+
         <View style={styles.action}>
           <FontAwesome name="lock" color="#009387" size={26} />
           <TextInput
             style={styles.ti}
             placeholder="Your Password"
             secureTextEntry={data.secureTextEntry ? true : false}
-            onChangeText={(val) => PasswordChange(val)}></TextInput>
+            onChangeText={(val) => passwordChange(val)}></TextInput>
 
-          <TouchableOpacity onPress={updateSecureTextEntry}>
+          <TouchableOpacity onPress={hideOrUnhideEye}>
             {data.secureTextEntry ? (
               <Feather name="eye-off" color="grey" size={25} />
             ) : (
@@ -146,17 +182,23 @@ const SignUpScreen = ({ navigation }) => {
             )}
           </TouchableOpacity>
         </View>
+        {data.notValidPassword ? null : (
+          <View duration={500}>
+            <Text style={styles.errorMessage}>
+              Password must be 8 characters long.
+            </Text>
+          </View>
+        )}
 
-        <Text style={styles.title}>Confirm Password</Text>
         <View style={styles.action}>
           <FontAwesome name="lock" color="#009387" size={26} />
           <TextInput
             style={styles.ti}
             placeholder="Confrim Password"
             secureTextEntry={data.secureTextEntry ? true : false}
-            onChangeText={(val) => ConfrimPasswordChange(val)}></TextInput>
+            onChangeText={(val) => confirmPasswordChange(val)}></TextInput>
 
-          <TouchableOpacity onPress={updateSecureTextEntry}>
+          <TouchableOpacity onPress={hideOrUnhideEye}>
             {data.secureTextEntry ? (
               <Feather name="eye-off" color="grey" size={25} />
             ) : (
@@ -164,6 +206,13 @@ const SignUpScreen = ({ navigation }) => {
             )}
           </TouchableOpacity>
         </View>
+        {data.confirmPassword == data.password ? null : (
+          <View duration={500}>
+            <Text style={styles.errorMessage}>
+              Confirm Password is not equal to Password.
+            </Text>
+          </View>
+        )}
 
         <View>
           <TouchableOpacity
@@ -181,7 +230,7 @@ const SignUpScreen = ({ navigation }) => {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => navigation.navigate('MainScreen')}
+            onPress={() => navigation.navigate('SignInScreen')}
             style={[styles.button, { backgroundColor: '#f2f2f2' }]}>
             <Text
               style={[
@@ -214,6 +263,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 30,
   },
+  // text_header: {
+  //     color: '#fff',
+  //     fontWeight: 'bold',
+  //     fontSize: 30,
+  // },
+  // text_footer: {
+  //     color: '#05375a',
+  //     fontSize: 18,
+  // },
   action: {
     flexDirection: 'row',
     marginTop: 15,
@@ -221,23 +279,22 @@ const styles = StyleSheet.create({
     borderBottomColor: '#f2f2f2',
     paddingBottom: 5,
   },
-  // actionError: {
-  //     flexDirection: 'row',
-  //     marginTop: 10,
-  //     borderBottomWidth: 1,
-  //     borderBottomColor: '#FF0000',
-  //     paddingBottom: 5,
-  // },
+  logo: {
+    marginLeft: '35%',
+    width: 80,
+    height: 80,
+    borderRadius: 50,
+  },
   ti: {
     flex: 1,
     marginTop: Platform.OS === 'ios' ? 0 : -12,
     paddingLeft: 10,
     color: '#009387',
   },
-  // errorMsg: {
-  //     color: '#FF0000',
-  //     fontSize: 14,
-  // },
+  errorMessage: {
+    color: '#FF0000',
+    fontSize: 12,
+  },
   button: {
     width: '100%',
     height: 40,

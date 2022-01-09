@@ -16,8 +16,6 @@ function WelcomeScreen({ navigation }) {
     return (
         <View style={styles.container}>
             <View style={styles.header}><Image
-                animation="bounceIn"
-                duraton="1500"
                 source={logo}
                 style={styles.logo}
             /></View>
@@ -43,7 +41,8 @@ const height_logo = height * 0.28;
 const styles = StyleSheet.create({
     container: {
         flex: 1, justifyContent: 'center',
-        paddingTop: Constants.statusBarHeight, backgroundColor: '#066145',
+        paddingTop: Constants.statusBarHeight,
+        backgroundColor: '#009387',
     },
     header: {
         flex: 2, justifyContent: 'center',
@@ -80,10 +79,10 @@ const styles = StyleSheet.create({
     },
     signInText: {
         color: 'white',
-        fontSize: 18,
+        fontSize: 16,
     },
     to: {
-        backgroundColor: '#066145',
+        backgroundColor: '#009387',
         borderRadius: 25,
         justifyContent: 'center',
         alignItems: 'center',
@@ -92,7 +91,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     logo: {
-        // marginLeft: '35%',
+
         width: 100,
         height: 100,
         borderRadius: 50,
