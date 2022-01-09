@@ -5,18 +5,22 @@ import {
     TouchableOpacity,
     Dimensions,
     StyleSheet,
-    StatusBar,
     Image
 } from 'react-native';
 import Constants from 'expo-constants';
 
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-
+import logo from './images/Falas.png';
 
 function WelcomeScreen({ navigation }) {
     return (
         <View style={styles.container}>
-            <View style={styles.header}></View>
+            <View style={styles.header}><Image
+                animation="bounceIn"
+                duraton="1500"
+                source={logo}
+                style={styles.logo}
+            /></View>
 
             <View style={styles.footer}>
 
@@ -86,5 +90,11 @@ const styles = StyleSheet.create({
         width: 110,
         height: 35,
         flexDirection: 'row',
+    },
+    logo: {
+        // marginLeft: '35%',
+        width: 100,
+        height: 100,
+        borderRadius: 50,
     },
 });
