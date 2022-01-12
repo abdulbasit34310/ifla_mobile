@@ -16,6 +16,7 @@ import { CustomDrawer } from './screens/CustomDrawer';
 const Drawer = createDrawerNavigator();
 
 export default function App() {
+
   const initialLoginState = {
     isLoading: true,
     email: null,
@@ -64,9 +65,9 @@ export default function App() {
       signIn: async (foundUser) => {
         const userToken = String(foundUser[0].userToken);
         const email = foundUser[0].email;
-
+        
         try {
-          await AsyncStorage.setItem('userToken', userToken);
+          await AsyncStorage.setItem('userToken', email);
         } catch (e) {
           console.log(e);
         }
@@ -81,7 +82,7 @@ export default function App() {
         }
         dispatch({ type: 'LOGOUT' });
       },
-      signUp: () => {},
+      signUp: () => { },
     }),
     []
   );
@@ -95,7 +96,7 @@ export default function App() {
       } catch (e) {
         console.log(e);
       }
-      
+
       dispatch({ type: 'FIRST_TIME_LOGIN', token: userToken });
     }, 2000);
   }, []);

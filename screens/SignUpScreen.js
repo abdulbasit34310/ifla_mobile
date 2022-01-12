@@ -43,16 +43,12 @@ const SignUpScreen = ({ navigation }) => {
         password: data.password,
       }),
     };
-
     fetch(`${FIREBASE_API_ENDPOINT}/userCredentials.json`, requestOptions)
       .then((response) => response.json())
       .then((result) => console.log(result))
       .catch((error) => console.log('error', error));
   };
 
-  // React.useEffect(() => {
-  //   postData();
-  // }, []);
 
   const nameChange = (val) => {
     if (val.trim().length != 2) {
@@ -148,7 +144,7 @@ const SignUpScreen = ({ navigation }) => {
         )}
 
         <View style={styles.action}>
-          <FontAwesome name="user-o" color="#009387" size={25} />
+          <FontAwesome name="envelope-o" color="#009387" size={30} />
           <TextInput
             style={styles.ti}
             placeholder="Your Email"
@@ -165,6 +161,33 @@ const SignUpScreen = ({ navigation }) => {
             </Text>
           </View>
         )}
+
+        <View style={styles.action}>
+          <Feather name="phone" color="#009387" size={30} />
+          <TextInput
+            style={styles.ti}
+            placeholder="Phone Number"
+            onChangeText={(val) => emailChange(val)}></TextInput>
+          {data.checkEmailChange ? (
+            <Feather name="check-circle" color="green" size={25} />
+          ) : null}
+        </View>
+
+        <View style={styles.action}>
+          <Feather name="phone" color="#009387" size={30} />
+          <TextInput
+            style={styles.ti}
+            placeholder="Phone Number"></TextInput>
+        </View>
+
+        <View style={styles.action}>
+          <Icon name="map-marker-radius" color="#009387" size={30} />
+          <TextInput
+            placeholderTextColor="#666666"
+            autoCorrect={false}
+            style={styles.ti}
+          />
+        </View>
 
         <View style={styles.action}>
           <FontAwesome name="lock" color="#009387" size={26} />
@@ -263,15 +286,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 30,
   },
-  // text_header: {
-  //     color: '#fff',
-  //     fontWeight: 'bold',
-  //     fontSize: 30,
-  // },
-  // text_footer: {
-  //     color: '#05375a',
-  //     fontSize: 18,
-  // },
   action: {
     flexDirection: 'row',
     marginTop: 15,

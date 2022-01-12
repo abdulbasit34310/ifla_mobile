@@ -32,6 +32,9 @@ const SignInScreen = ({ navigation }) => {
     notValidPassword: true,
     secureTextEntry: true,
   });
+
+  const [data2, setData2] = React.useState(arr);
+
   const { signIn } = React.useContext(AuthContext);
 
   const getCredentials = async () => {
@@ -41,31 +44,28 @@ const SignInScreen = ({ navigation }) => {
     const data = await response.json();
 
     var keyValues = Object.keys(data);
-
+    let credential = {};
     for (let i = 0; i < keyValues.length; i++) {
       let key = keyValues[i];
-      let credential = {
+      credential = {
         email: data[key].email,
         password: data[key].password,
       };
+      // console.log("_____________Credentials_______________")
+      // console.log(credential)
       arr.push(credential);
+      // console.log("Arr")
+      setData2(arr)
+      // console.log(arr)
     }
-    console.log('ARR');
-    console.log(typeof arr);
-    // var a = 'A1';
-    // var b = 'T1';
-
-    // const foundUser = arr.filter((obj) => {
-    //   return a == obj.email && b == obj.password;
-    // });
-    // console.log(foundUser);
   };
 
   React.useEffect(() => {
     getCredentials();
-  }, []);
+  }, [arr]);
 
   const sendSignInCredentials = (e, p) => {
+
     const foundUser = arr.filter((item) => {
       return e == item.email && p == item.password;
     });
@@ -245,13 +245,6 @@ const styles = StyleSheet.create({
     borderBottomColor: '#f2f2f2',
     paddingBottom: 5,
   },
-  // actionError: {
-  //     flexDirection: 'row',
-  //     marginTop: 10,
-  //     borderBottomWidth: 1,
-  //     borderBottomColor: '#FF0000',
-  //     paddingBottom: 5,
-  // },
   ti: {
     flex: 1,
     marginTop: Platform.OS === 'ios' ? 0 : -12,
@@ -280,5 +273,4 @@ const styles = StyleSheet.create({
     backgroundColor: '#009387',
   },
 });
-
 export default SignInScreen;

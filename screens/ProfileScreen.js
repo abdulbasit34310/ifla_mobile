@@ -1,19 +1,59 @@
 import * as React from 'react';
 import { SafeAreaView, View, StyleSheet, Image, } from 'react-native';
 import Constants from 'expo-constants';
-import {
-    Avatar,
-    Title,
-    Caption,
-    Text,
-} from 'react-native-paper';
-
+import { Avatar, Title, Caption, Text, Button, } from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { AuthContext } from '../components/context';
 import logo from './images/Falas.png';
 import EditProfileScreen from './EditProfileScreen';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { set } from 'react-native-reanimated';
+
+const FIREBASE_API_ENDPOINT =
+    'https://madproject-61e88-default-rtdb.firebaseio.com/';
 
 const ProfileScreen = ({ navigation }) => {
+
+    var email = ""
+    const { signOut } = React.useContext(AuthContext);
+    const [getData, setData] = React.useState({ email: 'John Doe', password: 'ab12' });
+
+    React.useEffect(() => {
+        const getSignedInEmail = async () => {
+            var item = await AsyncStorage.getItem('userToken');
+            console.log(item)
+            email = item
+        }
+
+        const getSignedInUserCredentials = async () => {
+            const response = await fetch(
+                `${FIREBASE_API_ENDPOINT}/userCredentials.json`
+            );
+            const data = await response.json();
+
+            var keyValues = Object.keys(data);
+
+            let credential = {};
+            console.log("-------------------------Above For Loop----------------------------")
+            for (let i = 0; i < keyValues.length; i++) {
+                let key = keyValues[i];
+                if (data[key].email == email) {
+                    credential = {
+                        email: data[key].email,
+                        keyId: key,
+                        password: data[key].password,
+                    };
+                    console.log(credential);
+                    setData(credential)
+                    break;
+                }
+            }
+        };
+        getSignedInEmail();
+        getSignedInUserCredentials();
+    }, []);
+
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.userInfoSection}>
@@ -28,7 +68,7 @@ const ProfileScreen = ({ navigation }) => {
                         <Title style={[styles.title, {
                             marginTop: 15,
                             marginBottom: 5,
-                        }]}>Abdul Basit</Title>
+                        }]}>{getData.email}</Title>
                     </View>
                 </View>
             </View>
@@ -49,16 +89,18 @@ const ProfileScreen = ({ navigation }) => {
             </View>
 
             <View style={styles.infoBoxWrapper}>
+
                 <View style={[styles.infoBox, {
                     borderRightColor: '#dddddd',
                     borderRightWidth: 1
                 }]}>
-                    <TouchableOpacity><Title>Edit</Title></TouchableOpacity>
+                    <TouchableOpacity onPress={() => { navigation.navigate("EditProfileScreen"), getData.keyId }}><Title>Edit</Title></TouchableOpacity>
                 </View>
                 <View style={styles.infoBox}>
-                    <TouchableOpacity onPress={() => { navigation.navigate("EditProfileScreen") }}><Title>Logout</Title></TouchableOpacity>
+                    <TouchableOpacity onPress={signOut}><Title>Logout</Title></TouchableOpacity>
                 </View>
             </View>
+            {/* <Button title="getSignedInUserCredentials" onPress={getSignedInUserCredentials()}></Button> */}
         </SafeAreaView>
     );
 };
