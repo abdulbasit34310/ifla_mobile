@@ -1,20 +1,21 @@
 import * as React from 'react';
-import { View, StyleSheet, Image, } from 'react-native';
+import { View, StyleSheet, Image, Text} from 'react-native';
 import Constants from 'expo-constants';
 import logo from './images/Falas.png';
 
-const MainScreen = () => {
+const EditProfileScreen = () => {
     return (
         <View style={styles.container}>
             <Image
                 source={logo}
                 style={styles.logo}
             />
+            <Text>Edit Profile Screen</Text>
         </View>
     )
 }
 
-export default MainScreen;
+export default EditProfileScreen;
 
 const styles = StyleSheet.create({
     container: {

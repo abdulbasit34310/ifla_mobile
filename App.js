@@ -2,12 +2,14 @@ import * as React from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import RegistrationNavigationScreen from './screens/RegistrationNavigationScreen';
 import MainScreen from './screens/MainScreen';
 import TrackingScreen from './screens/TrackingScreen';
+import ProfileScreen from './screens/ProfileScreen';
+import EditProfileScreen from './screens/EditProfileScreen';
+
 import { AuthContext } from './components/context';
 import { CustomDrawer } from './screens/CustomDrawer';
 
@@ -113,6 +115,8 @@ export default function App() {
             drawerContent={(props) => <CustomDrawer {...props} />}>
             <Drawer.Screen name="MainScreen" component={MainScreen} />
             <Drawer.Screen name="TrackingScreen" component={TrackingScreen} />
+            <Drawer.Screen name="ProfileScreen" component={ProfileScreen} />
+            <Drawer.Screen name="EditProfileScreen" component={EditProfileScreen} />
           </Drawer.Navigator>
         ) : (
           <RegistrationNavigationScreen />

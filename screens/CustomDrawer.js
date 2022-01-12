@@ -46,7 +46,7 @@ export function CustomDrawer(props) {
               )}
               label="Profile"
               onPress={() => {
-                props.navigation.navigate('Profile');
+                props.navigation.navigate('ProfileScreen');
               }}
             />
             <DrawerItem
@@ -61,6 +61,8 @@ export function CustomDrawer(props) {
           </Drawer.Section>
         </View>
       </DrawerContentScrollView>
+    
+
       <Drawer.Section style={styles.bottomDrawerSection}>
         <DrawerItem
           icon={({ color, size }) => (
