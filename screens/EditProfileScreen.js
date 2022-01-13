@@ -17,8 +17,9 @@ const FIREBASE_API_ENDPOINT =
     'https://madproject-61e88-default-rtdb.firebaseio.com/';
 
 
-const EditProfileScreen = ({ route }) => {
+const EditProfileScreen = ({ navigation, route }) => {
     var key = route.params.key;
+
     var name = route.params.name;
     var email = route.params.emailId;
     var address = route.params.address;
@@ -29,18 +30,26 @@ const EditProfileScreen = ({ route }) => {
     const [data, setData] = React.useState({
         name: '',
         email: '',
+        address: '',
+        phoneNo: '',
         checkNameChange: false,
         checkEmailChange: false,
+        checkAddressChange: false,
+        checkPhoneNoChange: false,
         notValidName: true,
         notValidEmail: true,
+        notValidAddress: true,
+        notValidPhoneNo: true,
     });
 
     const updateData = () => {
         const id = key;
+
         const objToSave = {
-            email: data.email,
-            name: 'Ab34',
-            password: 'ab34',
+            name: getInfo.name,
+            email: getInfo.email,
+            address: getInfo.address,
+            phoneNo: getInfo.phoneNo,
         }
 
         var requestOptions = {
@@ -52,6 +61,8 @@ const EditProfileScreen = ({ route }) => {
             .then((response) => response.json())
             .then((result) => console.log(result))
             .catch((error) => console.log('error', error));
+
+        navigation.goBack()
     };
 
     React.useEffect(() => {
@@ -66,12 +77,16 @@ const EditProfileScreen = ({ route }) => {
     }, [])
 
     const nameChange = (val) => {
-        if (val.trim().length != 2) {
+        if (val.trim().length >= 2) {
             setData({
                 ...data,
                 name: val,
                 checkNameChange: true,
                 notValidName: true,
+            });
+            setInfo({
+                ...getInfo,
+                name: val,
             });
         } else {
             setData({
@@ -80,9 +95,12 @@ const EditProfileScreen = ({ route }) => {
                 checkNameChange: false,
                 notValidName: false,
             });
+            setInfo({
+                ...getInfo,
+                name: val,
+            });
         }
     };
-
     const emailChange = (val) => {
         const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         if (reg.test(String(val).toLowerCase())) {
@@ -92,6 +110,10 @@ const EditProfileScreen = ({ route }) => {
                 checkEmailChange: true,
                 notValidEmail: true,
             });
+            setInfo({
+                ...getInfo,
+                email: val,
+            })
         } else {
             setData({
                 ...data,
@@ -99,8 +121,65 @@ const EditProfileScreen = ({ route }) => {
                 checkEmailChange: false,
                 notValidEmail: false,
             });
+            setInfo({
+                ...getInfo,
+                email: val,
+            })
         }
     };
+    const addressChange = (text) => {
+        if (text.trim().length > 1) {
+            setData({
+                ...data,
+                address: text,
+                checkAddressChange: true,
+                notValidAddress: true,
+            });
+            setInfo({
+                ...getInfo,
+                address: text,
+            })
+        } else {
+            setData({
+                ...data,
+                address: text,
+                checkAddressChange: false,
+                notValidAddress: false,
+            })
+            setInfo({
+                ...getInfo,
+                address: text,
+            })
+        }
+    }
+    const phoneNoChange = (val) => {
+        const reg = /^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$/;
+        if (reg.test(String(val))) {
+            setData({
+                ...data,
+                phoneNo: val,
+                checkPhoneNoChange: true,
+                notValidPhoneNo: true,
+            });
+            setInfo({
+                ...data,
+                phoneNo: val,
+            })
+        } else {
+            setData({
+                ...data,
+                phoneNo: val,
+                checkPhoneNoChange: false,
+                notValidPhoneNo: false,
+            })
+            setInfo({
+                ...data,
+                phoneNo: val,
+            })
+        }
+    }
+
+
 
     return (
         <View style={styles.container}>
@@ -111,13 +190,15 @@ const EditProfileScreen = ({ route }) => {
                 size={150}
             />
 
+            {/* Name */}
+
             <View style={styles.action}>
                 <FontAwesome name="user-o" color="#009387" size={30} />
                 <TextInput
                     style={styles.ti}
                     value={getInfo.name}
                     placeholderTextColor="#666666"
-                    onChangeText={(val) => nameChange(val)}
+                    onChangeText={nameChange}
                 ></TextInput>
                 {data.checkNameChange ? (
                     <Feather name="check-circle" color="green" size={30} />
@@ -125,10 +206,11 @@ const EditProfileScreen = ({ route }) => {
             </View>
             {data.notValidName ? null : (
                 <View duration={500}>
-                    <Text style={styles.errorMsg}>Name must be 2 characters long.</Text>
+                    <Text style={styles.errorMessage}>Name must be 2 characters long.</Text>
                 </View>
             )}
 
+            {/* Email */}
 
             <View style={styles.action}>
                 <FontAwesome name="envelope-o" color="#009387" size={30} />
@@ -143,9 +225,30 @@ const EditProfileScreen = ({ route }) => {
             </View>
             {data.notValidEmail ? null : (
                 <View duration={500}>
-                    <Text style={styles.errorMsg}>Email Syntax must be write.</Text>
+                    <Text style={styles.errorMessage}>Email Syntax must be write.</Text>
                 </View>
             )}
+
+            {/* Address */}
+
+            <View style={styles.action}>
+                <Icon name="map-marker-radius" color="#009387" size={30} />
+                <TextInput
+                    placeholderTextColor="#666666"
+                    value={getInfo.address}
+                    autoCorrect={false}
+                    style={styles.ti}
+                    onChangeText={(text) => addressChange(text)}
+                />
+            </View>
+            {data.notValidAddress ? null : (
+                <View duration={500}>
+                    <Text style={styles.errorMessage}>
+                        Enter some Address.
+                    </Text>
+                </View>
+            )}
+            {/* Phone Number */}
 
             <View style={styles.action}>
                 <Feather name="phone" color="#009387" size={30} />
@@ -155,17 +258,16 @@ const EditProfileScreen = ({ route }) => {
                     keyboardType="number-pad"
                     autoCorrect={false}
                     style={styles.ti}
+                    onChangeText={(text) => phoneNoChange(text)}
                 />
             </View>
-            <View style={styles.action}>
-                <Icon name="map-marker-radius" color="#009387" size={30} />
-                <TextInput
-                    placeholderTextColor="#666666"
-                    value={getInfo.address}
-                    autoCorrect={false}
-                    style={styles.ti}
-                />
-            </View>
+            {data.notValidPhoneNo ? null : (
+                <View duration={500}>
+                    <Text style={styles.errorMessage}>
+                        Phone Number is not Valid.
+                    </Text>
+                </View>
+            )}
             <TouchableOpacity style={styles.commandButton} onPress={updateData}>
                 <Text style={styles.panelButtonTitle}>Edit Confirm</Text>
             </TouchableOpacity>
@@ -186,7 +288,7 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingLeft: 11,
         color: '#666666',
-        fontSize: 17,
+        fontSize: 15,
     },
     panelButtonTitle: {
         fontSize: 17,
@@ -206,5 +308,9 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: '#f2f2f2',
         paddingBottom: 5,
+    },
+    errorMessage: {
+        color: '#FF0000',
+        fontSize: 12,
     },
 });

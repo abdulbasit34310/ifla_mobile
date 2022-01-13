@@ -55,6 +55,8 @@ const SignUpScreen = ({ navigation }) => {
       .then((response) => response.json())
       .then((result) => console.log(result))
       .catch((error) => console.log('error', error));
+    
+      navigation.goBack();
   };
 
   const addressChange = (text) => {
@@ -207,7 +209,9 @@ const SignUpScreen = ({ navigation }) => {
             </Text>
           </View>
         )}
+
         {/* Address */}
+
         <View style={styles.action}>
           <Icon name="map-marker-radius" color="#009387" size={25} />
           <TextInput
@@ -227,6 +231,7 @@ const SignUpScreen = ({ navigation }) => {
         )}
         
         {/* Phone Number */}
+
         <View style={styles.action}>
           <Feather name="phone" color="#009387" size={25} />
           <TextInput

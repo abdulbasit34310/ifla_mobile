@@ -15,7 +15,33 @@ const ProfileScreen = ({ navigation }) => {
 
     var email = ""
     const { signOut } = React.useContext(AuthContext);
-    const [getData, setData] = React.useState({ name: 'John Doe', email: 'johndoe@gmail.com', address: 'Wherever', phoneNo: '03987654321' });
+    const [getData, setData] = React.useState({ key: ' ', name: 'John Doe', email: 'johndoe@gmail.com', address: 'Wherever', phoneNo: '03987654321' });
+
+    const getSignedInUserCredentials = async () => {
+        const response = await fetch(
+            `${FIREBASE_API_ENDPOINT}/userCredentials.json`
+        );
+        const data = await response.json();
+
+        var keyValues = Object.keys(data);
+
+        let credential = {};
+
+        for (let i = 0; i < keyValues.length; i++) {
+            let key = keyValues[i];
+            if (data[key].email == email) {
+                credential = {
+                    keyId: key,
+                    name: data[key].name,
+                    email: data[key].email,
+                    address: data[key].address,
+                    phoneNo: data[key].phoneNo
+                };
+                setData(credential)
+                break;
+            }
+        }
+    };
 
     React.useEffect(() => {
         const getSignedInEmail = async () => {
@@ -23,31 +49,7 @@ const ProfileScreen = ({ navigation }) => {
             email = item
         }
 
-        const getSignedInUserCredentials = async () => {
-            const response = await fetch(
-                `${FIREBASE_API_ENDPOINT}/userCredentials.json`
-            );
-            const data = await response.json();
 
-            var keyValues = Object.keys(data);
-
-            let credential = {};
-           
-            for (let i = 0; i < keyValues.length; i++) {
-                let key = keyValues[i];
-                if (data[key].email == email) {
-                    credential = {
-                        keyId: key,
-                        name: data[key].name,
-                        email: data[key].email,
-                        address: data[key].address,
-                        phoneNo: data[key].phoneNo
-                    };
-                    setData(credential)
-                    break;
-                }
-            }
-        };
         getSignedInEmail();
         getSignedInUserCredentials();
     }, []);
