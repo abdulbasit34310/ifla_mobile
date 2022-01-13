@@ -1,11 +1,9 @@
 import * as React from 'react';
 import { SafeAreaView, View, StyleSheet, Image, } from 'react-native';
-import Constants from 'expo-constants';
-import { Avatar, Title, Caption, Text, Button, } from 'react-native-paper';
+import { Avatar, Title, Text, Button, } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { AuthContext } from '../components/context';
-import logo from './images/Falas.png';
 import EditProfileScreen from './EditProfileScreen';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { set } from 'react-native-reanimated';
@@ -17,12 +15,11 @@ const ProfileScreen = ({ navigation }) => {
 
     var email = ""
     const { signOut } = React.useContext(AuthContext);
-    const [getData, setData] = React.useState({ email: 'John Doe', password: 'ab12' });
+    const [getData, setData] = React.useState({ name: 'John Doe', email: 'johndoe@gmail.com', address: 'Wherever', phoneNo: '03987654321' });
 
     React.useEffect(() => {
         const getSignedInEmail = async () => {
             var item = await AsyncStorage.getItem('userToken');
-            console.log(item)
             email = item
         }
 
@@ -35,16 +32,17 @@ const ProfileScreen = ({ navigation }) => {
             var keyValues = Object.keys(data);
 
             let credential = {};
-            console.log("-------------------------Above For Loop----------------------------")
+           
             for (let i = 0; i < keyValues.length; i++) {
                 let key = keyValues[i];
                 if (data[key].email == email) {
                     credential = {
-                        email: data[key].email,
                         keyId: key,
-                        password: data[key].password,
+                        name: data[key].name,
+                        email: data[key].email,
+                        address: data[key].address,
+                        phoneNo: data[key].phoneNo
                     };
-                    console.log(credential);
                     setData(credential)
                     break;
                 }
@@ -68,7 +66,7 @@ const ProfileScreen = ({ navigation }) => {
                         <Title style={[styles.title, {
                             marginTop: 15,
                             marginBottom: 5,
-                        }]}>{getData.email}</Title>
+                        }]}>{getData.name}</Title>
                     </View>
                 </View>
             </View>
@@ -76,15 +74,15 @@ const ProfileScreen = ({ navigation }) => {
             <View style={styles.userInfoSection}>
                 <View style={styles.row}>
                     <Icon name="map-marker-radius" color="#777777" size={20} />
-                    <Text style={{ color: "#777777", marginLeft: 20 }}>Islamabad, Pakistan</Text>
+                    <Text style={{ color: "#777777", marginLeft: 20 }}>{getData.address}</Text>
                 </View>
                 <View style={styles.row}>
                     <Icon name="phone" color="#777777" size={20} />
-                    <Text style={{ color: "#777777", marginLeft: 20 }}>+92-3054442242</Text>
+                    <Text style={{ color: "#777777", marginLeft: 20 }}>{getData.phoneNo}</Text>
                 </View>
                 <View style={styles.row}>
                     <Icon name="email" color="#777777" size={20} />
-                    <Text style={{ color: "#777777", marginLeft: 20 }}>abdulbasit34310@gmail.com</Text>
+                    <Text style={{ color: "#777777", marginLeft: 20 }}>{getData.email}</Text>
                 </View>
             </View>
 
@@ -94,13 +92,13 @@ const ProfileScreen = ({ navigation }) => {
                     borderRightColor: '#dddddd',
                     borderRightWidth: 1
                 }]}>
-                    <TouchableOpacity onPress={() => { navigation.navigate("EditProfileScreen", { emailId: getData.email, key: getData.keyId }) }}><Title>Edit</Title></TouchableOpacity>
+                    <TouchableOpacity onPress={() => { navigation.navigate("EditProfileScreen", { key: getData.keyId, name: getData.name, emailId: getData.email, address: getData.address, phoneNo: getData.phoneNo }) }}><Title>Edit</Title></TouchableOpacity>
                 </View>
                 <View style={styles.infoBox}>
                     <TouchableOpacity onPress={signOut}><Title>Logout</Title></TouchableOpacity>
                 </View>
             </View>
-            {/* <Button title="getSignedInUserCredentials" onPress={getSignedInUserCredentials()}></Button> */}
+
         </SafeAreaView>
     );
 };

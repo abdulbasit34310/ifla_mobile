@@ -18,10 +18,14 @@ const FIREBASE_API_ENDPOINT =
 
 
 const EditProfileScreen = ({ route }) => {
-    var email = route.params.emailId;
     var key = route.params.key;
+    var name = route.params.name;
+    var email = route.params.emailId;
+    var address = route.params.address;
+    var phoneNo = route.params.phoneNo;
 
-    const [getInfo, setInfo] = React.useState({ email: '', key: '' });
+    const [getInfo, setInfo] = React.useState({ key: '', name: '', email: '', address: '', phoneNo: '' });
+
     const [data, setData] = React.useState({
         name: '',
         email: '',
@@ -52,8 +56,11 @@ const EditProfileScreen = ({ route }) => {
 
     React.useEffect(() => {
         var obj = {
+            key: key,
+            name: name,
             email: email,
-            key: key
+            address: address,
+            phoneNo: phoneNo,
         }
         setInfo(obj)
     }, [])
@@ -108,7 +115,7 @@ const EditProfileScreen = ({ route }) => {
                 <FontAwesome name="user-o" color="#009387" size={30} />
                 <TextInput
                     style={styles.ti}
-                    value="Your Name"
+                    value={getInfo.name}
                     placeholderTextColor="#666666"
                     onChangeText={(val) => nameChange(val)}
                 ></TextInput>
@@ -143,7 +150,7 @@ const EditProfileScreen = ({ route }) => {
             <View style={styles.action}>
                 <Feather name="phone" color="#009387" size={30} />
                 <TextInput
-                    value="Phone"
+                    value={getInfo.phoneNo}
                     placeholderTextColor="#666666"
                     keyboardType="number-pad"
                     autoCorrect={false}
@@ -154,13 +161,13 @@ const EditProfileScreen = ({ route }) => {
                 <Icon name="map-marker-radius" color="#009387" size={30} />
                 <TextInput
                     placeholderTextColor="#666666"
-                    value={'Islamabad, Pakistan'}
+                    value={getInfo.address}
                     autoCorrect={false}
                     style={styles.ti}
                 />
             </View>
             <TouchableOpacity style={styles.commandButton} onPress={updateData}>
-                <Text style={styles.panelButtonTitle}>Submit</Text>
+                <Text style={styles.panelButtonTitle}>Edit Confirm</Text>
             </TouchableOpacity>
         </View>
     )

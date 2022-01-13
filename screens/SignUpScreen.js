@@ -11,7 +11,7 @@ import {
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
-
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { AuthContext } from '../components/context';
 import logo from './images/Falas.png';
 
@@ -22,14 +22,20 @@ const SignUpScreen = ({ navigation }) => {
   const [data, setData] = React.useState({
     name: '',
     email: '',
+    address: '',
+    phoneNo: '',
     password: '',
     confirmPassword: '',
     checkNameChange: false,
     checkEmailChange: false,
+    checkAddressChange: false,
+    checkPhoneNoChange: false,
     checkPasswordChange: false,
     checkConfirmPasswordChange: false,
     notValidName: true,
     notValidEmail: true,
+    notValidAddress: true,
+    notValidPhoneNo: true,
     notValidPassword: true,
     secureTextEntry: true,
   });
@@ -40,6 +46,8 @@ const SignUpScreen = ({ navigation }) => {
       body: JSON.stringify({
         name: data.name,
         email: data.email,
+        address: data.address,
+        phoneNo: data.phoneNo,
         password: data.password,
       }),
     };
@@ -49,6 +57,23 @@ const SignUpScreen = ({ navigation }) => {
       .catch((error) => console.log('error', error));
   };
 
+  const addressChange = (text) => {
+    if (text.trim().length > 1) {
+      setData({
+        ...data,
+        address: text,
+        checkAddressChange: true,
+        notValidAddress: true,
+      })
+    } else {
+      setData({
+        ...data,
+        address: text,
+        checkAddressChange: false,
+        notValidAddress: false,
+      })
+    }
+  }
 
   const nameChange = (val) => {
     if (val.trim().length != 2) {
@@ -86,6 +111,24 @@ const SignUpScreen = ({ navigation }) => {
       });
     }
   };
+  const phoneNoChange = (val) => {
+    const reg = /^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$/;
+    if (reg.test(String(val))) {
+      setData({
+        ...data,
+        phoneNo: val,
+        checkPhoneNoChange: true,
+        notValidPhoneNo: true,
+      })
+    } else {
+      setData({
+        ...data,
+        phoneNo: val,
+        checkPhoneNoChange: false,
+        notValidPhoneNo: false,
+      })
+    }
+  }
 
   const passwordChange = (val) => {
     if (val.trim().length >= 3) {
@@ -125,13 +168,14 @@ const SignUpScreen = ({ navigation }) => {
           style={styles.logo}
         />
       </View>
-
+      {/* Name */}
       <View style={styles.footer}>
         <View style={styles.action}>
           <FontAwesome name="user-o" color="#009387" size={25} />
           <TextInput
             style={styles.ti}
             placeholder="Your Name"
+            placeholderTextColor="#666666"
             onChangeText={(val) => nameChange(val)}></TextInput>
           {data.checkNameChange ? (
             <Feather name="check-circle" color="green" size={25} />
@@ -142,12 +186,14 @@ const SignUpScreen = ({ navigation }) => {
             <Text style={styles.errorMsg}>Name must be 2 characters long.</Text>
           </View>
         )}
-
+        {/* Email */}
         <View style={styles.action}>
-          <FontAwesome name="envelope-o" color="#009387" size={30} />
+          <FontAwesome name="envelope-o" color="#009387" size={25} />
           <TextInput
             style={styles.ti}
             placeholder="Your Email"
+            placeholderTextColor="#666666"
+            keyboardType="email-address"
             onChangeText={(val) => emailChange(val)}></TextInput>
           {data.checkEmailChange ? (
             <Feather name="check-circle" color="green" size={25} />
@@ -161,39 +207,50 @@ const SignUpScreen = ({ navigation }) => {
             </Text>
           </View>
         )}
-
+        {/* Address */}
         <View style={styles.action}>
-          <Feather name="phone" color="#009387" size={30} />
+          <Icon name="map-marker-radius" color="#009387" size={25} />
+          <TextInput
+            style={styles.ti}
+            placeholder='Your Address'
+            placeholderTextColor="#666666"
+            autoCorrect={false}
+            onChangeText={(text) => addressChange(text)}
+          />
+        </View>
+        {data.notValidAddress ? null : (
+          <View duration={500}>
+            <Text style={styles.errorMessage}>
+              Enter some Address.
+            </Text>
+          </View>
+        )}
+        
+        {/* Phone Number */}
+        <View style={styles.action}>
+          <Feather name="phone" color="#009387" size={25} />
           <TextInput
             style={styles.ti}
             placeholder="Phone Number"
-            onChangeText={(val) => emailChange(val)}></TextInput>
-          {data.checkEmailChange ? (
-            <Feather name="check-circle" color="green" size={25} />
-          ) : null}
-        </View>
-
-        <View style={styles.action}>
-          <Feather name="phone" color="#009387" size={30} />
-          <TextInput
-            style={styles.ti}
-            placeholder="Phone Number"></TextInput>
-        </View>
-
-        <View style={styles.action}>
-          <Icon name="map-marker-radius" color="#009387" size={30} />
-          <TextInput
             placeholderTextColor="#666666"
-            autoCorrect={false}
-            style={styles.ti}
-          />
+            keyboardType="number-pad"
+            onChangeText={(text) => phoneNoChange(text)}
+          ></TextInput>
         </View>
+        {data.notValidPhoneNo ? null : (
+          <View duration={500}>
+            <Text style={styles.errorMessage}>
+              Phone Number is not Valid.
+            </Text>
+          </View>
+        )}
 
         <View style={styles.action}>
-          <FontAwesome name="lock" color="#009387" size={26} />
+          <FontAwesome name="lock" color="#009387" size={25} />
           <TextInput
             style={styles.ti}
             placeholder="Your Password"
+            placeholderTextColor="#666666"
             secureTextEntry={data.secureTextEntry ? true : false}
             onChangeText={(val) => passwordChange(val)}></TextInput>
 
@@ -214,10 +271,11 @@ const SignUpScreen = ({ navigation }) => {
         )}
 
         <View style={styles.action}>
-          <FontAwesome name="lock" color="#009387" size={26} />
+          <FontAwesome name="lock" color="#009387" size={25} />
           <TextInput
             style={styles.ti}
             placeholder="Confrim Password"
+            placeholderTextColor="#666666"
             secureTextEntry={data.secureTextEntry ? true : false}
             onChangeText={(val) => confirmPasswordChange(val)}></TextInput>
 
