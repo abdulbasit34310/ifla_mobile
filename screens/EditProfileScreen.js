@@ -11,9 +11,17 @@ import { Avatar, } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
+import { set } from 'react-native-reanimated';
+
+const FIREBASE_API_ENDPOINT =
+    'https://madproject-61e88-default-rtdb.firebaseio.com/';
+
 
 const EditProfileScreen = ({ route }) => {
-    const key = route.params;
+    var email = route.params.emailId;
+    var key = route.params.key;
+
+    const [getInfo, setInfo] = React.useState({ email: '', key: '' });
     const [data, setData] = React.useState({
         name: '',
         email: '',
@@ -22,6 +30,34 @@ const EditProfileScreen = ({ route }) => {
         notValidName: true,
         notValidEmail: true,
     });
+
+    const updateData = () => {
+        const id = key;
+        const objToSave = {
+            email: data.email,
+            name: 'Ab34',
+            password: 'ab34',
+        }
+
+        var requestOptions = {
+            method: 'PATCH',
+            body: JSON.stringify(objToSave),
+        };
+
+        fetch(`${FIREBASE_API_ENDPOINT}/userCredentials/${id}.json`, requestOptions)
+            .then((response) => response.json())
+            .then((result) => console.log(result))
+            .catch((error) => console.log('error', error));
+    };
+
+    React.useEffect(() => {
+        var obj = {
+            email: email,
+            key: key
+        }
+        setInfo(obj)
+    }, [])
+
     const nameChange = (val) => {
         if (val.trim().length != 2) {
             setData({
@@ -67,13 +103,15 @@ const EditProfileScreen = ({ route }) => {
                 }}
                 size={150}
             />
+
             <View style={styles.action}>
                 <FontAwesome name="user-o" color="#009387" size={30} />
                 <TextInput
                     style={styles.ti}
                     value="Your Name"
                     placeholderTextColor="#666666"
-                    onChangeText={(val) => nameChange(val)}></TextInput>
+                    onChangeText={(val) => nameChange(val)}
+                ></TextInput>
                 {data.checkNameChange ? (
                     <Feather name="check-circle" color="green" size={30} />
                 ) : null}
@@ -81,6 +119,24 @@ const EditProfileScreen = ({ route }) => {
             {data.notValidName ? null : (
                 <View duration={500}>
                     <Text style={styles.errorMsg}>Name must be 2 characters long.</Text>
+                </View>
+            )}
+
+
+            <View style={styles.action}>
+                <FontAwesome name="envelope-o" color="#009387" size={30} />
+                <TextInput
+                    style={styles.ti}
+                    value={getInfo.email}
+                    placeholderTextColor="#666666"
+                    keyboardType="email-address"
+                    autoCorrect={false}
+                    onChangeText={emailChange}
+                />
+            </View>
+            {data.notValidEmail ? null : (
+                <View duration={500}>
+                    <Text style={styles.errorMsg}>Email Syntax must be write.</Text>
                 </View>
             )}
 
@@ -95,16 +151,6 @@ const EditProfileScreen = ({ route }) => {
                 />
             </View>
             <View style={styles.action}>
-                <FontAwesome name="envelope-o" color="#009387" size={30} />
-                <TextInput
-                    value="Email"
-                    placeholderTextColor="#666666"
-                    keyboardType="email-address"
-                    autoCorrect={false}
-                    style={styles.ti}
-                />
-            </View>
-            <View style={styles.action}>
                 <Icon name="map-marker-radius" color="#009387" size={30} />
                 <TextInput
                     placeholderTextColor="#666666"
@@ -113,7 +159,7 @@ const EditProfileScreen = ({ route }) => {
                     style={styles.ti}
                 />
             </View>
-            <TouchableOpacity style={styles.commandButton} onPress={() => { }}>
+            <TouchableOpacity style={styles.commandButton} onPress={updateData}>
                 <Text style={styles.panelButtonTitle}>Submit</Text>
             </TouchableOpacity>
         </View>

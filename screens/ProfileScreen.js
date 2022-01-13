@@ -94,7 +94,7 @@ const ProfileScreen = ({ navigation }) => {
                     borderRightColor: '#dddddd',
                     borderRightWidth: 1
                 }]}>
-                    <TouchableOpacity onPress={() => { navigation.navigate("EditProfileScreen"), getData.keyId }}><Title>Edit</Title></TouchableOpacity>
+                    <TouchableOpacity onPress={() => { navigation.navigate("EditProfileScreen", { emailId: getData.email, key: getData.keyId }) }}><Title>Edit</Title></TouchableOpacity>
                 </View>
                 <View style={styles.infoBox}>
                     <TouchableOpacity onPress={signOut}><Title>Logout</Title></TouchableOpacity>
