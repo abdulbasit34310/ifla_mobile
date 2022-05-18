@@ -22,10 +22,10 @@ function WelcomeScreen({ navigation }) {
 
             <View style={styles.footer}>
 
-                <Text style={styles.title}>Getting Started </Text>
+                <Text style={styles.title}>Getting Started ! </Text>
                 <TouchableOpacity style={styles.to} onPress={() => { navigation.navigate("SignInScreen") }}>
                     <Text style={styles.signInText}>Sign In</Text>
-                    <MaterialIcons name="navigate-next" color="#fff" size={20} />
+                    {/* <MaterialIcons name="navigate-next" color="#fff" size={27} /> */}
                 </TouchableOpacity>
 
             </View>
@@ -42,15 +42,16 @@ const styles = StyleSheet.create({
     container: {
         flex: 1, justifyContent: 'center',
         paddingTop: Constants.statusBarHeight,
-        backgroundColor: '#009387',
+        backgroundColor: '#068E94',
     },
     header: {
         flex: 2, justifyContent: 'center',
         alignItems: 'center'
     },
     footer: {
+        alignItems: 'center',
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#E0EFF6',
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
         paddingVertical: 25,
@@ -61,7 +62,7 @@ const styles = StyleSheet.create({
         height: height_logo,
     },
     title: {
-        color: 'grey',
+        color: "#068E94",
         fontSize: 30,
         fontWeight: 'bold',
     },
@@ -78,17 +79,19 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     signInText: {
-        color: 'white',
-        fontSize: 16,
+        color: "#E0EFF6",
+        fontSize: 26,
+    
     },
     to: {
-        backgroundColor: '#009387',
-        borderRadius: 25,
+        backgroundColor: '#00ABB2',
+        borderRadius: 45,
         justifyContent: 'center',
         alignItems: 'center',
-        width: 110,
-        height: 35,
+        width: 175,
+        height: 75,
         flexDirection: 'row',
+        marginTop: 35,
     },
     logo: {
         width: 100,

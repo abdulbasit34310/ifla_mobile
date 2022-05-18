@@ -4,14 +4,16 @@ import {
     Text,
     TextInput,
     StyleSheet,
+    Image,
     TouchableOpacity,
 } from 'react-native';
 import Constants from 'expo-constants';
-import { Avatar, } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
-import { set } from 'react-native-reanimated';
+// import { set } from 'react-native-reanimated';
+
+import AB from './images/AB.png';
 
 const FIREBASE_API_ENDPOINT =
     'https://madproject-61e88-default-rtdb.firebaseio.com/';
@@ -183,17 +185,20 @@ const EditProfileScreen = ({ navigation, route }) => {
 
     return (
         <View style={styles.container}>
-            <Avatar.Image
-                source={{
-                    uri: 'https://api.adorable.io/avatars/80/abott@adorable.png',
+            <Image
+                style={{
+                    backgroundColor: "#00ABB2",
+                    width: 100,
+                    height: 100,
+                    borderRadius: 90,
                 }}
-                size={150}
+                source={AB}
             />
 
             {/* Name */}
 
             <View style={styles.action}>
-                <FontAwesome name="user-o" color="#009387" size={30} />
+                <FontAwesome name="user-o" color="#00ABB2" size={20} />
                 <TextInput
                     style={styles.ti}
                     value={getInfo.name}
@@ -201,7 +206,7 @@ const EditProfileScreen = ({ navigation, route }) => {
                     onChangeText={nameChange}
                 ></TextInput>
                 {data.checkNameChange ? (
-                    <Feather name="check-circle" color="green" size={30} />
+                    <Feather name="check-circle" color="green" size={20} />
                 ) : null}
             </View>
             {data.notValidName ? null : (
@@ -213,7 +218,7 @@ const EditProfileScreen = ({ navigation, route }) => {
             {/* Email */}
 
             <View style={styles.action}>
-                <FontAwesome name="envelope-o" color="#009387" size={30} />
+                <FontAwesome name="envelope-o" color="#00ABB2" size={20} />
                 <TextInput
                     style={styles.ti}
                     value={getInfo.email}
@@ -232,7 +237,7 @@ const EditProfileScreen = ({ navigation, route }) => {
             {/* Address */}
 
             <View style={styles.action}>
-                <Icon name="map-marker-radius" color="#009387" size={30} />
+                <Icon name="map-marker-radius" color="#00ABB2" size={20} />
                 <TextInput
                     placeholderTextColor="#666666"
                     value={getInfo.address}
@@ -251,7 +256,7 @@ const EditProfileScreen = ({ navigation, route }) => {
             {/* Phone Number */}
 
             <View style={styles.action}>
-                <Feather name="phone" color="#009387" size={30} />
+                <Feather name="phone" color="#00ABB2" size={20} />
                 <TextInput
                     value={getInfo.phoneNo}
                     placeholderTextColor="#666666"
@@ -268,9 +273,12 @@ const EditProfileScreen = ({ navigation, route }) => {
                     </Text>
                 </View>
             )}
-            <TouchableOpacity style={styles.commandButton} onPress={updateData}>
-                <Text style={styles.panelButtonTitle}>Edit Confirm</Text>
+            <TouchableOpacity style={styles.submitButton} onPress={updateData}>
+                <Text style={{ fontSize: 13, color: 'white', }}>Submit</Text>
             </TouchableOpacity>
+            {/* <TouchableOpacity style={styles.submitButton} onPress={() => { navigation.navigate("ProfileScreen") }}>
+                <Text style={{ fontSize: 13, color: 'white', }}>Profile</Text>
+            </TouchableOpacity> */}
         </View>
     )
 }
@@ -279,35 +287,31 @@ export default EditProfileScreen;
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, alignContent: 'center',
+        flex: 1,
         paddingTop: Constants.statusBarHeight,
         alignItems: 'center',
-        padding: 30,
+        padding: 25,
+        backgroundColor: '#E0EFF6',
+
     },
     ti: {
         flex: 1,
-        paddingLeft: 11,
+        paddingLeft: 13,
         color: '#666666',
-        fontSize: 15,
+        fontSize: 13,
     },
-    panelButtonTitle: {
-        fontSize: 17,
-        fontWeight: 'bold',
-        color: 'white',
-    },
-    commandButton: {
-        padding: 15,
+    submitButton: {
+        padding: 10,
         borderRadius: 10,
-        backgroundColor: '#009387',
+        backgroundColor: '#00ABB2',
         alignItems: 'center',
         marginTop: 10,
+        width: '100%',
     },
     action: {
         flexDirection: 'row',
-        marginTop: 15,
-        borderBottomWidth: 1,
-        borderBottomColor: '#f2f2f2',
-        paddingBottom: 5,
+        marginTop: 12,
+        alignItems: 'center',
     },
     errorMessage: {
         color: '#FF0000',

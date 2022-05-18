@@ -9,7 +9,17 @@ import MainScreen from './screens/MainScreen';
 import TrackingScreen from './screens/TrackingScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import EditProfileScreen from './screens/EditProfileScreen';
+import CompanyInformationScreen from './screens/CompanyInformationScreen';
+import BookingScreen from './screens/BookingScreen';
 
+import PendingBookings from './screens/PendingBookings';
+import PendingBookingDetails from './screens/PendingBookingDetails';
+import MyBookings from './screens/MyBookings';
+import BookNow from './screens/BookNow';
+import BookingDetails from './screens/BookingDetails';
+import GetAQuote from './screens/GetAQuote';
+
+// import Payment from './screens/Payment';
 import { AuthContext } from './components/context';
 import { CustomDrawer } from './screens/CustomDrawer';
 
@@ -65,7 +75,7 @@ export default function App() {
       signIn: async (foundUser) => {
         const userToken = String(foundUser[0].userToken);
         const email = foundUser[0].email;
-        
+
         try {
           await AsyncStorage.setItem('userToken', email);
         } catch (e) {
@@ -116,8 +126,20 @@ export default function App() {
             drawerContent={(props) => <CustomDrawer {...props} />}>
             <Drawer.Screen name="MainScreen" component={MainScreen} />
             <Drawer.Screen name="TrackingScreen" component={TrackingScreen} />
+            <Drawer.Screen name="BookingScreen" component={BookingScreen} />
+
+            <Drawer.Screen name="BookNow" component={BookNow} />
+            <Drawer.Screen name="BookingDetails" component={BookingDetails} />
+            <Drawer.Screen name="MyBookings" component={MyBookings} />
+            <Drawer.Screen name="PendingBookings" component={PendingBookings} />
+            <Drawer.Screen name="PendingBookingDetails" component={PendingBookingDetails} />
+            <Drawer.Screen name="GetAQuote" component={GetAQuote} />
+
+            {/* <Drawer.Screen name="Payment" component={Payment} /> */}
             <Drawer.Screen name="ProfileScreen" component={ProfileScreen} />
             <Drawer.Screen name="EditProfileScreen" component={EditProfileScreen} />
+            <Drawer.Screen name="CompanyInformationScreen" component={CompanyInformationScreen} />
+
           </Drawer.Navigator>
         ) : (
           <RegistrationNavigationScreen />

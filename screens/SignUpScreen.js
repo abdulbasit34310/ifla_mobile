@@ -8,7 +8,7 @@ import {
   TextInput,
   Platform,
 } from 'react-native';
-
+import Checkbox from 'expo-checkbox';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -26,19 +26,25 @@ const SignUpScreen = ({ navigation }) => {
     phoneNo: '',
     password: '',
     confirmPassword: '',
+    companyName: '',
     checkNameChange: false,
     checkEmailChange: false,
     checkAddressChange: false,
     checkPhoneNoChange: false,
     checkPasswordChange: false,
     checkConfirmPasswordChange: false,
+    checkCompanyNameChange: false,
     notValidName: true,
     notValidEmail: true,
     notValidAddress: true,
     notValidPhoneNo: true,
     notValidPassword: true,
+    notValidCompanyName: true,
     secureTextEntry: true,
+
   });
+
+  const [isChecked, setChecked] = React.useState(false);
 
   const postData = () => {
     var requestOptions = {
@@ -49,14 +55,15 @@ const SignUpScreen = ({ navigation }) => {
         address: data.address,
         phoneNo: data.phoneNo,
         password: data.password,
+        companyName: data.companyName,
       }),
     };
     fetch(`${FIREBASE_API_ENDPOINT}/userCredentials.json`, requestOptions)
       .then((response) => response.json())
       .then((result) => console.log(result))
       .catch((error) => console.log('error', error));
-    
-      navigation.goBack();
+
+    navigation.goBack();
   };
 
   const addressChange = (text) => {
@@ -91,6 +98,24 @@ const SignUpScreen = ({ navigation }) => {
         name: val,
         checkNameChange: false,
         notValidName: false,
+      });
+    }
+  };
+
+  const companyNameChange = (val) => {
+    if (val.trim().length != 2) {
+      setData({
+        ...data,
+        companyName: val,
+        checkCompanyNameChange: true,
+        notValidCompanyName: true,
+      });
+    } else {
+      setData({
+        ...data,
+        companyName: val,
+        checkCompanyNameChange: false,
+        notValidCompanyName: false,
       });
     }
   };
@@ -163,191 +188,207 @@ const SignUpScreen = ({ navigation }) => {
   };
 
   return (
+
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Image
-          source={logo}
-          style={styles.logo}
+
+      {/* Name */}
+
+      <View style={styles.action}>
+        <FontAwesome name="user-o" color="#068E94" size={25} />
+        <TextInput
+          style={styles.ti}
+          placeholder="Your Name"
+          placeholderTextColor="#666666"
+          onChangeText={(val) => nameChange(val)}></TextInput>
+        {data.checkNameChange ? (
+          <Feather name="check-circle" color="green" size={25} />
+        ) : null}
+      </View>
+      {data.notValidName ? null : (
+        <View duration={500}>
+          <Text style={styles.errorMsg}>Name must be 2 characters long.</Text>
+        </View>
+      )}
+
+      {/* Email */}
+
+      <View style={styles.action}>
+        <FontAwesome name="envelope-o" color="#068E94" size={25} />
+        <TextInput
+          style={styles.ti}
+          placeholder="Your Email"
+          placeholderTextColor="#666666"
+          keyboardType="email-address"
+          onChangeText={(val) => emailChange(val)}></TextInput>
+        {data.checkEmailChange ? (
+          <Feather name="check-circle" color="green" size={25} />
+        ) : null}
+      </View>
+
+      {data.notValidEmail ? null : (
+        <View duration={500}>
+          <Text style={styles.errorMessage}>
+            Email Syntax is not correct.
+          </Text>
+        </View>
+      )}
+
+      {/* Address */}
+
+      <View style={styles.action}>
+        <Icon name="map-marker-radius" color="#068E94" size={25} />
+        <TextInput
+          style={styles.ti}
+          placeholder='Your Address'
+          placeholderTextColor="#666666"
+          autoCorrect={false}
+          onChangeText={(text) => addressChange(text)}
         />
       </View>
-      {/* Name */}
-      <View style={styles.footer}>
+      {data.notValidAddress ? null : (
+        <View duration={500}>
+          <Text style={styles.errorMessage}>
+            Enter some Address.
+          </Text>
+        </View>
+      )}
+
+      {/* Phone Number */}
+
+      <View style={styles.action}>
+        <Feather name="phone" color="#068E94" size={25} />
+        <TextInput
+          style={styles.ti}
+          placeholder="Phone Number"
+          placeholderTextColor="#666666"
+          keyboardType="number-pad"
+          onChangeText={(text) => phoneNoChange(text)}
+        ></TextInput>
+      </View>
+      {data.notValidPhoneNo ? null : (
+        <View duration={500}>
+          <Text style={styles.errorMessage}>
+            Phone Number is not Valid.
+          </Text>
+        </View>
+      )}
+
+      <View style={styles.action}>
+        <FontAwesome name="lock" color="#068E94" size={25} />
+        <TextInput
+          style={styles.ti}
+          placeholder="Your Password"
+          placeholderTextColor="#666666"
+          secureTextEntry={data.secureTextEntry ? true : false}
+          onChangeText={(val) => passwordChange(val)}></TextInput>
+
+        <TouchableOpacity onPress={hideOrUnhideEye}>
+          {data.secureTextEntry ? (
+            <Feather name="eye-off" color="grey" size={25} />
+          ) : (
+            <Feather name="eye" color="grey" size={25} />
+          )}
+        </TouchableOpacity>
+      </View>
+      {data.notValidPassword ? null : (
+        <View duration={500}>
+          <Text style={styles.errorMessage}>
+            Password must be 8 characters long.
+          </Text>
+        </View>
+      )}
+
+      <View style={styles.action}>
+        <FontAwesome name="lock" color="#068E94" size={25} />
+        <TextInput
+          style={styles.ti}
+          placeholder="Confrim Password"
+          placeholderTextColor="#666666"
+          secureTextEntry={data.secureTextEntry ? true : false}
+          onChangeText={(val) => confirmPasswordChange(val)}></TextInput>
+
+        <TouchableOpacity onPress={hideOrUnhideEye}>
+          {data.secureTextEntry ? (
+            <Feather name="eye-off" color="grey" size={25} />
+          ) : (
+            <Feather name="eye" color="grey" size={25} />
+          )}
+        </TouchableOpacity>
+      </View>
+      {data.confirmPassword == data.password ? null : (
+        <View duration={500}>
+          <Text style={styles.errorMessage}>
+            Confirm Password is not equal to Password.
+          </Text>
+        </View>
+
+      )}
+
+      <View style={styles.checkbox}>
+        <Text>Are you a company owner?</Text>
+        <Checkbox value={isChecked} onValueChange={setChecked} />
+      </View>
+
+      {/* Company Name */}
+
+      {isChecked == false ? null : (
         <View style={styles.action}>
-          <FontAwesome name="user-o" color="#009387" size={25} />
+          <FontAwesome name="user-o" color="#068E94" size={25} />
           <TextInput
             style={styles.ti}
-            placeholder="Your Name"
+            placeholder="Company Name"
             placeholderTextColor="#666666"
-            onChangeText={(val) => nameChange(val)}></TextInput>
-          {data.checkNameChange ? (
-            <Feather name="check-circle" color="green" size={25} />
-          ) : null}
+            onChangeText={(val) => companyNameChange(val)}>
+          </TextInput>
         </View>
-        {data.notValidName ? null : (
-          <View duration={500}>
-            <Text style={styles.errorMsg}>Name must be 2 characters long.</Text>
-          </View>
-        )}
-        {/* Email */}
-        <View style={styles.action}>
-          <FontAwesome name="envelope-o" color="#009387" size={25} />
-          <TextInput
-            style={styles.ti}
-            placeholder="Your Email"
-            placeholderTextColor="#666666"
-            keyboardType="email-address"
-            onChangeText={(val) => emailChange(val)}></TextInput>
-          {data.checkEmailChange ? (
-            <Feather name="check-circle" color="green" size={25} />
-          ) : null}
+      )}
+
+      {data.notValidCompanyName ? null : (
+        <View duration={500}>
+          <Text style={styles.errorMsg}>Company Name must be 2 characters long.</Text>
         </View>
+      )}
 
-        {data.notValidEmail ? null : (
-          <View duration={500}>
-            <Text style={styles.errorMessage}>
-              Email Syntax is not correct.
-            </Text>
-          </View>
-        )}
+      <View>
+        <TouchableOpacity
+          onPress={() => postData()}
+          style={[styles.button, { backgroundColor: '#068E94' }]}>
+          <Text
+            style={[
+              styles.textSign,
+              {
+                color: 'white',
+              },
+            ]}>
+            Sign Up
+          </Text>
+        </TouchableOpacity>
 
-        {/* Address */}
 
-        <View style={styles.action}>
-          <Icon name="map-marker-radius" color="#009387" size={25} />
-          <TextInput
-            style={styles.ti}
-            placeholder='Your Address'
-            placeholderTextColor="#666666"
-            autoCorrect={false}
-            onChangeText={(text) => addressChange(text)}
-          />
-        </View>
-        {data.notValidAddress ? null : (
-          <View duration={500}>
-            <Text style={styles.errorMessage}>
-              Enter some Address.
-            </Text>
-          </View>
-        )}
-        
-        {/* Phone Number */}
-
-        <View style={styles.action}>
-          <Feather name="phone" color="#009387" size={25} />
-          <TextInput
-            style={styles.ti}
-            placeholder="Phone Number"
-            placeholderTextColor="#666666"
-            keyboardType="number-pad"
-            onChangeText={(text) => phoneNoChange(text)}
-          ></TextInput>
-        </View>
-        {data.notValidPhoneNo ? null : (
-          <View duration={500}>
-            <Text style={styles.errorMessage}>
-              Phone Number is not Valid.
-            </Text>
-          </View>
-        )}
-
-        <View style={styles.action}>
-          <FontAwesome name="lock" color="#009387" size={25} />
-          <TextInput
-            style={styles.ti}
-            placeholder="Your Password"
-            placeholderTextColor="#666666"
-            secureTextEntry={data.secureTextEntry ? true : false}
-            onChangeText={(val) => passwordChange(val)}></TextInput>
-
-          <TouchableOpacity onPress={hideOrUnhideEye}>
-            {data.secureTextEntry ? (
-              <Feather name="eye-off" color="grey" size={25} />
-            ) : (
-              <Feather name="eye" color="grey" size={25} />
-            )}
-          </TouchableOpacity>
-        </View>
-        {data.notValidPassword ? null : (
-          <View duration={500}>
-            <Text style={styles.errorMessage}>
-              Password must be 8 characters long.
-            </Text>
-          </View>
-        )}
-
-        <View style={styles.action}>
-          <FontAwesome name="lock" color="#009387" size={25} />
-          <TextInput
-            style={styles.ti}
-            placeholder="Confrim Password"
-            placeholderTextColor="#666666"
-            secureTextEntry={data.secureTextEntry ? true : false}
-            onChangeText={(val) => confirmPasswordChange(val)}></TextInput>
-
-          <TouchableOpacity onPress={hideOrUnhideEye}>
-            {data.secureTextEntry ? (
-              <Feather name="eye-off" color="grey" size={25} />
-            ) : (
-              <Feather name="eye" color="grey" size={25} />
-            )}
-          </TouchableOpacity>
-        </View>
-        {data.confirmPassword == data.password ? null : (
-          <View duration={500}>
-            <Text style={styles.errorMessage}>
-              Confirm Password is not equal to Password.
-            </Text>
-          </View>
-        )}
-
-        <View>
-          <TouchableOpacity
-            onPress={() => postData()}
-            style={[styles.button, { backgroundColor: '#009387' }]}>
-            <Text
-              style={[
-                styles.textSign,
-                {
-                  color: 'white',
-                },
-              ]}>
-              Sign Up
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={() => navigation.navigate('SignInScreen')}
-            style={[styles.button, { backgroundColor: '#f2f2f2' }]}>
-            <Text
-              style={[
-                styles.textSign,
-                {
-                  color: '#009387',
-                },
-              ]}>
-              Sign In
-            </Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('SignInScreen')}
+          style={[styles.button, { backgroundColor: '#f2f2f2' }]}>
+          <Text
+            style={[
+              styles.textSign,
+              {
+                color: '#068E94',
+              },
+            ]}>
+            Sign In
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
+
   );
 };
 
 const styles = StyleSheet.create({
-  header: {
+  container: {
     flex: 1,
-    justifyContent: 'flex-end',
+    backgroundColor: '#E0EFF6',
     paddingHorizontal: 20,
-    paddingBottom: 50,
-  },
-  footer: {
-    flex: 3,
-    backgroundColor: '#fff',
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-    paddingHorizontal: 20,
-    paddingVertical: 30,
   },
   action: {
     flexDirection: 'row',
@@ -356,17 +397,16 @@ const styles = StyleSheet.create({
     borderBottomColor: '#f2f2f2',
     paddingBottom: 5,
   },
-  logo: {
-    marginLeft: '35%',
-    width: 80,
-    height: 80,
-    borderRadius: 50,
+  checkbox: {
+    flexDirection: 'row',
+    marginTop: 15,
+    justifyContent: 'space-between',
   },
   ti: {
     flex: 1,
     marginTop: Platform.OS === 'ios' ? 0 : -12,
     paddingLeft: 10,
-    color: '#009387',
+    color: '#068E94',
   },
   errorMessage: {
     color: '#FF0000',
@@ -383,11 +423,6 @@ const styles = StyleSheet.create({
   textSign: {
     fontSize: 18,
     fontWeight: 'bold',
-  },
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: '#009387',
   },
 });
 

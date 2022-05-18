@@ -51,12 +51,8 @@ const SignInScreen = ({ navigation }) => {
         email: data[key].email,
         password: data[key].password,
       };
-      // console.log("_____________Credentials_______________")
-      // console.log(credential)
       arr.push(credential);
-      // console.log("Arr")
       setData2(arr)
-      // console.log(arr)
     }
   };
 
@@ -142,7 +138,7 @@ const SignInScreen = ({ navigation }) => {
 
       <View style={styles.footer}>
         <View style={styles.action}>
-          <FontAwesome name="user-o" color="#009387" size={25} />
+          <FontAwesome name="user-o" color="#005761" size={25} />
           <TextInput
             style={styles.ti}
             placeholder="Your Email"
@@ -156,7 +152,7 @@ const SignInScreen = ({ navigation }) => {
         )}
 
         <View style={styles.action}>
-          <FontAwesome name="lock" color="#009387" size={25} />
+          <FontAwesome name="lock" color="#005761" size={25} />
           <TextInput
             style={styles.ti}
             placeholder="Your Password"
@@ -186,7 +182,7 @@ const SignInScreen = ({ navigation }) => {
             onPress={() => {
               sendSignInCredentials(data.email, data.password);
             }}
-            style={[styles.button, { backgroundColor: '#009387' }]}>
+            style={[styles.button, { backgroundColor: '#068E94' }]}>
             <Text
               style={[
                 styles.textSign,
@@ -200,7 +196,7 @@ const SignInScreen = ({ navigation }) => {
 
           <TouchableOpacity
             onPress={() => navigation.navigate('SignUpScreen')}
-            style={[styles.button, { backgroundColor: '#f2f2f2' }]}>
+            style={[styles.button, { backgroundColor: '#E0EFF6' }]}>
             <Text
               style={[
                 styles.textSign,
@@ -226,14 +222,14 @@ const styles = StyleSheet.create({
   },
   footer: {
     flex: 3,
-    backgroundColor: '#fff',
+    backgroundColor: '#E0EFF6',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     paddingHorizontal: 20,
     paddingVertical: 30,
   },
   logo: {
-    marginLeft: '35%',
+    marginLeft: '38%',
     width: 80,
     height: 80,
     borderRadius: 50,
@@ -270,7 +266,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: '#009387',
+    backgroundColor: '#068E94',
   },
 });
 export default SignInScreen;
