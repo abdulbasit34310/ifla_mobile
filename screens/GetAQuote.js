@@ -163,8 +163,8 @@ export default function GetAQuote({ navigation }) {
             </Modal>
 
             <ScrollView style={{ backgroundColor: "#00ABB2", height: "100%" }}>
-                <View style={{}}>
-                    <View style={{ padding: 20, marginTop: 20, backgroundColor: "#E0EFF6", margin: 20, elevation: 40, borderRadius: 10, }}>
+                <View style={{padding: 20,}}>
+                    <View style={{ padding: 20, backgroundColor: "#E0EFF6", borderRadius: 10, elevation: 24 }}>
                         <ButtonGroup
                             buttons={[
                                 'Less than Truckload',
@@ -181,7 +181,7 @@ export default function GetAQuote({ navigation }) {
                                 }
                             }}
                             containerStyle={{
-                                backgroundColor: '#005761',
+                                backgroundColor: '#white',
                                 height: 100,
                                 width: '90%',
                                 borderRadius: 10,

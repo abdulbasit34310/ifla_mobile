@@ -1,3 +1,5 @@
+// Don't proceed to next screen without filling the necessary data, disable the next button
+
 import * as React from 'react';
 import {
   Text, View, StyleSheet, TouchableOpacity, TextInput, FlatList, ScrollView, Alert, Modal, ToastAndroid
@@ -12,9 +14,9 @@ function ShipmentType({ navigation, nextStep, bookingData, setBooking }) {
   const [type, setType] = React.useState(1);
 
   return (
-    <View style={{ backgroundColor: "#E0EFF6", height: "100%" }}>
-      <View style={{ padding: 20, backgroundColor: "white", margin: 10 }}>
-        <Text>Choose Shipment Type</ Text>
+    <View style={{ backgroundColor: "#00ABB2", height: "100%", padding: 20, justifyContent: "center" }}>
+      <View style={{ padding: 20, backgroundColor: "#E0EFF6", borderRadius: 10, elevation: 24 }}>
+        <Text style={{ marginBottom: 15 }}>Choose Shipment Type</ Text>
         <ButtonGroup
           buttons={[
             'Full Truck Load',
@@ -24,23 +26,20 @@ function ShipmentType({ navigation, nextStep, bookingData, setBooking }) {
           onPress={(value) => {
             setType(value);
             if (value === 0) {
-              rr
               setBooking({ ...bookingData, Type: 'FTL' })
             }
             else {
               setBooking({ ...bookingData, Type: 'LTL' })
             }
-
           }}
           containerStyle={{
             backgroundColor: 'white',
             height: 100,
             width: '90%',
+            borderRadius: 10,
           }}
           buttonStyle={{ padding: 10, color: 'black' }}
           selectedButtonStyle={{
-            borderColor: '#005761',
-            borderWidth: 2,
             backgroundColor: '#068E94',
           }}
         />
@@ -49,13 +48,7 @@ function ShipmentType({ navigation, nextStep, bookingData, setBooking }) {
     </View>
   )
 }
-
-
-
-
-
 // Truck Details Step 2
-
 
 function AddressDetails({ navigation, nextStep, prevStep, bookingData, setBooking }) {
   const [getText, setText] = React.useState();
@@ -64,7 +57,6 @@ function AddressDetails({ navigation, nextStep, prevStep, bookingData, setBookin
   const [pickUpCity, setPickUpCity] = React.useState("");
   const [dropOffCity, setDropOffCity] = React.useState("");
   const [citiesData, setCitiesData] = React.useState();
-
 
   const getCitiesData = async () => {
     const response = await fetch(`${FIREBASE_API_ENDPOINT}/cities.json`);
@@ -110,12 +102,9 @@ function AddressDetails({ navigation, nextStep, prevStep, bookingData, setBookin
     setBooking({ ...bookingData, DropoffCity: item })
     setModalVisible(!modalVisible);
   }
-
-
-
   return (
-    <View style={{ backgroundColor: "#E0EFF6", height: "100%" }}>
-      <View style={{ padding: 20, backgroundColor: "white", margin: 10 }}>
+    <View style={{ backgroundColor: '#00ABB2', height: "100%", padding: 20, justifyContent: "center" }}>
+      <View style={{ padding: 20, backgroundColor: "#E0EFF6", borderRadius: 10, elevation: 24 }} >
         <Text>AddressDetails</Text>
         <Modal
           animationType="slide"
@@ -181,21 +170,14 @@ function AddressDetails({ navigation, nextStep, prevStep, bookingData, setBookin
     </View>
   )
 }
-
-
-
-
-
-
 // Goods Details Step 3
-
 function GoodsDetails({ navigation, bookingData, nextStep, prevStep, setBooking }) {
   const [selectedValue, setSelectedValue] = React.useState('');
 
   return (
-    <ScrollView>
-      <View style={{ backgroundColor: "#E0EFF6", height: "100%" }}>
-        <View style={{ padding: 20, backgroundColor: "white", margin: 10 }}>
+    <ScrollView style={{ backgroundColor: "#00ABB2", height: "100%", }}>
+      <View style={{ padding: 20, }}>
+        <View style={{ padding: 20, backgroundColor: "#E0EFF6", borderRadius: 10, elevation: 24 }}>
           <Text>GoodsDetails</Text>
           <Text style={{ padding: 10 }}>Select Goods Type: </Text>
           <Picker
@@ -258,13 +240,7 @@ function GoodsDetails({ navigation, bookingData, nextStep, prevStep, setBooking 
     </ScrollView>
   )
 }
-
-
-
-
-
 // Truck Details Step 4
-
 function TruckDetails({ navigation, nextStep, prevStep, setDate, date, setBooking, bookingData }) {
   const [selectedValue, setSelectedValue] = React.useState('');
 
@@ -300,8 +276,8 @@ function TruckDetails({ navigation, nextStep, prevStep, setDate, date, setBookin
   };
 
   return (
-    <View style={{ backgroundColor: "#E0EFF6", height: "100%" }}>
-      <View style={{ padding: 20, backgroundColor: "white", margin: 10 }}>
+    <View style={{ backgroundColor: "#00ABB2", height: "100%", padding: 20, justifyContent: "center" }}>
+      <View style={{ padding: 20, backgroundColor: "#E0EFF6", borderRadius: 10, elevation: 24 }}>
         <Text>TruckDetails</Text>
         <Text style={{ padding: 10 }}>Select Vehicle Type: </Text>
         <Picker
@@ -351,15 +327,7 @@ function TruckDetails({ navigation, nextStep, prevStep, setDate, date, setBookin
   )
 }
 
-
-
-
-
-
-
-
-
-export default function BookNow({ navigation }) {
+export default function ScheduleBooking({ navigation }) {
   const [step, setStep] = React.useState(0);
   const [date, setDate] = React.useState(new Date());
 

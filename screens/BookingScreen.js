@@ -37,8 +37,8 @@ const BookingScreen = ({ navigation, route }) => {
                         <TouchableOpacity
                             style={styles.mainButtons}
                             onPress={() => {
-                                console.log('Booking');
-                                navigation.navigate('BookNow');
+                                console.log('Schedule.Booking.Selected');
+                                navigation.navigate('ScheduleBooking');
                             }}>
                             <Text style={styles.mainButtonText}>Schedule Booking</Text>
                         </TouchableOpacity>

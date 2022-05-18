@@ -15,7 +15,7 @@ import BookingScreen from './screens/BookingScreen';
 import PendingBookings from './screens/PendingBookings';
 import PendingBookingDetails from './screens/PendingBookingDetails';
 import MyBookings from './screens/MyBookings';
-import BookNow from './screens/BookNow';
+import ScheduleBooking from './screens/ScheduleBooking';
 import BookingDetails from './screens/BookingDetails';
 import GetAQuote from './screens/GetAQuote';
 
@@ -126,9 +126,10 @@ export default function App() {
             drawerContent={(props) => <CustomDrawer {...props} />}>
             <Drawer.Screen name="MainScreen" component={MainScreen} />
             <Drawer.Screen name="TrackingScreen" component={TrackingScreen} />
+
             <Drawer.Screen name="BookingScreen" component={BookingScreen} />
 
-            <Drawer.Screen name="BookNow" component={BookNow} />
+            <Drawer.Screen name="ScheduleBooking" component={ScheduleBooking} />
             <Drawer.Screen name="BookingDetails" component={BookingDetails} />
             <Drawer.Screen name="MyBookings" component={MyBookings} />
             <Drawer.Screen name="PendingBookings" component={PendingBookings} />
