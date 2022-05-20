@@ -44,7 +44,7 @@ export default function MyBookings({ navigation }) {
 
 
   return (
-    <View>
+    <View style={{backgroundColor: "#E0EFF6", height:"100%"}}>
 
       <FlatList
         refreshing={false}
@@ -54,7 +54,7 @@ export default function MyBookings({ navigation }) {
         ListEmptyComponent={<Text style={{ fontSize: 24, alignSelf: 'center', marginTop: 30 }}>No Bookings Found</Text>}
 
         renderItem={({ item, index }) => (
-          <TouchableOpacity style={{ padding: 15, borderBottomColor: 'grey', borderBottomWidth: 1 }} onPress={() => { navigation.push('Booking Details', item) }}>
+          <TouchableOpacity style={{ padding: 15, borderBottomColor:'#005761',backgroundColor:"white", borderBottomWidth:1, margin:5, borderRadius:10, elevation: 24}} onPress={() => { navigation.push('BookingDetails', item) }}>
             <View style={{ flexDirection: 'row' }}>
               <View>
                 <Text>{bookingData[item].Date},{bookingData[item].Time}</Text>

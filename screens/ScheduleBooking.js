@@ -170,13 +170,13 @@ function AddressDetails({ navigation, nextStep, prevStep, bookingData, setBookin
     </View>
   )
 }
+
 // Goods Details Step 3
 function GoodsDetails({ navigation, bookingData, nextStep, prevStep, setBooking }) {
   const [selectedValue, setSelectedValue] = React.useState('');
 
   return (
-    <ScrollView style={{ backgroundColor: "#00ABB2", height: "100%", }}>
-      <View style={{ padding: 20, }}>
+      <View style={{ padding: 20,backgroundColor: "#00ABB2", height: "100%",justifyContent:"center" }}>
         <View style={{ padding: 20, backgroundColor: "#E0EFF6", borderRadius: 10, elevation: 24 }}>
           <Text>GoodsDetails</Text>
           <Text style={{ padding: 10 }}>Select Goods Type: </Text>
@@ -195,6 +195,8 @@ function GoodsDetails({ navigation, bookingData, nextStep, prevStep, setBooking 
 
           <Text style={{ padding: 10 }}>Approx. Weight (kgs): </Text>
           <TextInput style={styles.textInput} keyboardType='numeric' onChangeText={(v) => { setBooking({ ...bookingData, Weight: v }); }} />
+          <Text style={{ padding: 10 }}>Quantity: </Text>
+          <TextInput style={styles.textInput} keyboardType='numeric' onChangeText={(v) => { setBooking({ ...bookingData, Quantity: v }); }} />
           <Text style={{ padding: 10 }}>Dimensions (cm): </Text>
           <View style={{ flexDirection: 'row' }}>
             <Text style={{ padding: 10 }}>Height: </Text>
@@ -224,6 +226,8 @@ function GoodsDetails({ navigation, bookingData, nextStep, prevStep, setBooking 
               onChangeText={(v) => { setBooking({ ...bookingData, Width: v }); }}
             />
           </View>
+          <Text style={{ padding: 10 }}>Length: </Text>
+          <TextInput style={styles.textInput} keyboardType='numeric' onChangeText={(v) => { setBooking({ ...bookingData, Length: v }); }} />
           <Text style={{ padding: 10 }}>Goods Description: </Text>
           <TextInput
             multiline
@@ -237,9 +241,10 @@ function GoodsDetails({ navigation, bookingData, nextStep, prevStep, setBooking 
           </View>
         </View>
       </View>
-    </ScrollView>
   )
 }
+
+
 // Truck Details Step 4
 function TruckDetails({ navigation, nextStep, prevStep, setDate, date, setBooking, bookingData }) {
   const [selectedValue, setSelectedValue] = React.useState('');
@@ -290,21 +295,104 @@ function TruckDetails({ navigation, nextStep, prevStep, setDate, date, setBookin
           <Picker.Item label="Mazda" value="Mazda" />
           <Picker.Item label="Suzuki" value="Suzuki" />
         </Picker>
+        
+     <Text style={{padding: 10}}>Choose Date:</Text>
+      <TouchableOpacity style={[styles.textInput, {padding: 5}]} onPress={showDatepicker}><Text>{date.toDateString()}</Text></TouchableOpacity>
+      <Text style={{padding: 10}}>Choose Time:</Text>
+        <TouchableOpacity style={[styles.textInput, {padding: 5}]} onPress={showTimepicker} ><Text>{date.toTimeString()}</Text></TouchableOpacity>
+      {show && (
+        <DateTimePicker
+          testID="dateTimePicker"
+          value={date}
+          mode={mode}
+          is24Hour={true}
+          display="default"
+          onChange={onChange}
+        />
+      )}
 
-        <Text style={{ padding: 10 }}>Choose Date:</Text>
-        <TouchableOpacity style={[styles.textInput, { padding: 5 }]} onPress={showDatepicker}><Text>{date.toDateString()}</Text></TouchableOpacity>
-        <Text style={{ padding: 10 }}>Choose Time:</Text>
-        <TouchableOpacity style={[styles.textInput, { padding: 5 }]} onPress={showTimepicker} ><Text>{date.toTimeString()}</Text></TouchableOpacity>
-        {show && (
-          <DateTimePicker
-            testID="dateTimePicker"
-            value={date}
-            mode={mode}
-            is24Hour={true}
-            display="default"
-            onChange={onChange}
-          />
-        )}
+
+        <View style={{ flexDirection: "row", justifyContent: "space-between", margin: 15 }}>
+          <TouchableOpacity onPress={prevStep} style={styles.buttonStyle}><Text style={styles.buttonText}>Previous</Text></TouchableOpacity>
+          <TouchableOpacity onPress={nextStep} style={styles.buttonStyle}><Text style={styles.buttonText}>Next</Text></TouchableOpacity>
+        </View>
+      </View>
+    </View>
+  )
+}
+
+function PackageDetails({ navigation, nextStep, prevStep, setBooking, bookingData }) {
+  const [selectedValue, setSelectedValue] = React.useState('');
+  const [type, setType] = React.useState('');
+  const showToastWithGravity = () => {
+    ToastAndroid.showWithGravity(
+      "Your Booking is Confirmed",
+      ToastAndroid.SHORT,
+      ToastAndroid.CENTER
+    );
+  };
+
+  return (
+    <View style={{ backgroundColor: "#00ABB2", height: "100%", padding: 20, justifyContent: "center" }}>
+      <View style={{ padding: 20, backgroundColor: "#E0EFF6", borderRadius: 10, elevation: 24 }}>
+        <Text>Package Details</Text>
+        <Text style={{ padding: 10 }}>Name: </Text>
+        <Picker
+          selectedValue={selectedValue}
+          style={[styles.textInput, { fontSize: 12 }]}
+          onValueChange={(itemValue, itemIndex) => { setSelectedValue(itemValue); setBooking({ ...bookingData, PackageName: itemValue }); }}>
+          <Picker.Item label="Please Specify" value="" />
+          <Picker.Item label="Normal" value="Normal" />
+          <Picker.Item label="Premium" value="Premium" />
+          <Picker.Item label="Extra Special" value="Extra Special" />
+        </Picker>
+
+        <Text style={{ padding: 10 }}>Choose Type:</Text>
+        <Picker
+          selectedValue={type}
+          style={[styles.textInput, { fontSize: 12 }]}
+          onValueChange={(itemValue, itemIndex) => { setType(itemValue); setBooking({ ...bookingData, PackageType: itemValue }); }}>
+          <Picker.Item label="Please Specify" value="" />
+          <Picker.Item label="Box" value="Box" />
+          <Picker.Item label="Pallets" value="Pallets" />
+          <Picker.Item label="Wooden" value="Wooden" />
+          <Picker.Item label="Bagged" value="Bagged" />
+        </Picker>
+        
+        <Text style={{ padding: 10 }}>Weight (kgs): </Text>
+          <TextInput style={styles.textInput} keyboardType='numeric' onChangeText={(v) => { setBooking({ ...bookingData, PackageWeight: v }); }} />
+          <Text style={{ padding: 10 }}>Dimensions (cm): </Text>
+          <View style={{ flexDirection: 'row' }}>
+            <Text style={{ padding: 10 }}>Height: </Text>
+            <TextInput
+              keyboardType='numeric'
+              style={{
+                borderColor: '#005761',
+                borderWidth: 1,
+                padding: 3,
+                marginLeft: 10,
+                width: '20%',
+                borderRadius: 4,
+              }}
+              onChangeText={(v) => { setBooking({ ...bookingData, PackageHeight: v }); }}
+            />
+            <Text style={{ padding: 10 }}>Width: </Text>
+            <TextInput
+              keyboardType='numeric'
+              style={{
+                borderColor: '#005761',
+                borderWidth: 1,
+                padding: 3,
+                marginLeft: 10,
+                width: '20%',
+                borderRadius: 4,
+              }}
+              onChangeText={(v) => { setBooking({ ...bookingData, PackageWidth: v }); }}
+            />
+          </View>
+          <Text style={{ padding: 10 }}>Package Length (kgs): </Text>
+          <TextInput style={styles.textInput} keyboardType='numeric' onChangeText={(v) => { setBooking({ ...bookingData, PackageLength: v }); }} />
+          
         <View style={{ flexDirection: "row", justifyContent: "space-between", margin: 15 }}>
           <TouchableOpacity onPress={prevStep} style={styles.buttonStyle}><Text style={styles.buttonText}>Previous</Text></TouchableOpacity>
           <TouchableOpacity style={styles.buttonStyle} onPress={() => {
@@ -326,6 +414,10 @@ function TruckDetails({ navigation, nextStep, prevStep, setDate, date, setBookin
     </View>
   )
 }
+
+
+
+
 
 export default function ScheduleBooking({ navigation }) {
   const [step, setStep] = React.useState(0);
@@ -405,6 +497,16 @@ export default function ScheduleBooking({ navigation }) {
         />
       )
     case 4:
+      return (
+        <PackageDetails
+          nextStep={nextStep}
+          prevStep={prevStep}
+          bookingData={bookingData}
+          setBooking={setBooking}
+
+        />
+      )
+      case 5:
       return (
         <Success
           nextStep={nextStep}

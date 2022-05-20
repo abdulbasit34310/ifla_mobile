@@ -49,7 +49,7 @@ export function CustomDrawer(props) {
               )}
               label="Profile"
               onPress={() => {
-                props.navigation.navigate('ProfileScreen');
+                props.navigation.navigate('Profile');
               }}
             />
             <DrawerItem
@@ -67,7 +67,7 @@ export function CustomDrawer(props) {
               )}
               label="Booking"
               onPress={() => {
-                props.navigation.navigate('BookingScreen');
+                props.navigation.navigate('Booking');
               }}
             />
             {/* <DrawerItem

@@ -10,8 +10,7 @@ import {Picker} from '@react-native-picker/picker';
 import { ButtonGroup } from 'react-native-elements';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
-import { RadioButton } from 'react-native-paper';
-
+import { Checkbox } from 'react-native-paper';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -22,19 +21,20 @@ const FIREBASE_API_ENDPOINT = 'https://freight-automation-default-rtdb.firebasei
 export default function GetAQuote({ navigation }) {
 
     const [category, setCategory] = React.useState(0);
-    const [type, setType] = React.useState('');
+    const [packaging, setPackaging] = React.useState(false);
     const [isPickup, setIsPickup] = React.useState(true);
     const [modalVisible, setModalVisible] = React.useState(false);
     const [getText, setText] = React.useState();
     const [pickUpCity, setPickUpCity] = React.useState("");
     const [dropOffCity, setDropOffCity] = React.useState("");
     const [citiesData, setCitiesData] = React.useState();
-    const [checked, setChecked] = React.useState('pallets');
+    const [vehicleType, setVehicleType] = React.useState("");
+    const [checked, setChecked] = React.useState(false);
 
 
     const [quoteData, setQuote] = React.useState({
-        Category: '', PickupCity: pickUpCity, DropoffCity: dropOffCity, Checked: checked,
-        Weight: '', TempControlled: type,
+        Category: '', PickupCity: pickUpCity, DropoffCity: dropOffCity, 
+        Weight: '', Packaging:packaging, vehicleType:vehicleType
     });
 
 
@@ -113,7 +113,7 @@ export default function GetAQuote({ navigation }) {
         navigation.setOptions({
             headerRight: () => (
                 <TouchableOpacity
-                    onPress={() => { LoadData() }}
+                    onPress={() => { navigation.push("ViewQuotes") }}
                     style={{ backgroundColor: "white", padding: 10, marginLeft: 10, borderRadius: 10 }}
                 ><Text>View Quotes</Text></TouchableOpacity>
             )
@@ -162,8 +162,7 @@ export default function GetAQuote({ navigation }) {
                 </View>
             </Modal>
 
-            <ScrollView style={{ backgroundColor: "#00ABB2", height: "100%" }}>
-                <View style={{padding: 20,}}>
+                <View style={{padding: 20,  justifyContent:"center",backgroundColor: "#00ABB2", height: "100%"}}>
                     <View style={{ padding: 20, backgroundColor: "#E0EFF6", borderRadius: 10, elevation: 24 }}>
                         <ButtonGroup
                             buttons={[
@@ -181,7 +180,7 @@ export default function GetAQuote({ navigation }) {
                                 }
                             }}
                             containerStyle={{
-                                backgroundColor: '#white',
+                                backgroundColor: 'white',
                                 height: 100,
                                 width: '90%',
                                 borderRadius: 10,
@@ -192,55 +191,25 @@ export default function GetAQuote({ navigation }) {
                                 backgroundColor: '#00ABB2',
                             }}
                         />
-                        <Text style={{ padding: 10 }}>Goods Type: </Text>
-                        <View style={{ flexDirection: "row", alignItems: "center" }}>
 
-                            <RadioButton
-                                color='#068E94'
-                                value="Pallets"
-                                status={checked === 'pallets' ? 'checked' : 'unchecked'}
-                                onPress={() => setChecked('pallets')}
-                            />
-                            <Text>Pallets</Text>
-                        </View>
-                        <View style={{ flexDirection: "row", alignItems: "center" }}>
-
-                            <RadioButton
-                                color='#068E94'
-                                 value="Container"
-                                status={checked === 'container' ? 'checked' : 'unchecked'}
-                                onPress={() => setChecked('container')}
-                            />
-                            <Text>Container</Text>
-                        </View>
-                        <View style={{ flexDirection: "row", alignItems: "center" }}>
-
-                            <RadioButton
-                                color='#068E94'
-                                value="boxed"
-                                status={checked === 'boxed' ? 'checked' : 'unchecked'}
-                                onPress={() => setChecked('boxed')}
-                            />
-                            <Text>Boxed</Text>
-                        </View>
-
-                        <View style={{ flexDirection: "row", alignItems: "center" }}>
-
-                            <RadioButton
-                                color='#068E94'
-                                value="other"
-                                status={checked === 'other' ? 'checked' : 'unchecked'}
-                                onPress={() => setChecked('other')}
-                            />
-
-                            <Text>Other</Text>
-                        </View>
+                        <Text style={{ padding: 10 }}>Select Vehicle Type: </Text>
+                            <Picker
+                            selectedValue={vehicleType}
+                            style={[styles.textInput, { fontSize: 12 }]}
+                            onValueChange={(itemValue, itemIndex) => { setVehicleType(itemValue); setQuote({ ...quoteData, vehicleType: itemValue }); }}>
+                            <Picker.Item label="Please Specify" value="" />
+                            <Picker.Item label="Truck" value="Truck" />
+                            <Picker.Item label="Shehzore" value="Shehzore" />
+                            <Picker.Item label="Mazda" value="Mazda" />
+                            <Picker.Item label="Suzuki" value="Suzuki" />
+                            </Picker>
                         <Text style={{ padding: 10 }}>Weight (kg): </Text>
                         <TextInput
                             keyboardType='numeric'
                             style={styles.textInput}
                             onChangeText={(v) => { setQuote({ ...quoteData, Weight: v }); }} />
-
+                        <Text style={{ padding: 10 }}>Quantity: </Text>
+                        <TextInput style={styles.textInput} keyboardType='numeric' onChangeText={(v) => { setQuote({ ...quoteData, Quantity: v }); }} />
                         <Text style={{ padding: 10 }}>Pickup City: </Text>
                         <TouchableOpacity style={[styles.textInput, { padding: 5 }]} onPress={() => { setIsPickup(true); setModalVisible(true); }}><Text>{pickUpCity === "" ? "Select City" : pickUpCity}</Text></TouchableOpacity>
 
@@ -248,15 +217,15 @@ export default function GetAQuote({ navigation }) {
                         <Text style={{ padding: 10 }}>Dropoff City: </Text>
                         <TouchableOpacity style={[styles.textInput, { padding: 5 }]} onPress={() => { setIsPickup(false); setModalVisible(true); }}><Text>{dropOffCity === "" ? "Select City" : dropOffCity}</Text></TouchableOpacity>
 
-                        <Text style={{ padding: 10 }}>Temp Controlled/ Perishable Goods? </Text>
-                        <Picker
-                            selectedValue={type}
-                            style={[styles.textInput, { fontSize: 12 }]}
-                            onValueChange={(itemValue, itemIndex) => setQuote({ ...quoteData, TempControlled: itemValue })}>
-                            <Picker.Item label="Please Specify" value="" />
-                            <Picker.Item label="Yes" value="yes" />
-                            <Picker.Item label="No" value="no" />
-                        </Picker>
+                         <View style={{flexDirection:"row",alignItems:"center", marginTop:10 }}>   
+                        <Checkbox
+                            status={checked ? 'checked' : 'unchecked'}
+                            onPress={() => {
+                                setChecked(!checked);
+                            }}
+                            />
+                        <Text  style={{ fontSize: 16 }}>Do you want to pack your items?</Text>   
+                        </View>
 
                         <TouchableOpacity
                             style={{
@@ -274,7 +243,6 @@ export default function GetAQuote({ navigation }) {
                         </TouchableOpacity>
                     </View>
                 </View>
-            </ScrollView>
 
         </View>
     );
