@@ -143,6 +143,7 @@ export default function App() {
 
           </Drawer.Navigator>
         ) : (
+          
           <RegistrationNavigationScreen />
         )}
       </NavigationContainer>

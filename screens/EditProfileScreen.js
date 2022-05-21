@@ -5,13 +5,13 @@ import {
     TextInput,
     StyleSheet,
     Image,
+    ImageBackground,
     TouchableOpacity,
 } from 'react-native';
 import Constants from 'expo-constants';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
-// import { set } from 'react-native-reanimated';
 
 import AB from './images/AB.png';
 
@@ -185,16 +185,35 @@ const EditProfileScreen = ({ navigation, route }) => {
 
     return (
         <View style={styles.container}>
-            <Image
-                style={{
-                    backgroundColor: "#00ABB2",
-                    width: 100,
-                    height: 100,
-                    borderRadius: 90,
-                }}
-                source={AB}
-            />
-
+            <TouchableOpacity>
+                <View style={{
+                    width: 125,
+                    height: 125,
+                }} >
+                    <ImageBackground source={AB}
+                        style={{ height: 125, width: 125 }}
+                        imageStyle={{ borderRadius: 90 }}
+                    >
+                        <View style={{
+                            flex: 1,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}><Icon
+                                name="camera-outline"
+                                size={35}
+                                color="#fff"
+                                style={{
+                                    opacity: 0.5,
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    borderWidth: 1,
+                                    borderColor: '#fff',
+                                    borderRadius: 10,
+                                }}
+                            /></View>
+                    </ImageBackground>
+                </View>
+            </TouchableOpacity>
             {/* Name */}
 
             <View style={styles.action}>

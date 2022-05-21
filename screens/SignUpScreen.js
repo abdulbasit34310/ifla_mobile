@@ -1,19 +1,12 @@
 import * as React from 'react';
 import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  StyleSheet,
-  TextInput,
-  Platform,
-} from 'react-native';
-import Checkbox from 'expo-checkbox';
+  View, Text, TouchableOpacity, StyleSheet, TextInput, Platform, } from 'react-native';
+// import Checkbox from 'expo-checkbox';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { AuthContext } from '../components/context';
-import logo from './images/Falas.png';
+
 
 const FIREBASE_API_ENDPOINT =
   'https://madproject-61e88-default-rtdb.firebaseio.com/';
@@ -26,20 +19,20 @@ const SignUpScreen = ({ navigation }) => {
     phoneNo: '',
     password: '',
     confirmPassword: '',
-    companyName: '',
+    // companyName: '',
     checkNameChange: false,
     checkEmailChange: false,
     checkAddressChange: false,
     checkPhoneNoChange: false,
     checkPasswordChange: false,
     checkConfirmPasswordChange: false,
-    checkCompanyNameChange: false,
+    // checkCompanyNameChange: false,
     notValidName: true,
     notValidEmail: true,
     notValidAddress: true,
     notValidPhoneNo: true,
     notValidPassword: true,
-    notValidCompanyName: true,
+    // notValidCompanyName: true,
     secureTextEntry: true,
 
   });
@@ -55,7 +48,7 @@ const SignUpScreen = ({ navigation }) => {
         address: data.address,
         phoneNo: data.phoneNo,
         password: data.password,
-        companyName: data.companyName,
+        // companyName: data.companyName,
       }),
     };
     fetch(`${FIREBASE_API_ENDPOINT}/userCredentials.json`, requestOptions)
@@ -102,23 +95,23 @@ const SignUpScreen = ({ navigation }) => {
     }
   };
 
-  const companyNameChange = (val) => {
-    if (val.trim().length != 2) {
-      setData({
-        ...data,
-        companyName: val,
-        checkCompanyNameChange: true,
-        notValidCompanyName: true,
-      });
-    } else {
-      setData({
-        ...data,
-        companyName: val,
-        checkCompanyNameChange: false,
-        notValidCompanyName: false,
-      });
-    }
-  };
+  // const companyNameChange = (val) => {
+  //   if (val.trim().length != 2) {
+  //     setData({
+  //       ...data,
+  //       companyName: val,
+  //       checkCompanyNameChange: true,
+  //       notValidCompanyName: true,
+  //     });
+  //   } else {
+  //     setData({
+  //       ...data,
+  //       companyName: val,
+  //       checkCompanyNameChange: false,
+  //       notValidCompanyName: false,
+  //     });
+  //   }
+  // };
 
   const emailChange = (val) => {
     const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -324,12 +317,12 @@ const SignUpScreen = ({ navigation }) => {
 
       )}
 
-      <View style={styles.checkbox}>
+      {/* <View style={styles.checkbox}>
         <Text>Are you a company owner?</Text>
         <Checkbox value={isChecked} onValueChange={setChecked} />
       </View>
 
-      {/* Company Name */}
+      Company Name
 
       {isChecked == false ? null : (
         <View style={styles.action}>
@@ -347,7 +340,7 @@ const SignUpScreen = ({ navigation }) => {
         <View duration={500}>
           <Text style={styles.errorMsg}>Company Name must be 2 characters long.</Text>
         </View>
-      )}
+      )} */}
 
       <View>
         <TouchableOpacity

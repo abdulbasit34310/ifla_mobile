@@ -56,25 +56,19 @@ const ProfileScreen = ({ navigation }) => {
     }, []);
 
     return (
-        <SafeAreaView style={styles.container}>
-            <View style={styles.userInfoSection}>
-                <View style={{ flexDirection: 'row', marginTop: 15 }}>
+        <SafeAreaView style={styles.background}>
+
+            <View style={{ paddingBottom: 25 }}>
+                <View style={{ alignItems: 'center', margin: 10 }}>
                     <Image
-                        style={{
-                            backgroundColor: "#00ABB2",
-                            width: 100,
-                            height: 100,
-                            borderRadius: 90,
-                        }}
+                        style={{ width: 150, height: 150, borderRadius: 100, }}
                         source={AB}
                     />
-                    <View style={{ marginLeft: 20 }}>
-                        <Title style={[styles.title, {
-                            marginTop: 15,
-                            marginBottom: 5,
-                            fontSize: 28,
-                        }]}>{getData.name}</Title>
-                    </View>
+                    <SafeAreaView>
+                        <Title style={{ fontWeight: 'bold', marginTop: 25, fontSize: 25, }}>
+                            {getData.name}
+                        </Title>
+                    </SafeAreaView>
                 </View>
             </View>
 
@@ -100,26 +94,28 @@ const ProfileScreen = ({ navigation }) => {
                     <Icon name="phone" color="#777777" size={20} />
                     <Text style={{ color: "#777777", marginLeft: 20 }}>{getData.phoneNo}</Text>
                 </View>
-
             </View>
 
-            <View style={styles.InfoWrapper}>
-
+            <View>
                 <TouchableOpacity style={styles.infoBox} onPress={() => { navigation.navigate("EditProfileScreen", { key: getData.keyId, name: getData.name, emailId: getData.email, address: getData.address, phoneNo: getData.phoneNo }) }}>
-                    <Text style={[styles.title, { fontSize: 13, color: '#E0EFF6', padding: 10, }]}> Edit </Text>
-
+                    <Text style={[styles.title, { fontSize: 13, color: '#E0EFF6', padding: 10, }]}>
+                        Edit
+                    </Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.infoBox} onPress={() => { navigation.navigate("CompanyInformationScreen") }}>
-                    <Text style={[styles.title, { fontSize: 13, color: '#E0EFF6', padding: 10, }]}>Company Information</Text>
-
+                    <Text style={[styles.title, { fontSize: 13, color: '#E0EFF6', padding: 10, }]}>
+                        Company Information
+                    </Text>
                 </TouchableOpacity>
 
-
-                <TouchableOpacity style={{ alignSelf: 'center' }} onPress={signOut}><Title style={{ color: '#005761' }}>Logout</Title></TouchableOpacity>
+                <TouchableOpacity style={{ alignSelf: 'center' }} onPress={signOut}>
+                    <Title style={{ color: '#005761' }}>
+                        Logout
+                    </Title>
+                </TouchableOpacity>
             </View>
-
-
+            
         </SafeAreaView>
     );
 };
@@ -127,7 +123,7 @@ const ProfileScreen = ({ navigation }) => {
 export default ProfileScreen;
 
 const styles = StyleSheet.create({
-    container: {
+    background: {
         flex: 1,
         backgroundColor: '#E0EFF6',
         padding: 25
@@ -135,9 +131,6 @@ const styles = StyleSheet.create({
     userInfoSection: {
         paddingHorizontal: 30,
         marginBottom: 25,
-    },
-    title: {
-        fontWeight: 'bold',
     },
     caption: {
         fontSize: 14,
@@ -148,9 +141,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginBottom: 10,
         alignItems: 'center',
-    },
-    InfoWrapper: {
-        width: '100%',
     },
     infoBox: {
         borderRadius: 10,

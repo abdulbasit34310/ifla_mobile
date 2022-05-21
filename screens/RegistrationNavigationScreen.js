@@ -9,16 +9,11 @@ import ForgotPasswordScreen from './ForgotPasswordScreen';
 const RegistrationStack = createNativeStackNavigator();
 
 const RegistrationNavigationScreen = ({ navigation }) => (
-    <RegistrationStack.Navigator
-        initialRouteName={'WelcomeScreen'}
-        headerMode="none">
+    <RegistrationStack.Navigator initialRouteName={'WelcomeScreen'} headerMode="none">
         <RegistrationStack.Screen name="WelcomeScreen" component={WelcomeScreen} />
         <RegistrationStack.Screen name="SignInScreen" component={SignInScreen} />
         <RegistrationStack.Screen name="SignUpScreen" component={SignUpScreen} />
-        <RegistrationStack.Screen
-            name="ForgotPasswordScreen"
-            component={ForgotPasswordScreen}
-        />
+        <RegistrationStack.Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen} />
     </RegistrationStack.Navigator>
 );
 export default RegistrationNavigationScreen;
