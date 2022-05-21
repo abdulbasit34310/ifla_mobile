@@ -14,7 +14,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 
 import { AuthContext } from '../components/context';
-import logo from './images/Falas.png';
+import logo from './images/IFLA.png';
 
 
 const FIREBASE_API_ENDPOINT =
@@ -196,12 +196,12 @@ const SignInScreen = ({ navigation }) => {
 
           <TouchableOpacity
             onPress={() => navigation.navigate('SignUpScreen')}
-            style={[styles.button, { backgroundColor: '#E0EFF6' }]}>
+            style={[styles.button, { backgroundColor: 'white', borderColor:"#005761", borderWidth:1 }]}>
             <Text
               style={[
                 styles.textSign,
                 {
-                  color: '#009387',
+                  color: '#005761',
                 },
               ]}>
               Sign Up
@@ -229,10 +229,10 @@ const styles = StyleSheet.create({
     paddingVertical: 30,
   },
   logo: {
-    marginLeft: '38%',
-    width: 80,
-    height: 80,
-    borderRadius: 50,
+alignSelf:"center",
+    width: 150,
+    height: 100,
+   
   },
   action: {
     flexDirection: 'row',

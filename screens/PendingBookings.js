@@ -40,7 +40,7 @@ export default function PendingBookings({ navigation }) {
 
 
   return (
-    <View style={{ backgroundColor: '#E0EFF6' }}>
+    <View style={{backgroundColor: "#E0EFF6", height:"100%"}}>
       <FlatList
         refreshing={false}
         onRefresh={getBookingsData}
@@ -48,7 +48,7 @@ export default function PendingBookings({ navigation }) {
         data={Object.keys(bookingData)}
         ListEmptyComponent={<Text style={{ fontSize: 24, alignSelf: 'center', marginTop: 30 }}>No Bookings Found</Text>}
         renderItem={({ item, index }) => (
-          <TouchableOpacity style={{ padding: 15, borderBottomColor: 'grey', borderBottomWidth: 1 }} onPress={() => { navigation.push('Pending Booking Details', item) }}>
+          <TouchableOpacity style={{padding: 15, borderBottomColor:'#005761',backgroundColor:"white", borderBottomWidth:1, margin:5, borderRadius:10, elevation: 24}} onPress={() => { navigation.navigate('PendingBookingDetails', item) }}>
             <View style={{ flexDirection: 'row' }}>
               <View>
                 <Text>{bookingData[item].Date},{bookingData[item].Time}</Text>
@@ -58,7 +58,7 @@ export default function PendingBookings({ navigation }) {
             </View>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
               <Text style={{ fontSize: 12, margin: 5, backgroundColor: '#068E94', color: "white", fontWeight: "bold", padding: 5, borderRadius: 5 }} >{bookingData[item].Status}</Text>
-              <Text style={{ fontSize: 20, alignSelf: 'flex-end', fontWeight: "bold", color: "#00ABB2" }}>{bookingData[item].Offer} Rs</Text>
+              <Text style={{ fontSize: 20, alignSelf: 'flex-end', fontWeight: "bold", color: "#005761" }}>{bookingData[item].Offer} Rs</Text>
             </View>
           </TouchableOpacity>
         )}

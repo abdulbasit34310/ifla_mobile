@@ -10,7 +10,7 @@ import {
 import Constants from 'expo-constants';
 
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import logo from './images/Falas.png';
+import logo from './images/IFLA.png';
 
 function WelcomeScreen({ navigation }) {
     return (
@@ -94,8 +94,8 @@ const styles = StyleSheet.create({
         marginTop: 35,
     },
     logo: {
-        width: 100,
-        height: 100,
-        borderRadius: 50,
+        width: 250,
+        height: 200,
+      
     },
 });

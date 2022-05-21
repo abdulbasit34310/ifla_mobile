@@ -61,7 +61,11 @@ function NTN({ navigation, nextStep, prevStep, accountConfigurationData, setAcco
         ></TextInput>
     </View>);
 }
-
+const Success = ({ navigation, nextStep, prevStep, setAccountConfigurationData, accountConfigurationData }) => {
+    return (
+        <div>Account Configuration Done Succsfully</div>
+    )
+}
 export default function AccountConfigurationScreen({ navigation }) {
     const [step, setStep] = React.useState(0);
 
@@ -136,6 +140,16 @@ export default function AccountConfigurationScreen({ navigation }) {
                     prevStep={prevStep}
                     accountConfigurationData={accountConfigurationData}
                     setAccountConfigurationData={setAccountConfigurationData} />
+            )
+        case 5:
+            return (
+                <Success
+                    nextStep={nextStep}
+                    prevStep={prevStep}
+                    accountConfigurationData={accountConfigurationData}
+                    setAccountConfigurationData={setAccountConfigurationData}
+
+                />
             )
         default:
     }

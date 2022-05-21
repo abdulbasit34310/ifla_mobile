@@ -206,7 +206,7 @@ const SignUpScreen = ({ navigation }) => {
       {/* Email */}
 
       <View style={styles.action}>
-        <FontAwesome name="envelope-o" color="#068E94" size={25} />
+        <FontAwesome name="envelope-o" color="#005761" size={25} />
         <TextInput
           style={styles.ti}
           placeholder="Your Email"
@@ -229,7 +229,7 @@ const SignUpScreen = ({ navigation }) => {
       {/* Address */}
 
       <View style={styles.action}>
-        <Icon name="map-marker-radius" color="#068E94" size={25} />
+        <Icon name="map-marker-radius" color="#005761" size={25} />
         <TextInput
           style={styles.ti}
           placeholder='Your Address'
@@ -249,7 +249,7 @@ const SignUpScreen = ({ navigation }) => {
       {/* Phone Number */}
 
       <View style={styles.action}>
-        <Feather name="phone" color="#068E94" size={25} />
+        <Feather name="phone" color="#005761" size={25} />
         <TextInput
           style={styles.ti}
           placeholder="Phone Number"
@@ -267,7 +267,7 @@ const SignUpScreen = ({ navigation }) => {
       )}
 
       <View style={styles.action}>
-        <FontAwesome name="lock" color="#068E94" size={25} />
+        <FontAwesome name="lock" color="#005761" size={25} />
         <TextInput
           style={styles.ti}
           placeholder="Your Password"
@@ -292,7 +292,7 @@ const SignUpScreen = ({ navigation }) => {
       )}
 
       <View style={styles.action}>
-        <FontAwesome name="lock" color="#068E94" size={25} />
+        <FontAwesome name="lock" color="#005761" size={25} />
         <TextInput
           style={styles.ti}
           placeholder="Confrim Password"
@@ -326,7 +326,7 @@ const SignUpScreen = ({ navigation }) => {
 
       {isChecked == false ? null : (
         <View style={styles.action}>
-          <FontAwesome name="user-o" color="#068E94" size={25} />
+          <FontAwesome name="user-o" color="#005761" size={25} />
           <TextInput
             style={styles.ti}
             placeholder="Company Name"
@@ -360,7 +360,7 @@ const SignUpScreen = ({ navigation }) => {
 
         <TouchableOpacity
           onPress={() => navigation.navigate('SignInScreen')}
-          style={[styles.button, { backgroundColor: '#f2f2f2' }]}>
+          style={[styles.button, { backgroundColor: 'white', borderColor: "#005761", borderWidth: 1 }]}>
           <Text
             style={[
               styles.textSign,
@@ -387,7 +387,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 15,
     borderBottomWidth: 1,
-    borderBottomColor: '#f2f2f2',
+    borderBottomColor: 'white',
     paddingBottom: 5,
   },
   checkbox: {
@@ -399,7 +399,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: Platform.OS === 'ios' ? 0 : -12,
     paddingLeft: 10,
-    color: '#068E94',
+    color: '#005761',
   },
   errorMessage: {
     color: '#FF0000',
