@@ -16,7 +16,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const FIREBASE_API_ENDPOINT = 'https://freight-automation-default-rtdb.firebaseio.com/';
 
-export default function GetAQuote({ navigation }) {
+export default function GetAQuote({route, navigation }) {
 
     const [category, setCategory] = React.useState(0);
     const [packaging, setPackaging] = React.useState(false);
@@ -28,6 +28,7 @@ export default function GetAQuote({ navigation }) {
     const [citiesData, setCitiesData] = React.useState();
     const [vehicleType, setVehicleType] = React.useState("");
     const [checked, setChecked] = React.useState(false);
+    //const [token,setToken] = React.useState(route.params.token)
 
 
     const [quoteData, setQuote] = React.useState({

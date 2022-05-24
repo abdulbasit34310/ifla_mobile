@@ -1,35 +1,32 @@
 import * as React from 'react';
 import {
-  View, Text, TouchableOpacity, StyleSheet, TextInput, Platform, } from 'react-native';
+  View, Text, TouchableOpacity, StyleSheet, TextInput, Platform, ToastAndroid } from 'react-native';
 // import Checkbox from 'expo-checkbox';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { AuthContext } from '../components/context';
+import axios from 'axios';
+import {REST_API} from "@env"
 
+const REST_API_ENDPOINT = 'http://192.168.0.105:3000/users' || REST_API+"/users";
 
-const FIREBASE_API_ENDPOINT =
-  'https://madproject-61e88-default-rtdb.firebaseio.com/';
+const SignUpScreen = ({ route,navigation }) => {
+  const {setloggedin} = route.params;
 
-const SignUpScreen = ({ navigation }) => {
   const [data, setData] = React.useState({
     name: '',
     email: '',
-    address: '',
     phoneNo: '',
     password: '',
     confirmPassword: '',
     // companyName: '',
     checkNameChange: false,
     checkEmailChange: false,
-    checkAddressChange: false,
     checkPhoneNoChange: false,
     checkPasswordChange: false,
     checkConfirmPasswordChange: false,
     // checkCompanyNameChange: false,
     notValidName: true,
     notValidEmail: true,
-    notValidAddress: true,
     notValidPhoneNo: true,
     notValidPassword: true,
     // notValidCompanyName: true,
@@ -37,45 +34,34 @@ const SignUpScreen = ({ navigation }) => {
 
   });
 
-  const [isChecked, setChecked] = React.useState(false);
+  // const [isChecked, setChecked] = React.useState(false);
 
-  const postData = () => {
-    var requestOptions = {
-      method: 'POST',
-      body: JSON.stringify({
-        name: data.name,
+  const postData = async () => {
+    var body ={
+        username: data.name,
         email: data.email,
-        address: data.address,
-        phoneNo: data.phoneNo,
+        phone: data.phoneNo,
         password: data.password,
         // companyName: data.companyName,
-      }),
-    };
-    fetch(`${FIREBASE_API_ENDPOINT}/userCredentials.json`, requestOptions)
-      .then((response) => response.json())
-      .then((result) => console.log(result))
-      .catch((error) => console.log('error', error));
-
-    navigation.goBack();
+      }
+    let res = await axios.post(`${REST_API_ENDPOINT}/signup`, body)
+    const data1 = await res.data
+    if(data1){
+      showToastWithGravity("Signed up");
+      setloggedin(true)
+    }
+    else
+      showToastWithGravity("Couldn't Sign up");
+    // navigation.goBack();
   };
 
-  const addressChange = (text) => {
-    if (text.trim().length > 1) {
-      setData({
-        ...data,
-        address: text,
-        checkAddressChange: true,
-        notValidAddress: true,
-      })
-    } else {
-      setData({
-        ...data,
-        address: text,
-        checkAddressChange: false,
-        notValidAddress: false,
-      })
-    }
-  }
+  const showToastWithGravity = (text) => {
+    ToastAndroid.showWithGravity(
+      text,
+      ToastAndroid.SHORT,
+      ToastAndroid.BOTTOM
+    );
+  };
 
   const nameChange = (val) => {
     if (val.trim().length != 2) {
@@ -184,13 +170,13 @@ const SignUpScreen = ({ navigation }) => {
 
     <View style={styles.container}>
 
-      {/* Name */}
+      {/* Username */}
 
       <View style={styles.action}>
         <FontAwesome name="user-o" color="#068E94" size={25} />
         <TextInput
           style={styles.ti}
-          placeholder="Your Name"
+          placeholder="Your Userame"
           placeholderTextColor="#666666"
           onChangeText={(val) => nameChange(val)}></TextInput>
         {data.checkNameChange ? (
@@ -222,26 +208,6 @@ const SignUpScreen = ({ navigation }) => {
         <View duration={500}>
           <Text style={styles.errorMessage}>
             Email Syntax is not correct.
-          </Text>
-        </View>
-      )}
-
-      {/* Address */}
-
-      <View style={styles.action}>
-        <Icon name="map-marker-radius" color="#005761" size={25} />
-        <TextInput
-          style={styles.ti}
-          placeholder='Your Address'
-          placeholderTextColor="#666666"
-          autoCorrect={false}
-          onChangeText={(text) => addressChange(text)}
-        />
-      </View>
-      {data.notValidAddress ? null : (
-        <View duration={500}>
-          <Text style={styles.errorMessage}>
-            Enter some Address.
           </Text>
         </View>
       )}

@@ -2,10 +2,8 @@ import * as React from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
-
+import * as SecureStore from 'expo-secure-store';
 // Buttons and Primary Foreground: #068E94
 // Secondary Foreground: #00ABB2
 // Background Primary and Text: #005761
@@ -27,11 +25,10 @@ import BookingDetails from './screens/BookingDetails';
 import GetAQuote from './screens/GetAQuote';
 import ViewQuotes from './screens/ViewQuotes';
 import QuoteDetails from './screens/QuoteDetails';
-
-
 // import Payment from './screens/Payment';
-import { AuthContext } from './components/context';
+
 import { CustomDrawer } from './screens/CustomDrawer';
+import { AuthContext } from './components/context';
 
 const Drawer = createDrawerNavigator();
 
@@ -39,7 +36,7 @@ export default function App() {
 
   const initialLoginState = {
     isLoading: true,
-    email: null,
+    userName: null,
     userToken: null,
   };
 
@@ -54,21 +51,21 @@ export default function App() {
       case 'LOGIN':
         return {
           ...prevState,
-          email: action.id,
+          userName: action.id,
           userToken: action.token,
           isLoading: false,
         };
       case 'LOGOUT':
         return {
           ...prevState,
-          email: null,
+          userName: null,
           userToken: null,
           isLoading: false,
         };
       case 'REGISTER':
         return {
           ...prevState,
-          email: action.id,
+          userName: action.id,
           userToken: action.token,
           isLoading: false,
         };
@@ -83,26 +80,24 @@ export default function App() {
   const authContext = React.useMemo(
     () => ({
       signIn: async (foundUser) => {
-        const userToken = String(foundUser[0].userToken);
-        const email = foundUser[0].email;
+        const userToken = foundUser.userToken;
+        const userName = foundUser.userName;
 
         try {
-          await AsyncStorage.setItem('userToken', email);
+          await SecureStore.setItemAsync('userToken', userToken);
         } catch (e) {
           console.log(e);
         }
-
-        dispatch({ type: 'LOGIN', id: email, token: userToken });
+        dispatch({ type: 'LOGIN', id: userName, token: userToken });
       },
       signOut: async () => {
         try {
-          await AsyncStorage.removeItem('userToken');
+          await SecureStore.deleteItemAsync('userToken')
         } catch (e) {
           console.log(e);
         }
         dispatch({ type: 'LOGOUT' });
       },
-      signUp: () => { },
     }),
     []
   );
@@ -112,7 +107,7 @@ export default function App() {
       let userToken;
       userToken = null;
       try {
-        userToken = await AsyncStorage.getItem('userToken');
+        userToken = await SecureStore.getItemAsync('userToken');
       } catch (e) {
         console.log(e);
       }
@@ -130,51 +125,43 @@ export default function App() {
   }
 
   return (
-
-
-
-
-
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
         {loginState.userToken !== null ? (
           <Drawer.Navigator
-            drawerContent={(props) => <CustomDrawer {...props} />}>
-            <Drawer.Screen  name="MainScreen" component={MainScreen} />
+            drawerContent={(props) => <CustomDrawer {...props} />}
+          // screenOptions={{swipeEdgeWidth: 0}}
+          >
+            <Drawer.Screen name="MainScreen" component={MainScreen} />
             <Drawer.Screen name="TrackingScreen" component={TrackingScreen} />
-            <Drawer.Screen options={{headerShown: false}} name="Booking" component={BookingStack} />
-            <Drawer.Screen options={{headerShown: false}} name="Profile" component={ProfileStack} />
- 
+            <Drawer.Screen options={{ headerShown: false }} name="Booking" component={BookingStack} />
+            <Drawer.Screen options={{ headerShown: false }} name="Profile" component={ProfileStack} />
           </Drawer.Navigator>
         ) : (
-          
           <RegistrationNavigationScreen />
         )}
       </NavigationContainer>
     </AuthContext.Provider>
-  );
+  )
 }
 
 const Stack = createNativeStackNavigator();
 
-
-function BookingStack() {
+function BookingStack({ route }) {
   return (
     <Stack.Navigator screenOptions={{
       headerTintColor: '#005761',
       headerTitleAlign: 'center',
-      headerTitleStyle: {fontWeight: 'bold', fontSize: 24},
-      headerStyle: { backgroundColor: 'white', padding: 0 }}}>
+      headerTitleStyle: { fontWeight: 'bold', fontSize: 24 },
+      headerStyle: { backgroundColor: 'white', padding: 0 }
+    }}>
       <Stack.Screen name="BookingScreen" component={BookingScreen} />
       <Stack.Screen name="ScheduleBooking" component={ScheduleBooking} />
       <Stack.Screen name="GetAQuote" component={GetAQuote} />
       <Stack.Screen name="ViewQuotes" component={ViewQuotes} />
       <Stack.Screen name="QuoteDetails" component={QuoteDetails} />
       <Stack.Screen name="PendingBookings" component={PendingBookings} />
-      <Stack.Screen
-        name="PendingBookingDetails"
-        component={PendingBookingDetails}
-      />
+      <Stack.Screen name="PendingBookingDetails" component={PendingBookingDetails} />
       <Stack.Screen name="MyBookings" component={MyBookings} />
       <Stack.Screen name="BookingDetails" component={BookingDetails} />
     </Stack.Navigator>
@@ -182,13 +169,14 @@ function BookingStack() {
 }
 
 
-function ProfileStack() {
+function ProfileStack({ route }) {
   return (
     <Stack.Navigator screenOptions={{
       headerTintColor: '#005761',
       headerTitleAlign: 'center',
-      headerTitleStyle: {fontWeight: 'bold', fontSize: 24},
-      headerStyle: { backgroundColor: 'white', padding: 0 }}}>
+      headerTitleStyle: { fontWeight: 'bold', fontSize: 24 },
+      headerStyle: { backgroundColor: 'white', padding: 0 }
+    }}>
       <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
       <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
       <Stack.Screen name="CompanyInformationScreen" component={CompanyInformationScreen} />

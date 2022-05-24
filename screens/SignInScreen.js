@@ -8,100 +8,109 @@ import {
   Image,
   Alert,
   Platform,
+  ToastAndroid
 } from 'react-native';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
-
+// import * as SecureStore from 'expo-secure-store';
 import { AuthContext } from '../components/context';
+
 import logo from './images/IFLA.png';
+import axios from 'axios';
+import {REST_API} from "@env"
 
+const REST_API_ENDPOINT = 'http://192.168.0.105:3000/users' || REST_API+"/users";
 
-const FIREBASE_API_ENDPOINT =
-  'https://madproject-61e88-default-rtdb.firebaseio.com/';
+const SignInScreen = ({route, navigation }) => {
 
-var arr = [];
-
-const SignInScreen = ({ navigation }) => {
   const [data, setData] = React.useState({
-    email: '',
+    username: '',
     password: '',
-    checkEmailChange: false,
+    checkusernameChange: false,
     checkPasswordChange: false,
-    notValidEmail: true,
+    notValidusername: true,
     notValidPassword: true,
     secureTextEntry: true,
   });
 
-  const [data2, setData2] = React.useState(arr);
-
   const { signIn } = React.useContext(AuthContext);
+  
+  // async function getValueFor(key) {
+  //   let result = await SecureStore.getItemAsync(key);
+  //   if (result) {
+  //     alert("🔐 Here's your value 🔐 \n" + result);
+  //   } else {
+  //     alert('No values stored under that key.');
+  //   }
+  // }
 
-  const getCredentials = async () => {
-    const response = await fetch(
-      `${FIREBASE_API_ENDPOINT}/userCredentials.json`
-    );
-    const data = await response.json();
-
-    var keyValues = Object.keys(data);
-    let credential = {};
-    for (let i = 0; i < keyValues.length; i++) {
-      let key = keyValues[i];
-      credential = {
-        email: data[key].email,
-        password: data[key].password,
-      };
-      arr.push(credential);
-      setData2(arr)
-    }
-  };
-
-  React.useEffect(() => {
-    getCredentials();
-  }, [arr]);
-
-  const sendSignInCredentials = (e, p) => {
-
-    const foundUser = arr.filter((item) => {
-      return e == item.email && p == item.password;
-    });
-
+  const sendSignInCredentials = async () => {
+    
     // Click Sign In without entering data in any field.
-    if (data.email.length == 0 || data.password.length == 0) {
+    if (data.username.length == 0 || data.password.length == 0) {
       Alert.alert(
         'Wrong Input!',
         'Username or password field cannot be empty.',
-        [{ text: 'Okay' }]
+        [{ text: 'OK' }]
       );
       return;
     }
-    // If email & password is incorrect.
-    if (foundUser.length == 0) {
-      Alert.alert('Invalid User!', 'Username or password is incorrect.', [
-        { text: 'Okay' },
-      ]);
-      return;
+    console.log(data.username)
+    // If Username & password is incorrect.
+    const body = {username:data.username, password:data.password}
+    const response = await axios.post(
+      `${REST_API_ENDPOINT}/login`
+    , body).catch((error)=> {
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        Alert.alert('Invalid User!', 'Username or password is incorrect.', [
+          { text: 'OK' },
+        ]);
+        return;
+      }
+    });
+
+    const data1 = await response.data;
+    const token = data1.token;
+    const user_name = data1.user.username;
+
+    const foundUser = {userToken : token, userName : user_name}
+     signIn(foundUser);
+
+    if (data1){
+      showToastWithGravity()
     }
-    signIn(foundUser);
   };
 
-  const emailChange = (text) => {
-    const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    if (reg.test(String(text).toLowerCase())) {
+  const showToastWithGravity = () => {
+    ToastAndroid.showWithGravity(
+      "Logged in",
+      ToastAndroid.SHORT,
+      ToastAndroid.BOTTOM
+    );
+  };
+  const usernameChange = (text) => {
+    // const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    // if (reg.test(String(text).toLowerCase())) {
+
       setData({
         ...data,
-        email: text,
-        checkEmailChange: true,
-        notValidEmail: true,
+        username: text,
+        checkusernameChange: true,
+        notValidusername: true,
       });
-    } else {
-      setData({
-        ...data,
-        email: text,
-        checkEmailChange: false,
-        notValidEmail: false,
-      });
-    }
+    // console.log(data.username)
+
+    // } else {
+    //   setData({
+    //     ...data,
+    //     email: text,
+    //     checkEmailChange: false,
+    //     noValidEmail: false,
+    //   });
+    // }
   };
 
   const passwordChange = (text) => {
@@ -141,14 +150,14 @@ const SignInScreen = ({ navigation }) => {
           <FontAwesome name="user-o" color="#005761" size={25} />
           <TextInput
             style={styles.ti}
-            placeholder="Your Email"
-            onChangeText={(text) => emailChange(text)}></TextInput>
-          {data.checkEmailChange ? (
+            placeholder="Your Username"
+            onChangeText={(text) => usernameChange(text)}></TextInput>
+          {data.checkusernameChange ? (
             <Feather name="check-circle" color="green" size={25} />
           ) : null}
         </View>
-        {data.notValidEmail ? null : (
-          <Text style={styles.errorMessage}>Email Syntax is not Correct</Text>
+        {data.notValidusername ? null : (
+          <Text style={styles.errorMessage}>username Syntax is not Correct</Text>
         )}
 
         <View style={styles.action}>
@@ -179,9 +188,7 @@ const SignInScreen = ({ navigation }) => {
 
         <View>
           <TouchableOpacity
-            onPress={() => {
-              sendSignInCredentials(data.email, data.password);
-            }}
+            onPress={() => sendSignInCredentials()}
             style={[styles.button, { backgroundColor: '#068E94' }]}>
             <Text
               style={[
