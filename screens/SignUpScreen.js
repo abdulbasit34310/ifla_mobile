@@ -5,9 +5,9 @@ import {
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import axios from 'axios';
-import {REST_API} from "@env"
+import {REST_API,REST_API_LOCAL} from "@env"
 
-const REST_API_ENDPOINT = 'http://192.168.0.105:3000/users' || REST_API+"/users";
+const REST_API_ENDPOINT = 'http://192.168.1.102:3000/users' || REST_API+"/users";
 
 const SignUpScreen = ({ route,navigation }) => {
   const {setloggedin} = route.params;

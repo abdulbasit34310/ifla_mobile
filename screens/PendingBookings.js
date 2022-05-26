@@ -5,10 +5,10 @@ import {
   FlatList,
 } from 'react-native';
 import axios from 'axios';
-import {REST_API} from "@env"
+import {REST_API,REST_API_LOCAL} from "@env"
 import * as SecureStore from 'expo-secure-store';
 
-const REST_API_ENDPOINT = 'http://192.168.0.132:3000/shipper' || REST_API+"/shipper";
+const REST_API_ENDPOINT = 'http://192.168.1.102:3000/shipper' || REST_API+"/shipper";
 
 export default function PendingBookings({route, navigation }) {
   const [bookingData, setBookingData] = React.useState();
