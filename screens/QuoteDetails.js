@@ -6,7 +6,11 @@ import {Text, View, StyleSheet, ImageBackground,
   Image,
   ScrollView, FlatList, Alert
 } from 'react-native';
+import axios from 'axios';
+import {REST_API,REST_API_LOCAL} from "@env"
 
+
+const REST_API_ENDPOINT = 'http://192.168.1.102:3000/shipper' || REST_API+"/shipper";
 
 export default function QuoteDetails({navigation, route}){
     // const id= route.params;
@@ -19,7 +23,7 @@ export default function QuoteDetails({navigation, route}){
     //   setQuoteData(data);
 
     // };
-    const deleteData = () => {
+    const deleteData = async () => {
       // var requestOptions = {
       //   method: 'DELETE',
       // };
@@ -28,6 +32,11 @@ export default function QuoteDetails({navigation, route}){
       //   .then((response) => response.json())
       //   .then((result) => console.log('Delete Response:', result))
       //   .catch((error) => console.log('error', error));
+      const id = quoteData._id
+      let response = await axios.delete(`${REST_API_ENDPOINT}/deleteQuote/${id}`)
+      console.log(response.data)
+      console.log("Quote Deleted")
+
     };
   
   

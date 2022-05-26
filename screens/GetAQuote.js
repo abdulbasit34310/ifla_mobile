@@ -1,16 +1,15 @@
 import * as React from 'react';
 import {
-    Text, View, StyleSheet, ImageBackground,
+    Text, View, StyleSheet,
     TouchableOpacity,
     TextInput,
-    ScrollView,
     Modal, FlatList, ToastAndroid
 } from 'react-native';
-import {Picker} from '@react-native-picker/picker';
+
 import { ButtonGroup } from 'react-native-elements';
 import { Checkbox } from 'react-native-paper';
-import {REST_API,REST_API_LOCAL} from "@env"
 import axios from 'axios';
+import {REST_API,REST_API_LOCAL} from "@env"
 
 
 const REST_API_ENDPOINT = 'http://192.168.1.102:3000/shipper' || REST_API+"/shipper";
