@@ -5,6 +5,7 @@ import WelcomeScreen from './WelcomeScreen';
 import SignInScreen from './SignInScreen';
 import SignUpScreen from './SignUpScreen';
 import ForgotPasswordScreen from './ForgotPasswordScreen';
+import AccountConfigurationScreen from './AccountConfigurationScreen'
 
 const RegistrationStack = createNativeStackNavigator();
 
@@ -13,6 +14,7 @@ const RegistrationNavigationScreen = ({ navigation }) => (
         <RegistrationStack.Screen name="WelcomeScreen" component={WelcomeScreen} />
         <RegistrationStack.Screen name="SignInScreen" component={SignInScreen} />
         <RegistrationStack.Screen name="SignUpScreen" component={SignUpScreen} />
+        <RegistrationStack.Screen name="AccountConfigurationScreen" component={AccountConfigurationScreen} />
         <RegistrationStack.Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen} />
     </RegistrationStack.Navigator>
 );

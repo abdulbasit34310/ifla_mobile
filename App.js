@@ -3,13 +3,6 @@ import { View, ActivityIndicator } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
-
-// Buttons and Primary Foreground: #068E94
-// Secondary Foreground: #00ABB2
-// Background Primary and Text: #005761
-// Background Secondary: #E0EFF6
 
 import RegistrationNavigationScreen from './screens/RegistrationNavigationScreen';
 import MainScreen from './screens/MainScreen';
@@ -25,9 +18,6 @@ import MyBookings from './screens/MyBookings';
 import ScheduleBooking from './screens/ScheduleBooking';
 import BookingDetails from './screens/BookingDetails';
 import GetAQuote from './screens/GetAQuote';
-import ViewQuotes from './screens/ViewQuotes';
-import QuoteDetails from './screens/QuoteDetails';
-
 
 // import Payment from './screens/Payment';
 import { AuthContext } from './components/context';
@@ -128,70 +118,34 @@ export default function App() {
       </View>
     );
   }
-
   return (
-
-
-
-
-
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
         {loginState.userToken !== null ? (
           <Drawer.Navigator
             drawerContent={(props) => <CustomDrawer {...props} />}>
-            <Drawer.Screen  name="MainScreen" component={MainScreen} />
+            <Drawer.Screen name="MainScreen" component={MainScreen} />
             <Drawer.Screen name="TrackingScreen" component={TrackingScreen} />
-            <Drawer.Screen options={{headerShown: false}} name="Booking" component={BookingStack} />
-            <Drawer.Screen options={{headerShown: false}} name="Profile" component={ProfileStack} />
- 
+
+            <Drawer.Screen name="BookingScreen" component={BookingScreen} />
+
+            <Drawer.Screen name="ScheduleBooking" component={ScheduleBooking} />
+            <Drawer.Screen name="BookingDetails" component={BookingDetails} />
+            <Drawer.Screen name="MyBookings" component={MyBookings} />
+            <Drawer.Screen name="PendingBookings" component={PendingBookings} />
+            <Drawer.Screen name="PendingBookingDetails" component={PendingBookingDetails} />
+            <Drawer.Screen name="GetAQuote" component={GetAQuote} />
+
+            {/* <Drawer.Screen name="Payment" component={Payment} /> */}
+            <Drawer.Screen name="ProfileScreen" component={ProfileScreen} />
+            <Drawer.Screen name="EditProfileScreen" component={EditProfileScreen} />
+            <Drawer.Screen name="CompanyInformationScreen" component={CompanyInformationScreen} />
+
           </Drawer.Navigator>
         ) : (
-          
           <RegistrationNavigationScreen />
         )}
       </NavigationContainer>
     </AuthContext.Provider>
-  );
-}
-
-const Stack = createNativeStackNavigator();
-
-
-function BookingStack() {
-  return (
-    <Stack.Navigator screenOptions={{
-      headerTintColor: '#005761',
-      headerTitleAlign: 'center',
-      headerTitleStyle: {fontWeight: 'bold', fontSize: 24},
-      headerStyle: { backgroundColor: 'white', padding: 0 }}}>
-      <Stack.Screen name="BookingScreen" component={BookingScreen} />
-      <Stack.Screen name="ScheduleBooking" component={ScheduleBooking} />
-      <Stack.Screen name="GetAQuote" component={GetAQuote} />
-      <Stack.Screen name="ViewQuotes" component={ViewQuotes} />
-      <Stack.Screen name="QuoteDetails" component={QuoteDetails} />
-      <Stack.Screen name="PendingBookings" component={PendingBookings} />
-      <Stack.Screen
-        name="PendingBookingDetails"
-        component={PendingBookingDetails}
-      />
-      <Stack.Screen name="MyBookings" component={MyBookings} />
-      <Stack.Screen name="BookingDetails" component={BookingDetails} />
-    </Stack.Navigator>
-  );
-}
-
-
-function ProfileStack() {
-  return (
-    <Stack.Navigator screenOptions={{
-      headerTintColor: '#005761',
-      headerTitleAlign: 'center',
-      headerTitleStyle: {fontWeight: 'bold', fontSize: 24},
-      headerStyle: { backgroundColor: 'white', padding: 0 }}}>
-      <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
-      <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
-      <Stack.Screen name="CompanyInformationScreen" component={CompanyInformationScreen} />
-    </Stack.Navigator>
   );
 }

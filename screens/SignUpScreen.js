@@ -5,8 +5,9 @@ import {
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { AuthContext } from '../components/context';
+import AccountConfigurationScreen from './AccountConfigurationScreen'
 
+import { AuthContext } from '../components/context';
 
 const FIREBASE_API_ENDPOINT =
   'https://madproject-61e88-default-rtdb.firebaseio.com/';
@@ -56,7 +57,7 @@ const SignUpScreen = ({ navigation }) => {
       .then((result) => console.log(result))
       .catch((error) => console.log('error', error));
 
-    navigation.goBack();
+    navigation.navigate('AccountConfigurationScreen');
   };
 
   const addressChange = (text) => {
@@ -187,7 +188,7 @@ const SignUpScreen = ({ navigation }) => {
       {/* Name */}
 
       <View style={styles.action}>
-        <FontAwesome name="user-o" color="#068E94" size={25} />
+        <FontAwesome name="user-o" color="#005761" size={25} />
         <TextInput
           style={styles.ti}
           placeholder="Your Name"

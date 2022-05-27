@@ -269,4 +269,10 @@ alignSelf:"center",
     backgroundColor: '#068E94',
   },
 });
+
+// Buttons and Primary Foreground: #068E94
+// Secondary Foreground: #00ABB2
+// Background Primary and Text: #005761
+// Background Secondary: #E0EFF6
+
 export default SignInScreen;

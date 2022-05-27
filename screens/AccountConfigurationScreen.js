@@ -155,7 +155,6 @@ export default function AccountConfigurationScreen({ navigation }) {
     }
 };
 
-
 const styles = StyleSheet.create({
     textInput: {
         borderColor: '#005761',

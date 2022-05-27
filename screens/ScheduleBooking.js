@@ -421,10 +421,6 @@ const Success = ({navigation, nextStep, prevStep, setBooking, bookingData }) => 
   )
 }
 
-
-
-
-
 export default function ScheduleBooking({ navigation }) {
   const [step, setStep] = React.useState(0);
   const [date, setDate] = React.useState(new Date());
