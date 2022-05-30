@@ -6,7 +6,6 @@ import {
     Image,
     StyleSheet,
 } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
 import logo from './images/IFLA.png';
 
 
@@ -37,7 +36,6 @@ const BookingScreen = ({ navigation, route }) => {
                         <TouchableOpacity
                             style={styles.mainButtons}
                             onPress={() => {
-                                console.log('Schedule.Booking.Selected');
                                 navigation.navigate('ScheduleBooking');
                             }}>
                             <Text style={styles.mainButtonText}>Schedule Booking</Text>

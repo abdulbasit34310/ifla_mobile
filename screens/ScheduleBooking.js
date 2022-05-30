@@ -7,8 +7,13 @@ import {
 import { ButtonGroup } from 'react-native-elements';
 import { Picker } from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { Checkbox } from 'react-native-paper';
+import axios from 'axios';
+const API_ENDPOINT = 'https://freight-automation-default-rtdb.firebaseio.com/';
+import {REST_API,REST_API_LOCAL} from "@env"
+import * as SecureStore from 'expo-secure-store';
 
-const FIREBASE_API_ENDPOINT = 'https://freight-automation-default-rtdb.firebaseio.com/';
+const REST_API_ENDPOINT = 'http://192.168.0.101:3000/shipper' || REST_API+"/shipper";
 
 function ShipmentType({ navigation, nextStep, bookingData, setBooking }) {
   const [type, setType] = React.useState(1);
@@ -59,7 +64,7 @@ function AddressDetails({ navigation, nextStep, prevStep, bookingData, setBookin
   const [citiesData, setCitiesData] = React.useState();
 
   const getCitiesData = async () => {
-    const response = await fetch(`${FIREBASE_API_ENDPOINT}/cities.json`);
+    const response = await fetch(`${API_ENDPOINT}/cities.json`);
     const data = await response.json();
     var arr;
     var arr2 = [];
@@ -81,13 +86,13 @@ function AddressDetails({ navigation, nextStep, prevStep, bookingData, setBookin
 
 
   const filter = (text) => {
-    console.log(getCitiesData);
+    // console.log(getCitiesData);
     var result = getText.filter((city) => {
       if (city.includes(text)) {
         return city;
       }
     });
-    console.log(result);
+    // console.log(result);
     setCitiesData(result);
 
   };
@@ -246,8 +251,10 @@ function GoodsDetails({ navigation, bookingData, nextStep, prevStep, setBooking 
 
 
 // Truck Details Step 4
-function TruckDetails({ navigation, nextStep, prevStep, setDate, date, setBooking, bookingData }) {
+function TruckDetails({ navigation, nextStep, prevStep, setDate, date, setBooking, bookingData, postData }) {
   const [selectedValue, setSelectedValue] = React.useState('');
+  const [checked, setChecked] = React.useState(false);
+
 
   const [mode, setMode] = React.useState('date');
   const [show, setShow] = React.useState(false);
@@ -283,8 +290,8 @@ function TruckDetails({ navigation, nextStep, prevStep, setDate, date, setBookin
   return (
     <View style={{ backgroundColor: "#00ABB2", height: "100%", padding: 20, justifyContent: "center" }}>
       <View style={{ padding: 20, backgroundColor: "#E0EFF6", borderRadius: 10, elevation: 24 }}>
-        <Text>TruckDetails</Text>
-        <Text style={{ padding: 10 }}>Select Vehicle Type: </Text>
+        {/* <Text>TruckDetails</Text> */}
+        {/* <Text style={{ padding: 10 }}>Select Vehicle Type: </Text>
         <Picker
           selectedValue={selectedValue}
           style={[styles.textInput, { fontSize: 12 }]}
@@ -294,7 +301,7 @@ function TruckDetails({ navigation, nextStep, prevStep, setDate, date, setBookin
           <Picker.Item label="Shehzore" value="Shehzore" />
           <Picker.Item label="Mazda" value="Mazda" />
           <Picker.Item label="Suzuki" value="Suzuki" />
-        </Picker>
+        </Picker> */}
         
      <Text style={{padding: 10}}>Choose Date:</Text>
       <TouchableOpacity style={[styles.textInput, {padding: 5}]} onPress={showDatepicker}><Text>{date.toDateString()}</Text></TouchableOpacity>
@@ -310,18 +317,40 @@ function TruckDetails({ navigation, nextStep, prevStep, setDate, date, setBookin
           onChange={onChange}
         />
       )}
-
+      <View style={{flexDirection:"row",alignItems:"center", marginTop:10 }}>   
+                        <Checkbox
+                            status={checked ? 'checked' : 'unchecked'}
+                            onPress={() => {
+                                setChecked(!checked);
+                            }}
+                            />
+                        <Text  style={{ fontSize: 16 }}>Do you want to pack your items?</Text>   
+                        </View>
 
         <View style={{ flexDirection: "row", justifyContent: "space-between", margin: 15 }}>
           <TouchableOpacity onPress={prevStep} style={styles.buttonStyle}><Text style={styles.buttonText}>Previous</Text></TouchableOpacity>
-          <TouchableOpacity onPress={nextStep} style={styles.buttonStyle}><Text style={styles.buttonText}>Next</Text></TouchableOpacity>
+          {checked?<TouchableOpacity onPress={nextStep} style={styles.buttonStyle}><Text style={styles.buttonText}>Next</Text></TouchableOpacity>:<TouchableOpacity style={styles.buttonStyle} onPress={() => {
+            Alert.alert(
+              'Confirm Order',
+              "Are you sure?",
+              [
+                {
+                  text: "Cancel",
+                  onPress: () => console.log("Cancel Pressed"),
+                  style: "cancel"
+                },
+                { text: "Confirm", onPress: () => {  postData(false);showToastWithGravity(); } }
+              ]
+            )
+          }}><Text style={styles.buttonText}>Proceed</Text></TouchableOpacity>}
+          
         </View>
       </View>
     </View>
   )
 }
 
-function PackageDetails({ navigation, nextStep, prevStep, setBooking, bookingData }) {
+function PackageDetails({ navigation, nextStep, prevStep, setBooking, bookingData, postData }) {
   const [selectedValue, setSelectedValue] = React.useState('');
   const [type, setType] = React.useState('');
   const showToastWithGravity = () => {
@@ -405,7 +434,7 @@ function PackageDetails({ navigation, nextStep, prevStep, setBooking, bookingDat
                   onPress: () => console.log("Cancel Pressed"),
                   style: "cancel"
                 },
-                { text: "Confirm", onPress: () => { showToastWithGravity(); } }
+                { text: "Confirm", onPress: () => { postData(true); showToastWithGravity();} }
               ]
             )
           }}><Text style={styles.buttonText}>Proceed</Text></TouchableOpacity>
@@ -421,10 +450,28 @@ const Success = ({navigation, nextStep, prevStep, setBooking, bookingData }) => 
   )
 }
 
-export default function ScheduleBooking({ navigation }) {
+
+
+
+
+export default function ScheduleBooking({route, navigation }) {
   const [step, setStep] = React.useState(0);
   const [date, setDate] = React.useState(new Date());
+  //const [token,setToken] = React.useState(route.params.token)
+    // async function getValueFor(key) {
+    //     let result = await SecureStore.getItemAsync(key);
+    //     if (result) {
+    //         setToken(result)
+    //     } else {
+    //         navigation.navigate("RegisteringScreen")
+    //     }
+    //   }
 
+    // React.useEffect(()=>{
+    //     navigation.addListener('focus', () => {
+    //         getValueFor('token')
+    //       });
+    // },[navigation])
 
   const CUSTOMER = "-MsgaaNM6XCecZ6niCZd";
 
@@ -440,8 +487,28 @@ export default function ScheduleBooking({ navigation }) {
     });
   }
 
-  const postData = () => {
+  const postData = async (Packaging) => {
+    const token = getValueFor('userToken')
+    const body = bookingData
+    const headers = {"Authorization" : `Bearer ${token}`}
+    body.package = Packaging
+    try {
+      let res = await axios.post(`${REST_API_ENDPOINT}/saveBookingMobile`,body, { headers: headers })
+      // console.log(res.data)
+      
+    } catch (error) {
+      console.log(error.response.data)
+    }
 
+  }
+
+  async function getValueFor(key) {
+    let result = await SecureStore.getItemAsync(key);
+    if (result) {
+      return result
+    } else {
+      return "Token not in SecureStore"
+    }
   }
 
   const prevStep = () => {
@@ -496,6 +563,7 @@ export default function ScheduleBooking({ navigation }) {
           setBooking={setBooking}
           date={date}
           setDate={setDate}
+          postData={postData}
         />
       )
     case 4:
@@ -505,6 +573,7 @@ export default function ScheduleBooking({ navigation }) {
           prevStep={prevStep}
           bookingData={bookingData}
           setBooking={setBooking}
+          postData={postData}
 
         />
       )

@@ -12,11 +12,12 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 const FIREBASE_API_ENDPOINT =
     'https://madproject-61e88-default-rtdb.firebaseio.com/';
 
-const ProfileScreen = ({ navigation }) => {
+const ProfileScreen = ({route, navigation }) => {
 
     var email = ""
     const { signOut } = React.useContext(AuthContext);
     const [getData, setData] = React.useState({ key: ' ', name: 'John Doe', email: 'johndoe@gmail.com', address: 'Wherever', phoneNo: '03987654321' });
+    //const [token,setToken] = React.useState(route.params.token)
 
     const getSignedInUserCredentials = async () => {
         const response = await fetch(

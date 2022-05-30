@@ -1,22 +1,22 @@
 import * as React from 'react';
 import {
-    Text, View, StyleSheet, ImageBackground,
+    Text, View, StyleSheet,
     TouchableOpacity,
     TextInput,
-    ScrollView,
     Modal, FlatList, ToastAndroid
 } from 'react-native';
-import {Picker} from '@react-native-picker/picker';
+
 import { ButtonGroup } from 'react-native-elements';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { NavigationContainer } from '@react-navigation/native';
 import { Checkbox } from 'react-native-paper';
+import axios from 'axios';
+import {REST_API,REST_API_LOCAL} from "@env"
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const FIREBASE_API_ENDPOINT = 'https://freight-automation-default-rtdb.firebaseio.com/';
+const REST_API_ENDPOINT = 'http://192.168.0.101:3000/shipper' || REST_API+"/shipper";
 
-export default function GetAQuote({ navigation }) {
+const CITIES_API_ENDPOINT = 'https://freight-automation-default-rtdb.firebaseio.com/';
+
+export default function GetAQuote({route, navigation }) {
 
     const [category, setCategory] = React.useState(0);
     const [packaging, setPackaging] = React.useState(false);
@@ -26,42 +26,26 @@ export default function GetAQuote({ navigation }) {
     const [pickUpCity, setPickUpCity] = React.useState("");
     const [dropOffCity, setDropOffCity] = React.useState("");
     const [citiesData, setCitiesData] = React.useState();
-    const [vehicleType, setVehicleType] = React.useState("");
+    // const [vehicleType, setVehicleType] = React.useState("");
     const [checked, setChecked] = React.useState(false);
+    //const [token,setToken] = React.useState(route.params.token)
 
 
     const [quoteData, setQuote] = React.useState({
-        Category: '', PickupCity: pickUpCity, DropoffCity: dropOffCity, 
-        Weight: '', Packaging:packaging, vehicleType:vehicleType
+        Type: 'LTL', PickupCity: pickUpCity, DropoffCity: dropOffCity, 
+        Weight: '', Packaging:packaging
     });
 
 
     const SaveQuote = async () => {
-
-        setQuote({ ...quoteData, DropoffCity: dropOffCity })
-        setQuote({ ...quoteData, PickupCity: pickUpCity })
-
-
-        console.log(quoteData)
-        var obj = quoteData;
-        var item = await AsyncStorage.getItem('@store:savedQuotes');
-        item = JSON.parse(item);
-        item = [...item, obj]
-        console.log('Saving');
-        await AsyncStorage.setItem(
-            '@store:savedQuotes',
-            JSON.stringify(item)
-        );
+        const body = quoteData
+        // console.log(quoteData)
+        // var obj = quoteData;
+        var response = await axios.post(REST_API_ENDPOINT+'/saveQuoteMobile',body)
+        var data = response.data
+        console.log(data);
         console.log('Saving Done!');
 
-    };
-
-    const LoadData = async () => {
-        console.log('Loading');
-        var item = await AsyncStorage.getItem('@store:savedQuotes');
-        var parsed = JSON.parse(item)
-        console.log(parsed);
-        console.log('Loading Done!');
     };
 
     const showToastWithGravity = () => {
@@ -74,7 +58,7 @@ export default function GetAQuote({ navigation }) {
 
 
     const getCitiesData = async () => {
-        const response = await fetch(`${FIREBASE_API_ENDPOINT}/cities.json`);
+        const response = await fetch(`${CITIES_API_ENDPOINT}/cities.json`);
         const data = await response.json();
         var arr;
         var arr2 = [];
@@ -106,6 +90,18 @@ export default function GetAQuote({ navigation }) {
         setCitiesData(result);
 
     };
+
+    const setPickup = (item) => {
+        setPickUpCity(item);
+        setQuote({ ...quoteData, PickupCity: item })
+        setModalVisible(!modalVisible);
+      }
+    
+      const setDropOff = (item) => {
+        setDropOffCity(item);
+        setQuote({ ...   quoteData, DropoffCity: item })
+        setModalVisible(!modalVisible);
+      }
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -148,8 +144,7 @@ export default function GetAQuote({ navigation }) {
                                 <TouchableOpacity
                                     style={styles.countryLabel}
                                     onPress={() => {
-                                        isPickup ? setPickUpCity(item) : setDropOffCity(item);
-                                        setModalVisible(!modalVisible)
+                                        isPickup ? setPickup(item) : setDropOff(item);
 
                                     }}>
                                     <Text>{item}</Text>
@@ -171,10 +166,10 @@ export default function GetAQuote({ navigation }) {
                             onPress={(value) => {
                                 setCategory(value);
                                 if (value === 0) {
-                                    setQuote({ ...quoteData, Category: 'LTL' })
+                                    setQuote({ ...quoteData, Type: 'LTL' })
                                 }
                                 else {
-                                    setQuote({ ...quoteData, Category: 'FTL' })
+                                    setQuote({ ...quoteData, Type: 'FTL' })
                                 }
                             }}
                             containerStyle={{
@@ -190,7 +185,7 @@ export default function GetAQuote({ navigation }) {
                             }}
                         />
 
-                        <Text style={{ padding: 10 }}>Select Vehicle Type: </Text>
+                        {/* <Text style={{ padding: 10 }}>Select Vehicle Type: </Text>
                             <Picker
                             selectedValue={vehicleType}
                             style={[styles.textInput, { fontSize: 12 }]}
@@ -200,7 +195,7 @@ export default function GetAQuote({ navigation }) {
                             <Picker.Item label="Shehzore" value="Shehzore" />
                             <Picker.Item label="Mazda" value="Mazda" />
                             <Picker.Item label="Suzuki" value="Suzuki" />
-                            </Picker>
+                            </Picker> */}
                             
                         <Text style={{ padding: 10 }}>Weight (kg): </Text>
                         <TextInput

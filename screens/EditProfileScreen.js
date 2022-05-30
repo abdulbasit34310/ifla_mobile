@@ -1,23 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     View,
     Text,
     TextInput,
     StyleSheet,
-    Image,
     ImageBackground,
     TouchableOpacity,
 } from 'react-native';
-import Constants from 'expo-constants';
+import { Title, } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Feather from 'react-native-vector-icons/Feather';
-
+import * as ImagePicker from 'expo-image-picker';
+import axios from 'axios';
 import AB from './images/AB.png';
 
 const FIREBASE_API_ENDPOINT =
     'https://madproject-61e88-default-rtdb.firebaseio.com/';
 
+const REST_API_ENDPOINT = "http://192.168.0.101:3000/users"
 
 const EditProfileScreen = ({ navigation, route }) => {
     var key = route.params.key;
@@ -28,6 +27,9 @@ const EditProfileScreen = ({ navigation, route }) => {
     var phoneNo = route.params.phoneNo;
 
     const [getInfo, setInfo] = React.useState({ key: '', name: '', email: '', address: '', phoneNo: '' });
+
+    const [hasGalleyPermission, setHasGalleryPermission] = React.useState(null);
+    const [image, setImage] = React.useState(null);
 
     const [data, setData] = React.useState({
         name: '',
@@ -44,26 +46,33 @@ const EditProfileScreen = ({ navigation, route }) => {
         notValidPhoneNo: true,
     });
 
-    const updateData = () => {
+    const updateData = async () => {
         const id = key;
 
         const objToSave = {
             name: getInfo.name,
+            username:getInfo.username,
             email: getInfo.email,
             address: getInfo.address,
             phoneNo: getInfo.phoneNo,
         }
-
-        var requestOptions = {
-            method: 'PATCH',
-            body: JSON.stringify(objToSave),
-        };
-
-        fetch(`${FIREBASE_API_ENDPOINT}/userCredentials/${id}.json`, requestOptions)
-            .then((response) => response.json())
-            .then((result) => console.log(result))
-            .catch((error) => console.log('error', error));
-
+        let formData = new FormData();
+  
+        //Adding files to the formdata
+        formData.append("image", image);
+        // var requestOptions = {
+        //     method: 'PATCH',
+        //     body: JSON.stringify(objToSave),
+        // };
+        const res1 = await
+        // const [res1, res2] = await Promise.all([
+            axios({url:`${REST_API_ENDPOINT}/uploadImage`,method:"POST",data:formData})
+            // axios.post(`${REST_API_ENDPOINT}/uploadImage`,formData)
+            // axios.patch(`${REST_API_ENDPOINT}/update`, objToSave),
+        // ])
+        .catch((error) => console.log('error', error));
+        console.log(res1.data)
+        // console.log(res2.data)
         navigation.goBack()
     };
 
@@ -77,6 +86,13 @@ const EditProfileScreen = ({ navigation, route }) => {
         }
         setInfo(obj)
     }, [])
+
+    useEffect(() => {
+        (async () => {
+            const galleryStatus = await ImagePicker.requestCameraPermissionsAsync();
+            setHasGalleryPermission(galleryStatus.status === 'granted');
+        })();
+    }, []);
 
     const nameChange = (val) => {
         if (val.trim().length >= 2) {
@@ -181,16 +197,29 @@ const EditProfileScreen = ({ navigation, route }) => {
         }
     }
 
+    const pickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1
+        });
 
+        console.log(result);
 
-    return (
-        <View style={styles.container}>
-            <TouchableOpacity>
+        if (!result.cancelled) {
+            setImage(result.uri);
+        }
+    }
+
+    return (<View style={styles.container}>
+        <View style={{ paddingTop: 20, alignItems: 'center', }}>
+            <TouchableOpacity onPress={() => pickImage()} >
                 <View style={{
                     width: 125,
                     height: 125,
                 }} >
-                    <ImageBackground source={AB}
+                    <ImageBackground source={{ uri: image }}
                         style={{ height: 125, width: 125 }}
                         imageStyle={{ borderRadius: 90 }}
                     >
@@ -214,91 +243,88 @@ const EditProfileScreen = ({ navigation, route }) => {
                     </ImageBackground>
                 </View>
             </TouchableOpacity>
-            {/* Name */}
+        </View>
 
-            <View style={styles.action}>
-                <FontAwesome name="user-o" color="#00ABB2" size={20} />
-                <TextInput
-                    style={styles.ti}
-                    value={getInfo.name}
-                    placeholderTextColor="#666666"
-                    onChangeText={nameChange}
-                ></TextInput>
-                {data.checkNameChange ? (
-                    <Feather name="check-circle" color="green" size={20} />
-                ) : null}
+        <View style={styles.userInfoSection}>
+
+            {/* Full Name */}
+
+            <View style={{ alignItems: 'center', flexDirection: 'row' }}>
+                <Icon name="account" color="#666666" size={20} />
+                <Title style={styles.titleStyle}>Full Name</Title>
             </View>
-            {data.notValidName ? null : (
-                <View duration={500}>
-                    <Text style={styles.errorMessage}>Name must be 2 characters long.</Text>
-                </View>
-            )}
+            <TextInput
+                style={styles.textInputStyle}
+                value={getInfo.name}
+                onChangeText={nameChange}
+            ></TextInput>
 
             {/* Email */}
 
-            <View style={styles.action}>
-                <FontAwesome name="envelope-o" color="#00ABB2" size={20} />
-                <TextInput
-                    style={styles.ti}
-                    value={getInfo.email}
-                    placeholderTextColor="#666666"
-                    keyboardType="email-address"
-                    autoCorrect={false}
-                    onChangeText={emailChange}
-                />
+            <View style={{ alignItems: 'center', flexDirection: 'row' }}>
+                <Icon name="email" color="#666666" size={20} />
+                <Title style={styles.titleStyle}>Email</Title>
             </View>
-            {data.notValidEmail ? null : (
-                <View duration={500}>
-                    <Text style={styles.errorMessage}>Email Syntax must be write.</Text>
-                </View>
-            )}
+            <TextInput
+                style={styles.textInputStyle}
+                value={getInfo.email}
+                placeholderTextColor="#666666"
+                keyboardType="email-address"
+                autoCorrect={false}
+                onChangeText={emailChange}
+            />
+
+            {/* Username */}
+
+            <View style={{ alignItems: 'center', flexDirection: 'row' }}>
+                <Icon name="account-circle" color="#666666" size={20} />
+                <Title style={styles.titleStyle}>Username</Title>
+            </View>
+            <TextInput
+                style={styles.textInputStyle}
+                value={getInfo.email}
+                placeholderTextColor="#666666"
+                keyboardType="email-address"
+                autoCorrect={false}
+
+            />
 
             {/* Address */}
-
-            <View style={styles.action}>
-                <Icon name="map-marker-radius" color="#00ABB2" size={20} />
-                <TextInput
-                    placeholderTextColor="#666666"
-                    value={getInfo.address}
-                    autoCorrect={false}
-                    style={styles.ti}
-                    onChangeText={(text) => addressChange(text)}
-                />
+            <View style={{ alignItems: 'center', flexDirection: 'row' }}>
+                <Icon name="map-marker-radius" color="#666666" size={20} />
+                <Title style={styles.titleStyle}>Address</Title>
             </View>
-            {data.notValidAddress ? null : (
-                <View duration={500}>
-                    <Text style={styles.errorMessage}>
-                        Enter some Address.
-                    </Text>
-                </View>
-            )}
+            <TextInput
+                placeholderTextColor="#666666"
+                value={getInfo.address}
+                autoCorrect={false}
+                style={styles.textInputStyle}
+                onChangeText={addressChange}
+            />
+
             {/* Phone Number */}
 
-            <View style={styles.action}>
-                <Feather name="phone" color="#00ABB2" size={20} />
-                <TextInput
-                    value={getInfo.phoneNo}
-                    placeholderTextColor="#666666"
-                    keyboardType="number-pad"
-                    autoCorrect={false}
-                    style={styles.ti}
-                    onChangeText={(text) => phoneNoChange(text)}
-                />
+            <View style={{ alignItems: 'center', flexDirection: 'row' }}>
+                <Icon name="cellphone" color="#666666" size={20} />
+                <Title style={styles.titleStyle}>Phone Number</Title>
             </View>
-            {data.notValidPhoneNo ? null : (
-                <View duration={500}>
-                    <Text style={styles.errorMessage}>
-                        Phone Number is not Valid.
-                    </Text>
-                </View>
-            )}
-            <TouchableOpacity style={styles.submitButton} onPress={updateData}>
-                <Text style={{ fontSize: 13, color: 'white', }}>Submit</Text>
-            </TouchableOpacity>
-            {/* <TouchableOpacity style={styles.submitButton} onPress={() => { navigation.navigate("ProfileScreen") }}>
-                <Text style={{ fontSize: 13, color: 'white', }}>Profile</Text>
-            </TouchableOpacity> */}
+
+            <TextInput
+                value={getInfo.phoneNo}
+                placeholderTextColor="#666666"
+                keyboardType="number-pad"
+                autoCorrect={false}
+                style={styles.textInputStyle}
+                onChangeText={phoneNoChange}
+            />
+
         </View>
+
+        <TouchableOpacity style={styles.submitButton} onPress={updateData}>
+            <Text style={{ fontSize: 15 }}>Submit</Text>
+        </TouchableOpacity>
+    </View >
+
     )
 }
 
@@ -307,33 +333,37 @@ export default EditProfileScreen;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingTop: Constants.statusBarHeight,
-        alignItems: 'center',
         padding: 25,
         backgroundColor: '#E0EFF6',
-
     },
-    ti: {
-        flex: 1,
-        paddingLeft: 13,
+    userInfoSection: {
+        marginTop: 10, justifyContent: 'center'
+    },
+    titleStyle: {
         color: '#666666',
-        fontSize: 13,
+        fontSize: 15,
+        marginLeft: 4
+    },
+    textInputStyle: {
+        borderBottomWidth: 1,
+        borderBottomColor: "#AAAAAA",
+        fontSize: 20,
+        paddingBottom: 10,
+
     },
     submitButton: {
         padding: 10,
         borderRadius: 10,
         backgroundColor: '#00ABB2',
+        justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 10,
+        marginTop: 25,
         width: '100%',
+        height: 60,
+        elevation: 9,
     },
     action: {
         flexDirection: 'row',
-        marginTop: 12,
-        alignItems: 'center',
-    },
-    errorMessage: {
-        color: '#FF0000',
-        fontSize: 12,
+        marginBottom: 15,
     },
 });

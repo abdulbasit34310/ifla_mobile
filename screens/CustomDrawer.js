@@ -1,14 +1,15 @@
 import * as React from 'react';
 import { View, StyleSheet, Image } from 'react-native';
-import { Avatar, Title, Caption, Drawer, Text } from 'react-native-paper';
+import { Drawer } from 'react-native-paper';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import AB from './images/AB.png';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-
+// import * as SecureStore from 'expo-secure-store';
 import { AuthContext } from '../components/context';
 
 export function CustomDrawer(props) {
   const { signOut } = React.useContext(AuthContext);
+
   return (
     <View style={{ flex: 1, backgroundColor: '#E0EFF6' }}>
       <DrawerContentScrollView {...props}>
