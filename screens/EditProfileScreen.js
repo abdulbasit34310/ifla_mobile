@@ -16,7 +16,7 @@ import AB from './images/AB.png';
 const FIREBASE_API_ENDPOINT =
     'https://madproject-61e88-default-rtdb.firebaseio.com/';
 
-const REST_API_ENDPOINT = "http://192.168.0.101:3000/users"
+const REST_API_ENDPOINT = "http://10.113.59.52:3000/users"
 
 const EditProfileScreen = ({ navigation, route }) => {
     var key = route.params.key;

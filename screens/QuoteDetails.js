@@ -10,7 +10,7 @@ import axios from 'axios';
 import {REST_API,REST_API_LOCAL} from "@env"
 
 
-const REST_API_ENDPOINT = 'http://192.168.0.101:3000/shipper' || REST_API+"/shipper";
+const REST_API_ENDPOINT = 'http://10.113.59.52:3000/shipper' || REST_API+"/shipper";
 
 export default function QuoteDetails({navigation, route}){
     // const id= route.params;
