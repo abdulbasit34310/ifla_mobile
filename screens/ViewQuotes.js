@@ -7,7 +7,7 @@ import {Text, View, StyleSheet, ImageBackground,
 import {REST_API,REST_API_LOCAL} from "@env"
 import axios from 'axios';
 
-const REST_API_ENDPOINT = 'http://192.168.0.101:3000/shipper' || REST_API+"/shipper";
+const REST_API_ENDPOINT = 'http://192.168.18.12:3000/shipper' || REST_API+"/shipper";
 
 const FIREBASE_API_ENDPOINT = 'https://freight-automation-default-rtdb.firebaseio.com/';
 

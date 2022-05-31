@@ -13,10 +13,7 @@ import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
 import AB from './images/AB.png';
 
-const FIREBASE_API_ENDPOINT =
-    'https://madproject-61e88-default-rtdb.firebaseio.com/';
-
-const REST_API_ENDPOINT = "http://192.168.0.101:3000/users"
+const REST_API_ENDPOINT = "http://192.168.18.12:3000/users"
 
 const EditProfileScreen = ({ navigation, route }) => {
     var key = route.params.key;
@@ -59,18 +56,38 @@ const EditProfileScreen = ({ navigation, route }) => {
         let formData = new FormData();
   
         //Adding files to the formdata
-        formData.append("image", image);
+        formData.append("image", {name:"r76fhtt.jpg",uri:image, type:"image/jpg"});
         // var requestOptions = {
         //     method: 'PATCH',
         //     body: JSON.stringify(objToSave),
         // };
         const res1 = await
         // const [res1, res2] = await Promise.all([
-            axios({url:`${REST_API_ENDPOINT}/uploadImage`,method:"POST",data:formData})
-            // axios.post(`${REST_API_ENDPOINT}/uploadImage`,formData)
+            // axios({url:`${REST_API_ENDPOINT}/uploadImage`,method:"POST",data:formData})
+            axios.post(`${REST_API_ENDPOINT}/uploadImage`,{body:formData, headers: {
+                'Content-Type':'multipart/form-data',
+                'Accept':'application/json'
+              }})
             // axios.patch(`${REST_API_ENDPOINT}/update`, objToSave),
         // ])
-        .catch((error) => console.log('error', error));
+        .catch((error) => {
+            if (error.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                console.log(error.response.data);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+              } else if (error.request) {
+                // The request was made but no response was received
+                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                // http.ClientRequest in node.js
+                console.log(error.request);
+              } else {
+                // Something happened in setting up the request that triggered an Error
+                console.log('Error', error.message);
+              }
+              console.log(error.config);
+        });
         console.log(res1.data)
         // console.log(res2.data)
         navigation.goBack()

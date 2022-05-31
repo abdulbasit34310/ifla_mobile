@@ -10,7 +10,7 @@ import axios from 'axios';
 import {REST_API,REST_API_LOCAL} from "@env"
 import * as SecureStore from 'expo-secure-store';
 
-const REST_API_ENDPOINT = 'http://192.168.0.101:3000/shipper' || REST_API+"/shipper";
+const REST_API_ENDPOINT = 'http://192.168.18.12:3000/shipper' || REST_API+"/shipper";
 
 export default function MyBookings({route, navigation }) {
   const [bookingData, setBookingData] = React.useState();
@@ -29,7 +29,8 @@ export default function MyBookings({route, navigation }) {
     let isSubscribed = true
     const token = getValueFor('userToken');
     const headers = {"Authorization" : `Bearer ${token}`}
-    const resp = await axios.get(`${REST_API_ENDPOINT}/getBookings`, {headers:headers});
+    const body = {}
+    const resp = await axios.get(`${REST_API_ENDPOINT}/getBookings`,body, {headers:headers});
     const data = resp.data.bookings;
     isSubscribed? setBookingData(data):null;
     setLoading(false);
