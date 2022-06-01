@@ -19,7 +19,7 @@ const ProfileScreen = ({route, navigation }) => {
 
     var email = ""
     const { signOut } = React.useContext(AuthContext);
-    const [getData, setData] = React.useState({ key: ' ', PersonId:{name: 'John Doe', email: 'johndoe@gmail.com', phone: '03987654321'}, Addresses: [{City:'Wherever'},{City:'Wherever'}] });
+    const [getData, setData] = React.useState({ key: ' ', PersonId:{name: '', email: '', phone: ''}, Addresses: [{City:''},{City:''}] });
     //const [token,setToken] = React.useState(route.params.token)
 
     const getSignedInUserCredentials = async () => {
