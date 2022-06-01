@@ -7,8 +7,9 @@ import {
 } from 'react-native';
 import { REST_API, REST_API_LOCAL } from "@env"
 import axios from 'axios';
+import * as SecureStore from 'expo-secure-store';
 
-const REST_API_ENDPOINT = 'http://192.168.18.12:3000/shipper' || REST_API+"/shipper";
+const REST_API_ENDPOINT = 'http://192.168.8.101:3000/shipper' || REST_API+"/shipper";
 
 const FIREBASE_API_ENDPOINT = 'https://freight-automation-default-rtdb.firebaseio.com/';
 
@@ -16,7 +17,10 @@ export default function ViewQuotes({ navigation, route }) {
   const [quoteData, setQuoteData] = React.useState();
 
   const getQuoteData = async () => {
-    const response = await axios.get(`${REST_API_ENDPOINT}/getQuotes`);
+    let token1 = await SecureStore.getItemAsync("userToken")
+    const headers = { "Authorization": `Bearer ${token1}` }
+
+    const response = await axios.get(`${REST_API_ENDPOINT}/getQuotes`,{withCredentials: true,headers:headers});
     const data = await response.data.bookings;
     //   var id=Object.keys(data);
     //   var pendingData={};
@@ -32,9 +36,9 @@ export default function ViewQuotes({ navigation, route }) {
     setQuoteData(data);
   };
 
-  React.useEffect(() => {
-    getQuoteData();
-  }, [setQuoteData]);
+  // React.useEffect(() => {
+  //   getQuoteData();
+  // }, [setQuoteData]);
 
   React.useEffect(() => {
     navigation.addListener('focus', () => {

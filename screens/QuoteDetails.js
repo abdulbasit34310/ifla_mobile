@@ -8,9 +8,10 @@ import {Text, View, StyleSheet, ImageBackground,
 } from 'react-native';
 import axios from 'axios';
 import {REST_API,REST_API_LOCAL} from "@env"
+import * as SecureStore from 'expo-secure-store';
 
 
-const REST_API_ENDPOINT = 'http://192.168.18.12:3000/shipper' || REST_API+"/shipper";
+const REST_API_ENDPOINT = 'http://192.168.8.101:3000/shipper' || REST_API+"/shipper";
 
 export default function QuoteDetails({navigation, route}){
     // const id= route.params;
@@ -32,8 +33,11 @@ export default function QuoteDetails({navigation, route}){
       //   .then((response) => response.json())
       //   .then((result) => console.log('Delete Response:', result))
       //   .catch((error) => console.log('error', error));
+      let token1 = await SecureStore.getItemAsync("userToken")
+      const headers = { "Authorization": `Bearer ${token1}` }
+
       const id = quoteData._id
-      let response = await axios.delete(`${REST_API_ENDPOINT}/deleteQuote/${id}`)
+      let response = await axios.delete(`${REST_API_ENDPOINT}/deleteQuote/${id}`, {withCredentials: true,headers:headers})
       console.log(response.data)
       console.log("Quote Deleted")
 

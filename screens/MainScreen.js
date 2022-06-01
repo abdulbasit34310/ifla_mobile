@@ -1,25 +1,44 @@
 import * as React from 'react';
-import { View, StyleSheet, Image, Alert} from 'react-native';
+import { View, StyleSheet, Image, Alert, Button} from 'react-native';
 import Constants from 'expo-constants';
 import IFLA from './images/IFLA.png';
+import axios from 'axios';
+import * as SecureStore from 'expo-secure-store';
 
 const MainScreen = ({route,navigation}) => {
-    // //const [token,setToken] = React.useState(route.params.token)
-    // async function getValueFor(key) {
-    //     let result = await SecureStore.getItemAsync(key);
-    //     if (result) {
-    //         setToken(result)
-    //     //   Alert.alert("🔐 Here's your value 🔐 \n" + result);
-    //     } else {
-    //     //   Alert.alert('No Token.');
-    //         navigation.navigate("RegisteringScreen")
-    //     }
-    //   }
+    const [token,setToken] = React.useState()
+    function getValueFor() {
+        let result = SecureStore.getItemAsync("userToken").then(val=>setToken(val));
+        // console.log(result)
+        // if (result) 
+        // // { 
+        //     setToken(result)
+      }
 
+    // const request = ()=>{
+    //     console.log(token)
+    //     var obj = {  
+    //         method: 'POST',
+    //         withCredentials: true,
+    //         credentials: 'include',
+    //         headers: {
+    //             'Authorization': `Bearer ${token}`
+    //         }
+    //       }
+    //     fetch('http://192.168.8.101:3000/users/testAuth', obj)  
+    //     .then(function(res) {
+    //         return res.json();
+    //     })
+    //     .then(function(resJson) {
+    //         console.log(resJson)
+    //         return resJson;
+    //     })
+    // }
     // React.useEffect(()=>{
     //     navigation.addListener('focus', () => {
-    //         getValueFor('token')
-    //       });
+    //     getValueFor()
+    //     // request()
+    //     })
     // },[navigation])
     return (
         <View style={styles.container}>

@@ -10,9 +10,10 @@ import { ButtonGroup } from 'react-native-elements';
 import { Checkbox } from 'react-native-paper';
 import axios from 'axios';
 import {REST_API,REST_API_LOCAL} from "@env"
+import * as SecureStore from 'expo-secure-store';
 
 
-const REST_API_ENDPOINT = 'http://192.168.18.12:3000/shipper' || REST_API+"/shipper";
+const REST_API_ENDPOINT = 'http://192.168.8.101:3000/shipper' || REST_API+"/shipper";
 
 const CITIES_API_ENDPOINT = 'https://freight-automation-default-rtdb.firebaseio.com/';
 
@@ -41,7 +42,10 @@ export default function GetAQuote({route, navigation }) {
         const body = quoteData
         // console.log(quoteData)
         // var obj = quoteData;
-        var response = await axios.post(REST_API_ENDPOINT+'/saveQuoteMobile',body)
+        let token1 = await SecureStore.getItemAsync("userToken")
+        const headers = { "Authorization": `Bearer ${token1}` }
+
+        var response = await axios.post(REST_API_ENDPOINT+'/saveQuoteMobile',body,{withCredentials: true,headers:headers})
         var data = response.data
         console.log(data);
         console.log('Saving Done!');

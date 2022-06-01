@@ -8,7 +8,7 @@ import axios from 'axios';
 import { REST_API, REST_API_LOCAL } from "@env"
 import * as SecureStore from 'expo-secure-store';
 
-const REST_API_ENDPOINT = 'http://192.168.18.12:3000/shipper' || REST_API+"/shipper";
+const REST_API_ENDPOINT = 'http://192.168.8.101:3000/shipper' || REST_API+"/shipper";
 
 export default function PendingBookings({ route, navigation }) {
   const [bookingData, setBookingData] = React.useState();
@@ -23,17 +23,34 @@ export default function PendingBookings({ route, navigation }) {
     }
   }
   const getBookingsData = async () => {
-    const token = getValueFor('userToken')
-    const headers = { "Authorization": `Bearer ${token}` }
-    const response = await axios.get(`${REST_API_ENDPOINT}/getPendingBookings`, { headers: headers });
+    let isSubscribed = true
+    let token1 = await SecureStore.getItemAsync("userToken")
+    // .then(val=>setToken(val));
+    // console.log(token1)
+    // var obj = {  
+    //     method: 'GET',
+    //     withCredentials: true,
+    //     credentials: 'include',
+    //     headers: {
+    //         'Authorization': `Bearer ${token1}`
+    //     }
+    //   }
+    // const response = await fetch(`${REST_API_ENDPOINT}/getPendingBookings`, obj)
+    // let data = await response.json()
+    // const token = getValueFor('userToken')
+    const headers = { "Authorization": `Bearer ${token1}` }
+    const response = await axios.get(`${REST_API_ENDPOINT}/getPendingBookings`, {withCredentials: true, headers: headers });
     const data = await response.data.bookings;
     console.log(data)
-    setBookingData(data);
+    isSubscribed ? setBookingData(data) : null;
+    // setLoading(false);
+
+    return () => (isSubscribed = false)
   };
 
-  React.useEffect(() => {
-    getBookingsData();
-  }, [setBookingData]);
+  // React.useEffect(() => {
+  //   getBookingsData();
+  // }, [setBookingData]);
 
   React.useEffect(() => {
     navigation.addListener('focus', () => {
@@ -58,7 +75,7 @@ export default function PendingBookings({ route, navigation }) {
           <TouchableOpacity style={styles.flatListStyle} onPress={() => { navigation.push('BookingDetails', item) }}>
             <View>
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', borderBottomColor: '#AAAAAA', borderBottomWidth: 1, paddingBottom: 10 }}>
-                <Text style={styles.timeStyle}>{bookingData[index].datetime}</Text>
+                <Text style={styles.timeStyle}>{bookingData[index].datetime.substr(0,10)} {bookingData[index].datetime.substr(11,11)}</Text>
                 <Text style={styles.paymentStyle}>{bookingData[index].Payment.Amount} PKR</Text>
               </View>
 

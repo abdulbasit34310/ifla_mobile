@@ -13,7 +13,7 @@ const API_ENDPOINT = 'https://freight-automation-default-rtdb.firebaseio.com/';
 import {REST_API,REST_API_LOCAL} from "@env"
 import * as SecureStore from 'expo-secure-store';
 
-const REST_API_ENDPOINT = 'http://192.168.18.12:3000/shipper' || REST_API+"/shipper";
+const REST_API_ENDPOINT = 'http://192.168.8.101:3000/shipper' || REST_API+"/shipper";
 
 function ShipmentType({ navigation, nextStep, bookingData, setBooking }) {
   const [type, setType] = React.useState(1);
@@ -488,18 +488,40 @@ export default function ScheduleBooking({route, navigation }) {
   }
 
   const postData = async (Packaging) => {
-    const token = getValueFor('userToken')
+    // const token = getValueFor('userToken')
+    let token1 = await SecureStore.getItemAsync("userToken")
     const body = bookingData
-    const headers = {"Authorization" : `Bearer ${token}`}
     body.package = Packaging
+    const headers = {"Authorization" : `Bearer ${token1}`}
     try {
-      let res = await axios.post(`${REST_API_ENDPOINT}/saveBookingMobile`,body, { headers: headers })
-      // console.log(res.data)
+      let res = await axios.post(`${REST_API_ENDPOINT}/saveBookingMobile`,body, { withCredentials: true, headers: headers })
+      console.log(res.data)
       
     } catch (error) {
       console.log(error.response.data)
     }
 
+    // let token1 = await SecureStore.getItemAsync("userToken")
+    // .then(val=>setToken(val));
+    console.log(token1)
+    // var obj = {  
+    //     method: 'POST',
+    //     body: JSON.stringify(body),
+    //     withCredentials: true,
+    //     credentials: 'include',
+    //     headers: {
+    //         'Authorization': `Bearer ${token1}`
+    //     }
+    //   }
+    // const response = 
+    // fetch(`${REST_API_ENDPOINT}/saveBookingMobile`, obj).then(response => console.log(response.json())).catch(err => console.log(err))
+    // const token = getValueFor('userToken')
+    // const headers = { "Authorization": `Bearer ${token}` }
+    // const response = await axios.get(`${REST_API_ENDPOINT}/getPendingBookings`, { headers: headers });
+    // const data = await response.data.bookings;
+    // let data = await response.json()
+    // console.log(data)
+    
   }
 
   async function getValueFor(key) {

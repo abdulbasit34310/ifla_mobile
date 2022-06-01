@@ -6,25 +6,43 @@ import AB from './images/AB.png';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 // import * as SecureStore from 'expo-secure-store';
 import { AuthContext } from '../components/context';
+import axios from 'axios';
+import * as SecureStore from 'expo-secure-store';
 
 export function CustomDrawer(props) {
   const { signOut } = React.useContext(AuthContext);
+  const REST_API_ENDPOINT = 'http://192.168.8.101:3000/shipper' || REST_API + "/shipper";
+  const [image,setImage] = React.useState()
+  const getUser = async ()=>{
+    let token1 = await SecureStore.getItemAsync("userToken")
+    const headers = { "Authorization": `Bearer ${token1}` }
+    const response = await axios.get(`${REST_API_ENDPOINT}/image`, {withCredentials: true, headers: headers });
 
+    const data = await response.data;
+    console.log(data)
+    setImage(data.PersonId.image)
+  }
+
+  React.useEffect(()=>{
+    getUser()
+  },[])
   return (
     <View style={{ flex: 1, backgroundColor: '#E0EFF6' }}>
       <DrawerContentScrollView {...props}>
         <View style={styles.drawerContent}>
           <View style={styles.userInfoSection}>
             <View style={{ flexDirection: 'row', marginTop: 20 }}>
-              <Image
+              {image? 
+              (<Image
                 style={{
                   backgroundColor: "#00ABB2",
                   width: 100,
                   height: 100,
                   borderRadius: 90,
                 }}
-                source={AB}
-              />
+                source={{uri:`http://192.168.8.101:3000/images/${image}`}}
+              />):null
+            }
               {/* <View style={{ marginLeft: 15, flexDirection: 'column' }}>
                 <Title style={styles.title}>Abdul Basit</Title>
                 <Caption style={styles.email}>

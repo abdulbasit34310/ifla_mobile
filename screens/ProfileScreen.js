@@ -4,10 +4,13 @@ import { Title, Text, } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { AuthContext } from '../components/context';
-import EditProfileScreen from './EditProfileScreen';
 import AB from './images/AB.png';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-// import { set } from 'react-native-reanimated';
+import axios from 'axios';
+import { REST_API, REST_API_LOCAL } from "@env"
+import * as SecureStore from 'expo-secure-store';
+
+const REST_API_ENDPOINT = 'http://192.168.8.101:3000/users' || REST_API + "/users";
 
 const FIREBASE_API_ENDPOINT =
     'https://madproject-61e88-default-rtdb.firebaseio.com/';
@@ -16,43 +19,48 @@ const ProfileScreen = ({route, navigation }) => {
 
     var email = ""
     const { signOut } = React.useContext(AuthContext);
-    const [getData, setData] = React.useState({ key: ' ', name: 'John Doe', email: 'johndoe@gmail.com', address: 'Wherever', phoneNo: '03987654321' });
+    const [getData, setData] = React.useState({ key: ' ', PersonId:{name: 'John Doe', email: 'johndoe@gmail.com', phone: '03987654321'}, Addresses: [{City:'Wherever'},{City:'Wherever'}] });
     //const [token,setToken] = React.useState(route.params.token)
 
     const getSignedInUserCredentials = async () => {
-        const response = await fetch(
-            `${FIREBASE_API_ENDPOINT}/userCredentials.json`
-        );
-        const data = await response.json();
+        let token1 = await SecureStore.getItemAsync("userToken")
+        const headers = { "Authorization": `Bearer ${token1}` }
+        const response = await axios.get(`${REST_API_ENDPOINT}/getUser`, {withCredentials: true, headers: headers });
+    
+        // const response = await fetch(
+        //     `${FIREBASE_API_ENDPOINT}/userCredentials.json`
+        // );
+        const data = await response.data;
+        console.log(data)
+        setData(data)
+        // var keyValues = Object.keys(data);
 
-        var keyValues = Object.keys(data);
+        // let credential = {};
 
-        let credential = {};
-
-        for (let i = 0; i < keyValues.length; i++) {
-            let key = keyValues[i];
-            if (data[key].email == email) {
-                credential = {
-                    keyId: key,
-                    name: data[key].name,
-                    email: data[key].email,
-                    address: data[key].address,
-                    phoneNo: data[key].phoneNo
-                };
-                setData(credential)
-                break;
-            }
-        }
+        // for (let i = 0; i < keyValues.length; i++) {
+        //     let key = keyValues[i];
+        //     if (data[key].email == email) {
+        //         credential = {
+        //             keyId: key,
+        //             name: data[key].name,
+        //             email: data[key].email,
+        //             address: data[key].address,
+        //             phoneNo: data[key].phoneNo
+        //         };
+        //         setData(credential)
+        //         break;
+        //     }
+        // }
     };
 
     React.useEffect(() => {
-        const getSignedInEmail = async () => {
-            var item = await AsyncStorage.getItem('userToken');
-            email = item
-        }
+        // const getSignedInEmail = async () => {
+        //     var item = await AsyncStorage.getItem('userToken');
+        //     email = item
+        // }
 
 
-        getSignedInEmail();
+        // getSignedInEmail();
         getSignedInUserCredentials();
     }, []);
 
@@ -61,13 +69,15 @@ const ProfileScreen = ({route, navigation }) => {
 
             <View style={{ paddingBottom: 25 }}>
                 <View style={{ alignItems: 'center', margin: 10 }}>
-                    <Image
+                    {getData.PersonId.image?
+                    (<Image
                         style={{ width: 150, height: 150, borderRadius: 100, }}
-                        source={AB}
-                    />
+                        source={{uri:`http://192.168.8.101:3000/images/${getData.PersonId.image}`}}
+                    />):null
+                    }
                     <SafeAreaView>
                         <Title style={{ fontWeight: 'bold', marginTop: 25, fontSize: 25, }}>
-                            {getData.name}
+                            {getData.PersonId.name}
                         </Title>
                     </SafeAreaView>
                 </View>
@@ -79,26 +89,28 @@ const ProfileScreen = ({route, navigation }) => {
 
                 <View style={styles.row}>
                     <Icon name="email" color="#777777" size={20} />
-                    <Text style={{ color: "#777777", marginLeft: 20 }}>{getData.email}</Text>
+                    <Text style={{ color: "#777777", marginLeft: 20 }}>{getData.PersonId.email}</Text>
                 </View>
 
                 {/* Address */}
-
-                <View style={styles.row}>
+                {
+                    getData.Addresses[0]?
+                (<View style={styles.row}>
                     <Icon name="map-marker-radius" color="#777777" size={20} />
-                    <Text style={{ color: "#777777", marginLeft: 20 }}>{getData.address}</Text>
-                </View>
+                    <Text style={{ color: "#777777", marginLeft: 20 }}>{getData.Addresses[0].City}</Text>
+                </View>):null
+                }
 
                 {/* Phone Number */}
 
                 <View style={styles.row}>
                     <Icon name="phone" color="#777777" size={20} />
-                    <Text style={{ color: "#777777", marginLeft: 20 }}>{getData.phoneNo}</Text>
+                    <Text style={{ color: "#777777", marginLeft: 20 }}>{getData.PersonId.phone}</Text>
                 </View>
             </View>
 
             <View>
-                <TouchableOpacity style={styles.infoBox} onPress={() => { navigation.navigate("EditProfileScreen", { key: getData.keyId, name: getData.name, emailId: getData.email, address: getData.address, phoneNo: getData.phoneNo }) }}>
+                <TouchableOpacity style={styles.infoBox} onPress={() => { navigation.navigate("EditProfileScreen", {item:getData}) }}>
                     <Text style={[styles.title, { fontSize: 13, color: '#E0EFF6', padding: 10, }]}>
                         Edit
                     </Text>

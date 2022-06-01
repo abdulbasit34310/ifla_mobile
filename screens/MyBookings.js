@@ -10,27 +10,47 @@ import axios from 'axios';
 import { REST_API, REST_API_LOCAL } from "@env"
 import * as SecureStore from 'expo-secure-store';
 
-const REST_API_ENDPOINT = 'http://192.168.18.12:3000/shipper' || REST_API+"/shipper";
+const REST_API_ENDPOINT = 'http://192.168.8.101:3000/shipper' || REST_API+"/shipper";
 
 export default function MyBookings({ route, navigation }) {
   const [bookingData, setBookingData] = React.useState();
   const [loading, setLoading] = React.useState(true);
+  const [token, setToken] =  React.useState();
 
-  async function getValueFor(key) {
-    let result = await SecureStore.getItemAsync(key);
-    if (result) {
-      return result
-    } else {
-      return "Token not in SecureStore"
-    }
+  function getValueFor() {
+    // let result = 
+    SecureStore.getItemAsync("userToken").then(val=>setToken(val));
+    // if (result) {
+    //   return result
+    // } else {
+    //   return "Token not in SecureStore"
+    // }
   }
 
   const getBookingsData = async () => {
     let isSubscribed = true
-    const token = getValueFor('userToken');
-    const headers = {"Authorization" : `Bearer ${token}`}
-    const body = {}
-    const resp = await axios.get(`${REST_API_ENDPOINT}/getBookings`,body, {headers:headers});
+    let token1 = await SecureStore.getItemAsync("userToken")
+    // .then(val=>setToken(val));
+    console.log(token1)
+    // var obj = {  
+    //     method: 'GET',
+    //     withCredentials: true,
+    //     credentials: 'include',
+    //     headers: {
+    //         'Authorization': `Bearer ${token1}`
+    //     }
+    //   }
+    // const response = await fetch(`${REST_API_ENDPOINT}/getBookings`, obj)  
+    // .then(function(res) {
+    //     return res.json();
+    // })
+    // .then(function(resJson) {
+    //     console.log(resJson)
+    //     return resJson;
+    // })
+    // let data = await response.json()
+    const headers = { "Authorization": `Bearer ${token1}` }
+    const resp = await axios.get(`${REST_API_ENDPOINT}/getBookings`, {withCredentials: true,headers:headers});
     const data = resp.data.bookings;
     isSubscribed ? setBookingData(data) : null;
     setLoading(false);
@@ -40,19 +60,19 @@ export default function MyBookings({ route, navigation }) {
 
   React.useEffect(() => {
     navigation.addListener('focus', () => {
+      // getValueFor();
       getBookingsData();
-      // getValueFor('token')
 
     });
 
   }, [navigation]);
 
 
-  React.useEffect(() => {
+  // React.useEffect(() => {
 
-    getBookingsData();
+  //   getBookingsData();
 
-  }, [setBookingData]);
+  // }, [setBookingData]);
 
 
   return (
@@ -71,7 +91,7 @@ export default function MyBookings({ route, navigation }) {
             <TouchableOpacity style={styles.flatListStyle}>
               <View>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', borderBottomColor: '#AAAAAA', borderBottomWidth: 1, paddingBottom: 10 }}>
-                  <Text style={styles.timeStyle}>{bookingData[index].datetime}</Text>
+                  <Text style={styles.timeStyle}>{bookingData[index].datetime.substr(0,10)} {bookingData[index].datetime.substr(11,11)}</Text>
                   <Text style={styles.paymentStyle}>{bookingData[index].Payment.Amount} PKR</Text>
                 </View>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 10 }}>
