@@ -8,7 +8,7 @@ import axios from 'axios';
 import { REST_API, REST_API_LOCAL } from "@env"
 import * as SecureStore from 'expo-secure-store';
 
-const REST_API_ENDPOINT = 'http://192.168.18.12:3000/shipper' || REST_API+"/shipper";
+const REST_API_ENDPOINT = 'http://10.113.61.207:3000/shipper' || REST_API+"/shipper";
 
 export default function PendingBookings({ route, navigation }) {
   const [bookingData, setBookingData] = React.useState();
@@ -55,7 +55,7 @@ export default function PendingBookings({ route, navigation }) {
 
         renderItem={({ item, index }) => (
 
-          <TouchableOpacity style={styles.flatListStyle} onPress={() => { navigation.push('BookingDetails', item) }}>
+          <TouchableOpacity style={styles.flatListStyle} onPress={() => { navigation.push('PendingBookingDetails', item) }}>
             <View>
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', borderBottomColor: '#AAAAAA', borderBottomWidth: 1, paddingBottom: 10 }}>
                 <Text style={styles.timeStyle}>{bookingData[index].datetime}</Text>

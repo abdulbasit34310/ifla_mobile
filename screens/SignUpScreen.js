@@ -9,7 +9,7 @@ import axios from 'axios';
 import { REST_API, REST_API_LOCAL } from "@env"
 import logo from './images/IFLA.png';
 
-const REST_API_ENDPOINT = 'http://192.168.18.12:3000/users' || REST_API + "/users";
+const REST_API_ENDPOINT = 'http://10.113.61.207:3000/users' || REST_API + "/users";
 
 const SignUpScreen = ({ route, navigation }) => {
   const { setloggedin } = route.params;
@@ -46,11 +46,13 @@ const SignUpScreen = ({ route, navigation }) => {
       password: data.password,
       // companyName: data.companyName,
     }
+    console.log(body);
     let res = await axios.post(`${REST_API_ENDPOINT}/signup`, body)
     const data1 = await res.data
     if (data1) {
       showToastWithGravity("Signed up");
       setloggedin(true)
+      navigation.navigate("SignInScreen");
     }
     else
       showToastWithGravity("Couldn't Sign up");

@@ -5,6 +5,10 @@ import {Text, View, StyleSheet, ImageBackground,
   ScrollView, FlatList, Alert
 } from 'react-native';
 import { Icon } from 'react-native-elements';
+import { Divider } from 'react-native-paper';
+
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+
 
 const FIREBASE_API_ENDPOINT = 'https://freight-automation-default-rtdb.firebaseio.com/';
 
@@ -29,69 +33,100 @@ export default function BookingDetails({navigation, route}){
     // }, [setBookingData]);
   
     return(
-      
-        <View style={{backgroundColor: '#E0EFF6', height: "100%"}}>
-<ScrollView>
-            <Text style={{fontSize: 40, marginTop:20, alignSelf: "center", backgroundColor: "#005761", color: "white", borderRadius: 15, padding: 10}}>{bookingData.Payment.Amount} Rs</Text>
-                <Text style={{fontSize: 16, alignSelf: "center", color: "#005761", borderRadius: 15, padding: 10,fontWeight: "bold" }}>{bookingData.datetime}</Text>
-                
-                <View style={{backgroundColor: 'white', padding: 10, margin: 2, marginHorizontal:10, borderRadius:10, elevation: 24}}>
-                <Text style={{fontSize: 20, fontWeight: "bold", marginLeft: 10 }}>Source </Text>
-                <Text style={{fontSize: 20, marginLeft: 50, marginTop: 5}} >{bookingData.pickaddress.City}, {bookingData.pickaddress.Building} {bookingData.pickaddress.Street}</Text>
-                
-                <Text style={{fontSize: 20, fontWeight: "bold", marginTop: 10, marginLeft: 10, marginHorizontal:10}}>Desitination </Text>
-                <Text style={{fontSize: 20, marginLeft: 50, marginTop: 5}} >{bookingData.dropaddress.City}, {bookingData.dropaddress.Building} {bookingData.dropaddress.Street}</Text>
-                </View>
-                <View style={{backgroundColor: 'white', padding: 10, margin: 2, marginHorizontal:10, borderRadius:10, elevation: 24}}>
-                <Text style={{fontSize: 20, fontWeight: "bold", marginLeft: 10}}>Description </Text>
-                <Text style={{fontSize: 20, marginLeft: 50, marginTop: 5}} >{bookingData.bookdetails.Description}</Text>
-              </View>
-              <View style={{backgroundColor: 'white', padding: 10, margin: 2, marginHorizontal:10, borderRadius:10, elevation: 24}}>
-                <Text style={{fontSize: 20, fontWeight: "bold", marginLeft: 10}}>Shipment </Text>
-              <View style={{flexDirection:'row', justifyContent: 'space-between'}}>
-              <View>
-                <Text style={{fontSize: 20, marginLeft: 50, marginTop: 5}} >Quantity: {bookingData.bookdetails.Quantity}</Text>
-                <Text style={{fontSize: 20, marginLeft: 50, marginTop: 5}} >Insurance: {bookingData.bookdetails.isInsured? "Yes":"No"}</Text>
-                {/* <Text style={{fontSize: 20, marginLeft: 50, marginTop: 5}} >VehicleNo</Text> */}
-              </View>
-              <Icon
-          name="truck"
-          type="font-awesome"
-          size={40}
-          color='#068E94'
-          style={{margin: 10, fontSize: 30}}
-        />
+    <ScrollView>
+    <View style={styles.container}>
+    <Text style={{fontSize: 30, fontWeight: "bold", marginLeft: 20, color: "#005761"}} >{bookingData.bookdetails.Type=="FTL"? "Full Truck Load": "Less Than Truck Load"}</Text>
+    <Text style={{fontSize: 16, fontWeight: "bold", marginLeft: 20, color: "black" }}>{bookingData.datetime}</Text>
+    <View style={{elevation:8, backgroundColor:"white", margin:15, padding:25, borderRadius: 10}}> 
+      <View style={{flexDirection:"row" , justifyContent: "space-between", marginVertical:5}}>
+        <Text style={{fontSize: 16}} ><FontAwesome name="location-arrow" color="#005761" size={20} /> Source
+        </Text>
+        <Text style={{fontSize: 16}} ><FontAwesome name="map-marker" color="#005761" size={20} /> Destination</Text>
+        </View>
 
-              </View>
-              </View>
-                <View  style={{backgroundColor: 'white', padding: 10, margin: 2, marginHorizontal:10, borderRadius:10, elevation: 24,flexDirection: "row", alignItems: 'center', justifyContent:'space-between'}}>
-                <Text style={{fontSize: 20, fontWeight: "bold", marginLeft: 10}}>Shipment Type </Text>
-                <Text style={{fontSize: 16, marginRight: 20, backgroundColor: '#068E94', color: "white", fontWeight: "bold", padding: 10, borderRadius: 5}} >{bookingData.bookdetails.Type}</Text>
-              </View>
-              <View  style={{backgroundColor: 'white', padding: 10, margin: 2, marginHorizontal:10, borderRadius:10, elevation: 24, flexDirection: "row", alignItems: 'center', justifyContent:'space-between'}}>
-                <Text style={{fontSize: 20, fontWeight: "bold", marginLeft: 10}}>Status </Text>
-                <Text style={{fontSize: 16, marginRight: 20, backgroundColor: '#068E94', color: "white", fontWeight: "bold", padding: 10, borderRadius: 5}} >{bookingData.Status}</Text>
-              </View>
-              <View  style={{backgroundColor: 'white', padding: 10, margin: 2, marginHorizontal:10, borderRadius:10, elevation: 24,flexDirection: "row", alignItems: 'center',justifyContent:'space-between'}}>
-                <Text style={{fontSize: 20, fontWeight: "bold", marginLeft: 10}}>Weight </Text>
-                <Text style={{fontSize: 16, marginRight: 20, backgroundColor: '#068E94', color: "white", fontWeight: "bold", padding: 10, borderRadius: 5}} >{bookingData.bookdetails.Weight} kg</Text>
-              </View>
-                <TouchableOpacity onPress={()=>{Alert.alert(
-              'Cancel Booking',
-              "Are you sure?",
-              [
-                {
-                  text: "Cancel",
-                  onPress: () => console.log("Cancel Pressed"),
-                  style: "cancel"
-                },
-                { text: "Confirm", onPress: () => {deleteData(); navigation.goBack();}}
-              ]
-            )}} style={{marginTop:20 , padding:10 ,marginBottom: 20 ,backgroundColor: "#068E94", width: 200 ,alignSelf:'center',borderRadius: 5}}><Text style={{alignSelf: 'center', color: "white", fontWeight: "bold", fontSize: 18}}>Delete Record</Text></TouchableOpacity>
-         
-         </ScrollView>
-          </View>
-    
-    )
-  }
-  
+        <View style={{flexDirection:"row" , justifyContent: "space-between"}}>
+          
+      <Text style={styles.addressContainer}>{bookingData.pickaddress.City}, {bookingData.pickaddress.Building} {bookingData.pickaddress.Street}</Text>
+      <Text style={styles.addressContainer}>
+        {bookingData.dropaddress.City}, {bookingData.dropaddress.Building} {bookingData.dropaddress.Street}          </Text>
+      </View>
+      <Divider/>
+      <View style={{marginVertical: 25}}>
+        <View style={styles.propertyContainerStyle}>
+          <Text >Weight</Text>
+          <Text style={styles.propertyStyle}>{bookingData.bookdetails.Weight} kg</Text>
+        </View>
+
+        <View style={styles.propertyContainerStyle}>
+          <Text >Insurance</Text>
+          <Text style={styles.propertyStyle}>No</Text>
+        </View>
+        
+        <View style={styles.propertyContainerStyle}>
+          <Text>Quantity</Text>
+          <Text style={styles.propertyStyle}>{bookingData.bookdetails.Quantity} Pcs</Text>
+        </View>
+
+        <View style={styles.propertyContainerStyle}>
+          <Text>Status</Text>
+          <Text style={styles.propertyStyle}>{bookingData.Status}</Text>
+        </View>
+      </View>
+      <Divider/>
+      <View style={{marginVertical:20}}>
+      <View style={styles.propertyContainerStyle}>
+          <Text>Sub Total</Text>
+          <Text style={styles.propertyStyle}>{bookingData.Payment.Amount} Rs</Text>
+        </View>
+      <View style={styles.propertyContainerStyle}>
+          <Text>Insured Amount</Text>
+          <Text style={styles.propertyStyle}>N/A</Text>
+        </View>
+        <View style={styles.propertyContainerStyle}>
+          <Text>Tax</Text>
+          <Text style={styles.propertyStyle}>N/A</Text>
+        </View>
+        </View>
+        <Divider/>
+      <View style={{flexDirection:"row", justifyContent:"space-between", marginTop: 10}}>
+      <Text style={{fontSize: 18}}>Total</Text>
+      <Text  style={styles.paymentStyle}>{bookingData.Payment.Amount} Rs</Text>
+      </View>
+    </View>
+
+
+
+
+
+
+
+      <TouchableOpacity onPress={() => {
+        Alert.alert(
+          'Delete Booking Record',
+          "Are you sure?",
+          [
+            {
+              text: "Cancel",
+              onPress: () => console.log("Cancel Pressed"),
+              style: "cancel"
+            },
+            { text: "Confirm", onPress: () => { deleteData(); navigation.goBack(); } }
+          ]
+        )
+      }} style={{ marginTop: 20, padding: 10, marginBottom: 20, backgroundColor: "#068E94", width: 200, alignSelf: 'center', borderRadius: 5 }}><Text style={{ alignSelf: 'center', color: "white", fontWeight: "bold", fontSize: 18 }}>Delete Booking</Text></TouchableOpacity>
+
+
+  </View>
+  </ScrollView>
+
+)
+}
+
+const styles = StyleSheet.create({
+container: { backgroundColor: "#E0EFF6", height: "100%", padding: 15 },
+addressContainer:{width: "35%", fontSize: 16, fontWeight: "bold"},
+propertyContainerStyle:{flexDirection:"row", justifyContent:"space-between", marginTop: 5, alignItems: "center"},
+propertyStyle: {fontSize: 16, fontWeight: "bold"},
+paymentStyle: { fontSize: 22, fontWeight: "bold", color: "#005761" },
+
+});

@@ -1,16 +1,18 @@
 import * as React from 'react';
-import {Text, View, StyleSheet, ImageBackground,
+import {Text, View, StyleSheet,
   TouchableOpacity,
-  TextInput,
-  Picker,
-  Image,
+
   ScrollView, FlatList, Alert
 } from 'react-native';
+
+import { Divider } from 'react-native-paper';
+
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import axios from 'axios';
 import {REST_API,REST_API_LOCAL} from "@env"
 
 
-const REST_API_ENDPOINT = 'http://192.168.18.12:3000/shipper' || REST_API+"/shipper";
+const REST_API_ENDPOINT = 'http://10.113.61.207:3000/shipper' || REST_API+"/shipper";
 
 export default function QuoteDetails({navigation, route}){
     // const id= route.params;
@@ -46,58 +48,96 @@ export default function QuoteDetails({navigation, route}){
   
     return(
       
-        <View style={{backgroundColor: '#E0EFF6', height: "100%"}}>
-<ScrollView>
-                <Text style={{fontSize: 40, marginVertical:20, alignSelf: "center", backgroundColor: "#005761", color: "white", borderRadius: 15, padding: 10}}>{quoteData.Payment.Amount} Rs</Text>
-                
-                <View style={{backgroundColor: 'white', padding: 10, margin: 2, marginHorizontal:10, borderRadius:10, elevation: 24}}>
-                <Text style={{fontSize: 20, fontWeight: "bold", marginLeft: 10 }}>Source </Text>
-                <Text style={{fontSize: 20, marginLeft: 50, marginTop: 5}} >{quoteData.pickaddress.City}</Text>
-                
-                <Text style={{fontSize: 20, fontWeight: "bold", marginTop: 10, marginLeft: 10, marginHorizontal:10}}>Destination </Text>
-                <Text style={{fontSize: 20, marginLeft: 50, marginTop: 5}} >{quoteData.dropaddress.City}</Text>
-                </View>
-                <View  style={{backgroundColor: 'white', padding: 10, margin: 2,  marginHorizontal:10,flexDirection: "row", alignItems: 'center', justifyContent: 'space-between', borderRadius:10, elevation: 24}}>
-                <Text style={{fontSize: 20, fontWeight: "bold", marginLeft: 10}}>Quantity </Text>
-                <Text style={{fontSize: 16, marginRight: 20, backgroundColor: '#068E94', color: "white", fontWeight: "bold", padding: 10, borderRadius: 5}} >{quoteData.bookdetails.Quantity}</Text>
-              </View>
-              <View  style={{backgroundColor: 'white', padding: 10, margin: 2 , marginHorizontal:10,flexDirection: "row", alignItems: 'center', justifyContent: 'space-between', borderRadius:10, elevation: 24}}>
-                <Text style={{fontSize: 20, fontWeight: "bold", marginLeft: 10}}>Weight </Text>
-                <Text style={{fontSize: 16, marginRight: 20, backgroundColor: '#068E94', color: "white", fontWeight: "bold", padding: 10, borderRadius: 5}} >{quoteData.bookdetails.Weight} kg</Text>
-              </View>
-              <View  style={{backgroundColor: 'white', padding: 10, margin: 2 , marginHorizontal:10,flexDirection: "row", alignItems: 'center', justifyContent: 'space-between', borderRadius:10, elevation: 24}}>
-                <Text style={{fontSize: 20, fontWeight: "bold", marginLeft: 10}}>Shipment Type</Text>
-                <Text style={{fontSize: 16, marginRight: 20, backgroundColor: '#068E94', color: "white", fontWeight: "bold", padding: 10, borderRadius: 5}} >{quoteData.bookdetails.Type}</Text>
-              </View>
-                <TouchableOpacity onPress={()=>{Alert.alert(
-              'Delete Quote',
-              "Are you sure?",
-              [
-                {
-                  text: "Cancel",
-                  onPress: () => console.log("Cancel Pressed"),
-                  style: "cancel"
-                },
-                { text: "Confirm", onPress: () => {deleteData(); navigation.goBack();}}
-              ]
-            )}} style={{marginTop:20 , padding:10 ,marginBottom: 20 ,backgroundColor: "#068E94", width: 200 ,alignSelf:'center',borderRadius: 5}}><Text style={{alignSelf: 'center', color: "white", fontWeight: "bold", fontSize: 18}}>Delete</Text></TouchableOpacity>
-         
-         <TouchableOpacity onPress={()=>{Alert.alert(
-              'Create Booking',
-              "Are you sure?",
-              [
-                {
-                  text: "Cancel",
-                  onPress: () => console.log("Cancel Pressed"),
-                  style: "cancel"
-                },
-                { text: "Confirm", onPress: () => {navigation.navigate("ScheduleBooking");}}
-              ]
-            )}} style={{marginTop:20 , padding:10 ,marginBottom: 20 ,backgroundColor: "#068E94", width: 200 ,alignSelf:'center',borderRadius: 5}}><Text style={{alignSelf: 'center', color: "white", fontWeight: "bold", fontSize: 18}}>Create Booking</Text></TouchableOpacity>
-         
-         </ScrollView>
+      <ScrollView>
+      <View style={styles.container}>
+      <Text style={{fontSize: 30, fontWeight: "bold", marginLeft: 20, color: "#005761"}} >{quoteData.bookdetails.Type=="FTL"? "Full Truck Load": "Less Than Truck Load"}</Text>
+      <Text style={{fontSize: 16, fontWeight: "bold", marginLeft: 20, color: "black" }}>{quoteData.datetime}</Text>
+      <View style={{elevation:8, backgroundColor:"white", margin:15, padding:25, borderRadius: 10}}> 
+        <View style={{flexDirection:"row" , justifyContent: "space-between", marginVertical:5}}>
+          <Text style={{fontSize: 16}} ><FontAwesome name="location-arrow" color="#005761" size={20} /> Source
+          </Text>
+          <Text style={{fontSize: 16}} ><FontAwesome name="map-marker" color="#005761" size={20} /> Destination</Text>
           </View>
-    
-    )
+  
+          <View style={{flexDirection:"row" , justifyContent: "space-between"}}>
+            
+        <Text style={styles.addressContainer}>{quoteData.pickaddress.City}</Text>
+        <Text style={styles.addressContainer}>
+          {quoteData.dropaddress.City}</Text>
+        </View>
+        <Divider/>
+        <View style={{marginVertical: 25}}>
+          <View style={styles.propertyContainerStyle}>
+            <Text >Weight</Text>
+            <Text style={styles.propertyStyle}>{quoteData.bookdetails.Weight} kg</Text>
+          </View>
+  
+          
+          <View style={styles.propertyContainerStyle}>
+            <Text>Quantity</Text>
+            <Text style={styles.propertyStyle}>{quoteData.bookdetails.Quantity} Pcs</Text>
+          </View>
+          <View style={styles.propertyContainerStyle}>
+            <Text >Insurance</Text>
+            <Text style={styles.propertyStyle}>No</Text>
+          </View>
+  
+          <View style={styles.propertyContainerStyle}>
+            <Text>Packaging</Text>
+            <Text style={styles.propertyStyle}>No</Text>
+          </View>
+        </View>
+        <Divider/>
+        <View style={{marginVertical:20}}>
+        <View style={styles.propertyContainerStyle}>
+            <Text>Sub Total</Text>
+            <Text style={styles.propertyStyle}>{quoteData.Payment.Amount} Rs</Text>
+          </View>
+        <View style={styles.propertyContainerStyle}>
+            <Text>Insured Amount</Text>
+            <Text style={styles.propertyStyle}>N/A</Text>
+          </View>
+          <View style={styles.propertyContainerStyle}>
+            <Text>Tax</Text>
+            <Text style={styles.propertyStyle}>N/A</Text>
+          </View>
+          </View>
+          <Divider/>
+        <View style={{flexDirection:"row", justifyContent:"space-between", marginTop: 10}}>
+        <Text style={{fontSize: 18}}>Total</Text>
+        <Text  style={styles.paymentStyle}>{quoteData.Payment.Amount} Rs</Text>
+        </View>
+      </View>
+  
+  
+        <TouchableOpacity onPress={() => {
+          Alert.alert(
+            'Delete Quote Record',
+            "Are you sure?",
+            [
+              {
+                text: "Cancel",
+                onPress: () => console.log("Cancel Pressed"),
+                style: "cancel"
+              },
+              { text: "Confirm", onPress: () => { deleteData(); navigation.goBack(); } }
+            ]
+          )
+        }} style={{ marginTop: 20, padding: 10, marginBottom: 20, backgroundColor: "#068E94", width: 200, alignSelf: 'center', borderRadius: 5 }}><Text style={{ alignSelf: 'center', color: "white", fontWeight: "bold", fontSize: 18 }}>Delete Quote</Text></TouchableOpacity>
+  
+  
+    </View>
+    </ScrollView>
+  
+  )
   }
+  
+  const styles = StyleSheet.create({
+  container: { backgroundColor: "#E0EFF6", height: "100%", padding: 15 },
+  addressContainer:{width: "35%", fontSize: 16, fontWeight: "bold"},
+  propertyContainerStyle:{flexDirection:"row", justifyContent:"space-between", marginTop: 5, alignItems: "center"},
+  propertyStyle: {fontSize: 16, fontWeight: "bold"},
+  paymentStyle: { fontSize: 22, fontWeight: "bold", color: "#005761" },
+  
+  });
   

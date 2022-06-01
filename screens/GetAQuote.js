@@ -12,7 +12,7 @@ import axios from 'axios';
 import {REST_API,REST_API_LOCAL} from "@env"
 
 
-const REST_API_ENDPOINT = 'http://192.168.18.12:3000/shipper' || REST_API+"/shipper";
+const REST_API_ENDPOINT = 'http://10.113.61.207:3000/shipper' || REST_API+"/shipper";
 
 const CITIES_API_ENDPOINT = 'https://freight-automation-default-rtdb.firebaseio.com/';
 
@@ -45,7 +45,7 @@ export default function GetAQuote({route, navigation }) {
         var data = response.data
         console.log(data);
         console.log('Saving Done!');
-
+        showToastWithGravity();
     };
 
     const showToastWithGravity = () => {
@@ -230,7 +230,7 @@ export default function GetAQuote({route, navigation }) {
                                 alignSelf: 'center',
                                 marginTop: 20,
                             }}
-                            onPress={() => { SaveQuote(); showToastWithGravity(); }}
+                            onPress={() => { SaveQuote(); navigation.goBack(); }}
 
                         >
                             <Text style={{ alignSelf: 'center', color: 'white' }}>Save Quote</Text>

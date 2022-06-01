@@ -13,7 +13,7 @@ import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
 import AB from './images/AB.png';
 
-const REST_API_ENDPOINT = "http://192.168.18.12:3000/users"
+const REST_API_ENDPOINT = "http://10.113.61.207:3000/users"
 
 const EditProfileScreen = ({ navigation, route }) => {
     var key = route.params.key;
@@ -338,7 +338,7 @@ const EditProfileScreen = ({ navigation, route }) => {
         </View>
 
         <TouchableOpacity style={styles.submitButton} onPress={updateData}>
-            <Text style={{ fontSize: 15 }}>Submit</Text>
+            <Text style={{ fontSize: 18, color: "white" }}>Submit</Text>
         </TouchableOpacity>
     </View >
 
@@ -372,6 +372,7 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 10,
         backgroundColor: '#00ABB2',
+        color:"white",
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: 25,

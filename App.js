@@ -131,8 +131,8 @@ export default function App() {
             drawerContent={(props) => <CustomDrawer {...props} />}
           // screenOptions={{swipeEdgeWidth: 0}}
           >
-            <Drawer.Screen name="MainScreen" component={MainScreen} />
-            <Drawer.Screen name="TrackingScreen" component={TrackingScreen} />
+            <Drawer.Screen name="MainScreen" component={MainScreen} options={{title: "Home" }} />
+            <Drawer.Screen name="TrackingScreen" component={TrackingScreen} options={{title: "Tracking" }}/>
             <Drawer.Screen options={{ headerShown: false }} name="Booking" component={BookingStack} />
             <Drawer.Screen options={{ headerShown: false }} name="Profile" component={ProfileStack} />
           </Drawer.Navigator>
@@ -154,15 +154,15 @@ function BookingStack({ route }) {
       headerTitleStyle: { fontWeight: 'bold', fontSize: 24 },
       headerStyle: { backgroundColor: 'white', padding: 0 }
     }}>
-      <Stack.Screen name="BookingScreen" component={BookingScreen} />
-      <Stack.Screen name="ScheduleBooking" component={ScheduleBooking} />
-      <Stack.Screen name="GetAQuote" component={GetAQuote} />
-      <Stack.Screen name="ViewQuotes" component={ViewQuotes} />
-      <Stack.Screen name="QuoteDetails" component={QuoteDetails} />
-      <Stack.Screen name="PendingBookings" component={PendingBookings} />
-      <Stack.Screen name="PendingBookingDetails" component={PendingBookingDetails} />
-      <Stack.Screen name="MyBookings" component={MyBookings} />
-      <Stack.Screen name="BookingDetails" component={BookingDetails} />
+      <Stack.Screen name="BookingScreen" component={BookingScreen}  options={{title: "Booking" }}/>
+      <Stack.Screen name="ScheduleBooking" component={ScheduleBooking} options={{title: "Schedule Booking" }}/>
+      <Stack.Screen name="GetAQuote" component={GetAQuote} options={{title: "Get a Quote" }}/>
+      <Stack.Screen name="ViewQuotes" component={ViewQuotes} options={{title: "View Quote" }}/>
+      <Stack.Screen name="QuoteDetails" component={QuoteDetails} options={{title: "Quote Details" }}/>
+      <Stack.Screen name="PendingBookings" component={PendingBookings} options={{title: "Pending Bookings" }} />
+      <Stack.Screen name="PendingBookingDetails" component={PendingBookingDetails} options={{title: "Booking Details" }} />
+      <Stack.Screen name="MyBookings" component={MyBookings} options={{title: "My Bookings" }} />
+      <Stack.Screen name="BookingDetails" component={BookingDetails} options={{title: "Booking Details" }} />
     </Stack.Navigator>
   );
 }
@@ -176,9 +176,9 @@ function ProfileStack({ route }) {
       headerTitleStyle: { fontWeight: 'bold', fontSize: 24 },
       headerStyle: { backgroundColor: 'white', padding: 0 }
     }}>
-      <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
-      <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
-      <Stack.Screen name="CompanyInformationScreen" component={CompanyInformationScreen} />
+      <Stack.Screen name="ProfileScreen" component={ProfileScreen} options={{title: "Profile" }}/>
+      <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} options={{title: "Edit Profile" }}/>
+      <Stack.Screen name="CompanyInformationScreen" component={CompanyInformationScreen} options={{title: "Company Info" }}/>
     </Stack.Navigator>
   );
 }
