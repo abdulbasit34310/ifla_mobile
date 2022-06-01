@@ -49,7 +49,7 @@ export default function GetAQuote({route, navigation }) {
         var data = response.data
         console.log(data);
         console.log('Saving Done!');
-
+        showToastWithGravity();
     };
 
     const showToastWithGravity = () => {
@@ -234,7 +234,7 @@ export default function GetAQuote({route, navigation }) {
                                 alignSelf: 'center',
                                 marginTop: 20,
                             }}
-                            onPress={() => { SaveQuote(); showToastWithGravity(); }}
+                            onPress={() => { SaveQuote(); navigation.goBack(); }}
 
                         >
                             <Text style={{ alignSelf: 'center', color: 'white' }}>Save Quote</Text>

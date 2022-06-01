@@ -46,11 +46,13 @@ const SignUpScreen = ({ route, navigation }) => {
       password: data.password,
       // companyName: data.companyName,
     }
+    console.log(body);
     let res = await axios.post(`${REST_API_ENDPOINT}/signup`, body)
     const data1 = await res.data
     if (data1) {
       showToastWithGravity("Signed up");
       setloggedin(true)
+      navigation.navigate("SignInScreen");
     }
     else
       showToastWithGravity("Couldn't Sign up");

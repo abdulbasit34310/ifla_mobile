@@ -371,7 +371,7 @@ const EditProfileScreen = ({ navigation, route }) => {
         </View>
 
         <TouchableOpacity style={styles.submitButton} onPress={updateData}>
-            <Text style={{ fontSize: 15 }}>Submit</Text>
+            <Text style={{ fontSize: 18, color: "white" }}>Submit</Text>
         </TouchableOpacity>
     </View >
 
@@ -405,6 +405,7 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 10,
         backgroundColor: '#00ABB2',
+        color:"white",
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: 25,

@@ -72,7 +72,7 @@ export default function PendingBookings({ route, navigation }) {
 
         renderItem={({ item, index }) => (
 
-          <TouchableOpacity style={styles.flatListStyle} onPress={() => { navigation.push('BookingDetails', item) }}>
+          <TouchableOpacity style={styles.flatListStyle} onPress={() => { navigation.push('PendingBookingDetails', item) }}>
             <View>
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', borderBottomColor: '#AAAAAA', borderBottomWidth: 1, paddingBottom: 10 }}>
                 <Text style={styles.timeStyle}>{bookingData[index].datetime.substr(0,10)} {bookingData[index].datetime.substr(11,11)}</Text>
