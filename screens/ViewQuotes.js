@@ -9,7 +9,7 @@ import { REST_API, REST_API_LOCAL } from "@env"
 import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
 
-const REST_API_ENDPOINT = 'http://192.168.8.101:3000/shipper' || REST_API+"/shipper";
+const REST_API_ENDPOINT = 'http://192.168.1.103:3000/shipper' || REST_API+"/shipper";
 
 const FIREBASE_API_ENDPOINT = 'https://freight-automation-default-rtdb.firebaseio.com/';
 

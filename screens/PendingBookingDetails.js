@@ -6,32 +6,31 @@ import {
 } from 'react-native';
 import { Divider } from 'react-native-paper';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Feather from 'react-native-vector-icons/Feather';
 import { ScrollView } from 'react-native-gesture-handler';
+import * as SecureStore from 'expo-secure-store';
+import axios from 'axios';
+import { REST_API, REST_API_LOCAL } from "@env"
+
+const REST_API_ENDPOINT = 'http://192.168.1.103:3000/shipper' || REST_API + "/shipper";
+
 
 const FIREBASE_API_ENDPOINT = 'https://freight-automation-default-rtdb.firebaseio.com/';
 
 export default function PendingBookingDetails({ navigation, route }) {
   const [bookingData, setBookingData] = React.useState(route.params);
 
-  const deleteData = () => {
-    var requestOptions = {
-      method: 'DELETE',
-    };
-
-    fetch(`${FIREBASE_API_ENDPOINT}/bookings/${id}.json`, requestOptions)
-      .then((response) => response.json())
-      .then((result) => console.log('Delete Response:', result))
-      .catch((error) => console.log('error', error));
+  const deleteData = async () => {
+    let response = await axios.delete(`${REST_API_ENDPOINT}/deleteBooking/${bookingData._id}`)
+    let data = await response.data
+    console.log(data)
   };
 
 
-
   return (
-    <ScrollView>
+    <ScrollView style={{ backgroundColor: "#E0EFF6"}}>
     <View style={styles.container}>
       <Text style={{fontSize: 30, fontWeight: "bold", marginLeft: 20, color: "#005761"}} >{bookingData.bookdetails.Type=="FTL"? "Full Truck Load": "Less Than Truck Load"}</Text>
-      <Text style={{fontSize: 16, fontWeight: "bold", marginLeft: 20, color: "black" }}>{bookingData.datetime}</Text>
+      <Text style={{fontSize: 16, fontWeight: "bold", marginLeft: 20, color: "black" }}>{bookingData.datetime.substr(0,10)} {bookingData.datetime.substr(11,11)}</Text>
       <View style={{elevation:8, backgroundColor:"white", margin:15, padding:25, borderRadius: 10}}> 
         <View style={{flexDirection:"row" , justifyContent: "space-between", marginVertical:5}}>
           <Text style={{fontSize: 16}} ><FontAwesome name="location-arrow" color="#005761" size={20} /> Source
