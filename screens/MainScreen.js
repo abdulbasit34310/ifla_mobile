@@ -4,9 +4,12 @@ import Constants from 'expo-constants';
 import IFLA from './images/IFLA.png';
 import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
+import { AuthContext } from '../components/context';
+
 
 const MainScreen = ({route,navigation}) => {
     const [token,setToken] = React.useState()
+    const { signOut } = React.useContext(AuthContext)
     function getValueFor() {
         let result = SecureStore.getItemAsync("userToken").then(val=>setToken(val));
         // console.log(result)
@@ -14,6 +17,20 @@ const MainScreen = ({route,navigation}) => {
         // // { 
         //     setToken(result)
       }
+    const deleteToken= ()=>{
+        SecureStore.deleteItemAsync("userToken");
+        signOut()
+    }
+
+    const isTokenExpired = ()=>{
+    if(token){
+        const expiry = (JSON.parse(atob(token.split('.')[1]))).exp;
+        console.log(expiry)
+        console.log((Math.floor((new Date).getTime() / 1000)) >= expiry)
+        return (Math.floor((new Date).getTime() / 1000)) >= expiry
+    }
+    return false
+    }
 
     // const request = ()=>{
     //     console.log(token)
@@ -25,7 +42,7 @@ const MainScreen = ({route,navigation}) => {
     //             'Authorization': `Bearer ${token}`
     //         }
     //       }
-    //     fetch('http://192.168.1.103:3000/users/testAuth', obj)  
+    //     fetch('http://192.168.8.103:3000/users/testAuth', obj)  
     //     .then(function(res) {
     //         return res.json();
     //     })
@@ -34,12 +51,14 @@ const MainScreen = ({route,navigation}) => {
     //         return resJson;
     //     })
     // }
-    // React.useEffect(()=>{
-    //     navigation.addListener('focus', () => {
-    //     getValueFor()
-    //     // request()
-    //     })
-    // },[navigation])
+    React.useEffect(()=>{
+        navigation.addListener('focus', () => {
+        getValueFor()
+        if(isTokenExpired())
+            deleteToken()
+        // request()
+        })
+    },[navigation])
     return (
         <View style={styles.container}>
             <Image

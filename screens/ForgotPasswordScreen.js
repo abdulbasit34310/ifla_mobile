@@ -12,10 +12,12 @@ import {
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 
-import logo from './images/Falas.png';
+import logo from './images/IFLA.png';
+import axios from 'axios';
 
 const FIREBASE_API_ENDPOINT =
   'https://madproject-61e88-default-rtdb.firebaseio.com/';
+const REST_API_ENDPOINT = "http://192.168.8.103:3000/users"
 var arr = [];
 
 const ForgotPasswordScreen = ({ navigation }) => {
@@ -44,8 +46,10 @@ const ForgotPasswordScreen = ({ navigation }) => {
       });
     }
   };
-
-  const forgotpassword = (email) => { };
+//  {withCredentials:true, headers: {"Authorization": `Bearer ${token1}`}}
+  const forgotpassword = (email) => {
+    axios.post(`${REST_API_ENDPOINT}/forgotpassword`,{email:email})
+   };
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -73,6 +77,9 @@ const ForgotPasswordScreen = ({ navigation }) => {
             </Text>
           </View>
         )}
+      <TouchableOpacity style={styles.to} onPress={()=>{forgotpassword(data.email)}}>
+        <Text style={styles.signInText}>Reset Password</Text>
+      </TouchableOpacity>
       </View>
     </View>
   );
@@ -87,6 +94,7 @@ const styles = StyleSheet.create({
   },
   footer: {
     flex: 3,
+    alignItems:"center",
     backgroundColor: '#fff',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
@@ -121,6 +129,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#009387',
   },
+  signInText: {
+    color: "#E0EFF6",
+    fontSize: 26,
+
+},
+to: {
+    backgroundColor: '#00ABB2',
+    borderRadius: 45,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 175,
+    height: 75,
+    flexDirection: 'row',
+    marginTop: 35,
+},
+
 });
 
 export default ForgotPasswordScreen;
