@@ -9,7 +9,7 @@ import axios from 'axios';
 import { REST_API, REST_API_LOCAL } from "@env"
 import logo from './images/IFLA.png';
 
-const REST_API_ENDPOINT = 'http://192.168.1.103:3000/users' || REST_API + "/users";
+const REST_API_ENDPOINT = 'http://192.168.43.10:3000/users' || REST_API + "/users";
 
 const SignUpScreen = ({ route, navigation }) => {
   const { setloggedin } = route.params;
