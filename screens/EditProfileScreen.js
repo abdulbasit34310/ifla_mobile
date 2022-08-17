@@ -14,7 +14,11 @@ import axios from 'axios';
 import AB from './images/AB.png';
 import * as SecureStore from 'expo-secure-store';
 
+<<<<<<< HEAD
 const REST_API_ENDPOINT = "http://192.168.43.10:3000/users"
+=======
+const REST_API_ENDPOINT = "http://192.168.8.103:3000/users"
+>>>>>>> 2e7af8e573c5a83f1bf4abae0478b1f945fba46f
 
 const EditProfileScreen = ({ navigation, route }) => {
     var item = route.params.item 
@@ -32,7 +36,11 @@ const EditProfileScreen = ({ navigation, route }) => {
     const [getInfo, setInfo] = React.useState({ key: key, name: name, email: email, address: address, phoneNo: phoneNo, username: username});
 
     const [hasGalleyPermission, setHasGalleryPermission] = React.useState(null);
+<<<<<<< HEAD
     const [image, setImage] = React.useState(`http://192.168.43.10:3000/images/${item.PersonId.image}`);
+=======
+    const [image, setImage] = React.useState(`http://192.168.8.103:3000/images/${item.PersonId.image}`);
+>>>>>>> 2e7af8e573c5a83f1bf4abae0478b1f945fba46f
 
     const [data, setData] = React.useState({
         name: '',

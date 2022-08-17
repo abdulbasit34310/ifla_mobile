@@ -8,7 +8,11 @@ import axios from 'axios';
 import { REST_API, REST_API_LOCAL } from "@env"
 import * as SecureStore from 'expo-secure-store';
 
+<<<<<<< HEAD
 const REST_API_ENDPOINT = 'http://192.168.43.10:3000/shipper' || REST_API+"/shipper";
+=======
+const REST_API_ENDPOINT = 'http://192.168.8.103:3000/shipper' || REST_API+"/shipper";
+>>>>>>> 2e7af8e573c5a83f1bf4abae0478b1f945fba46f
 
 export default function PendingBookings({ route, navigation }) {
   const [bookingData, setBookingData] = React.useState();

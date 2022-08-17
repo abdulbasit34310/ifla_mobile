@@ -9,10 +9,14 @@ import axios from 'axios';
 import { REST_API, REST_API_LOCAL } from "@env"
 import logo from './images/IFLA.png';
 
+<<<<<<< HEAD
 const REST_API_ENDPOINT = 'http://192.168.43.10:3000/users' || REST_API + "/users";
+=======
+const REST_API_ENDPOINT = 'http://192.168.8.103:3000/users' || REST_API + "/users";
+>>>>>>> 2e7af8e573c5a83f1bf4abae0478b1f945fba46f
 
 const SignUpScreen = ({ route, navigation }) => {
-  const { setloggedin } = route.params;
+  // const { setloggedin } = route.params;
 
   const [data, setData] = React.useState({
     name: '',
@@ -51,7 +55,7 @@ const SignUpScreen = ({ route, navigation }) => {
     const data1 = await res.data
     if (data1) {
       showToastWithGravity("Signed up");
-      setloggedin(true)
+      // setloggedin(true)
       navigation.navigate("SignInScreen");
     }
     else

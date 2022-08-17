@@ -10,7 +10,11 @@ import axios from 'axios';
 import { REST_API, REST_API_LOCAL } from "@env"
 import * as SecureStore from 'expo-secure-store';
 
+<<<<<<< HEAD
 const REST_API_ENDPOINT = 'http://192.168.43.10:3000/users' || REST_API + "/users";
+=======
+const REST_API_ENDPOINT = 'http://192.168.8.103:3000/users' || REST_API + "/users";
+>>>>>>> 2e7af8e573c5a83f1bf4abae0478b1f945fba46f
 
 const FIREBASE_API_ENDPOINT =
     'https://madproject-61e88-default-rtdb.firebaseio.com/';
@@ -71,7 +75,11 @@ const ProfileScreen = ({route, navigation }) => {
                     {getData.PersonId.image?
                     (<Image
                         style={{ width: 150, height: 150, borderRadius: 100, }}
+<<<<<<< HEAD
                         source={{uri:`http://192.168.43.10:3000/images/${getData.PersonId.image}`}}
+=======
+                        source={{uri:`http://192.168.8.103:3000/images/${getData.PersonId.image}`}}
+>>>>>>> 2e7af8e573c5a83f1bf4abae0478b1f945fba46f
                     />):null
                     }
                     <SafeAreaView>
