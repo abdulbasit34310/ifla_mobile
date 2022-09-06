@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 import {
   View,
   Text,
@@ -8,29 +8,25 @@ import {
   Image,
   Alert,
   Platform,
-  ToastAndroid
-} from 'react-native';
+  ToastAndroid,
+} from "react-native";
 
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Feather from 'react-native-vector-icons/Feather';
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import Feather from "react-native-vector-icons/Feather";
 // import * as SecureStore from 'expo-secure-store';
-import { AuthContext } from '../components/context';
+import { AuthContext } from "../components/context";
 
-import logo from './images/IFLA.png';
-import axios from 'axios';
-import { REST_API, REST_API_LOCAL } from "@env"
+import logo from "./images/IFLA.png";
+import axios from "axios";
+import { REST_API, REST_API_LOCAL } from "@env";
 
-<<<<<<< HEAD
-const REST_API_ENDPOINT = 'http://192.168.43.10:3000/users' || REST_API + "/users";
-=======
-const REST_API_ENDPOINT = 'http://192.168.8.103:3000/users' || REST_API + "/users";
->>>>>>> 2e7af8e573c5a83f1bf4abae0478b1f945fba46f
+const REST_API_ENDPOINT =
+  "http://192.168.200.61:4000/users" || REST_API + "/users";
 
 const SignInScreen = ({ route, navigation }) => {
-
   const [data, setData] = React.useState({
-    username: '',
-    password: '',
+    username: "",
+    password: "",
     checkusernameChange: false,
     checkPasswordChange: false,
     notValidusername: true,
@@ -50,27 +46,26 @@ const SignInScreen = ({ route, navigation }) => {
   // }
 
   const sendSignInCredentials = async () => {
-
     // Click Sign In without entering data in any field.
     if (data.username.length == 0 || data.password.length == 0) {
       Alert.alert(
-        'Wrong Input!',
-        'Username or password field cannot be empty.',
-        [{ text: 'OK' }]
+        "Wrong Input!",
+        "Username or password field cannot be empty.",
+        [{ text: "OK" }]
       );
       return;
     }
-    console.log(data.username)
+    console.log(data.username);
     // If Username & password is incorrect.
-    const body = { username: data.username, password: data.password }
-    const response = await axios.post(
-      `${REST_API_ENDPOINT}/login`
-      , body).catch((error) => {
+    const body = { username: data.username, password: data.password };
+    const response = await axios
+      .post(`${REST_API_ENDPOINT}/login`, body)
+      .catch((error) => {
         if (error.response) {
           console.log(error.response.data);
           console.log(error.response.status);
-          Alert.alert('Invalid User!', 'Username or password is incorrect.', [
-            { text: 'OK' },
+          Alert.alert("Invalid User!", "Username or password is incorrect.", [
+            { text: "OK" },
           ]);
           return;
         }
@@ -80,11 +75,11 @@ const SignInScreen = ({ route, navigation }) => {
     const token = data1.token;
     const user_name = data1.user.username;
 
-    const foundUser = { userToken: token, userName: user_name }
+    const foundUser = { userToken: token, userName: user_name };
     signIn(foundUser);
 
     if (data1) {
-      showToastWithGravity()
+      showToastWithGravity();
     }
   };
 
@@ -143,31 +138,40 @@ const SignInScreen = ({ route, navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Image
-          source={logo}
-          style={styles.logo}
-        />
+        <Image source={logo} style={styles.logo} />
       </View>
 
       <View style={styles.footer}>
-        <View><Text style={{ fontSize: 22, fontWeight: 'bold', marginTop: 20, marginBottom: 5 }}>Welcome to IFLA!</Text>
-          <Text style={{ color: '#AAAAAA' }}>Sign in to continue</Text></View>
+        <View>
+          <Text
+            style={{
+              fontSize: 22,
+              fontWeight: "bold",
+              marginTop: 20,
+              marginBottom: 5,
+            }}
+          >
+            Welcome to IFLA!
+          </Text>
+          <Text style={{ color: "#AAAAAA" }}>Sign in to continue</Text>
+        </View>
 
         <View style={styles.action}>
           <FontAwesome name="user-circle" color="#005761" size={25} />
           <TextInput
             style={styles.ti}
             placeholder="Your Username"
-            onChangeText={(text) => usernameChange(text)}>
-
-          </TextInput>
+            onChangeText={(text) => usernameChange(text)}
+          ></TextInput>
           {data.checkusernameChange ? (
             <Feather name="check-circle" color="green" size={25} />
           ) : null}
         </View>
 
         {data.notValidusername ? null : (
-          <Text style={styles.errorMessage}>username Syntax is not Correct</Text>
+          <Text style={styles.errorMessage}>
+            username Syntax is not Correct
+          </Text>
         )}
 
         <View style={styles.action}>
@@ -176,7 +180,8 @@ const SignInScreen = ({ route, navigation }) => {
             style={styles.ti}
             placeholder="Your Password"
             secureTextEntry={data.secureTextEntry ? true : false}
-            onChangeText={(text) => passwordChange(text)}></TextInput>
+            onChangeText={(text) => passwordChange(text)}
+          ></TextInput>
           <TouchableOpacity onPress={updateSecureTextEntry}>
             {data.secureTextEntry ? (
               <Feather name="eye-off" color="grey" size={25} />
@@ -191,8 +196,17 @@ const SignInScreen = ({ route, navigation }) => {
         )}
 
         <TouchableOpacity
-          onPress={() => navigation.navigate('ForgotPasswordScreen')}>
-          <Text style={{ color: '#009387', marginTop: 15, fontSize: 14, alignSelf: 'center', marginBottom: 9 }}>
+          onPress={() => navigation.navigate("ForgotPasswordScreen")}
+        >
+          <Text
+            style={{
+              color: "#009387",
+              marginTop: 15,
+              fontSize: 14,
+              alignSelf: "center",
+              marginBottom: 9,
+            }}
+          >
             Forgot password?
           </Text>
         </TouchableOpacity>
@@ -200,28 +214,32 @@ const SignInScreen = ({ route, navigation }) => {
         <View>
           <TouchableOpacity
             onPress={() => sendSignInCredentials()}
-            style={[styles.button, { backgroundColor: '#068E94' }]}>
+            style={[styles.button, { backgroundColor: "#068E94" }]}
+          >
             <Text
               style={[
                 styles.textSign,
                 {
-                  color: 'white',
+                  color: "white",
                 },
-              ]}>
+              ]}
+            >
               Sign In
             </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => navigation.navigate('SignUpScreen')}
-            style={[styles.button, { backgroundColor: 'white', }]}>
+            onPress={() => navigation.navigate("SignUpScreen")}
+            style={[styles.button, { backgroundColor: "white" }]}
+          >
             <Text
               style={[
                 styles.textSign,
                 {
-                  color: 'black',
+                  color: "black",
                 },
-              ]}>
+              ]}
+            >
               Sign Up
             </Text>
           </TouchableOpacity>
@@ -234,13 +252,13 @@ const SignInScreen = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   header: {
     flex: 1,
-    justifyContent: 'flex-end',
+    justifyContent: "flex-end",
     paddingHorizontal: 20,
     paddingBottom: 50,
   },
   footer: {
     flex: 2,
-    backgroundColor: '#E0EFF6',
+    backgroundColor: "#E0EFF6",
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     padding: 25,
@@ -251,42 +269,41 @@ const styles = StyleSheet.create({
     height: 100,
   },
   action: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginTop: 15,
     borderBottomWidth: 1,
     borderBottomColor: "#AAAAAA",
     paddingBottom: 5,
-
   },
   ti: {
     flex: 1,
     paddingLeft: 12,
-    color: '#05375a',
+    color: "#05375a",
     fontSize: 15,
     // borderBottomColor: '#777777',
     // borderBottomWidth: 1
   },
   errorMessage: {
-    color: '#FF0000',
+    color: "#FF0000",
     fontSize: 12,
   },
   button: {
-    width: '100%',
+    width: "100%",
     height: 60,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: 14,
     marginTop: 15,
-    elevation: 5
+    elevation: 5,
   },
   textSign: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   container: {
     flex: 1,
-    justifyContent: 'center',
-    backgroundColor: '#068E94',
+    justifyContent: "center",
+    backgroundColor: "#068E94",
   },
 });
 

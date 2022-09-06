@@ -1,29 +1,27 @@
-import * as React from 'react';
+import * as React from "react";
 import {
-  Text, View,
+  Text,
+  View,
   TouchableOpacity,
   FlatList,
   ActivityIndicator,
   StyleSheet,
-} from 'react-native';
-import axios from 'axios';
-import { REST_API, REST_API_LOCAL } from "@env"
-import * as SecureStore from 'expo-secure-store';
+} from "react-native";
+import axios from "axios";
+import { REST_API, REST_API_LOCAL } from "@env";
+import * as SecureStore from "expo-secure-store";
 
-<<<<<<< HEAD
-const REST_API_ENDPOINT = 'http://192.168.43.10:3000/shipper' || REST_API+"/shipper";
-=======
-const REST_API_ENDPOINT = 'http://192.168.8.103:3000/shipper' || REST_API+"/shipper";
->>>>>>> 2e7af8e573c5a83f1bf4abae0478b1f945fba46f
+const REST_API_ENDPOINT =
+  "http://192.168.200.61:4000/shipper" || REST_API + "/shipper";
 
 export default function MyBookings({ route, navigation }) {
   const [bookingData, setBookingData] = React.useState();
   const [loading, setLoading] = React.useState(true);
-  const [token, setToken] =  React.useState();
+  const [token, setToken] = React.useState();
 
   function getValueFor() {
-    // let result = 
-    SecureStore.getItemAsync("userToken").then(val=>setToken(val));
+    // let result =
+    SecureStore.getItemAsync("userToken").then((val) => setToken(val));
     // if (result) {
     //   return result
     // } else {
@@ -32,11 +30,11 @@ export default function MyBookings({ route, navigation }) {
   }
 
   const getBookingsData = async () => {
-    let isSubscribed = true
-    let token1 = await SecureStore.getItemAsync("userToken")
+    let isSubscribed = true;
+    let token1 = await SecureStore.getItemAsync("userToken");
     // .then(val=>setToken(val));
-    console.log(token1)
-    // var obj = {  
+    console.log(token1);
+    // var obj = {
     //     method: 'GET',
     //     withCredentials: true,
     //     credentials: 'include',
@@ -44,7 +42,7 @@ export default function MyBookings({ route, navigation }) {
     //         'Authorization': `Bearer ${token1}`
     //     }
     //   }
-    // const response = await fetch(`${REST_API_ENDPOINT}/getBookings`, obj)  
+    // const response = await fetch(`${REST_API_ENDPOINT}/getBookings`, obj)
     // .then(function(res) {
     //     return res.json();
     // })
@@ -53,24 +51,24 @@ export default function MyBookings({ route, navigation }) {
     //     return resJson;
     // })
     // let data = await response.json()
-    const headers = { "Authorization": `Bearer ${token1}` }
-    const resp = await axios.get(`${REST_API_ENDPOINT}/getBookings`, {withCredentials: true,headers:headers});
+    const headers = { Authorization: `Bearer ${token1}` };
+    const resp = await axios.get(`${REST_API_ENDPOINT}/getBookings`, {
+      withCredentials: true,
+      headers: headers,
+    });
     const data = resp.data.bookings;
     isSubscribed ? setBookingData(data) : null;
     setLoading(false);
 
-    return () => (isSubscribed = false)
+    return () => (isSubscribed = false);
   };
 
   React.useEffect(() => {
-    navigation.addListener('focus', () => {
+    navigation.addListener("focus", () => {
       // getValueFor();
       getBookingsData();
-
     });
-
   }, [navigation]);
-
 
   // React.useEffect(() => {
 
@@ -78,53 +76,103 @@ export default function MyBookings({ route, navigation }) {
 
   // }, [setBookingData]);
 
-
   return (
     <View style={styles.container}>
       {loading && <ActivityIndicator />}
-      {bookingData &&
+      {bookingData && (
         <FlatList
           refreshing={false}
           onRefresh={getBookingsData}
           keyExtractor={(item, index) => index}
           data={bookingData}
-          ListEmptyComponent={<Text style={{ fontSize: 24, alignSelf: 'center', marginTop: 30 }}>No Bookings Found</Text>}
-
+          ListEmptyComponent={
+            <Text style={{ fontSize: 24, alignSelf: "center", marginTop: 30 }}>
+              No Bookings Found
+            </Text>
+          }
           renderItem={({ item, index }) => (
-
-            <TouchableOpacity style={styles.flatListStyle} onPress={() => { navigation.push('BookingDetails', item) }}>
+            <TouchableOpacity
+              style={styles.flatListStyle}
+              onPress={() => {
+                navigation.push("BookingDetails", item);
+              }}
+            >
               <View>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', borderBottomColor: '#AAAAAA', borderBottomWidth: 1, paddingBottom: 10 }}>
-                  <Text style={styles.timeStyle}>{bookingData[index].datetime.substr(0,10)} {bookingData[index].datetime.substr(11,11)}</Text>
-                  <Text style={styles.paymentStyle}>{bookingData[index].Payment.Amount} PKR</Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    borderBottomColor: "#AAAAAA",
+                    borderBottomWidth: 1,
+                    paddingBottom: 10,
+                  }}
+                >
+                  <Text style={styles.timeStyle}>
+                    {bookingData[index].dateTime.substr(0, 10)}{" "}
+                    {bookingData[index].dateTime.substr(11, 11)}
+                  </Text>
+                  <Text style={styles.paymentStyle}>
+                    {bookingData[index].payment.amount} PKR
+                  </Text>
                 </View>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 10 }}>
-                <View>
-                  <Text style={styles.heading}>Source</Text>
-                  <Text style={styles.cityNameStyle}>{bookingData[index].pickaddress.City} {bookingData[index].pickaddress.Street}</Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    paddingTop: 10,
+                  }}
+                >
+                  <View>
+                    <Text style={styles.heading}>Source</Text>
+                    <Text style={styles.cityNameStyle}>
+                      {bookingData[index].pickupAddress.city}{" "}
+                      {bookingData[index].pickupAddress.street}
+                    </Text>
+                  </View>
+                  <View>
+                    <Text style={styles.heading}>Destination</Text>
+                    <Text style={styles.cityNameStyle}>
+                      {bookingData[index].dropoffAddress.city}{" "}
+                      {bookingData[index].dropoffAddress.street}
+                    </Text>
+                  </View>
+                  <View>
+                    <Text style={styles.statusStyle}>
+                      {bookingData[index].status}
+                    </Text>
+                  </View>
                 </View>
-                <View>
-                  <Text style={styles.heading}>Destination</Text>
-                  <Text style={styles.cityNameStyle}>{bookingData[index].dropaddress.City} {bookingData[index].dropaddress.Street}</Text>
-                </View>
-                <View>
-                  <Text style={styles.statusStyle}>{bookingData[index].Status}</Text>
-                </View>
-              </View>
               </View>
             </TouchableOpacity>
           )}
-        />}
+        />
+      )}
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   container: { backgroundColor: "#E0EFF6", height: "100%", padding: 15 },
-  flatListStyle: { padding: 15, borderBottomColor: '#005761', backgroundColor: "white", margin: 5, borderRadius: 10, elevation: 8 },
-  timeStyle: { fontWeight: 'bold', fontSize: 17, color: '#005761' },
-  paymentStyle: { fontSize: 15, fontWeight: "bold", color: '#00ABB2' },
-  heading: { color: '#AAAAAA', fontSize: 12 },
-  cityNameStyle: { color: "#005761", fontWeight: 'bold' },
-  statusStyle: { fontSize: 12, margin: 5, color: "white", fontWeight: "bold", padding: 5, elevation: 3, borderRadius: 3,backgroundColor: '#068E94' },
+  flatListStyle: {
+    padding: 15,
+    borderBottomColor: "#005761",
+    backgroundColor: "white",
+    margin: 5,
+    borderRadius: 10,
+    elevation: 8,
+  },
+  timeStyle: { fontWeight: "bold", fontSize: 17, color: "#005761" },
+  paymentStyle: { fontSize: 15, fontWeight: "bold", color: "#00ABB2" },
+  heading: { color: "#AAAAAA", fontSize: 12 },
+  cityNameStyle: { color: "#005761", fontWeight: "bold" },
+  statusStyle: {
+    fontSize: 12,
+    margin: 5,
+    color: "white",
+    fontWeight: "bold",
+    padding: 5,
+    elevation: 3,
+    borderRadius: 3,
+    backgroundColor: "#068E94",
+  },
 });

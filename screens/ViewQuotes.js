@@ -1,30 +1,35 @@
-
-import * as React from 'react';
+import * as React from "react";
 import {
-  Text, View, StyleSheet, ImageBackground,
+  Text,
+  View,
+  StyleSheet,
+  ImageBackground,
   TouchableOpacity,
-  ScrollView, FlatList, Alert
-} from 'react-native';
-import { REST_API, REST_API_LOCAL } from "@env"
-import axios from 'axios';
-import * as SecureStore from 'expo-secure-store';
+  ScrollView,
+  FlatList,
+  Alert,
+} from "react-native";
+import { REST_API, REST_API_LOCAL } from "@env";
+import axios from "axios";
+import * as SecureStore from "expo-secure-store";
 
-<<<<<<< HEAD
-const REST_API_ENDPOINT = 'http://192.168.43.10:3000/shipper' || REST_API+"/shipper";
-=======
-const REST_API_ENDPOINT = 'http://192.168.8.103:3000/shipper' || REST_API+"/shipper";
->>>>>>> 2e7af8e573c5a83f1bf4abae0478b1f945fba46f
+const REST_API_ENDPOINT =
+  "http://192.168.200.61:4000/shipper" || REST_API + "/shipper";
 
-const FIREBASE_API_ENDPOINT = 'https://freight-automation-default-rtdb.firebaseio.com/';
+const FIREBASE_API_ENDPOINT =
+  "https://freight-automation-default-rtdb.firebaseio.com/";
 
 export default function ViewQuotes({ navigation, route }) {
   const [quoteData, setQuoteData] = React.useState();
 
   const getQuoteData = async () => {
-    let token1 = await SecureStore.getItemAsync("userToken")
-    const headers = { "Authorization": `Bearer ${token1}` }
+    let token1 = await SecureStore.getItemAsync("userToken");
+    const headers = { Authorization: `Bearer ${token1}` };
 
-    const response = await axios.get(`${REST_API_ENDPOINT}/getQuotes`,{withCredentials: true,headers:headers});
+    const response = await axios.get(`${REST_API_ENDPOINT}/getQuotes`, {
+      withCredentials: true,
+      headers: headers,
+    });
     const data = await response.data.bookings;
     //   var id=Object.keys(data);
     //   var pendingData={};
@@ -45,10 +50,9 @@ export default function ViewQuotes({ navigation, route }) {
   // }, [setQuoteData]);
 
   React.useEffect(() => {
-    navigation.addListener('focus', () => {
+    navigation.addListener("focus", () => {
       getQuoteData();
     });
-
   }, [navigation]);
 
   return (
@@ -58,28 +62,62 @@ export default function ViewQuotes({ navigation, route }) {
         onRefresh={getQuoteData}
         keyExtractor={(item, index) => index}
         data={quoteData}
-        ListEmptyComponent={<Text style={{ fontSize: 24, alignSelf: 'center', marginTop: 30 }}>No Bookings Found</Text>}
+        ListEmptyComponent={
+          <Text style={{ fontSize: 24, alignSelf: "center", marginTop: 30 }}>
+            No Bookings Found
+          </Text>
+        }
         renderItem={({ item, index }) => (
-
-          <TouchableOpacity style={styles.flatListStyle} onPress={() => { navigation.push('QuoteDetails', { item: item }) }}>
+          <TouchableOpacity
+            style={styles.flatListStyle}
+            onPress={() => {
+              navigation.push("QuoteDetails", { item: item });
+            }}
+          >
             <View>
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between', borderBottomColor: '#AAAAAA', borderBottomWidth: 1, paddingBottom: 10 }}>
-                <Text style={{ fontWeight: 'bold', fontSize: 17, color: '#005761' }} >Estimated Price</Text>
-                <Text style={styles.paymentStyle}>{item.Payment.Amount} PKR</Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  borderBottomColor: "#AAAAAA",
+                  borderBottomWidth: 1,
+                  paddingBottom: 10,
+                }}
+              >
+                <Text
+                  style={{ fontWeight: "bold", fontSize: 17, color: "#005761" }}
+                >
+                  Estimated Price
+                </Text>
+                <Text style={styles.paymentStyle}>
+                  {item.payment.amount} PKR
+                </Text>
               </View>
 
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 10 }}>
-              <View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  paddingTop: 10,
+                }}
+              >
+                <View>
                   <Text style={styles.heading}>Type</Text>
-                  <Text style={styles.cityNameStyle}>{item.bookdetails.Type}</Text>
+                  <Text style={styles.cityNameStyle}>
+                    {item.shipmentDetails.type}
+                  </Text>
                 </View>
                 <View>
                   <Text style={styles.heading}>Source</Text>
-                  <Text style={styles.cityNameStyle}>{item.pickaddress.City}</Text>
+                  <Text style={styles.cityNameStyle}>
+                    {item.pickupAddress.city}
+                  </Text>
                 </View>
                 <View>
                   <Text style={styles.heading}>Desitination</Text>
-                  <Text style={styles.cityNameStyle}>{item.dropaddress.City}</Text>
+                  <Text style={styles.cityNameStyle}>
+                    {item.dropoffAddress.city}
+                  </Text>
                 </View>
               </View>
             </View>
@@ -87,14 +125,30 @@ export default function ViewQuotes({ navigation, route }) {
         )}
       />
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   container: { backgroundColor: "#E0EFF6", height: "100%", padding: 15 },
-  flatListStyle: { padding: 15, borderBottomColor: '#005761', backgroundColor: "white", margin: 5, borderRadius: 10, elevation: 8 },
-  paymentStyle: { fontSize: 15, fontWeight: "bold", color: '#00ABB2' },
-  heading: { color: '#AAAAAA', fontSize: 12 },
-  cityNameStyle: { color: "#005761", fontWeight: 'bold' },
-  statusStyle: { fontSize: 12, margin: 5, color: "white", fontWeight: "bold", padding: 5, elevation: 3, borderRadius: 3,backgroundColor: '#068E94' },
+  flatListStyle: {
+    padding: 15,
+    borderBottomColor: "#005761",
+    backgroundColor: "white",
+    margin: 5,
+    borderRadius: 10,
+    elevation: 8,
+  },
+  paymentStyle: { fontSize: 15, fontWeight: "bold", color: "#00ABB2" },
+  heading: { color: "#AAAAAA", fontSize: 12 },
+  cityNameStyle: { color: "#005761", fontWeight: "bold" },
+  statusStyle: {
+    fontSize: 12,
+    margin: 5,
+    color: "white",
+    fontWeight: "bold",
+    padding: 5,
+    elevation: 3,
+    borderRadius: 3,
+    backgroundColor: "#068E94",
+  },
 });
