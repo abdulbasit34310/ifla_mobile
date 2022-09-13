@@ -1,3 +1,4 @@
+
 import React,{ useState, useEffect, useRef } from 'react';
 import { View, StyleSheet, Image, Platform} from 'react-native';
 import Constants from 'expo-constants';
@@ -109,6 +110,8 @@ const MainScreen = ({route,navigation}) => {
         SecureStore.deleteItemAsync("userToken");
         signOut()
     }
+    return false;
+  };
 
   const isTokenExpired = () => {
     if (token) {
