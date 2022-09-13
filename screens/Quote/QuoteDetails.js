@@ -3,36 +3,60 @@ import {
   Text,
   View,
   StyleSheet,
-  ImageBackground,
   TouchableOpacity,
+  ScrollView,
+  FlatList,
   Alert,
 } from "react-native";
+
 import { Divider } from "react-native-paper";
+
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import { ScrollView } from "react-native-gesture-handler";
-import * as SecureStore from "expo-secure-store";
 import axios from "axios";
 import { REST_API, REST_API_LOCAL } from "@env";
+import * as SecureStore from "expo-secure-store";
 
 const REST_API_ENDPOINT =
-  "http://192.168.200.61:4000/shipper" || REST_API + "/shipper";
+  "http://192.168.0.17:4000/shipper" || REST_API + "/shipper";
 
-const FIREBASE_API_ENDPOINT =
-  "https://freight-automation-default-rtdb.firebaseio.com/";
+export default function QuoteDetails({ navigation, route }) {
+  // const id= route.params;
+  const [quoteData, setQuoteData] = React.useState(route.params.item);
+  // const{ PickupCity,  DropoffCity, Price, Weight }=quoteData;
 
-export default function PendingBookingDetails({ navigation, route }) {
-  const [bookingData, setBookingData] = React.useState(route.params);
+  // const getQuoteData = async () => {
+  //   const response = await fetch(`${FIREBASE_API_ENDPOINT}/bookings/${id}.json`);
+  //   const data = await response.json();
+  //   setQuoteData(data);
 
+  // };
   const deleteData = async () => {
+    // var requestOptions = {
+    //   method: 'DELETE',
+    // };
+
+    // fetch(`${FIREBASE_API_ENDPOINT}/bookings/${id}.json`, requestOptions)
+    //   .then((response) => response.json())
+    //   .then((result) => console.log('Delete Response:', result))
+    //   .catch((error) => console.log('error', error));
+    let token1 = await SecureStore.getItemAsync("userToken");
+    const headers = { Authorization: `Bearer ${token1}` };
+
+    const id = quoteData._id;
     let response = await axios.delete(
-      `${REST_API_ENDPOINT}/deleteBooking/${bookingData._id}`
+      `${REST_API_ENDPOINT}/deleteQuote/${id}`,
+      { withCredentials: true, headers: headers }
     );
-    let data = await response.data;
-    console.log(data);
+    console.log(response.data);
+    console.log("Quote Deleted");
   };
 
+  // React.useEffect(() => {
+  //   getQuoteData();
+  // }, [setQuoteData]);
+
   return (
-    <ScrollView style={{ backgroundColor: "#E0EFF6" }}>
+    <ScrollView>
       <View style={styles.container}>
         <Text
           style={{
@@ -42,7 +66,7 @@ export default function PendingBookingDetails({ navigation, route }) {
             color: "#005761",
           }}
         >
-          {bookingData.shipmentDetails.type == "FTL"
+          {quoteData.shipmentDetails.Type == "FTL"
             ? "Full Truck Load"
             : "Less Than Truck Load"}
         </Text>
@@ -54,8 +78,7 @@ export default function PendingBookingDetails({ navigation, route }) {
             color: "black",
           }}
         >
-          {bookingData.dateTime.substr(0, 10)}{" "}
-          {bookingData.dateTime.substr(11, 11)}
+          {quoteData.dateTime}
         </Text>
         <View
           style={{
@@ -87,14 +110,10 @@ export default function PendingBookingDetails({ navigation, route }) {
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
             <Text style={styles.addressContainer}>
-              {bookingData.pickupAddress.city},{" "}
-              {bookingData.pickupAddress.building}{" "}
-              {bookingData.pickupAddress.street}
+              {quoteData.pickupAddress.city}
             </Text>
             <Text style={styles.addressContainer}>
-              {bookingData.dropoffAddress.city},{" "}
-              {bookingData.dropoffAddress.building}{" "}
-              {bookingData.dropoffAddress.street}{" "}
+              {quoteData.dropoffAddress.city}
             </Text>
           </View>
           <Divider />
@@ -102,25 +121,24 @@ export default function PendingBookingDetails({ navigation, route }) {
             <View style={styles.propertyContainerStyle}>
               <Text>Weight</Text>
               <Text style={styles.propertyStyle}>
-                {bookingData.shipmentDetails.weight} kg
+                {quoteData.shipmentDetails.weight} kg
               </Text>
             </View>
 
+            <View style={styles.propertyContainerStyle}>
+              <Text>Quantity</Text>
+              <Text style={styles.propertyStyle}>
+                {quoteData.shipmentDetails.quantity} Pcs
+              </Text>
+            </View>
             <View style={styles.propertyContainerStyle}>
               <Text>Insurance</Text>
               <Text style={styles.propertyStyle}>No</Text>
             </View>
 
             <View style={styles.propertyContainerStyle}>
-              <Text>Quantity</Text>
-              <Text style={styles.propertyStyle}>
-                {bookingData.shipmentDetails.quantity} Pcs
-              </Text>
-            </View>
-
-            <View style={styles.propertyContainerStyle}>
-              <Text>Status</Text>
-              <Text style={styles.propertyStyle}>{bookingData.status}</Text>
+              <Text>Packaging</Text>
+              <Text style={styles.propertyStyle}>No</Text>
             </View>
           </View>
           <Divider />
@@ -128,7 +146,7 @@ export default function PendingBookingDetails({ navigation, route }) {
             <View style={styles.propertyContainerStyle}>
               <Text>Sub Total</Text>
               <Text style={styles.propertyStyle}>
-                {bookingData.payment.amount} Rs
+                {quoteData.payment.amount} Rs
               </Text>
             </View>
             <View style={styles.propertyContainerStyle}>
@@ -150,14 +168,14 @@ export default function PendingBookingDetails({ navigation, route }) {
           >
             <Text style={{ fontSize: 18 }}>Total</Text>
             <Text style={styles.paymentStyle}>
-              {bookingData.payment.amount} Rs
+              {quoteData.payment.amount} Rs
             </Text>
           </View>
         </View>
 
         <TouchableOpacity
           onPress={() => {
-            Alert.alert("Cancel Booking", "Are you sure?", [
+            Alert.alert("Delete Quote Record", "Are you sure?", [
               {
                 text: "Cancel",
                 onPress: () => console.log("Cancel Pressed"),
@@ -190,7 +208,7 @@ export default function PendingBookingDetails({ navigation, route }) {
               fontSize: 18,
             }}
           >
-            Cancel Booking
+            Delete Quote
           </Text>
         </TouchableOpacity>
       </View>

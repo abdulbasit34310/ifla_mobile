@@ -43,7 +43,7 @@ const MainScreen = ({ route, navigation }) => {
   //             'Authorization': `Bearer ${token}`
   //         }
   //       }
-  //     fetch('http://192.168.200.61:4000/users/testAuth', obj)
+  //     fetch('http://192.168.0.17:4000/users/testAuth', obj)
   //     .then(function(res) {
   //         return res.json();
   //     })

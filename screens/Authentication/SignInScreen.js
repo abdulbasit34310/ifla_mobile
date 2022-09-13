@@ -14,14 +14,14 @@ import {
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Feather from "react-native-vector-icons/Feather";
 // import * as SecureStore from 'expo-secure-store';
-import { AuthContext } from "../components/context";
+import { AuthContext } from "../../components/context";
 
-import logo from "./images/IFLA.png";
+import logo from "../images/IFLA.png";
 import axios from "axios";
 import { REST_API, REST_API_LOCAL } from "@env";
 
 const REST_API_ENDPOINT =
-  "http://192.168.200.61:4000/users" || REST_API + "/users";
+  "http://192.168.0.17:4000/users" || REST_API + "/users";
 
 const SignInScreen = ({ route, navigation }) => {
   const [data, setData] = React.useState({

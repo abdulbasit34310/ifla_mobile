@@ -3,60 +3,67 @@ import {
   Text,
   View,
   StyleSheet,
+  ImageBackground,
   TouchableOpacity,
+  Image,
   ScrollView,
   FlatList,
   Alert,
 } from "react-native";
-
 import { Divider } from "react-native-paper";
 
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import * as SecureStore from "expo-secure-store";
 import axios from "axios";
 import { REST_API, REST_API_LOCAL } from "@env";
-import * as SecureStore from "expo-secure-store";
 
 const REST_API_ENDPOINT =
-  "http://192.168.200.61:4000/shipper" || REST_API + "/shipper";
+  "http://192.168.0.17:4000/shipper" || REST_API + "/shipper";
 
-export default function QuoteDetails({ navigation, route }) {
-  // const id= route.params;
-  const [quoteData, setQuoteData] = React.useState(route.params.item);
-  // const{ PickupCity,  DropoffCity, Price, Weight }=quoteData;
+const FIREBASE_API_ENDPOINT =
+  "https://freight-automation-default-rtdb.firebaseio.com/";
 
-  // const getQuoteData = async () => {
-  //   const response = await fetch(`${FIREBASE_API_ENDPOINT}/bookings/${id}.json`);
-  //   const data = await response.json();
-  //   setQuoteData(data);
+export default function BookingDetails({ navigation, route }) {
+  const item = route.params;
+  const [bookingData, setBookingData] = React.useState(item);
 
-  // };
   const deleteData = async () => {
-    // var requestOptions = {
-    //   method: 'DELETE',
-    // };
-
-    // fetch(`${FIREBASE_API_ENDPOINT}/bookings/${id}.json`, requestOptions)
-    //   .then((response) => response.json())
-    //   .then((result) => console.log('Delete Response:', result))
-    //   .catch((error) => console.log('error', error));
     let token1 = await SecureStore.getItemAsync("userToken");
     const headers = { Authorization: `Bearer ${token1}` };
+    const response = await axios
+      .delete(`${REST_API_ENDPOINT}/cancelBooking/${bookingData._id}`, {
+        withCredentials: true,
+        headers: headers,
+      })
+      .catch(function (error) {
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          console.log(error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log("Error", error.message);
+        }
+        console.log(error.config);
+      });
 
-    const id = quoteData._id;
-    let response = await axios.delete(
-      `${REST_API_ENDPOINT}/deleteQuote/${id}`,
-      { withCredentials: true, headers: headers }
-    );
-    console.log(response.data);
-    console.log("Quote Deleted");
+    let data = await response.data;
+    console.log(data);
   };
 
   // React.useEffect(() => {
-  //   getQuoteData();
-  // }, [setQuoteData]);
+  //   getBookingsData();
+  // }, [setBookingData]);
 
   return (
-    <ScrollView>
+    <ScrollView style={{ backgroundColor: "#E0EFF6" }}>
       <View style={styles.container}>
         <Text
           style={{
@@ -66,7 +73,7 @@ export default function QuoteDetails({ navigation, route }) {
             color: "#005761",
           }}
         >
-          {quoteData.shipmentDetails.Type == "FTL"
+          {bookingData.shipmentDetails.type == "FTL"
             ? "Full Truck Load"
             : "Less Than Truck Load"}
         </Text>
@@ -78,7 +85,8 @@ export default function QuoteDetails({ navigation, route }) {
             color: "black",
           }}
         >
-          {quoteData.dateTime}
+          {bookingData.dateTime.substr(0, 10)}{" "}
+          {bookingData.dateTime.substr(11, 11)}
         </Text>
         <View
           style={{
@@ -110,10 +118,14 @@ export default function QuoteDetails({ navigation, route }) {
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
             <Text style={styles.addressContainer}>
-              {quoteData.pickupAddress.city}
+              {bookingData.pickupAddress.city},{" "}
+              {bookingData.pickupAddress.building}{" "}
+              {bookingData.pickupAddress.street}
             </Text>
             <Text style={styles.addressContainer}>
-              {quoteData.dropoffAddress.city}
+              {bookingData.dropoffAddress.city},{" "}
+              {bookingData.dropoffAddress.building}{" "}
+              {bookingData.dropoffAddress.street}{" "}
             </Text>
           </View>
           <Divider />
@@ -121,24 +133,25 @@ export default function QuoteDetails({ navigation, route }) {
             <View style={styles.propertyContainerStyle}>
               <Text>Weight</Text>
               <Text style={styles.propertyStyle}>
-                {quoteData.shipmentDetails.weight} kg
+                {bookingData.shipmentDetails.weight} kg
               </Text>
             </View>
 
-            <View style={styles.propertyContainerStyle}>
-              <Text>Quantity</Text>
-              <Text style={styles.propertyStyle}>
-                {quoteData.shipmentDetails.quantity} Pcs
-              </Text>
-            </View>
             <View style={styles.propertyContainerStyle}>
               <Text>Insurance</Text>
               <Text style={styles.propertyStyle}>No</Text>
             </View>
 
             <View style={styles.propertyContainerStyle}>
-              <Text>Packaging</Text>
-              <Text style={styles.propertyStyle}>No</Text>
+              <Text>Quantity</Text>
+              <Text style={styles.propertyStyle}>
+                {bookingData.shipmentDetails.quantity} Pcs
+              </Text>
+            </View>
+
+            <View style={styles.propertyContainerStyle}>
+              <Text>Status</Text>
+              <Text style={styles.propertyStyle}>{bookingData.status}</Text>
             </View>
           </View>
           <Divider />
@@ -146,7 +159,7 @@ export default function QuoteDetails({ navigation, route }) {
             <View style={styles.propertyContainerStyle}>
               <Text>Sub Total</Text>
               <Text style={styles.propertyStyle}>
-                {quoteData.payment.amount} Rs
+                {bookingData.payment.amount} Rs
               </Text>
             </View>
             <View style={styles.propertyContainerStyle}>
@@ -168,14 +181,14 @@ export default function QuoteDetails({ navigation, route }) {
           >
             <Text style={{ fontSize: 18 }}>Total</Text>
             <Text style={styles.paymentStyle}>
-              {quoteData.payment.amount} Rs
+              {bookingData.payment.amount} Rs
             </Text>
           </View>
         </View>
 
         <TouchableOpacity
           onPress={() => {
-            Alert.alert("Delete Quote Record", "Are you sure?", [
+            Alert.alert("Delete Booking Record", "Are you sure?", [
               {
                 text: "Cancel",
                 onPress: () => console.log("Cancel Pressed"),
@@ -208,7 +221,7 @@ export default function QuoteDetails({ navigation, route }) {
               fontSize: 18,
             }}
           >
-            Delete Quote
+            Delete Booking
           </Text>
         </TouchableOpacity>
       </View>

@@ -11,10 +11,10 @@ import { Title } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
-import AB from "./images/AB.png";
+import AB from "../images/AB.png";
 import * as SecureStore from "expo-secure-store";
 
-const REST_API_ENDPOINT = "http://192.168.200.61:4000/users";
+const REST_API_ENDPOINT = "http://192.168.0.17:4000/users";
 
 const EditProfileScreen = ({ navigation, route }) => {
   var item = route.params.item;
@@ -38,7 +38,7 @@ const EditProfileScreen = ({ navigation, route }) => {
 
   const [hasGalleyPermission, setHasGalleryPermission] = React.useState(null);
   const [image, setImage] = React.useState(
-    `http://192.168.200.61:4000/images/${item.personId.image}`
+    `http://192.168.0.17:4000/images/${item.personId.image}`
   );
 
   const [data, setData] = React.useState({

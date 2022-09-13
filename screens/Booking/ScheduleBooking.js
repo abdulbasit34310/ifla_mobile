@@ -23,7 +23,7 @@ import { REST_API, REST_API_LOCAL } from "@env";
 import * as SecureStore from "expo-secure-store";
 
 const REST_API_ENDPOINT =
-  "http://192.168.200.61:4000/shipper" || REST_API + "/shipper";
+  "http://192.168.0.17:4000/shipper" || REST_API + "/shipper";
 
 function ShipmentType({ navigation, nextStep, bookingData, setBooking }) {
   const [type, setType] = React.useState(1);

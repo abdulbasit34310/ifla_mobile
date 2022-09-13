@@ -3,15 +3,15 @@ import { SafeAreaView, View, StyleSheet, Image } from "react-native";
 import { Title, Text } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { AuthContext } from "../components/context";
-import AB from "./images/AB.png";
+import { AuthContext } from "../../components/context";
+import AB from "../images/AB.png";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import axios from "axios";
 import { REST_API, REST_API_LOCAL } from "@env";
 import * as SecureStore from "expo-secure-store";
 
 const REST_API_ENDPOINT =
-  "http://192.168.200.61:4000/users" || REST_API + "/users";
+  "http://192.168.0.17:4000/users" || REST_API + "/users";
 
 const FIREBASE_API_ENDPOINT =
   "https://madproject-61e88-default-rtdb.firebaseio.com/";
@@ -74,7 +74,7 @@ const ProfileScreen = ({ route, navigation }) => {
             <Image
               style={{ width: 150, height: 150, borderRadius: 100 }}
               source={{
-                uri: `http://192.168.200.61:4000/images/${getData.personId.image}`,
+                uri: `http://192.168.0.17:4000/images/${getData.personId.image}`,
               }}
             />
           ) : null}

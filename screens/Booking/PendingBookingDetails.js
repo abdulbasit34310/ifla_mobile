@@ -5,62 +5,31 @@ import {
   StyleSheet,
   ImageBackground,
   TouchableOpacity,
-  Image,
-  ScrollView,
-  FlatList,
   Alert,
 } from "react-native";
 import { Divider } from "react-native-paper";
-
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { ScrollView } from "react-native-gesture-handler";
 import * as SecureStore from "expo-secure-store";
 import axios from "axios";
 import { REST_API, REST_API_LOCAL } from "@env";
 
 const REST_API_ENDPOINT =
-  "http://192.168.200.61:4000/shipper" || REST_API + "/shipper";
+  "http://192.168.0.17:4000/shipper" || REST_API + "/shipper";
 
 const FIREBASE_API_ENDPOINT =
   "https://freight-automation-default-rtdb.firebaseio.com/";
 
-export default function BookingDetails({ navigation, route }) {
-  const item = route.params;
-  const [bookingData, setBookingData] = React.useState(item);
+export default function PendingBookingDetails({ navigation, route }) {
+  const [bookingData, setBookingData] = React.useState(route.params);
 
   const deleteData = async () => {
-    let token1 = await SecureStore.getItemAsync("userToken");
-    const headers = { Authorization: `Bearer ${token1}` };
-    const response = await axios
-      .delete(`${REST_API_ENDPOINT}/cancelBooking/${bookingData._id}`, {
-        withCredentials: true,
-        headers: headers,
-      })
-      .catch(function (error) {
-        if (error.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-        } else if (error.request) {
-          // The request was made but no response was received
-          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-          // http.ClientRequest in node.js
-          console.log(error.request);
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          console.log("Error", error.message);
-        }
-        console.log(error.config);
-      });
-
+    let response = await axios.delete(
+      `${REST_API_ENDPOINT}/deleteBooking/${bookingData._id}`
+    );
     let data = await response.data;
     console.log(data);
   };
-
-  // React.useEffect(() => {
-  //   getBookingsData();
-  // }, [setBookingData]);
 
   return (
     <ScrollView style={{ backgroundColor: "#E0EFF6" }}>
@@ -188,7 +157,7 @@ export default function BookingDetails({ navigation, route }) {
 
         <TouchableOpacity
           onPress={() => {
-            Alert.alert("Delete Booking Record", "Are you sure?", [
+            Alert.alert("Cancel Booking", "Are you sure?", [
               {
                 text: "Cancel",
                 onPress: () => console.log("Cancel Pressed"),
@@ -221,7 +190,7 @@ export default function BookingDetails({ navigation, route }) {
               fontSize: 18,
             }}
           >
-            Delete Booking
+            Cancel Booking
           </Text>
         </TouchableOpacity>
       </View>
