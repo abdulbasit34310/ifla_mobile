@@ -10,7 +10,7 @@ import axios from 'axios';
 import { REST_API, REST_API_LOCAL } from "@env"
 import * as SecureStore from 'expo-secure-store';
 
-const REST_API_ENDPOINT = 'http://192.168.8.103:3000/shipper' || REST_API+"/shipper";
+const REST_API_ENDPOINT = 'http://192.168.10.8:3000/shipper' || REST_API+"/shipper";
 
 export default function MyBookings({ route, navigation }) {
   const [bookingData, setBookingData] = React.useState();

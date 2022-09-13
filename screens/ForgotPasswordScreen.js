@@ -17,7 +17,7 @@ import axios from 'axios';
 
 const FIREBASE_API_ENDPOINT =
   'https://madproject-61e88-default-rtdb.firebaseio.com/';
-const REST_API_ENDPOINT = "http://192.168.8.103:3000/users"
+const REST_API_ENDPOINT = "http://192.168.10.8:3000/users"
 var arr = [];
 
 const ForgotPasswordScreen = ({ navigation }) => {
