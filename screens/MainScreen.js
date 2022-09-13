@@ -110,15 +110,15 @@ const MainScreen = ({route,navigation}) => {
         signOut()
     }
 
-    const isTokenExpired = ()=>{
-    if(token){
-        const expiry = (JSON.parse(atob(token.split('.')[1]))).exp;
-        console.log(expiry)
-        console.log((Math.floor((new Date).getTime() / 1000)) >= expiry)
-        return (Math.floor((new Date).getTime() / 1000)) >= expiry
+  const isTokenExpired = () => {
+    if (token) {
+      const expiry = JSON.parse(atob(token.split(".")[1])).exp;
+      console.log(expiry);
+      console.log(Math.floor(new Date().getTime() / 1000) >= expiry);
+      return Math.floor(new Date().getTime() / 1000) >= expiry;
     }
-    return false
-    }
+    return false;
+  };
 
 
     React.useEffect(()=>{
@@ -145,11 +145,11 @@ const MainScreen = ({route,navigation}) => {
 export default MainScreen;
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        paddingTop: Constants.statusBarHeight,
-        backgroundColor: '#00ABB2',
-        alignItems: 'center',
-    },
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    paddingTop: Constants.statusBarHeight,
+    backgroundColor: "#00ABB2",
+    alignItems: "center",
+  },
 });

@@ -1,48 +1,52 @@
-import * as React from 'react';
-import { View, StyleSheet, Image } from 'react-native';
-import { Drawer } from 'react-native-paper';
-import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
-import AB from './images/AB.png';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import * as React from "react";
+import { View, StyleSheet, Image } from "react-native";
+import { Drawer } from "react-native-paper";
+import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
+import AB from "./images/AB.png";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 // import * as SecureStore from 'expo-secure-store';
-import { AuthContext } from '../components/context';
-import axios from 'axios';
-import * as SecureStore from 'expo-secure-store';
+import { AuthContext } from "../components/context";
+import axios from "axios";
+import * as SecureStore from "expo-secure-store";
 
 export function CustomDrawer(props) {
   const { signOut } = React.useContext(AuthContext);
-  const REST_API_ENDPOINT = 'http://192.168.10.8:3000/shipper' || REST_API + "/shipper";
-  const [image,setImage] = React.useState()
-  const getUser = async ()=>{
-    let token1 = await SecureStore.getItemAsync("userToken")
-    const headers = { "Authorization": `Bearer ${token1}` }
-    const response = await axios.get(`${REST_API_ENDPOINT}/image`, {withCredentials: true, headers: headers });
+  const REST_API_ENDPOINT =
+    "http://192.168.0.17:4000/shipper" || REST_API + "/shipper";
+  const [image, setImage] = React.useState();
+  const getUser = async () => {
+    let token1 = await SecureStore.getItemAsync("userToken");
+    const headers = { Authorization: `Bearer ${token1}` };
+    const response = await axios.get(`${REST_API_ENDPOINT}/image`, {
+      withCredentials: true,
+      headers: headers,
+    });
 
     const data = await response.data;
-    console.log(data)
-    setImage(data.PersonId.image)
-  }
+    console.log(data);
+    setImage(data.PersonId.image);
+  };
 
-  React.useEffect(()=>{
-    getUser()
-  },[])
+  React.useEffect(() => {
+    getUser();
+  }, []);
   return (
-    <View style={{ flex: 1, backgroundColor: '#E0EFF6' }}>
+    <View style={{ flex: 1, backgroundColor: "#E0EFF6" }}>
       <DrawerContentScrollView {...props}>
         <View style={styles.drawerContent}>
           <View style={styles.userInfoSection}>
-            <View style={{ flexDirection: 'row', marginTop: 20 }}>
-              {image? 
-              (<Image
-                style={{
-                  backgroundColor: "#00ABB2",
-                  width: 100,
-                  height: 100,
-                  borderRadius: 90,
-                }}
-                source={{uri:`http://192.168.10.8:3000/images/${image}`}}
-              />):null
-            }
+            <View style={{ flexDirection: "row", marginTop: 20 }}>
+              {image ? (
+                <Image
+                  style={{
+                    backgroundColor: "#00ABB2",
+                    width: 100,
+                    height: 100,
+                    borderRadius: 90,
+                  }}
+                  source={{ uri: `http://192.168.0.17:4000/images/${image}` }}
+                />
+              ) : null}
               {/* <View style={{ marginLeft: 15, flexDirection: 'column' }}>
                 <Title style={styles.title}>Abdul Basit</Title>
                 <Caption style={styles.email}>
@@ -59,7 +63,7 @@ export function CustomDrawer(props) {
               )}
               label="Home"
               onPress={() => {
-                props.navigation.navigate('MainScreen');
+                props.navigation.navigate("MainScreen");
               }}
             />
             <DrawerItem
@@ -68,7 +72,7 @@ export function CustomDrawer(props) {
               )}
               label="Profile"
               onPress={() => {
-                props.navigation.navigate('Profile');
+                props.navigation.navigate("Profile");
               }}
             />
             <DrawerItem
@@ -77,7 +81,7 @@ export function CustomDrawer(props) {
               )}
               label="Tracking"
               onPress={() => {
-                props.navigation.navigate('TrackingScreen');
+                props.navigation.navigate("TrackingScreen");
               }}
             />
             <DrawerItem
@@ -86,7 +90,7 @@ export function CustomDrawer(props) {
               )}
               label="Booking"
               onPress={() => {
-                props.navigation.navigate('Booking');
+                props.navigation.navigate("Booking");
               }}
             />
             {/* <DrawerItem
@@ -101,7 +105,6 @@ export function CustomDrawer(props) {
           </Drawer.Section>
         </View>
       </DrawerContentScrollView>
-
 
       <Drawer.Section style={styles.bottomDrawerSection}>
         <DrawerItem
@@ -128,7 +131,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     marginTop: 3,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   email: {
     fontSize: 13,
@@ -139,7 +142,7 @@ const styles = StyleSheet.create({
   },
   bottomDrawerSection: {
     marginBottom: 15,
-    borderTopColor: '#f4f4f4',
+    borderTopColor: "#f4f4f4",
     borderTopWidth: 1,
   },
 });
