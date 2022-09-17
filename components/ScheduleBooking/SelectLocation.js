@@ -30,7 +30,7 @@ const Theme = {
 const latitudeDelta = 0.025;
 const longitudeDelta = 0.025;
 
-export default function ScheduleExample() {
+export default function SelectLocation() {
   // const [pin, setPin] = React.useState({
   //   latitude: 33.6533,
   //   longitude: 73.0702,
