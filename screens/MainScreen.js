@@ -110,8 +110,6 @@ const MainScreen = ({route,navigation}) => {
         SecureStore.deleteItemAsync("userToken");
         signOut()
     }
-    return false;
-  };
 
   const isTokenExpired = () => {
     if (token) {
