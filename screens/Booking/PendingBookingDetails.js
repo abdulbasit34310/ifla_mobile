@@ -15,7 +15,7 @@ import axios from "axios";
 import { REST_API, REST_API_LOCAL } from "@env";
 
 const REST_API_ENDPOINT =
-  "http://192.168.0.17:4000/shipper" || REST_API + "/shipper";
+  "http://192.168.100.19:4000/shipper" || REST_API + "/shipper";
 
 const FIREBASE_API_ENDPOINT =
   "https://freight-automation-default-rtdb.firebaseio.com/";

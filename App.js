@@ -25,11 +25,12 @@ import BookingDetails from "./screens/Booking/BookingDetails";
 import GetAQuote from "./screens/Quote/GetAQuote";
 import ViewQuotes from "./screens/Quote/ViewQuotes";
 import QuoteDetails from "./screens/Quote/QuoteDetails";
-// import Payment from './screens/Payment';
+import Payment from "./screens/Payment/Payment";
 
 import { CustomDrawer } from "./screens/CustomDrawer";
 import { AuthContext } from "./components/context";
 import ScheduleExample from "./screens/Booking/ScheduleExample";
+import Temp from "./screens/Payment/Temp";
 
 const Drawer = createDrawerNavigator();
 
@@ -222,6 +223,16 @@ function BookingStack({ route }) {
         name="BookingDetails"
         component={BookingDetails}
         options={{ title: "Booking Details" }}
+      />
+      <Stack.Screen
+        name="Payments"
+        component={Temp}
+        options={{ title: "Payments" }}
+      />
+      <Stack.Screen
+        name="Pay"
+        component={Payment}
+        options={{ title: "Pay Now" }}
       />
     </Stack.Navigator>
   );
