@@ -9,7 +9,7 @@ export default function Temp({navigation}) {
   
   const getPublishableKey = async ()=>{
     try {
-      const response = await fetch('http://192.168.100.19:4000/payments/config')
+      const response = await fetch('http://192.168.8.102:4000/payments/config')
       const {publishableKey} = await response.json();
   
       return publishableKey;

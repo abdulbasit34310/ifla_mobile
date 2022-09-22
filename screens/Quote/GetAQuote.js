@@ -17,7 +17,7 @@ import { REST_API, REST_API_LOCAL } from "@env";
 import * as SecureStore from "expo-secure-store";
 
 const REST_API_ENDPOINT =
-  "http://192.168.100.19:4000/shipper" || REST_API + "/shipper";
+  "http://192.168.8.102:4000/shipper" || REST_API + "/shipper";
 
 const CITIES_API_ENDPOINT =
   "https://freight-automation-default-rtdb.firebaseio.com/";

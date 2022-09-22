@@ -21,7 +21,7 @@ import axios from "axios";
 import { REST_API, REST_API_LOCAL } from "@env";
 
 const REST_API_ENDPOINT =
-  "http://192.168.100.19:4000/users" || REST_API + "/users";
+  "http://192.168.8.102:4000/users" || REST_API + "/users";
 
 const SignInScreen = ({ route, navigation }) => {
   const [data, setData] = React.useState({
