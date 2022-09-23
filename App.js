@@ -30,7 +30,6 @@ import Payment from "./screens/Payment/Payment";
 import { CustomDrawer } from "./screens/CustomDrawer";
 import { AuthContext } from "./components/context";
 import ScheduleExample from "./screens/Booking/ScheduleExample";
-import Temp from "./screens/Payment/Temp";
 
 const Drawer = createDrawerNavigator();
 
@@ -226,11 +225,6 @@ function BookingStack({ route }) {
       />
       <Stack.Screen
         name="Payments"
-        component={Temp}
-        options={{ title: "Payments" }}
-      />
-      <Stack.Screen
-        name="Pay"
         component={Payment}
         options={{ title: "Pay Now" }}
       />

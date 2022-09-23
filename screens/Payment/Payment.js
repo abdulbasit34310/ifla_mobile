@@ -1,24 +1,50 @@
 import { StyleSheet, Text, Alert,TextInput,  Switch, Button, View, TouchableOpacity } from "react-native";
-import React,{useState} from "react";
-import {CardField, useConfirmPayment} from '@stripe/stripe-react-native';
+import React,{useState, useEffect} from "react";
+import {CardField, StripeProvider, useConfirmPayment} from '@stripe/stripe-react-native';
+import axios from "axios";
 
-const Payment = () => {
+const Payment = ({route}) => {
   const [name, setName] = useState('');
   const {confirmPayment, loading} = useConfirmPayment();
   const [saveCard, setSaveCard] = useState(false);
   const [isComplete, setComplete] = useState(false);
+  const [publishableKey,setPublishableKey] = useState(null);
+  const payId = route.params.payId
+
+  const getPublishableKey = async ()=>{
+    try {
+      const response = await fetch('http://192.168.0.177:4000/payments/config')
+      const {publishableKey} = await response.json();
+      console.log(publishableKey);
+      return publishableKey;
+    } catch (e) {
+      console.log(e);
+      console.warn('Unable to fetch publishable key. Is your server running?');
+      Alert.alert(
+        'Error',
+        'Unable to fetch publishable key. Is your server running?'
+      );
+      return null;
+    }
+  }
 
   const fetchPaymentIntentClientSecret = async () => {
-    const response = await fetch(`http://192.168.8.102:4000/payments/create-checkout-session`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    });
-    const {clientSecret} = await response.json();
+    const body = { payId: payId}
+    const response = await axios.post(`http://192.168.0.177:4000/payments/create-checkout-session`, body);
+    const {clientSecret} = await response.data;
 
     return clientSecret;
   };
+
+  useEffect( ()=>{
+    async function initialize() {
+      const publishableKey = await getPublishableKey()
+      if (publishableKey) {
+        setPublishableKey(publishableKey);
+    }}
+
+    initialize()
+    },[])
 
   const handlePayPress = async () => {
     // 1. fetch Intent Client Secret from backend
@@ -39,13 +65,14 @@ const Payment = () => {
     } else if (paymentIntent) {
       Alert.alert(
         'Success',
-        `The payment was confirmed successfully! currency: ${paymentIntent.currency}`
+        `The payment was confirmed successfully! currency: ${paymentIntent.amount/100} ${paymentIntent.currency}`
       );
       console.log('Success from promise', paymentIntent);
     }
   };
 
   return(
+    <StripeProvider  publishableKey={publishableKey}>
       <View>
            <TextInput
               autoCapitalize="none"
@@ -93,6 +120,7 @@ const Payment = () => {
             <Text style={styles.ButtonText}>Pay</Text>
       </TouchableOpacity>
       </View>
+    </StripeProvider>
   )
 };
 

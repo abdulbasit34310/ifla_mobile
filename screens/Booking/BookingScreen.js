@@ -29,7 +29,7 @@ const BookingScreen = ({ navigation, route }) => {
             <TouchableOpacity
               style={styles.mainButtons}
               onPress={() => {
-                navigation.navigate("ScheduleExample");
+                navigation.navigate("ScheduleBooking");
               }}
             >
               <Text style={styles.mainButtonText}>Schedule Booking</Text>
@@ -59,14 +59,14 @@ const BookingScreen = ({ navigation, route }) => {
               <Text style={styles.mainButtonText}>My Bookings</Text>
             </TouchableOpacity>
           </View>
-          <View style={{ flexDirection: "row" }}>
+          {/* <View style={{ flexDirection: "row" }}>
             <TouchableOpacity
                 style={styles.mainButtons}
                 onPress={() => navigation.navigate("Payments")}
               >
                 <Text style={styles.mainButtonText}>Payment</Text>
               </TouchableOpacity>
-          </View>
+          </View> */}
         </View>
       </View>
     </View>

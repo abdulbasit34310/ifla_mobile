@@ -12,7 +12,7 @@ import * as SecureStore from "expo-secure-store";
 export function CustomDrawer(props) {
   const { signOut } = React.useContext(AuthContext);
   const REST_API_ENDPOINT =
-    "http://192.168.8.102:4000/shipper" || REST_API + "/shipper";
+    "http://192.168.0.177:4000/users" || REST_API + "/users";
   const [image, setImage] = React.useState();
   const getUser = async () => {
     let token1 = await SecureStore.getItemAsync("userToken");
@@ -24,7 +24,7 @@ export function CustomDrawer(props) {
 
     const data = await response.data;
     console.log(data);
-    setImage(data.PersonId.image);
+    setImage(data.personId.image);
   };
 
   React.useEffect(() => {
@@ -44,7 +44,7 @@ export function CustomDrawer(props) {
                     height: 100,
                     borderRadius: 90,
                   }}
-                  source={{ uri: `http://192.168.8.102:4000/images/${image}` }}
+                  source={{ uri: `http://192.168.0.177:4000/images/${image}` }}
                 />
               ) : null}
               {/* <View style={{ marginLeft: 15, flexDirection: 'column' }}>

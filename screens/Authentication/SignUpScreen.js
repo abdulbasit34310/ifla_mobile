@@ -17,7 +17,7 @@ import { REST_API, REST_API_LOCAL } from "@env";
 import logo from "../images/IFLA.png";
 
 const REST_API_ENDPOINT =
-  "http://192.168.8.102:4000/users" || REST_API + "/users";
+  "http://192.168.0.177:4000/users" || REST_API + "/users";
 
 const SignUpScreen = ({ route, navigation }) => {
   // const { setloggedin } = route.params;
