@@ -12,7 +12,6 @@ import { REST_API_LOCAL } from "@env";
 
 export function CustomDrawer(props) {
   const { signOut } = React.useContext(AuthContext);
-
   const [image, setImage] = React.useState();
   const getUser = async () => {
     let token1 = await SecureStore.getItemAsync("userToken");

@@ -18,13 +18,11 @@ import axios from "axios";
 import AB from "../images/AB.png";
 import { REST_API_LOCAL } from "@env";
 import * as SecureStore from "expo-secure-store";
-// var fs = require("fs");
 
 const EditProfileScreen = ({ navigation, route }) => {
   var item = route.params.item;
   const [hasGalleyPermission, setHasGalleryPermission] = React.useState(null);
   const [image, setImage] = React.useState();
-  const [image64, setImage64] = React.useState();
 
   const [data, setData] = React.useState({
     key: item.key,
