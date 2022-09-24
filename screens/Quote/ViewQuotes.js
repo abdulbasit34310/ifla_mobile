@@ -14,7 +14,7 @@ import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 
 const REST_API_ENDPOINT =
-  "http://192.168.0.17:4000/shipper" || REST_API + "/shipper";
+  "http://192.168.100.132:4000/shipper" || REST_API + "/shipper";
 
 const FIREBASE_API_ENDPOINT =
   "https://freight-automation-default-rtdb.firebaseio.com/";
