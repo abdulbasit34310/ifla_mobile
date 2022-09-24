@@ -25,11 +25,12 @@ import MyBookingDetails from "./screens/Booking/MyBookingDetails";
 import GetAQuote from "./screens/Quote/GetAQuote";
 import ViewQuotes from "./screens/Quote/ViewQuotes";
 import QuoteDetails from "./screens/Quote/QuoteDetails";
-// import Payment from './screens/Payment';
+import Payment from "./screens/Payment/Payment";
 
 import { CustomDrawer } from "./screens/CustomDrawer";
 import { AuthContext } from "./components/context";
 import ScheduleExample from "./screens/Booking/ScheduleExample";
+import Wallet from "./screens/Payment/Wallet";
 import Addresses from "./screens/Profile/Addresses";
 import AddAddress from "./components/Profile/AddAddress";
 
@@ -153,6 +154,16 @@ export default function App() {
               name="Profile"
               component={ProfileStack}
             />
+            <Drawer.Screen
+              // options={{ headerShown: false }}
+              name="Wallet"
+              component={Wallet}
+            />
+            <Drawer.Screen
+              // options={{ headerShown: false }}
+              name="Payments"
+              component={Payment}
+            />
           </Drawer.Navigator>
         ) : (
           <RegistrationNavigationScreen />
@@ -224,6 +235,11 @@ function BookingStack({ route }) {
         name="MyBookingDetails"
         component={MyBookingDetails}
         options={{ title: "Booking Details" }}
+      />
+      <Stack.Screen
+        name="Payments"
+        component={Payment}
+        options={{ title: "Pay Now" }}
       />
     </Stack.Navigator>
   );

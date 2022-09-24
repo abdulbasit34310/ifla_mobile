@@ -148,7 +148,6 @@ export default function PendingBookingDetails({ navigation, route }) {
             </Text>
           </View>
         </View>
-
         <TouchableOpacity
           onPress={() => {
             Alert.alert("Cancel Booking", "Are you sure?", [
@@ -166,26 +165,17 @@ export default function PendingBookingDetails({ navigation, route }) {
               },
             ]);
           }}
-          style={{
-            marginTop: 20,
-            padding: 10,
-            marginBottom: 20,
-            backgroundColor: "#068E94",
-            width: 200,
-            alignSelf: "center",
-            borderRadius: 5,
-          }}
+          style={styles.button}
         >
-          <Text
-            style={{
-              alignSelf: "center",
-              color: "white",
-              fontWeight: "bold",
-              fontSize: 18,
-            }}
-          >
-            Cancel Booking
-          </Text>
+          <Text style={styles.buttonText}>Cancel Booking</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("Payments", { payId: bookingData.payment._id });
+          }}
+          style={styles.button}
+        >
+          <Text style={styles.buttonText}>Pay Now</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
@@ -203,4 +193,18 @@ const styles = StyleSheet.create({
   },
   propertyStyle: { fontSize: 16, fontWeight: "bold" },
   paymentStyle: { fontSize: 22, fontWeight: "bold", color: "#005761" },
+  button: {
+    marginTop: 20,
+    padding: 10,
+    marginBottom: 20,
+    backgroundColor: "#068E94",
+    width: 200,
+    alignSelf: "center",
+  },
+  buttonText: {
+    alignSelf: "center",
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 18,
+  },
 });

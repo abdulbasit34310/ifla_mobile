@@ -9,9 +9,9 @@ const BookingScreen = ({ navigation, route }) => {
         style={{
           backgroundColor: "#00ABB2",
           width: 335,
-          height: 275,
+          height: 250,
           alignSelf: "center",
-          marginBottom: 75,
+          marginBottom: 5,
           borderRadius: 5,
         }}
         source={logo}
@@ -59,6 +59,14 @@ const BookingScreen = ({ navigation, route }) => {
               <Text style={styles.mainButtonText}>My Bookings</Text>
             </TouchableOpacity>
           </View>
+          {/* <View style={{ flexDirection: "row" }}>
+            <TouchableOpacity
+                style={styles.mainButtons}
+                onPress={() => navigation.navigate("Payments")}
+              >
+                <Text style={styles.mainButtonText}>Payment</Text>
+              </TouchableOpacity>
+          </View> */}
         </View>
       </View>
     </View>

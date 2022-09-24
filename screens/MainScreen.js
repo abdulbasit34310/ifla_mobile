@@ -32,45 +32,43 @@ registerForPushNotificationsAsync = async () => {
     }
     token = (await Notifications.getExpoPushTokenAsync()).data;
     console.log(token);
-
-    var response = await axios.post(
-      "http://192.168.10.8:3000/notifications/token",
-      { token: { value: token } }
-    );
+    try {
+      var response = await axios.post(
+        "http://192.168.0.177:4000/notifications/token",
+        { token: { value: token } }
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.warn(error);
+      console.log(error);
+    }
     // this.setState({ expoPushToken: token });
   } else {
     alert("Must use physical device for Push Notifications");
   }
-
-  if (Platform.OS === "android") {
-    Notifications.setNotificationChannelAsync("default", {
-      name: "default",
-      importance: Notifications.AndroidImportance.MAX,
-      vibrationPattern: [0, 250, 250, 250],
-      lightColor: "#FF231F7C",
-    });
+  if (finalStatus !== "granted") {
+    alert("Failed to get push token for push notification!");
+    return;
   }
+  token = (await Notifications.getExpoPushTokenAsync()).data;
+  console.log(token);
 
-  return token;
+  var response = await axios.post(
+    "http://192.168.10.8:3000/notifications/token",
+    { token: { value: token } }
+  );
+  // this.setState({ expoPushToken: token });
 };
+//  else {
+//   alert("Must use physical device for Push Notifications");
+// }
 
-async function sendPushNotification(expoPushToken) {
-  const message = {
-    to: expoPushToken,
-    sound: "default",
-    title: "Original Title",
-    body: "And here is the body!",
-    data: { someData: "goes here" },
-  };
-
-  await fetch("https://exp.host/--/api/v2/push/send", {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Accept-encoding": "gzip, deflate",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(message),
+if (Platform.OS === "android") {
+  Notifications.setNotificationChannelAsync("default", {
+    name: "default",
+    importance: Notifications.AndroidImportance.MAX,
+    vibrationPattern: [0, 250, 250, 250],
+    lightColor: "#FF231F7C",
   });
 }
 
