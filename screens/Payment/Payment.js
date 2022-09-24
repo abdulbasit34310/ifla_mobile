@@ -9,8 +9,13 @@ const Payment = ({route}) => {
   const [saveCard, setSaveCard] = useState(false);
   const [isComplete, setComplete] = useState(false);
   const [publishableKey,setPublishableKey] = useState(null);
-  const payId = route.params.payId
-
+  
+  let payId,id = undefined
+  if(route.params.hasOwnProperty('payId'))
+    payId = route.params.payId
+  if(route.params.hasOwnProperty('id'))
+    id = route.params.id
+  
   const getPublishableKey = async ()=>{
     try {
       const response = await fetch('http://192.168.0.177:4000/payments/config')
@@ -29,7 +34,7 @@ const Payment = ({route}) => {
   }
 
   const fetchPaymentIntentClientSecret = async () => {
-    const body = { payId: payId}
+    const body = { payId: payId, id:id}
     const response = await axios.post(`http://192.168.0.177:4000/payments/create-checkout-session`, body);
     const {clientSecret} = await response.data;
 
@@ -73,7 +78,7 @@ const Payment = ({route}) => {
 
   return(
     <StripeProvider  publishableKey={publishableKey}>
-      <View>
+      <View style={styles.container}>
            <TextInput
               autoCapitalize="none"
               placeholder="Name"
@@ -130,7 +135,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
+    // alignItems: 'center',
     justifyContent: 'center',
   }, 
   cardField: {

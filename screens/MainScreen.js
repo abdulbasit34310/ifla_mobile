@@ -32,8 +32,13 @@ Notifications.setNotificationHandler({
       }
       token = (await Notifications.getExpoPushTokenAsync()).data;
       console.log(token);
-
-      var response = await axios.post("http://192.168.10.8:3000/notifications/token",{token:{value:token}})
+      try {
+        var response = await axios.post("http://192.168.0.177:4000/notifications/token",{token:{value:token}})
+        console.log(response.data)
+      } catch (error) {
+        console.warn(error)
+        console.log(error)
+      }
       // this.setState({ expoPushToken: token });
     } else {
       alert('Must use physical device for Push Notifications');
@@ -80,6 +85,7 @@ const MainScreen = ({route,navigation}) => {
     const [notification, setNotification] = useState(false);
     const notificationListener = useRef();
     const responseListener = useRef();
+    
     useEffect(()=>{
       registerForPushNotificationsAsync().then(token => setPushToken(token));
   

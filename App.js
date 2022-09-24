@@ -30,6 +30,7 @@ import Payment from "./screens/Payment/Payment";
 import { CustomDrawer } from "./screens/CustomDrawer";
 import { AuthContext } from "./components/context";
 import ScheduleExample from "./screens/Booking/ScheduleExample";
+import Wallet from "./screens/Payment/Wallet";
 
 const Drawer = createDrawerNavigator();
 
@@ -150,6 +151,16 @@ export default function App() {
               options={{ headerShown: false }}
               name="Profile"
               component={ProfileStack}
+            />
+            <Drawer.Screen
+              // options={{ headerShown: false }}
+              name="Wallet"
+              component={Wallet}
+            />
+            <Drawer.Screen
+              // options={{ headerShown: false }}
+              name="Payments"
+              component={Payment}
             />
           </Drawer.Navigator>
         ) : (

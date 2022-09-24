@@ -1,6 +1,6 @@
 import * as React from "react";
 import { View, StyleSheet, Image } from "react-native";
-import { Drawer } from "react-native-paper";
+import { Drawer, Title, Caption } from "react-native-paper";
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
 import AB from "./images/AB.png";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -13,18 +13,23 @@ export function CustomDrawer(props) {
   const { signOut } = React.useContext(AuthContext);
   const REST_API_ENDPOINT =
     "http://192.168.0.177:4000/users" || REST_API + "/users";
+
   const [image, setImage] = React.useState();
+  const [user, setUser] = React.useState(null);
+
+
   const getUser = async () => {
     let token1 = await SecureStore.getItemAsync("userToken");
     const headers = { Authorization: `Bearer ${token1}` };
-    const response = await axios.get(`${REST_API_ENDPOINT}/image`, {
+    const response = await axios.get(`${REST_API_ENDPOINT}/getUser`, {
       withCredentials: true,
       headers: headers,
     });
 
     const data = await response.data;
-    console.log(data);
+    console.log(data)
     setImage(data.personId.image);
+    setUser(data.personId)
   };
 
   React.useEffect(() => {
@@ -47,12 +52,14 @@ export function CustomDrawer(props) {
                   source={{ uri: `http://192.168.0.177:4000/images/${image}` }}
                 />
               ) : null}
-              {/* <View style={{ marginLeft: 15, flexDirection: 'column' }}>
-                <Title style={styles.title}>Abdul Basit</Title>
+              {user !== null? 
+              (<View style={{ marginLeft: 15,marginTop: 30, flexDirection: 'column' }}>
+                <Title style={styles.title}>{user.username}</Title>
                 <Caption style={styles.email}>
-                  abdulbasit34310@gmail.com
+                  {user.email}
                 </Caption>
-              </View> */}
+              </View>):null
+            }
             </View>
           </View>
 
@@ -93,15 +100,15 @@ export function CustomDrawer(props) {
                 props.navigation.navigate("Booking");
               }}
             />
-            {/* <DrawerItem
+            <DrawerItem
               icon={({ color, size }) => (
                 <Icon name="credit-card" color={{color}} size={size} />
               )}
-              label="Payment"
+              label="Wallet"
               onPress={() => {
-                props.navigation.navigate('Payment');
+                props.navigation.navigate('Wallet');
               }}
-            /> */}
+            />
           </Drawer.Section>
         </View>
       </DrawerContentScrollView>
