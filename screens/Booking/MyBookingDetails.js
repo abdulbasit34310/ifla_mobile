@@ -11,6 +11,7 @@ import {
   Alert,
 } from "react-native";
 import { Divider } from "react-native-paper";
+import moment from "moment";
 
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import * as SecureStore from "expo-secure-store";
@@ -18,12 +19,9 @@ import axios from "axios";
 import { REST_API, REST_API_LOCAL } from "@env";
 
 const REST_API_ENDPOINT =
-  "http://192.168.0.17:4000/shipper" || REST_API + "/shipper";
+  "http://192.168.0.103:4000/shipper" || REST_API + "/shipper";
 
-const FIREBASE_API_ENDPOINT =
-  "https://freight-automation-default-rtdb.firebaseio.com/";
-
-export default function BookingDetails({ navigation, route }) {
+export default function MyBookingDetails({ navigation, route }) {
   const item = route.params;
   const [bookingData, setBookingData] = React.useState(item);
 
@@ -85,8 +83,7 @@ export default function BookingDetails({ navigation, route }) {
             color: "black",
           }}
         >
-          {bookingData.dateTime.substr(0, 10)}{" "}
-          {bookingData.dateTime.substr(11, 11)}
+          {moment(bookingData.dateTime).utc().format("MMMM Do YYYY, h:mm:ss a")}
         </Text>
         <View
           style={{

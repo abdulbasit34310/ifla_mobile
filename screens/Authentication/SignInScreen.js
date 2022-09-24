@@ -21,21 +21,39 @@ import axios from "axios";
 import { REST_API, REST_API_LOCAL } from "@env";
 
 const REST_API_ENDPOINT =
-  "http://192.168.0.17:4000/users" || REST_API + "/users";
+  "http://192.168.0.103:4000/users" || REST_API + "/users";
 
 const SignInScreen = ({ route, navigation }) => {
   const [data, setData] = React.useState({
-    username: "",
+    email: "",
     password: "",
-    checkusernameChange: false,
+    checkemailChange: false,
     checkPasswordChange: false,
-    notValidusername: true,
+    notValidemail: true,
     notValidPassword: true,
     secureTextEntry: true,
   });
 
   const { signIn } = React.useContext(AuthContext);
 
+  const emailChange = (val) => {
+    const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if (reg.test(String(val).toLowerCase())) {
+      setData({
+        ...data,
+        email: val,
+        checkEmailChange: true,
+        notValidEmail: true,
+      });
+    } else {
+      setData({
+        ...data,
+        email: val,
+        checkEmailChange: false,
+        notValidEmail: false,
+      });
+    }
+  };
   // async function getValueFor(key) {
   //   let result = await SecureStore.getItemAsync(key);
   //   if (result) {
@@ -47,7 +65,7 @@ const SignInScreen = ({ route, navigation }) => {
 
   const sendSignInCredentials = async () => {
     // Click Sign In without entering data in any field.
-    if (data.username.length == 0 || data.password.length == 0) {
+    if (data.email.length == 0 || data.password.length == 0) {
       Alert.alert(
         "Wrong Input!",
         "Username or password field cannot be empty.",
@@ -55,16 +73,17 @@ const SignInScreen = ({ route, navigation }) => {
       );
       return;
     }
-    console.log(data.username);
+    console.log(data.email);
     // If Username & password is incorrect.
-    const body = { username: data.username, password: data.password };
+    const body = { email: data.email, password: data.password };
+    console.log(body);
     const response = await axios
       .post(`${REST_API_ENDPOINT}/login`, body)
       .catch((error) => {
         if (error.response) {
           console.log(error.response.data);
           console.log(error.response.status);
-          Alert.alert("Invalid User!", "Username or password is incorrect.", [
+          Alert.alert("Invalid User!", "Email or password is incorrect.", [
             { text: "OK" },
           ]);
           return;
@@ -73,9 +92,10 @@ const SignInScreen = ({ route, navigation }) => {
 
     const data1 = await response.data;
     const token = data1.token;
-    const user_name = data1.user.username;
+    const email = data1.user.email;
+    const foundUser = { userToken: token, email: email };
+    console.log(foundUser);
 
-    const foundUser = { userToken: token, userName: user_name };
     signIn(foundUser);
 
     if (data1) {
@@ -113,7 +133,7 @@ const SignInScreen = ({ route, navigation }) => {
   };
 
   const passwordChange = (text) => {
-    if (text.length >= 3) {
+    if (text.length >= 6) {
       setData({
         ...data,
         password: text,
@@ -160,18 +180,16 @@ const SignInScreen = ({ route, navigation }) => {
           <FontAwesome name="user-circle" color="#005761" size={25} />
           <TextInput
             style={styles.ti}
-            placeholder="Your Username"
-            onChangeText={(text) => usernameChange(text)}
+            placeholder="Your Email"
+            onChangeText={(text) => emailChange(text)}
           ></TextInput>
-          {data.checkusernameChange ? (
+          {data.checkemailChange ? (
             <Feather name="check-circle" color="green" size={25} />
           ) : null}
         </View>
 
-        {data.notValidusername ? null : (
-          <Text style={styles.errorMessage}>
-            username Syntax is not Correct
-          </Text>
+        {data.notValidemail ? null : (
+          <Text style={styles.errorMessage}>Email Syntax is not Correct</Text>
         )}
 
         <View style={styles.action}>

@@ -10,9 +10,10 @@ import {
 import axios from "axios";
 import { REST_API, REST_API_LOCAL } from "@env";
 import * as SecureStore from "expo-secure-store";
+import moment from "moment";
 
 const REST_API_ENDPOINT =
-  "http://192.168.0.17:4000/shipper" || REST_API + "/shipper";
+  "http://192.168.0.103:4000/shipper" || REST_API + "/shipper";
 
 export default function MyBookings({ route, navigation }) {
   const [bookingData, setBookingData] = React.useState();
@@ -94,7 +95,7 @@ export default function MyBookings({ route, navigation }) {
             <TouchableOpacity
               style={styles.flatListStyle}
               onPress={() => {
-                navigation.push("BookingDetails", item);
+                navigation.push("MyBookingDetails", item);
               }}
             >
               <View>
@@ -108,8 +109,9 @@ export default function MyBookings({ route, navigation }) {
                   }}
                 >
                   <Text style={styles.timeStyle}>
-                    {bookingData[index].dateTime.substr(0, 10)}{" "}
-                    {bookingData[index].dateTime.substr(11, 11)}
+                    {moment(bookingData[index].dateTime)
+                      .utc()
+                      .format("MMM Do YYYY, h:mm:ss a")}
                   </Text>
                   <Text style={styles.paymentStyle}>
                     {bookingData[index].payment.amount} PKR
@@ -136,11 +138,6 @@ export default function MyBookings({ route, navigation }) {
                       {bookingData[index].dropoffAddress.street}
                     </Text>
                   </View>
-                  <View>
-                    <Text style={styles.statusStyle}>
-                      {bookingData[index].status}
-                    </Text>
-                  </View>
                 </View>
               </View>
             </TouchableOpacity>
@@ -164,7 +161,7 @@ const styles = StyleSheet.create({
   timeStyle: { fontWeight: "bold", fontSize: 17, color: "#005761" },
   paymentStyle: { fontSize: 15, fontWeight: "bold", color: "#00ABB2" },
   heading: { color: "#AAAAAA", fontSize: 12 },
-  cityNameStyle: { color: "#005761", fontWeight: "bold" },
+  cityNameStyle: { color: "#005761", fontWeight: "bold", width: "50%" },
   statusStyle: {
     fontSize: 12,
     margin: 5,

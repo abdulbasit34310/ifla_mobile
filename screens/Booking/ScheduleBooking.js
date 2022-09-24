@@ -19,14 +19,12 @@ import { REST_API, REST_API_LOCAL } from "@env";
 import * as SecureStore from "expo-secure-store";
 
 const REST_API_ENDPOINT =
-  "http://192.168.0.17:4000/shipper" || REST_API + "/shipper";
+  "http://192.168.0.103:4000/shipper" || REST_API + "/shipper";
 
-import ShipmentType from "../../components/ScheduleBooking/ShipmentType";
-import TruckDetails from "../../components/ScheduleBooking/TruckDetails";
-import PackageDetails from "../../components/ScheduleBooking/PackageDetails";
 import GoodsDetails from "../../components/ScheduleBooking/GoodDetails";
-import AddressDetails from "../../components/ScheduleBooking/AddressDetails";
-
+import BookingDetails from "../../components/ScheduleBooking/BookingDetails";
+import ScheduleDetails from "../../components/ScheduleBooking/ScheduleDetails";
+import PreviewBooking from "../../components/ScheduleBooking/PreviewBooking";
 const Success = ({
   navigation,
   nextStep,
@@ -56,37 +54,35 @@ export default function ScheduleBooking({ route, navigation }) {
   //       });
   // },[navigation])
 
-  const CUSTOMER = "-MsgaaNM6XCecZ6niCZd";
-
   const [bookingData, setBooking] = React.useState({
     type: "LTL",
     step1: step,
-    pickupCity: "",
     pickupAddress: "",
-    dropoffCity: "",
     dropoffAddress: "",
     goodsType: "",
     description: "",
     weight: "",
     height: "",
+    vehicle: "",
     length: "",
     width: "",
     date: date.toDateString(),
     time: date.toTimeString(),
     status: "Pending",
-    customer: CUSTOMER,
+    package: false,
+    packageName: "",
+    packageType: "",
   });
 
   const clear = () => {
     setBooking({
       type: "",
-      pickupCity: "",
       pickupAddress: "",
-      dropoffCity: "",
       dropoffAddress: "",
       vehicle: "",
       description: "",
       weight: "",
+      vehicle: "",
       offer: "",
       date: date.toDateString(),
       time: date.toTimeString(),
@@ -94,23 +90,29 @@ export default function ScheduleBooking({ route, navigation }) {
     });
   };
 
-  const postData = async (packaging) => {
-    // const token = getValueFor('userToken')
+  const postData = async () => {
+    const token = getValueFor("userToken");
     let token1 = await SecureStore.getItemAsync("userToken");
     const body = bookingData;
-    body.package = packaging;
+    // body.package = packaging;
     console.log(body);
-    // const headers = { Authorization: `Bearer ${token1}` };
-    // try {
-    //   let res = await axios.post(
-    //     `${REST_API_ENDPOINT}/saveBookingMobile`,
-    //     body,
-    //     { withCredentials: true, headers: headers }
-    //   );
-    //   console.log(res.data);
-    // } catch (error) {
-    //   console.log(error.response.data);
-    // }
+    const headers = { Authorization: `Bearer ${token1}` };
+    try {
+      let res = await axios.post(
+        `${REST_API_ENDPOINT}/saveBookingMobile`,
+        body,
+        { withCredentials: true, headers: headers }
+      );
+      console.log(res.data);
+      ToastAndroid.showWithGravity(
+        "Booking Saved",
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER
+      );
+      navigation.goBack();
+    } catch (error) {
+      console.log(error.response.data);
+    }
 
     // let token1 = await SecureStore.getItemAsync("userToken")
     // .then(val=>setToken(val));
@@ -158,22 +160,13 @@ export default function ScheduleBooking({ route, navigation }) {
   switch (step1) {
     case 0:
       return (
-        <ShipmentType
+        <BookingDetails
           nextStep={nextStep}
           bookingData={bookingData}
           setBooking={setBooking}
         />
       );
     case 1:
-      return (
-        <AddressDetails
-          nextStep={nextStep}
-          prevStep={prevStep}
-          bookingData={bookingData}
-          setBooking={setBooking}
-        />
-      );
-    case 2:
       return (
         <GoodsDetails
           nextStep={nextStep}
@@ -182,9 +175,9 @@ export default function ScheduleBooking({ route, navigation }) {
           setBooking={setBooking}
         />
       );
-    case 3:
+    case 2:
       return (
-        <TruckDetails
+        <ScheduleDetails
           nextStep={nextStep}
           prevStep={prevStep}
           bookingData={bookingData}
@@ -194,9 +187,9 @@ export default function ScheduleBooking({ route, navigation }) {
           postData={postData}
         />
       );
-    case 4:
+    case 3:
       return (
-        <PackageDetails
+        <PreviewBooking
           nextStep={nextStep}
           prevStep={prevStep}
           bookingData={bookingData}
@@ -204,7 +197,7 @@ export default function ScheduleBooking({ route, navigation }) {
           postData={postData}
         />
       );
-    case 5:
+    case 4:
       return (
         <Success
           nextStep={nextStep}

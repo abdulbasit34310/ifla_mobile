@@ -19,7 +19,7 @@ const MainScreen = ({ route, navigation }) => {
     //     setToken(result)
   }
   const deleteToken = () => {
-    SecureStore.deleteItemAsync("userToken");
+    // SecureStore.deleteItemAsync("userToken");
     signOut();
   };
 
@@ -43,7 +43,7 @@ const MainScreen = ({ route, navigation }) => {
   //             'Authorization': `Bearer ${token}`
   //         }
   //       }
-  //     fetch('http://192.168.0.17:4000/users/testAuth', obj)
+  //     fetch('http://192.168.0.103:4000/users/testAuth', obj)
   //     .then(function(res) {
   //         return res.json();
   //     })
@@ -55,7 +55,7 @@ const MainScreen = ({ route, navigation }) => {
   React.useEffect(() => {
     navigation.addListener("focus", () => {
       getValueFor();
-      if (isTokenExpired()) deleteToken();
+      // if (isTokenExpired()) deleteToken();
       // request()
     });
   }, [navigation]);

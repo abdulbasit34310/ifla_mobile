@@ -9,7 +9,7 @@ import {
   ToastAndroid,
   Image,
 } from "react-native";
-// import Checkbox from 'expo-checkbox';
+import Checkbox from "expo-checkbox";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Feather from "react-native-vector-icons/Feather";
 import axios from "axios";
@@ -17,7 +17,7 @@ import { REST_API, REST_API_LOCAL } from "@env";
 import logo from "../images/IFLA.png";
 
 const REST_API_ENDPOINT =
-  "http://192.168.0.17:4000/users" || REST_API + "/users";
+  "http://192.168.0.103:4000/users" || REST_API + "/users";
 
 const SignUpScreen = ({ route, navigation }) => {
   // const { setloggedin } = route.params;
@@ -26,43 +26,65 @@ const SignUpScreen = ({ route, navigation }) => {
     name: "",
     email: "",
     phoneNo: "",
+    companyName: "",
     password: "",
     confirmPassword: "",
-    // companyName: '',
     checkNameChange: false,
     checkEmailChange: false,
     checkPhoneNoChange: false,
     checkPasswordChange: false,
     checkConfirmPasswordChange: false,
-    // checkCompanyNameChange: false,
-    notValidName: true,
-    notValidEmail: true,
-    notValidPhoneNo: true,
-    notValidPassword: true,
-    // notValidCompanyName: true,
+    checkCompanyNameChange: false,
+    validName: true,
+    validEmail: true,
+    validPhoneNo: true,
+    validPassword: true,
+    validCompanyName: true,
     secureTextEntry: true,
   });
-
-  // const [isChecked, setChecked] = React.useState(false);
-
+  const checkConditions = (condition1, condition2) => {
+    if (condition1 && condition2) {
+      return true;
+    } else {
+      return false;
+    }
+  };
   const postData = async () => {
-    var body = {
-      username: data.name,
-      email: data.email,
-      phone: data.phoneNo,
-      password: data.password,
-      // companyName: data.companyName,
-    };
-    console.log(body);
-    let res = await axios.post(`${REST_API_ENDPOINT}/signup`, body);
-    const data1 = await res.data;
-    console.log(data1);
-    if (data1) {
-      showToastWithGravity("Signed up");
-      // setloggedin(true)
-      navigation.navigate("SignInScreen");
-    } else showToastWithGravity("Couldn't Sign up");
-    // navigation.goBack();
+    if (
+      data.validEmail &&
+      data.email &&
+      data.name &&
+      data.validName &&
+      data.validPassword &&
+      data.password &&
+      data.validPhoneNo &&
+      data.phoneNo &&
+      data.confirmPassword &&
+      data.companyName &&
+      data.validCompanyName
+    ) {
+      var body = {
+        username: data.name,
+        email: data.email,
+        phone: data.phoneNo,
+        password: data.password,
+        companyName: data.companyName,
+        userRole: "Shipper",
+        isAdmin: false,
+      };
+      console.log(body);
+      let res = await axios.post(`${REST_API_ENDPOINT}/signup`, body);
+      const data1 = await res.data;
+      console.log(data1);
+      if (data1) {
+        showToastWithGravity("Signed up");
+        // setloggedin(true)
+        navigation.navigate("SignInScreen");
+      } else showToastWithGravity("Couldn't Sign up");
+      // navigation.goBack();
+    } else {
+      showToastWithGravity("Please Enter All Details Correctly");
+    }
   };
 
   const showToastWithGravity = (text) => {
@@ -70,40 +92,31 @@ const SignUpScreen = ({ route, navigation }) => {
   };
 
   const nameChange = (val) => {
-    if (val.trim().length != 2) {
+    if (val.length >= 6) {
       setData({
         ...data,
         name: val,
         checkNameChange: true,
-        notValidName: true,
+        validName: true,
       });
     } else {
       setData({
         ...data,
         name: val,
-        checkNameChange: false,
-        notValidName: false,
+        checkNameChange: true,
+        validName: false,
       });
     }
   };
 
-  // const companyNameChange = (val) => {
-  //   if (val.trim().length != 2) {
-  //     setData({
-  //       ...data,
-  //       companyName: val,
-  //       checkCompanyNameChange: true,
-  //       notValidCompanyName: true,
-  //     });
-  //   } else {
-  //     setData({
-  //       ...data,
-  //       companyName: val,
-  //       checkCompanyNameChange: false,
-  //       notValidCompanyName: false,
-  //     });
-  //   }
-  // };
+  const companyNameChange = (val) => {
+    setData({
+      ...data,
+      companyName: val,
+      checkCompanyNameChange: true,
+      validCompanyName: true,
+    });
+  };
 
   const emailChange = (val) => {
     const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -112,14 +125,14 @@ const SignUpScreen = ({ route, navigation }) => {
         ...data,
         email: val,
         checkEmailChange: true,
-        notValidEmail: true,
+        validEmail: true,
       });
     } else {
       setData({
         ...data,
         email: val,
-        checkEmailChange: false,
-        notValidEmail: false,
+        checkEmailChange: true,
+        validEmail: false,
       });
     }
   };
@@ -131,30 +144,30 @@ const SignUpScreen = ({ route, navigation }) => {
         ...data,
         phoneNo: val,
         checkPhoneNoChange: true,
-        notValidPhoneNo: true,
+        validPhoneNo: true,
       });
     } else {
       setData({
         ...data,
         phoneNo: val,
-        checkPhoneNoChange: false,
-        notValidPhoneNo: false,
+        checkPhoneNoChange: true,
+        validPhoneNo: false,
       });
     }
   };
 
   const passwordChange = (val) => {
-    if (val.trim().length >= 3) {
+    if (val.trim().length >= 6) {
       setData({
         ...data,
         password: val,
-        notValidPassword: true,
+        validPassword: true,
       });
     } else {
       setData({
         ...data,
         password: val,
-        notValidPassword: false,
+        validPassword: false,
       });
     }
   };
@@ -201,18 +214,18 @@ const SignUpScreen = ({ route, navigation }) => {
             placeholderTextColor="#666666"
             onChangeText={(val) => nameChange(val)}
           ></TextInput>
-          {data.checkNameChange ? (
+          {checkConditions(data.checkNameChange, data.validName) ? (
             <Feather name="check-circle" color="green" size={25} />
           ) : null}
         </View>
-        {data.notValidName ? null : (
+        {data.validName ? null : (
           <View duration={500}>
-            <Text style={styles.errorMsg}>Name must be 2 characters long.</Text>
+            <Text style={styles.errorMsg}>
+              User Name must be 6 characters long.
+            </Text>
           </View>
         )}
-
         {/* Email */}
-
         <View style={styles.action}>
           <FontAwesome name="envelope" color="#005761" size={25} />
           <TextInput
@@ -222,21 +235,18 @@ const SignUpScreen = ({ route, navigation }) => {
             keyboardType="email-address"
             onChangeText={(val) => emailChange(val)}
           ></TextInput>
-          {data.checkEmailChange ? (
+          {checkConditions(data.checkEmailChange, data.validEmail) ? (
             <Feather name="check-circle" color="green" size={25} />
           ) : null}
         </View>
-
-        {data.notValidEmail ? null : (
+        {data.validEmail ? null : (
           <View duration={500}>
             <Text style={styles.errorMessage}>
               Email Syntax is not correct.
             </Text>
           </View>
         )}
-
         {/* Phone Number */}
-
         <View style={styles.action}>
           <Feather name="phone" color="#005761" size={25} />
           <TextInput
@@ -247,12 +257,29 @@ const SignUpScreen = ({ route, navigation }) => {
             onChangeText={(text) => phoneNoChange(text)}
           ></TextInput>
         </View>
-        {data.notValidPhoneNo ? null : (
+        {data.validPhoneNo ? null : (
           <View duration={500}>
             <Text style={styles.errorMessage}>Phone Number is not Valid.</Text>
           </View>
         )}
 
+        {/* Company Name */}
+        <View style={styles.action}>
+          <FontAwesome name="user-o" color="#005761" size={25} />
+          <TextInput
+            style={styles.ti}
+            placeholder="Company Name"
+            placeholderTextColor="#666666"
+            onChangeText={(val) => companyNameChange(val)}
+          ></TextInput>
+        </View>
+        {data.validCompanyName ? null : (
+          <View duration={500}>
+            <Text style={styles.errorMsg}>
+              Company Name must be 2 characters long.
+            </Text>
+          </View>
+        )}
         <View style={styles.action}>
           <Feather name="lock" color="#005761" size={25} />
           <TextInput
@@ -271,14 +298,13 @@ const SignUpScreen = ({ route, navigation }) => {
             )}
           </TouchableOpacity>
         </View>
-        {data.notValidPassword ? null : (
+        {data.validPassword ? null : (
           <View duration={500}>
             <Text style={styles.errorMessage}>
-              Password must be 8 characters long.
+              Password must be at least 6 characters long.
             </Text>
           </View>
         )}
-
         <View style={styles.action}>
           <Feather name="lock" color="#005761" size={25} />
           <TextInput
@@ -304,31 +330,6 @@ const SignUpScreen = ({ route, navigation }) => {
             </Text>
           </View>
         )}
-
-        {/* <View style={styles.checkbox}>
-        <Text>Are you a company owner?</Text>
-        <Checkbox value={isChecked} onValueChange={setChecked} />
-      </View>
-
-      Company Name
-
-      {isChecked == false ? null : (
-        <View style={styles.action}>
-          <FontAwesome name="user-o" color="#005761" size={25} />
-          <TextInput
-            style={styles.ti}
-            placeholder="Company Name"
-            placeholderTextColor="#666666"
-            onChangeText={(val) => companyNameChange(val)}>
-          </TextInput>
-        </View>
-      )}
-
-      {data.notValidCompanyName ? null : (
-        <View duration={500}>
-          <Text style={styles.errorMsg}>Company Name must be 2 characters long.</Text>
-        </View>
-      )} */}
 
         <View>
           <TouchableOpacity
