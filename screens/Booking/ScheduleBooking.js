@@ -15,11 +15,8 @@ import {
 } from "react-native";
 
 import axios from "axios";
-import { REST_API, REST_API_LOCAL } from "@env";
+import { REST_API_LOCAL } from "@env";
 import * as SecureStore from "expo-secure-store";
-
-const REST_API_ENDPOINT =
-  "http://192.168.0.103:4000/shipper" || REST_API + "/shipper";
 
 import GoodsDetails from "../../components/ScheduleBooking/GoodDetails";
 import BookingDetails from "../../components/ScheduleBooking/BookingDetails";
@@ -99,7 +96,7 @@ export default function ScheduleBooking({ route, navigation }) {
     const headers = { Authorization: `Bearer ${token1}` };
     try {
       let res = await axios.post(
-        `${REST_API_ENDPOINT}/saveBookingMobile`,
+        `${REST_API_LOCAL}/shipper/saveBookingMobile`,
         body,
         { withCredentials: true, headers: headers }
       );
@@ -127,10 +124,10 @@ export default function ScheduleBooking({ route, navigation }) {
     //     }
     //   }
     // const response =
-    // fetch(`${REST_API_ENDPOINT}/saveBookingMobile`, obj).then(response => console.log(response.json())).catch(err => console.log(err))
+    // fetch(`${REST_API_LOCAL}/shipper/saveBookingMobile`, obj).then(response => console.log(response.json())).catch(err => console.log(err))
     // const token = getValueFor('userToken')
     // const headers = { "Authorization": `Bearer ${token}` }
-    // const response = await axios.get(`${REST_API_ENDPOINT}/getPendingBookings`, { headers: headers });
+    // const response = await axios.get(`${REST_API_LOCAL}/shipper/getPendingBookings`, { headers: headers });
     // const data = await response.data.bookings;
     // let data = await response.json()
     // console.log(data)
