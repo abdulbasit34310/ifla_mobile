@@ -8,28 +8,25 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { AuthContext } from "../components/context";
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
+import { REST_API_LOCAL } from "@env";
 
 export function CustomDrawer(props) {
   const { signOut } = React.useContext(AuthContext);
-  const REST_API_ENDPOINT =
-    "http://192.168.0.177:4000/users" || REST_API + "/users";
-
   const [image, setImage] = React.useState();
   const [user, setUser] = React.useState(null);
-
 
   const getUser = async () => {
     let token1 = await SecureStore.getItemAsync("userToken");
     const headers = { Authorization: `Bearer ${token1}` };
-    const response = await axios.get(`${REST_API_ENDPOINT}/getUser`, {
+    const response = await axios.get(`${REST_API_LOCAL}/shipper/image`, {
       withCredentials: true,
       headers: headers,
     });
 
     const data = await response.data;
-    console.log(data)
+    console.log(data);
     setImage(data.personId.image);
-    setUser(data.personId)
+    setUser(data.personId);
   };
 
   React.useEffect(() => {
@@ -49,17 +46,21 @@ export function CustomDrawer(props) {
                     height: 100,
                     borderRadius: 90,
                   }}
-                  source={{ uri: `http://192.168.0.177:4000/images/${image}` }}
+                  source={{ uri: `http://192.168.0.103:4000/images/${image}` }}
                 />
               ) : null}
-              {user !== null? 
-              (<View style={{ marginLeft: 15,marginTop: 30, flexDirection: 'column' }}>
-                <Title style={styles.title}>{user.username}</Title>
-                <Caption style={styles.email}>
-                  {user.email}
-                </Caption>
-              </View>):null
-            }
+              {user !== null ? (
+                <View
+                  style={{
+                    marginLeft: 15,
+                    marginTop: 30,
+                    flexDirection: "column",
+                  }}
+                >
+                  <Title style={styles.title}>{user.username}</Title>
+                  <Caption style={styles.email}>{user.email}</Caption>
+                </View>
+              ) : null}
             </View>
           </View>
 
@@ -102,11 +103,11 @@ export function CustomDrawer(props) {
             />
             <DrawerItem
               icon={({ color, size }) => (
-                <Icon name="credit-card" color={{color}} size={size} />
+                <Icon name="credit-card" color={{ color }} size={size} />
               )}
               label="Wallet"
               onPress={() => {
-                props.navigation.navigate('Wallet');
+                props.navigation.navigate("Wallet");
               }}
             />
           </Drawer.Section>

@@ -9,15 +9,9 @@ import {
   FlatList,
   Alert,
 } from "react-native";
-import { REST_API, REST_API_LOCAL } from "@env";
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
-
-const REST_API_ENDPOINT =
-  "http://192.168.0.177:4000/shipper" || REST_API + "/shipper";
-
-const FIREBASE_API_ENDPOINT =
-  "https://freight-automation-default-rtdb.firebaseio.com/";
+import { REST_API_LOCAL } from "@env";
 
 export default function ViewQuotes({ navigation, route }) {
   const [quoteData, setQuoteData] = React.useState();
@@ -26,7 +20,7 @@ export default function ViewQuotes({ navigation, route }) {
     let token1 = await SecureStore.getItemAsync("userToken");
     const headers = { Authorization: `Bearer ${token1}` };
 
-    const response = await axios.get(`${REST_API_ENDPOINT}/getQuotes`, {
+    const response = await axios.get(`${REST_API_LOCAL}/shipper/getQuotes`, {
       withCredentials: true,
       headers: headers,
     });

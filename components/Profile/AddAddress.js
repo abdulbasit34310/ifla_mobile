@@ -8,6 +8,7 @@ import {
   SafeAreaView,
   Button,
   TouchableOpacity,
+  ToastAndroid,
 } from "react-native";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import MapView, { Callout, Circle, Marker } from "react-native-maps";
@@ -15,6 +16,10 @@ import * as Location from "expo-location";
 import { GOOGLE_API } from "@env";
 import marker from "../../assets/icons8-marker.png";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { FAB } from "react-native-elements";
+import * as SecureStore from "expo-secure-store";
+import axios from "axios";
+import { REST_API_LOCAL } from "@env";
 
 const Theme = {
   Buttons: "#068E94",
@@ -30,7 +35,7 @@ const Theme = {
 const latitudeDelta = 0.025;
 const longitudeDelta = 0.025;
 
-export default function ScheduleExample() {
+export default function AddAddress({ setIsVisible, isVisible, isCompany }) {
   // const [pin, setPin] = React.useState({
   //   latitude: 33.6533,
   //   longitude: 73.0702,
@@ -43,6 +48,7 @@ export default function ScheduleExample() {
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   });
+  const [isloading, setLoading] = useState(false);
 
   const animateToLocation = (region) => {
     mapRef.current.animateToRegion(region, 2 * 1000);
@@ -71,10 +77,47 @@ export default function ScheduleExample() {
   };
 
   const getAddress = async () => {
+    setLoading(true);
     let getAddressFromLoc = await Location.reverseGeocodeAsync(location);
     console.log(getAddressFromLoc);
+    let addressDetails = {
+      building: getAddressFromLoc[0].name,
+      street:
+        getAddressFromLoc[0].street + ", " + getAddressFromLoc[0].district,
+      city: getAddressFromLoc[0].city,
+      country: getAddressFromLoc[0].country,
+      latitude: location.latitude,
+      longitude: location.longitude,
+    };
+    console.log(addressDetails);
+    var body = { address: addressDetails };
+    let token1 = await SecureStore.getItemAsync("userToken");
+    const headers = { Authorization: `Bearer ${token1}` };
+    const response = await axios.put(
+      `${REST_API_LOCAL}/shipper/addAddress`,
+      body,
+      {
+        withCredentials: true,
+        headers: headers,
+      }
+    );
+    const data = await response.data;
+    // console.log(data);
+    // setData(data);
+    console.log(data);
+    ToastAndroid.showWithGravity(
+      "Address Added",
+      ToastAndroid.SHORT,
+      ToastAndroid.CENTER
+    );
+    setTimeout(() => {
+      setIsVisible(false);
+      setLoading(false);
+    }, 3000);
   };
-
+  const hideModal = () => {
+    setIsVisible(false);
+  };
   let text = "Waiting..";
   if (errorMsg) {
     text = errorMsg;
@@ -83,10 +126,22 @@ export default function ScheduleExample() {
   }
 
   return (
-    <View style={{ flex: 1 }}>
-      {/* <Text>Set PickUp Location</Text> */}
+    <View style={{ flex: 1, backgroundColor: "white" }}>
+      <TouchableOpacity
+        style={{
+          padding: 5,
+          margin: 3,
+          width: 40,
+          flex: 1,
+          position: "absolute",
+          zIndex: 1,
+        }}
+        onPress={hideModal}
+      >
+        <FontAwesome name="chevron-left" color="#005761" size={30} />
+      </TouchableOpacity>
       <GooglePlacesAutocomplete
-        placeholder="Search"
+        placeholder="Your Address"
         fetchDetails={true}
         GooglePlacesSearchQuery={{
           rankby: "distance",
@@ -115,14 +170,13 @@ export default function ScheduleExample() {
           container: {
             flex: 1,
             position: "absolute",
-            width: "98%",
+            width: "100%",
             zIndex: 1,
-            marginTop: 10,
+            marginTop: 40,
           },
           listView: { backgroundColor: "white" },
         }}
       />
-
       <MapView
         style={styles.map}
         initialRegion={{
@@ -155,9 +209,19 @@ export default function ScheduleExample() {
             {/* <Text style={styles.buttonText}>Get Your Current Location</Text> */}
           </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.buttonStyle} onPress={getAddress}>
-          <Text style={styles.buttonText}>Select Pickup</Text>
-        </TouchableOpacity>
+        {!isloading ? (
+          <TouchableOpacity style={styles.buttonStyle} onPress={getAddress}>
+            <Text style={styles.buttonText}>Add Address</Text>
+          </TouchableOpacity>
+        ) : (
+          <FAB
+            loading
+            visible={isloading}
+            style={{ backgroundColor: "teal" }}
+            icon={{ name: "add", color: "white" }}
+            size="small"
+          />
+        )}
       </SafeAreaView>
     </View>
   );

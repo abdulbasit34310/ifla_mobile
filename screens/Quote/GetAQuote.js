@@ -13,45 +13,53 @@ import {
 import { ButtonGroup } from "react-native-elements";
 import { Checkbox } from "react-native-paper";
 import axios from "axios";
-import { REST_API, REST_API_LOCAL } from "@env";
 import * as SecureStore from "expo-secure-store";
+import SelectLocation from "../../components/ScheduleBooking/SelectLocation";
+import ChooseTruck from "../../components/ScheduleBooking/ChooseTruck";
+import { REST_API_LOCAL } from "@env";
 
-const REST_API_ENDPOINT =
-  "http://192.168.0.177:4000/shipper" || REST_API + "/shipper";
-
-const CITIES_API_ENDPOINT =
-  "https://freight-automation-default-rtdb.firebaseio.com/";
-
+const Theme = {
+  Buttons: "#068E94",
+  PrimaryForeground: "#068E94",
+  SecondaryForeground: "#00ABB2",
+  PrimaryBackground: "#005761",
+  SecondaryBackground: "#E0EFF6",
+  PrimaryText: "#005761",
+  BLACK: "#00000",
+  WHITE: "#FFFFFF",
+};
 export default function GetAQuote({ route, navigation }) {
   const [category, setCategory] = React.useState(0);
-  const [packaging, setPackaging] = React.useState(false);
   const [isPickup, setIsPickup] = React.useState(true);
+  const [vehicleModal, setVehicleModal] = React.useState(false);
   const [modalVisible, setModalVisible] = React.useState(false);
-  const [getText, setText] = React.useState();
-  const [pickupCity, setPickupCity] = React.useState("");
-  const [dropoffCity, setDropoffCity] = React.useState("");
-  const [citiesData, setCitiesData] = React.useState();
+  const [pickupAddress, setPickupAddress] = React.useState("");
+  const [dropoffAddress, setDropoffAddress] = React.useState("");
+  const [vehicle, setVehicle] = React.useState("");
+
   // const [vehicleType, setVehicleType] = React.useState("");
   const [checked, setChecked] = React.useState(false);
   //const [token,setToken] = React.useState(route.params.token)
 
   const [quoteData, setQuote] = React.useState({
     type: "LTL",
-    pickupCity: pickupCity,
-    dropoffCity: dropoffCity,
+    pickupAddress: "",
+    dropoffAddress: "",
     weight: "",
-    packaging: packaging,
+    quantity: "",
+    package: false,
+    vehicle: "",
   });
 
   const SaveQuote = async () => {
     const body = quoteData;
-    // console.log(quoteData)
-    // var obj = quoteData;
+    console.log(quoteData);
+    var obj = quoteData;
     let token1 = await SecureStore.getItemAsync("userToken");
     const headers = { Authorization: `Bearer ${token1}` };
 
     var response = await axios.post(
-      REST_API_ENDPOINT + "/saveQuoteMobile",
+      REST_API_LOCAL + "/shipper/saveQuoteMobile",
       body,
       { withCredentials: true, headers: headers }
     );
@@ -67,53 +75,6 @@ export default function GetAQuote({ route, navigation }) {
       ToastAndroid.SHORT,
       ToastAndroid.CENTER
     );
-  };
-
-  const getCitiesData = async () => {
-    const response = await fetch(`${CITIES_API_ENDPOINT}/cities.json`);
-    const data = await response.json();
-    var arr;
-    var arr2 = [];
-    for (let key in data) {
-      arr = data[key];
-    }
-    arr.forEach((element) => {
-      arr2.push(element.city);
-    });
-
-    setCitiesData(arr2);
-    setText(arr2);
-  };
-
-  React.useEffect(
-    () => {
-      getCitiesData();
-    },
-    [setCitiesData],
-    [setText]
-  );
-
-  const filter = (text) => {
-    console.log(getCitiesData);
-    var result = getText.filter((city) => {
-      if (city.includes(text)) {
-        return city;
-      }
-    });
-    console.log(result);
-    setCitiesData(result);
-  };
-
-  const setPickup = (item) => {
-    setPickupCity(item);
-    setQuote({ ...quoteData, pickupCity: item });
-    setModalVisible(!modalVisible);
-  };
-
-  const setDropOff = (item) => {
-    setDropoffCity(item);
-    setQuote({ ...quoteData, dropoffCity: item });
-    setModalVisible(!modalVisible);
   };
 
   React.useLayoutEffect(() => {
@@ -146,48 +107,58 @@ export default function GetAQuote({ route, navigation }) {
           setModalVisible(!modalVisible);
         }}
       >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <TextInput
-              placeholder="Enter City Name"
-              style={{ padding: 5, width: "80%" }}
-              onChangeText={(v) => {
-                filter(v);
-              }}
-            />
-            <FlatList
-              style={{ width: "100%" }}
-              refreshing={false}
-              onRefresh={getCitiesData}
-              keyExtractor={(item, index) => index}
-              data={citiesData}
-              renderItem={({ item, index }) => (
-                <TouchableOpacity
-                  style={styles.countryLabel}
-                  onPress={() => {
-                    isPickup ? setPickup(item) : setDropOff(item);
-                  }}
-                >
-                  <Text>{item}</Text>
-                </TouchableOpacity>
-              )}
-            />
-          </View>
-        </View>
+        {isPickup ? (
+          <SelectLocation
+            address={pickupAddress}
+            setAddress={setPickupAddress}
+            isPickup={isPickup}
+            isVisible={modalVisible}
+            setIsVisible={setModalVisible}
+            bookingData={quoteData}
+            setBooking={setQuote}
+            isQuote={true}
+          />
+        ) : (
+          <SelectLocation
+            address={dropoffAddress}
+            setAddress={setDropoffAddress}
+            isPickup={isPickup}
+            isVisible={modalVisible}
+            setIsVisible={setModalVisible}
+            bookingData={quoteData}
+            setBooking={setQuote}
+            isQuote={true}
+          />
+        )}
       </Modal>
-
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={vehicleModal}
+        onRequestClose={() => {
+          setVehicleModal(!vehicleModal);
+        }}
+      >
+        <ChooseTruck
+          setIsVisible={setVehicleModal}
+          setSelectedVehicle={setVehicle}
+          setBooking={setQuote}
+          bookingData={quoteData}
+          isQuote={true}
+        />
+      </Modal>
       <View
         style={{
           padding: 20,
           justifyContent: "center",
-          backgroundColor: "#00ABB2",
+          backgroundColor: "#E0EFF6",
           height: "100%",
         }}
       >
         <View
           style={{
             padding: 20,
-            backgroundColor: "#E0EFF6",
+            backgroundColor: "white",
             borderRadius: 10,
             elevation: 24,
           }}
@@ -214,20 +185,61 @@ export default function GetAQuote({ route, navigation }) {
               backgroundColor: "#00ABB2",
             }}
           />
+          <Text style={styles.buttonInsideText}>Pickup Location </Text>
+          <TouchableOpacity
+            style={[styles.textInput, { padding: 15 }]}
+            onPress={() => {
+              setIsPickup(true);
+              setModalVisible(true);
+            }}
+          >
+            <Text>
+              {quoteData.pickupAddress === ""
+                ? "Choose Location"
+                : quoteData.pickupAddress.building +
+                  ", " +
+                  quoteData.pickupAddress.street +
+                  ", " +
+                  quoteData.pickupAddress.city +
+                  ", " +
+                  quoteData.pickupAddress.country}
+            </Text>
+          </TouchableOpacity>
+          <Text style={styles.buttonInsideText}>Dropoff Location: </Text>
+          <TouchableOpacity
+            style={[styles.textInput, { padding: 15 }]}
+            onPress={() => {
+              setIsPickup(false);
+              setModalVisible(true);
+            }}
+          >
+            <Text>
+              {quoteData.dropoffAddress === ""
+                ? "Choose Location"
+                : quoteData.dropoffAddress.building +
+                  ", " +
+                  quoteData.dropoffAddress.street +
+                  ", " +
+                  quoteData.dropoffAddress.city +
+                  ", " +
+                  quoteData.dropoffAddress.country}
+            </Text>
 
-          {/* <Text style={{ padding: 10 }}>Select Vehicle Type: </Text>
-                            <Picker
-                            selectedValue={vehicleType}
-                            style={[styles.textInput, { fontSize: 12 }]}
-                            onValueChange={(itemValue, itemIndex) => { setVehicleType(itemValue); setQuote({ ...quoteData, vehicleType: itemValue }); }}>
-                            <Picker.Item label="Please Specify" value="" />
-                            <Picker.Item label="Truck" value="Truck" />
-                            <Picker.Item label="Shehzore" value="Shehzore" />
-                            <Picker.Item label="Mazda" value="Mazda" />
-                            <Picker.Item label="Suzuki" value="Suzuki" />
-                            </Picker> */}
+            {/* <Text>{dropoffCity === "" ? "Select City" : dropoffCity}</Text> */}
+          </TouchableOpacity>
+          <Text style={styles.buttonInsideText}>Select Vehicle Type: </Text>
+          <TouchableOpacity
+            style={[styles.textInput, { padding: 15 }]}
+            onPress={() => {
+              setVehicleModal(true);
+            }}
+          >
+            <Text>
+              {quoteData.vehicle === "" ? "Select Vehicle" : quoteData.vehicle}
+            </Text>
+          </TouchableOpacity>
 
-          <Text style={{ padding: 10 }}>Weight (kg): </Text>
+          <Text style={styles.buttonInsideText}>Weight (kg): </Text>
           <TextInput
             keyboardType="numeric"
             style={styles.textInput}
@@ -235,7 +247,7 @@ export default function GetAQuote({ route, navigation }) {
               setQuote({ ...quoteData, weight: v });
             }}
           />
-          <Text style={{ padding: 10 }}>Quantity: </Text>
+          <Text style={styles.buttonInsideText}>Quantity: </Text>
           <TextInput
             style={styles.textInput}
             keyboardType="numeric"
@@ -243,7 +255,7 @@ export default function GetAQuote({ route, navigation }) {
               setQuote({ ...quoteData, quantity: v });
             }}
           />
-          <Text style={{ padding: 10 }}>Pickup City: </Text>
+          {/* <Text style={{ padding: 10 }}>Pickup City: </Text>
           <TouchableOpacity
             style={[styles.textInput, { padding: 5 }]}
             onPress={() => {
@@ -263,7 +275,7 @@ export default function GetAQuote({ route, navigation }) {
             }}
           >
             <Text>{dropoffCity === "" ? "Select City" : dropoffCity}</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
           <View
             style={{
@@ -330,6 +342,13 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignSelf: "center",
     marginTop: 20,
+  },
+
+  buttonInsideText: {
+    marginVertical: 10,
+    fontSize: 16,
+    fontWeight: "bold",
+    color: Theme.PrimaryText,
   },
   buttonText: {
     alignSelf: "center",

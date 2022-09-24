@@ -21,7 +21,7 @@ import PendingBookings from "./screens/Booking/PendingBookings";
 import PendingBookingDetails from "./screens/Booking/PendingBookingDetails";
 import MyBookings from "./screens/Booking/MyBookings";
 import ScheduleBooking from "./screens/Booking/ScheduleBooking";
-import BookingDetails from "./screens/Booking/BookingDetails";
+import MyBookingDetails from "./screens/Booking/MyBookingDetails";
 import GetAQuote from "./screens/Quote/GetAQuote";
 import ViewQuotes from "./screens/Quote/ViewQuotes";
 import QuoteDetails from "./screens/Quote/QuoteDetails";
@@ -31,6 +31,8 @@ import { CustomDrawer } from "./screens/CustomDrawer";
 import { AuthContext } from "./components/context";
 import ScheduleExample from "./screens/Booking/ScheduleExample";
 import Wallet from "./screens/Payment/Wallet";
+import Addresses from "./screens/Profile/Addresses";
+import AddAddress from "./components/Profile/AddAddress";
 
 const Drawer = createDrawerNavigator();
 
@@ -82,14 +84,14 @@ export default function App() {
     () => ({
       signIn: async (foundUser) => {
         const userToken = foundUser.userToken;
-        const userName = foundUser.userName;
+        const email = foundUser.email;
 
         try {
           await SecureStore.setItemAsync("userToken", userToken);
         } catch (e) {
           console.log(e);
         }
-        dispatch({ type: "LOGIN", id: userName, token: userToken });
+        dispatch({ type: "LOGIN", id: email, token: userToken });
       },
       signOut: async () => {
         try {
@@ -230,8 +232,8 @@ function BookingStack({ route }) {
         options={{ title: "My Bookings" }}
       />
       <Stack.Screen
-        name="BookingDetails"
-        component={BookingDetails}
+        name="MyBookingDetails"
+        component={MyBookingDetails}
         options={{ title: "Booking Details" }}
       />
       <Stack.Screen
@@ -267,6 +269,16 @@ function ProfileStack({ route }) {
         name="CompanyInformationScreen"
         component={CompanyInformationScreen}
         options={{ title: "Company Info" }}
+      />
+      <Stack.Screen
+        name="Addresses"
+        component={Addresses}
+        options={{ title: "Addresses" }}
+      />
+      <Stack.Screen
+        name="AddAddress"
+        component={AddAddress}
+        options={{ title: "Add Address" }}
       />
     </Stack.Navigator>
   );

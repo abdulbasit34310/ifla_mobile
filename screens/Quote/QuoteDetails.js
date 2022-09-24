@@ -13,11 +13,8 @@ import { Divider } from "react-native-paper";
 
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import axios from "axios";
-import { REST_API, REST_API_LOCAL } from "@env";
 import * as SecureStore from "expo-secure-store";
-
-const REST_API_ENDPOINT =
-  "http://192.168.0.177:4000/shipper" || REST_API + "/shipper";
+import { REST_API_LOCAL } from "@env";
 
 export default function QuoteDetails({ navigation, route }) {
   // const id= route.params;
@@ -44,7 +41,7 @@ export default function QuoteDetails({ navigation, route }) {
 
     const id = quoteData._id;
     let response = await axios.delete(
-      `${REST_API_ENDPOINT}/deleteQuote/${id}`,
+      `${REST_API_LOCAL}/shipper/deleteQuote/${id}`,
       { withCredentials: true, headers: headers }
     );
     console.log(response.data);

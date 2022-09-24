@@ -12,20 +12,15 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { ScrollView } from "react-native-gesture-handler";
 import * as SecureStore from "expo-secure-store";
 import axios from "axios";
-import { REST_API, REST_API_LOCAL } from "@env";
-
-const REST_API_ENDPOINT =
-  "http://192.168.0.177:4000/shipper" || REST_API + "/shipper";
-
-const FIREBASE_API_ENDPOINT =
-  "https://freight-automation-default-rtdb.firebaseio.com/";
+import moment from "moment";
+import { REST_API_LOCAL } from "@env";
 
 export default function PendingBookingDetails({ navigation, route }) {
   const [bookingData, setBookingData] = React.useState(route.params);
 
   const deleteData = async () => {
     let response = await axios.delete(
-      `${REST_API_ENDPOINT}/deleteBooking/${bookingData._id}`
+      `${REST_API_LOCAL}/shipper/deleteBooking/${bookingData._id}`
     );
     let data = await response.data;
     console.log(data);
@@ -54,8 +49,7 @@ export default function PendingBookingDetails({ navigation, route }) {
             color: "black",
           }}
         >
-          {bookingData.dateTime.substr(0, 10)}{" "}
-          {bookingData.dateTime.substr(11, 11)}
+          {moment(bookingData.dateTime).utc().format("MMMM Do YYYY, h:mm:ss a")}
         </Text>
         <View
           style={{
@@ -173,21 +167,15 @@ export default function PendingBookingDetails({ navigation, route }) {
           }}
           style={styles.button}
         >
-          <Text
-            style={styles.buttonText}
-          >
-            Cancel Booking
-          </Text>
+          <Text style={styles.buttonText}>Cancel Booking</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => { navigation.navigate("Payments", {payId: bookingData.payment._id})}}
+          onPress={() => {
+            navigation.navigate("Payments", { payId: bookingData.payment._id });
+          }}
           style={styles.button}
         >
-          <Text
-            style={styles.buttonText}
-          >
-            Pay Now
-          </Text>
+          <Text style={styles.buttonText}>Pay Now</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
@@ -205,7 +193,7 @@ const styles = StyleSheet.create({
   },
   propertyStyle: { fontSize: 16, fontWeight: "bold" },
   paymentStyle: { fontSize: 22, fontWeight: "bold", color: "#005761" },
-  button:{
+  button: {
     marginTop: 20,
     padding: 10,
     marginBottom: 20,
@@ -213,10 +201,10 @@ const styles = StyleSheet.create({
     width: 200,
     alignSelf: "center",
   },
-  buttonText:{
+  buttonText: {
     alignSelf: "center",
     color: "white",
     fontWeight: "bold",
     fontSize: 18,
-  }
+  },
 });

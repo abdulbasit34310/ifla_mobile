@@ -1,4 +1,4 @@
-const Theme = {
+export default Theme = {
   Buttons: "#068E94",
   PrimaryForeground: "#068E94",
   SecondaryForeground: "#00ABB2",
@@ -8,5 +8,3 @@ const Theme = {
   BLACK: "#00000",
   WHITE: "#FFFFFF",
 };
-
-export default Theme;

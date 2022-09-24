@@ -15,6 +15,7 @@ import * as Location from "expo-location";
 import { GOOGLE_API } from "@env";
 import marker from "../../assets/icons8-marker.png";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import BookingDetails from "./BookingDetails";
 
 const Theme = {
   Buttons: "#068E94",
@@ -30,7 +31,14 @@ const Theme = {
 const latitudeDelta = 0.025;
 const longitudeDelta = 0.025;
 
-export default function ScheduleExample() {
+export default function SelectLocation({
+  address,
+  setAddress,
+  isPickup,
+  setIsVisible,
+  bookingData,
+  setBooking,
+}) {
   // const [pin, setPin] = React.useState({
   //   latitude: 33.6533,
   //   longitude: 73.0702,
@@ -73,6 +81,23 @@ export default function ScheduleExample() {
   const getAddress = async () => {
     let getAddressFromLoc = await Location.reverseGeocodeAsync(location);
     console.log(getAddressFromLoc);
+    let addressDetails = {
+      building: getAddressFromLoc[0].name,
+      street:
+        getAddressFromLoc[0].street + ", " + getAddressFromLoc[0].district,
+      city: getAddressFromLoc[0].city,
+      country: getAddressFromLoc[0].country,
+      latitude: location.latitude,
+      longitude: location.longitude,
+    };
+    setAddress(addressDetails);
+    console.log(addressDetails);
+    if (isPickup) {
+      setBooking({ ...bookingData, pickupAddress: addressDetails });
+    } else {
+      setBooking({ ...bookingData, dropoffAddress: addressDetails });
+    }
+    setIsVisible(false);
   };
 
   let text = "Waiting..";
@@ -81,12 +106,26 @@ export default function ScheduleExample() {
   } else if (location) {
     text = JSON.stringify(location);
   }
-
+  const hideModal = () => {
+    setIsVisible(false);
+  };
   return (
-    <View style={{ flex: 1 }}>
-      {/* <Text>Set PickUp Location</Text> */}
+    <View style={{ flex: 1, backgroundColor: "white" }}>
+      <TouchableOpacity
+        style={{
+          padding: 5,
+          margin: 3,
+          width: 40,
+          flex: 1,
+          position: "absolute",
+          zIndex: 1,
+        }}
+        onPress={hideModal}
+      >
+        <FontAwesome name="chevron-left" color="#005761" size={30} />
+      </TouchableOpacity>
       <GooglePlacesAutocomplete
-        placeholder="Search"
+        placeholder={isPickup ? "Pickup Address" : "Dropoff Address"}
         fetchDetails={true}
         GooglePlacesSearchQuery={{
           rankby: "distance",
@@ -115,14 +154,13 @@ export default function ScheduleExample() {
           container: {
             flex: 1,
             position: "absolute",
-            width: "98%",
+            width: "100%",
             zIndex: 1,
-            marginTop: 10,
+            marginTop: 40,
           },
           listView: { backgroundColor: "white" },
         }}
       />
-
       <MapView
         style={styles.map}
         initialRegion={{
@@ -156,7 +194,9 @@ export default function ScheduleExample() {
           </TouchableOpacity>
         </View>
         <TouchableOpacity style={styles.buttonStyle} onPress={getAddress}>
-          <Text style={styles.buttonText}>Select Pickup</Text>
+          <Text style={styles.buttonText}>
+            {isPickup ? "Select Pickup Location" : "Select Dropoff Location"}
+          </Text>
         </TouchableOpacity>
       </SafeAreaView>
     </View>
