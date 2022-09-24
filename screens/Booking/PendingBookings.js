@@ -7,11 +7,9 @@ import {
   StyleSheet,
 } from "react-native";
 import axios from "axios";
-import { REST_API, REST_API_LOCAL } from "@env";
+import { REST_API_LOCAL } from "@env";
 import * as SecureStore from "expo-secure-store";
 import moment from "moment";
-const REST_API_ENDPOINT =
-  "http://192.168.0.103:4000/shipper" || REST_API + "/shipper";
 
 export default function PendingBookings({ route, navigation }) {
   const [bookingData, setBookingData] = React.useState();
@@ -38,12 +36,12 @@ export default function PendingBookings({ route, navigation }) {
     //         'Authorization': `Bearer ${token1}`
     //     }
     //   }
-    // const response = await fetch(`${REST_API_ENDPOINT}/getPendingBookings`, obj)
+    // const response = await fetch(`${REST_API_LOCAL}/shipper/getPendingBookings`, obj)
     // let data = await response.json()
     // const token = getValueFor('userToken')
     const headers = { Authorization: `Bearer ${token1}` };
     const response = await axios.get(
-      `${REST_API_ENDPOINT}/getPendingBookings`,
+      `${REST_API_LOCAL}/shipper/getPendingBookings`,
       { withCredentials: true, headers: headers }
     );
     const data = await response.data.bookings;

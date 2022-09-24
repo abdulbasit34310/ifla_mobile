@@ -8,16 +8,16 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { AuthContext } from "../components/context";
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
+import { REST_API_LOCAL } from "@env";
 
 export function CustomDrawer(props) {
   const { signOut } = React.useContext(AuthContext);
-  const REST_API_ENDPOINT =
-    "http://192.168.0.103:4000/shipper" || REST_API + "/shipper";
+
   const [image, setImage] = React.useState();
   const getUser = async () => {
     let token1 = await SecureStore.getItemAsync("userToken");
     const headers = { Authorization: `Bearer ${token1}` };
-    const response = await axios.get(`${REST_API_ENDPOINT}/image`, {
+    const response = await axios.get(`${REST_API_LOCAL}/shipper/image`, {
       withCredentials: true,
       headers: headers,
     });

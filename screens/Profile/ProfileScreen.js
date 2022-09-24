@@ -20,14 +20,8 @@ import AB from "../images/AB.png";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import axios from "axios";
 import Avatar from "../../assets/Avatar.png";
-import { REST_API, REST_API_LOCAL } from "@env";
 import * as SecureStore from "expo-secure-store";
-
-const REST_API_ENDPOINT =
-  "http://192.168.0.103:4000/users" || REST_API + "/users";
-
-const FIREBASE_API_ENDPOINT =
-  "https://madproject-61e88-default-rtdb.firebaseio.com/";
+import { REST_API_LOCAL } from "@env";
 
 const ProfileScreen = ({ route, navigation }) => {
   var email = "";
@@ -43,16 +37,16 @@ const ProfileScreen = ({ route, navigation }) => {
     let token1 = await SecureStore.getItemAsync("userToken");
     // console.log(token1);
     const headers = { Authorization: `Bearer ${token1}` };
-    const response = await axios.get(`${REST_API_ENDPOINT}/getUser`, {
+    const response = await axios.get(`${REST_API_LOCAL}/users/getUser`, {
       withCredentials: true,
       headers: headers,
     });
 
     // const response = await fetch(
-    //     `${FIREBASE_API_ENDPOINT}/userCredentials.json`
+    //     `${FIREBASE_API_LOCAL}/users/userCredentials.json`
     // );
     const data = await response.data;
-    console.log(data);
+    // console.log(data);
     setData(data);
     // var keyValues = Object.keys(data);
 

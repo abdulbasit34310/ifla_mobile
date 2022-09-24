@@ -8,12 +8,9 @@ import {
   StyleSheet,
 } from "react-native";
 import axios from "axios";
-import { REST_API, REST_API_LOCAL } from "@env";
 import * as SecureStore from "expo-secure-store";
 import moment from "moment";
-
-const REST_API_ENDPOINT =
-  "http://192.168.0.103:4000/shipper" || REST_API + "/shipper";
+import { REST_API_LOCAL } from "@env";
 
 export default function MyBookings({ route, navigation }) {
   const [bookingData, setBookingData] = React.useState();
@@ -43,7 +40,7 @@ export default function MyBookings({ route, navigation }) {
     //         'Authorization': `Bearer ${token1}`
     //     }
     //   }
-    // const response = await fetch(`${REST_API_ENDPOINT}/getBookings`, obj)
+    // const response = await fetch(`${REST_API_LOCAL}/shipper/getBookings`, obj)
     // .then(function(res) {
     //     return res.json();
     // })
@@ -53,7 +50,7 @@ export default function MyBookings({ route, navigation }) {
     // })
     // let data = await response.json()
     const headers = { Authorization: `Bearer ${token1}` };
-    const resp = await axios.get(`${REST_API_ENDPOINT}/getBookings`, {
+    const resp = await axios.get(`${REST_API_LOCAL}/shipper/getBookings`, {
       withCredentials: true,
       headers: headers,
     });

@@ -16,14 +16,15 @@ import FontAwesomeIcon from "react-native-vector-icons/FontAwesome5";
 import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
 import AB from "../images/AB.png";
+import { REST_API_LOCAL } from "@env";
 import * as SecureStore from "expo-secure-store";
-
-const REST_API_ENDPOINT = "http://192.168.0.103:4000/users";
+// var fs = require("fs");
 
 const EditProfileScreen = ({ navigation, route }) => {
   var item = route.params.item;
   const [hasGalleyPermission, setHasGalleryPermission] = React.useState(null);
-  const [image, setImage] = React.useState(item.personId.image);
+  const [image, setImage] = React.useState();
+  const [image64, setImage64] = React.useState();
 
   const [data, setData] = React.useState({
     key: item.key,
@@ -78,11 +79,11 @@ const EditProfileScreen = ({ navigation, route }) => {
           body: JSON.stringify(objToSave),
         };
         const [res1, res2] = await Promise.all([
-          axios.patch(`${REST_API_ENDPOINT}/update`, objToSave, {
+          axios.patch(`${REST_API_LOCAL}/users/update`, objToSave, {
             withCredentials: true,
             headers: { Authorization: `Bearer ${token1}` },
           }),
-          axios.post(`${REST_API_ENDPOINT}/uploadImage`, formData, {
+          axios.post(`${REST_API_LOCAL}/users/uploadImage`, formData, {
             withCredentials: true,
             headers: {
               "Content-Type": "multipart/form-data",
@@ -232,6 +233,9 @@ const EditProfileScreen = ({ navigation, route }) => {
 
     if (!result.cancelled) {
       setImage(result.uri);
+      // var data = fs.readFileSync(result.uri);
+      // const base64String = Buffer.from(data).toString("base64");
+      // setImage64(base64String);
     }
   };
 
@@ -246,19 +250,51 @@ const EditProfileScreen = ({ navigation, route }) => {
               position: "relative",
             }}
           >
-            <ImageBackground
-              source={{ uri: `data:image;base64,${image}` }}
-              style={{ height: 125, width: 125 }}
-              imageStyle={{ borderRadius: 90 }}
-            >
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
+            {!image && (
+              <ImageBackground
+                source={{ uri: `data:image;base64,${item.personId.image}` }}
+                style={{ height: 125, width: 125 }}
+                imageStyle={{ borderRadius: 90 }}
               >
-                {!image && (
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  {!image && (
+                    <Icon
+                      name="camera-outline"
+                      size={35}
+                      color="grey"
+                      style={{
+                        opacity: 0.5,
+                        alignItems: "center",
+                        justifyContent: "center",
+                        borderWidth: 1,
+                        padding: 30,
+                        borderColor: "grey",
+                        borderRadius: 50,
+                      }}
+                    />
+                  )}
+                </View>
+              </ImageBackground>
+            )}
+            {image && (
+              <ImageBackground
+                source={{ uri: image }}
+                style={{ height: 125, width: 125 }}
+                imageStyle={{ borderRadius: 90 }}
+              >
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
                   <Icon
                     name="camera-outline"
                     size={35}
@@ -273,9 +309,10 @@ const EditProfileScreen = ({ navigation, route }) => {
                       borderRadius: 50,
                     }}
                   />
-                )}
-              </View>
-            </ImageBackground>
+                </View>
+              </ImageBackground>
+            )}
+
             <FontAwesomeIcon
               name="plus"
               size={25}

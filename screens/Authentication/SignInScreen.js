@@ -18,10 +18,7 @@ import { AuthContext } from "../../components/context";
 
 import logo from "../images/IFLA.png";
 import axios from "axios";
-import { REST_API, REST_API_LOCAL } from "@env";
-
-const REST_API_ENDPOINT =
-  "http://192.168.0.103:4000/users" || REST_API + "/users";
+import { REST_API_LOCAL } from "@env";
 
 const SignInScreen = ({ route, navigation }) => {
   const [data, setData] = React.useState({
@@ -78,7 +75,7 @@ const SignInScreen = ({ route, navigation }) => {
     const body = { email: data.email, password: data.password };
     console.log(body);
     const response = await axios
-      .post(`${REST_API_ENDPOINT}/login`, body)
+      .post(`${REST_API_LOCAL}/users/login`, body)
       .catch((error) => {
         if (error.response) {
           console.log(error.response.data);

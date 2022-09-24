@@ -16,10 +16,8 @@ import moment from "moment";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import * as SecureStore from "expo-secure-store";
 import axios from "axios";
-import { REST_API, REST_API_LOCAL } from "@env";
 
-const REST_API_ENDPOINT =
-  "http://192.168.0.103:4000/shipper" || REST_API + "/shipper";
+import { REST_API_LOCAL } from "@env";
 
 export default function MyBookingDetails({ navigation, route }) {
   const item = route.params;
@@ -29,7 +27,7 @@ export default function MyBookingDetails({ navigation, route }) {
     let token1 = await SecureStore.getItemAsync("userToken");
     const headers = { Authorization: `Bearer ${token1}` };
     const response = await axios
-      .delete(`${REST_API_ENDPOINT}/cancelBooking/${bookingData._id}`, {
+      .delete(`${REST_API_LOCAl}/shipper/cancelBooking/${bookingData._id}`, {
         withCredentials: true,
         headers: headers,
       })

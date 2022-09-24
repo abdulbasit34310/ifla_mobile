@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 import {
   View,
   Image,
@@ -7,23 +7,20 @@ import {
   StyleSheet,
   TextInput,
   Platform,
-} from 'react-native';
+} from "react-native";
 
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Feather from 'react-native-vector-icons/Feather';
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import Feather from "react-native-vector-icons/Feather";
+import { REST_API_LOCAL } from "@env";
 
-import logo from './images/IFLA.png';
-import axios from 'axios';
+import logo from "./images/IFLA.png";
+import axios from "axios";
 
-const FIREBASE_API_ENDPOINT =
-  'https://madproject-61e88-default-rtdb.firebaseio.com/';
-const REST_API_ENDPOINT = "http://192.168.8.103:3000/users"
 var arr = [];
 
 const ForgotPasswordScreen = ({ navigation }) => {
-
   const [data, setData] = React.useState({
-    email: '',
+    email: "",
     checkEmailChange: false,
     notValidEmail: true,
   });
@@ -46,17 +43,14 @@ const ForgotPasswordScreen = ({ navigation }) => {
       });
     }
   };
-//  {withCredentials:true, headers: {"Authorization": `Bearer ${token1}`}}
+  //  {withCredentials:true, headers: {"Authorization": `Bearer ${token1}`}}
   const forgotpassword = (email) => {
-    axios.post(`${REST_API_ENDPOINT}/forgotpassword`,{email:email})
-   };
+    axios.post(`${REST_API_LOCAL}/users/forgotpassword`, { email: email });
+  };
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Image
-          source={logo}
-          style={styles.logo}
-        />
+        <Image source={logo} style={styles.logo} />
       </View>
 
       <View animation="fadeInUpBig" style={styles.footer}>
@@ -65,7 +59,8 @@ const ForgotPasswordScreen = ({ navigation }) => {
           <TextInput
             style={styles.ti}
             placeholder="Your Email"
-            onChangeText={(email) => emailChange(email)}></TextInput>
+            onChangeText={(email) => emailChange(email)}
+          ></TextInput>
           {data.checkEmailChange ? (
             <Feather name="check-circle" color="green" size={25} />
           ) : null}
@@ -77,9 +72,14 @@ const ForgotPasswordScreen = ({ navigation }) => {
             </Text>
           </View>
         )}
-      <TouchableOpacity style={styles.to} onPress={()=>{forgotpassword(data.email)}}>
-        <Text style={styles.signInText}>Reset Password</Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.to}
+          onPress={() => {
+            forgotpassword(data.email);
+          }}
+        >
+          <Text style={styles.signInText}>Reset Password</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -88,63 +88,61 @@ const ForgotPasswordScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   header: {
     flex: 1,
-    justifyContent: 'flex-end',
+    justifyContent: "flex-end",
     paddingHorizontal: 20,
     paddingBottom: 50,
   },
   footer: {
     flex: 3,
-    alignItems:"center",
-    backgroundColor: '#fff',
+    alignItems: "center",
+    backgroundColor: "#fff",
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     paddingHorizontal: 20,
     paddingVertical: 30,
   },
   logo: {
-    marginLeft: '35%',
+    marginLeft: "35%",
     width: 80,
     height: 80,
     borderRadius: 50,
   },
   action: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginTop: 15,
     borderBottomWidth: 1,
-    borderBottomColor: '#f2f2f2',
+    borderBottomColor: "#f2f2f2",
     paddingBottom: 5,
   },
   ti: {
     flex: 1,
-    marginTop: Platform.OS === 'ios' ? 0 : -12,
+    marginTop: Platform.OS === "ios" ? 0 : -12,
     paddingLeft: 10,
-    color: '#05375a',
+    color: "#05375a",
   },
   errorMessage: {
-    color: '#FF0000',
+    color: "#FF0000",
     fontSize: 12,
   },
   container: {
     flex: 1,
-    justifyContent: 'center',
-    backgroundColor: '#009387',
+    justifyContent: "center",
+    backgroundColor: "#009387",
   },
   signInText: {
     color: "#E0EFF6",
     fontSize: 26,
-
-},
-to: {
-    backgroundColor: '#00ABB2',
+  },
+  to: {
+    backgroundColor: "#00ABB2",
     borderRadius: 45,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     width: 175,
     height: 75,
-    flexDirection: 'row',
+    flexDirection: "row",
     marginTop: 35,
-},
-
+  },
 });
 
 export default ForgotPasswordScreen;

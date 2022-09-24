@@ -16,9 +16,6 @@ import { ButtonGroup } from "react-native-elements";
 import { Picker } from "@react-native-picker/picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Checkbox } from "react-native-paper";
-import axios from "axios";
-import { REST_API, REST_API_LOCAL } from "@env";
-import * as SecureStore from "expo-secure-store";
 
 const Theme = {
   Buttons: "#068E94",

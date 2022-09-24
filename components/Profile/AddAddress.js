@@ -19,6 +19,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { FAB } from "react-native-elements";
 import * as SecureStore from "expo-secure-store";
 import axios from "axios";
+import { REST_API_LOCAL } from "@env";
 
 const Theme = {
   Buttons: "#068E94",
@@ -33,7 +34,6 @@ const Theme = {
 
 const latitudeDelta = 0.025;
 const longitudeDelta = 0.025;
-const REST_API_ENDPOINT = "http://192.168.0.103:4000";
 
 export default function AddAddress({ setIsVisible, isVisible, isCompany }) {
   // const [pin, setPin] = React.useState({
@@ -94,7 +94,7 @@ export default function AddAddress({ setIsVisible, isVisible, isCompany }) {
     let token1 = await SecureStore.getItemAsync("userToken");
     const headers = { Authorization: `Bearer ${token1}` };
     const response = await axios.put(
-      `${REST_API_ENDPOINT}/shipper/addAddress`,
+      `${REST_API_LOCAL}/shipper/addAddress`,
       body,
       {
         withCredentials: true,

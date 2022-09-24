@@ -13,11 +13,9 @@ import Checkbox from "expo-checkbox";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Feather from "react-native-vector-icons/Feather";
 import axios from "axios";
-import { REST_API, REST_API_LOCAL } from "@env";
 import logo from "../images/IFLA.png";
 
-const REST_API_ENDPOINT =
-  "http://192.168.0.103:4000/users" || REST_API + "/users";
+import { REST_API_LOCAL } from "@env";
 
 const SignUpScreen = ({ route, navigation }) => {
   // const { setloggedin } = route.params;
@@ -73,7 +71,7 @@ const SignUpScreen = ({ route, navigation }) => {
         isAdmin: false,
       };
       console.log(body);
-      let res = await axios.post(`${REST_API_ENDPOINT}/signup`, body);
+      let res = await axios.post(`${REST_API_LOCAL}/users/signup`, body);
       const data1 = await res.data;
       console.log(data1);
       if (data1) {

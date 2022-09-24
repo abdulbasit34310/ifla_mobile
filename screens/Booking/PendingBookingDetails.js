@@ -13,21 +13,14 @@ import { ScrollView } from "react-native-gesture-handler";
 import * as SecureStore from "expo-secure-store";
 import axios from "axios";
 import moment from "moment";
-
-import { REST_API, REST_API_LOCAL } from "@env";
-
-const REST_API_ENDPOINT =
-  "http://192.168.0.103:4000/shipper" || REST_API + "/shipper";
-
-const FIREBASE_API_ENDPOINT =
-  "https://freight-automation-default-rtdb.firebaseio.com/";
+import { REST_API_LOCAL } from "@env";
 
 export default function PendingBookingDetails({ navigation, route }) {
   const [bookingData, setBookingData] = React.useState(route.params);
 
   const deleteData = async () => {
     let response = await axios.delete(
-      `${REST_API_ENDPOINT}/deleteBooking/${bookingData._id}`
+      `${REST_API_LOCAL}/shipper/deleteBooking/${bookingData._id}`
     );
     let data = await response.data;
     console.log(data);

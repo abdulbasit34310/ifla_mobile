@@ -13,15 +13,11 @@ import {
 import { ButtonGroup } from "react-native-elements";
 import { Checkbox } from "react-native-paper";
 import axios from "axios";
-import { REST_API, REST_API_LOCAL } from "@env";
 import * as SecureStore from "expo-secure-store";
 import SelectLocation from "../../components/ScheduleBooking/SelectLocation";
 import ChooseTruck from "../../components/ScheduleBooking/ChooseTruck";
-const REST_API_ENDPOINT =
-  "http://192.168.0.103:4000/shipper" || REST_API + "/shipper";
+import { REST_API_LOCAL } from "@env";
 
-const CITIES_API_ENDPOINT =
-  "https://freight-automation-default-rtdb.firebaseio.com/";
 const Theme = {
   Buttons: "#068E94",
   PrimaryForeground: "#068E94",
@@ -63,7 +59,7 @@ export default function GetAQuote({ route, navigation }) {
     const headers = { Authorization: `Bearer ${token1}` };
 
     var response = await axios.post(
-      REST_API_ENDPOINT + "/saveQuoteMobile",
+      REST_API_LOCAL + "/shipper/saveQuoteMobile",
       body,
       { withCredentials: true, headers: headers }
     );

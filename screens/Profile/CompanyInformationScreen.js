@@ -15,8 +15,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Company from "../../assets/Company.jpg";
 import * as SecureStore from "expo-secure-store";
 import axios from "axios";
-
-const REST_API_ENDPOINT = "http://192.168.0.103:4000/shipper";
+import { REST_API_LOCAL } from "@env";
 
 const CompanyInformationScreen = ({ navigation, route }) => {
   var item = route.params.item;
@@ -76,10 +75,14 @@ const CompanyInformationScreen = ({ navigation, route }) => {
         let token1 = await SecureStore.getItemAsync("userToken");
         const headers = { Authorization: `Bearer ${token1}` };
         const response = await axios
-          .put(`${REST_API_ENDPOINT}/update/company/${companyId}`, objToSave, {
-            withCredentials: true,
-            headers: headers,
-          })
+          .put(
+            `${REST_API_LOCAL}/shipper/update/company/${companyId}`,
+            objToSave,
+            {
+              withCredentials: true,
+              headers: headers,
+            }
+          )
           .catch((error) => {
             if (error.response) {
               // The request was made and the server responded with a status code

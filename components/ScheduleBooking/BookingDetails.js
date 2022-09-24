@@ -12,13 +12,6 @@ import {
   ToastAndroid,
 } from "react-native";
 import { ButtonGroup } from "react-native-elements";
-import { Picker } from "@react-native-picker/picker";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import { Checkbox } from "react-native-paper";
-import axios from "axios";
-const API_ENDPOINT = "https://freight-automation-default-rtdb.firebaseio.com/";
-import { REST_API, REST_API_LOCAL } from "@env";
-import * as SecureStore from "expo-secure-store";
 import SelectLocation from "./SelectLocation";
 import ChooseTruck from "./ChooseTruck";
 
