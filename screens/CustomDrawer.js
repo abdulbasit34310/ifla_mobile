@@ -46,7 +46,7 @@ export function CustomDrawer(props) {
                     height: 100,
                     borderRadius: 90,
                   }}
-                  source={{ uri: `http://192.168.0.103:4000/images/${image}` }}
+                  source={{ uri: `http://192.168.100.19:4000/images/${image}` }}
                 />
               ) : null}
               {user !== null ? (

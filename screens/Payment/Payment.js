@@ -18,7 +18,7 @@ const Payment = ({route}) => {
   
   const getPublishableKey = async ()=>{
     try {
-      const response = await fetch('http://192.168.0.177:4000/payments/config')
+      const response = await fetch('http://192.168.100.19:4000/payments/config')
       const {publishableKey} = await response.json();
       console.log(publishableKey);
       return publishableKey;
@@ -35,7 +35,7 @@ const Payment = ({route}) => {
 
   const fetchPaymentIntentClientSecret = async () => {
     const body = { payId: payId, id:id}
-    const response = await axios.post(`http://192.168.0.177:4000/payments/create-checkout-session`, body);
+    const response = await axios.post(`http://192.168.100.19:4000/payments/create-checkout-session`, body);
     const {clientSecret} = await response.data;
 
     return clientSecret;

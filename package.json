@@ -21,7 +21,7 @@
     "@rneui/themed": "^4.0.0-rc.3",
     "@stripe/stripe-react-native": "^0.2.3",
     "axios": "^0.27.2",
-    "dotenv": "^16.0.1",
+    "dotenv": "^16.0.2",
     "expo": "~44.0.0",
     "expo-checkbox": "~2.0.0",
     "expo-device": "^4.3.0",

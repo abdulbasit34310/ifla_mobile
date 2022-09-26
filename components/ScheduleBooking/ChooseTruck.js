@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
-import TruckIcon from "../../assets/Truck.png";
+import TruckIcon from "../../assets/truck.png";
 import ContainerIcon from "../../assets/Container.png";
 import MazdaIcon from "../../assets/Mazda.png";
 import PickupIcon from "../../assets/Pickup.png";

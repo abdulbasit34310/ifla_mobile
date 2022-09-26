@@ -34,7 +34,7 @@ registerForPushNotificationsAsync = async () => {
     console.log(token);
     try {
       var response = await axios.post(
-        "http://192.168.0.177:4000/notifications/token",
+        "http://192.168.100.19:4000/notifications/token",
         { token: { value: token } }
       );
       console.log(response.data);
@@ -54,7 +54,7 @@ registerForPushNotificationsAsync = async () => {
   console.log(token);
 
   var response = await axios.post(
-    "http://192.168.10.8:3000/notifications/token",
+    "http://192.168.100.19:4000/notifications/token",
     { token: { value: token } }
   );
   // this.setState({ expoPushToken: token });

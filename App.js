@@ -33,6 +33,7 @@ import ScheduleExample from "./screens/Booking/ScheduleExample";
 import Wallet from "./screens/Payment/Wallet";
 import Addresses from "./screens/Profile/Addresses";
 import AddAddress from "./components/Profile/AddAddress";
+import ChangePassword from "./screens/Profile/ChangePassword";
 
 const Drawer = createDrawerNavigator();
 
@@ -279,6 +280,11 @@ function ProfileStack({ route }) {
         name="AddAddress"
         component={AddAddress}
         options={{ title: "Add Address" }}
+      />
+      <Stack.Screen
+        name="ChangePassword"
+        component={ChangePassword}
+        options={{ title: "Change Password" }}
       />
     </Stack.Navigator>
   );
