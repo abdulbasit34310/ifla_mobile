@@ -9,6 +9,7 @@ import {
   Button,
   TouchableOpacity,
   ToastAndroid,
+  ScrollView
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
@@ -66,6 +67,7 @@ export default function ChooseTruck({
     }
   };
   return (
+    <ScrollView>
     <View style={styles.container}>
       <View style={{ display: "flex", flexDirection: "row", paddingTop: 10 }}>
         <TouchableOpacity
@@ -112,6 +114,7 @@ export default function ChooseTruck({
         </TouchableOpacity>
       </View>
     </View>
+    </ScrollView>
   );
 }
 
