@@ -13,7 +13,7 @@ import gaqIllustration from "../assets/gaq.png";
 import walletIllustration from "../assets/Wallet.png";
 import trackingIllustration from "../assets/Tracking.png";
 
-import logo from './images/IFLA.png';
+import IFLAlogo from '../assets/IFLA.png';
 
 const axios = require("axios");
 

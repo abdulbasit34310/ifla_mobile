@@ -19,7 +19,7 @@ const Theme = {
 };
 
 import { AuthContext } from "../../components/context";
-import AB from "../images/AB.png";
+
 import { TouchableOpacity } from "react-native-gesture-handler";
 import axios from "axios";
 import Avatar from "../../assets/Avatar.png";

@@ -6,7 +6,7 @@ import axios from "axios";
 
 // import * as SecureStore from 'expo-secure-store';
 
-import logo from "../images/IFLA.png";
+import IFLAlogo from '../../assets/IFLA.png';
 
 // import { REST_API_LOCAL } from "@env";
 const REST_API_LOCAL = "http://192.168.100.133:4000"
@@ -145,7 +145,7 @@ const Login = ({ route, navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Image source={logo} style={styles.logo} />
+        <Image source={IFLAlogo} style={styles.IFLAlogo} />
       </View>
 
       <View style={styles.footer}>
@@ -279,7 +279,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 30,
     padding: 25,
   },
-  logo: {
+  IFLAlogo: {
     alignSelf: "center",
     width: 175,
     height: 125,

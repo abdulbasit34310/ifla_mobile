@@ -13,7 +13,8 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Feather from "react-native-vector-icons/Feather";
 import { REST_API_LOCAL } from "@env";
 
-import logo from "./images/IFLA.png";
+import logo from '../../assets/IFLA.png';
+
 import axios from "axios";
 
 var arr = [];

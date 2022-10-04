@@ -4,7 +4,7 @@ import Checkbox from "expo-checkbox";
 import { MaterialIcons, MaterialCommunityIcons, FontAwesome, Octicons, Feather } from 'react-native-vector-icons';
 import axios from "axios";
 
-import logo from "../images/IFLA.png";
+import IFLAlogo from '../../assets/IFLA.png';
 
 import { REST_API_LOCAL } from "@env";
 
@@ -133,7 +133,7 @@ const SignUp = ({ route, navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Image source={logo} style={styles.logo} />
+        <Image source={IFLAlogo} style={styles.IFLAlogo} />
       </View>
 
       <SafeAreaView style={styles.footer}>
@@ -332,7 +332,7 @@ const styles = StyleSheet.create({
     color: "#FF0000",
     fontSize: 12,
   },
-  logo: {
+  IFLAlogo: {
     alignSelf: "center",
     width: 150,
     height: 100,

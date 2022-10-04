@@ -15,7 +15,6 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome5";
 import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
-import AB from "../images/AB.png";
 import { REST_API_LOCAL } from "@env";
 import * as SecureStore from "expo-secure-store";
 

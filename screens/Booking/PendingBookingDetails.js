@@ -1,16 +1,7 @@
 import * as React from "react"; import { SafeAreaView } from 'react-native-safe-area-context';
-
-import {
-  Text,
-  View,
-  StyleSheet,
-
-  TouchableOpacity,
-  Alert,
-} from "react-native";
+import { Text, View, StyleSheet, TouchableOpacity, Alert, } from "react-native";
 import { Divider } from "react-native-paper";
 import { MaterialIcons, MaterialCommunityIcons, FontAwesome, Octicons, Feather } from 'react-native-vector-icons';
-
 import { ScrollView } from "react-native-gesture-handler";
 import * as SecureStore from "expo-secure-store";
 import axios from "axios";

@@ -10,14 +10,14 @@ import {
 import Constants from 'expo-constants';
 
 import { MaterialIcons, FontAwesome, Octicons } from 'react-native-vector-icons';
-import logo from './images/IFLA.png';
+import IFLAlogo from '../../assets/IFLA.png';
 
-function WelcomeScreen({ navigation }) {
+function Welcome({ navigation }) {
     return (
         <View style={styles.container}>
             <View style={styles.header}><Image
-                source={logo}
-                style={styles.logo}
+                source={IFLAlogo}
+                style={styles.IFLAlogo}
             /></View>
 
             <View style={styles.footer}>
@@ -25,7 +25,7 @@ function WelcomeScreen({ navigation }) {
                 <Text style={styles.title}>Getting Started ! </Text>
                 <TouchableOpacity style={styles.to} onPress={() => { navigation.navigate("SignInScreen") }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-                        <Octicons name="sign-in" size={18} color={'white'}/>
+                        <Octicons name="sign-in" size={18} color={'white'} />
                         <Text style={styles.signInText}>Sign In</Text>
                     </View>
                 </TouchableOpacity>
@@ -41,7 +41,7 @@ function WelcomeScreen({ navigation }) {
     );
 }
 
-export default WelcomeScreen;
+export default Welcome;
 
 const { height } = Dimensions.get('screen');
 const height_logo = height * 0.28;
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
         paddingVertical: 25,
         paddingHorizontal: 30,
     },
-    logo: {
+    IFLAlogo: {
         width: height_logo,
         height: height_logo,
     },
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
         borderRadius: 14,
         elevation: 3,
     },
-    logo: {
+    IFLAlogo: {
         width: 250,
         height: 200,
     },
