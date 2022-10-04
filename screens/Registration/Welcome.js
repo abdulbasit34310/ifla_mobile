@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import Constants from 'expo-constants';
 
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { MaterialIcons, FontAwesome, Octicons } from 'react-native-vector-icons';
 import logo from './images/IFLA.png';
 
 function WelcomeScreen({ navigation }) {
@@ -24,8 +24,16 @@ function WelcomeScreen({ navigation }) {
 
                 <Text style={styles.title}>Getting Started ! </Text>
                 <TouchableOpacity style={styles.to} onPress={() => { navigation.navigate("SignInScreen") }}>
-                    <Text style={styles.signInText}>Sign In</Text>
-                    {/* <MaterialIcons name="navigate-next" color="#fff" size={27} /> */}
+                    <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+                        <Octicons name="sign-in" size={18} color={'white'}/>
+                        <Text style={styles.signInText}>Sign In</Text>
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.to} onPress={() => { navigation.navigate("SignUpScreen") }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Octicons name="sign-out" size={18} color={'white'} />
+                        <Text style={styles.signInText}>Register</Text>
+                    </View>
                 </TouchableOpacity>
 
             </View>
@@ -63,7 +71,7 @@ const styles = StyleSheet.create({
     },
     title: {
         color: "#068E94",
-        fontSize: 30,
+        fontSize: 22,
         fontWeight: 'bold',
     },
     button: {
@@ -79,23 +87,22 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     signInText: {
-        color: "#E0EFF6",
-        fontSize: 26,
-    
+        color: "white",
+        fontSize: 18,
+        marginHorizontal: 5,
     },
     to: {
-        backgroundColor: '#00ABB2',
-        borderRadius: 45,
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: 175,
-        height: 75,
-        flexDirection: 'row',
-        marginTop: 35,
+        backgroundColor: '#068E94',
+        marginTop: 25,
+        width: "100%",
+        height: 60,
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: 14,
+        elevation: 3,
     },
     logo: {
         width: 250,
         height: 200,
-      
     },
 });

@@ -1,9 +1,12 @@
 import * as React from "react";
-import { SafeAreaView, View, StyleSheet, Image } from "react-native";
+import { View, StyleSheet, Image } from "react-native";
+import { SafeAreaView } from 'react-native-safe-area-context';
+
 import { Title, Text } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import FontAwesome from "react-native-vector-icons/FontAwesome5";
+import { MaterialIcons, MaterialCommunityIcons, FontAwesome, Octicons, Feather } from 'react-native-vector-icons';
+
+
 const Theme = {
   Buttons: "#068E94",
   PrimaryForeground: "#068E94",
@@ -99,7 +102,7 @@ const ProfileScreen = ({ route, navigation }) => {
         {/* Email */}
 
         <View style={styles.row}>
-          <Icon name="email" color="#777777" size={20} />
+          <MaterialCommunityIcons name="email" color="#777777" size={20} />
           {getData.personId.email !== "" ? (
             <Text style={{ color: "#777777" }}>{getData.personId.email}</Text>
           ) : (
@@ -133,9 +136,9 @@ const ProfileScreen = ({ route, navigation }) => {
 
         <TouchableOpacity
           style={styles.infoBox}
-          // onPress={() => {
-          //   navigation.navigate("CompanyInformationScreen", { item: getData });
-          // }}
+        // onPress={() => {
+        //   navigation.navigate("CompanyInformationScreen", { item: getData });
+        // }}
         >
           <View
             style={{

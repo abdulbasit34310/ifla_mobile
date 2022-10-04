@@ -1,25 +1,25 @@
-import { StyleSheet, Text, Alert,TextInput,  Switch, Button, View, TouchableOpacity } from "react-native";
-import React,{useState, useEffect} from "react";
-import {CardField, StripeProvider, useConfirmPayment} from '@stripe/stripe-react-native';
+import { StyleSheet, Text, Alert, TextInput, Switch, Button, View, TouchableOpacity } from "react-native";
+import React, { useState, useEffect } from "react";
+import { CardField, StripeProvider, useConfirmPayment } from '@stripe/stripe-react-native';
 import axios from "axios";
 
-const Payment = ({route}) => {
+const Payment = ({ route }) => {
   const [name, setName] = useState('');
-  const {confirmPayment, loading} = useConfirmPayment();
+  const { confirmPayment, loading } = useConfirmPayment();
   const [saveCard, setSaveCard] = useState(false);
   const [isComplete, setComplete] = useState(false);
-  const [publishableKey,setPublishableKey] = useState(null);
-  
-  let payId,id = undefined
-  if(route.params.hasOwnProperty('payId'))
+  const [publishableKey, setPublishableKey] = useState(null);
+
+  let payId, id = undefined
+  if (route.params.hasOwnProperty('payId'))
     payId = route.params.payId
-  if(route.params.hasOwnProperty('id'))
+  if (route.params.hasOwnProperty('id'))
     id = route.params.id
-  
-  const getPublishableKey = async ()=>{
+
+  const getPublishableKey = async () => {
     try {
-      const response = await fetch('http://192.168.0.177:4000/payments/config')
-      const {publishableKey} = await response.json();
+      const response = await fetch('http://192.168.100.133:4000/payments/config')
+      const { publishableKey } = await response.json();
       console.log(publishableKey);
       return publishableKey;
     } catch (e) {
@@ -34,32 +34,33 @@ const Payment = ({route}) => {
   }
 
   const fetchPaymentIntentClientSecret = async () => {
-    const body = { payId: payId, id:id}
-    const response = await axios.post(`http://192.168.0.177:4000/payments/create-checkout-session`, body);
-    const {clientSecret} = await response.data;
+    const body = { payId: payId, id: id }
+    const response = await axios.post(`http://192.168.100.133:4000/payments/create-checkout-session`, body);
+    const { clientSecret } = await response.data;
 
     return clientSecret;
   };
 
-  useEffect( ()=>{
+  useEffect(() => {
     async function initialize() {
       const publishableKey = await getPublishableKey()
       if (publishableKey) {
         setPublishableKey(publishableKey);
-    }}
+      }
+    }
 
     initialize()
-    },[])
+  }, [])
 
   const handlePayPress = async () => {
     // 1. fetch Intent Client Secret from backend
     const clientSecret = await fetchPaymentIntentClientSecret();
 
 
-    const {error, paymentIntent} = await confirmPayment(clientSecret, {
+    const { error, paymentIntent } = await confirmPayment(clientSecret, {
       type: 'Card',
       paymentMethodData: {
-          billingDetails: {name},
+        billingDetails: { name },
       },
       // { setupFutureUsage: saveCard ? 'OffSession' : undefined }
     });
@@ -70,60 +71,60 @@ const Payment = ({route}) => {
     } else if (paymentIntent) {
       Alert.alert(
         'Success',
-        `The payment was confirmed successfully! currency: ${paymentIntent.amount/100} ${paymentIntent.currency}`
+        `The payment was confirmed successfully! currency: ${paymentIntent.amount / 100} ${paymentIntent.currency}`
       );
       console.log('Success from promise', paymentIntent);
     }
   };
 
-  return(
-    <StripeProvider  publishableKey={publishableKey}>
+  return (
+    <StripeProvider publishableKey={publishableKey}>
       <View style={styles.container}>
-           <TextInput
-              autoCapitalize="none"
-              placeholder="Name"
-              keyboardType="name-phone-pad"
-              onChange={(value) => setName(value.nativeEvent.text)}
-              style={styles.input}
-            />
-           <TextInput
-              autoCapitalize="none"
-              placeholder="Email"
-              keyboardType="email-address"
-              onChange={(value) => setName(value.nativeEvent.text)}
-              style={styles.input}
-            />
-           <TextInput
-              autoCapitalize="none"
-              placeholder="Contact Number"
-              keyboardType="number-pad"
-              onChange={(value) => setName(value.nativeEvent.text)}
-              style={styles.input}
-            />
+        <TextInput
+          autoCapitalize="none"
+          placeholder="Name"
+          keyboardType="name-phone-pad"
+          onChange={(value) => setName(value.nativeEvent.text)}
+          style={styles.input}
+        />
+        <TextInput
+          autoCapitalize="none"
+          placeholder="Email"
+          keyboardType="email-address"
+          onChange={(value) => setName(value.nativeEvent.text)}
+          style={styles.input}
+        />
+        <TextInput
+          autoCapitalize="none"
+          placeholder="Contact Number"
+          keyboardType="number-pad"
+          onChange={(value) => setName(value.nativeEvent.text)}
+          style={styles.input}
+        />
         <CardField
-            postalCodeEnabled={false}
-            placeholder={{
+          postalCodeEnabled={false}
+          placeholder={{
             number: '4242 4242 4242 4242',
-            }}
-            onCardChange={(cardDetails) => {
+          }}
+          onCardChange={(cardDetails) => {
             console.log('cardDetails', cardDetails);
-            }}
-            onFocus={(focusedField) => {
+          }}
+          onFocus={(focusedField) => {
             console.log('focusField', focusedField);
-            }}
-            cardStyle={inputStyles}
-            style={styles.cardField}
+          }}
+          cardStyle={inputStyles}
+          style={styles.cardField}
         />
-      <View style={styles.row}>
-        <Switch
-          onValueChange={(value) => setSaveCard(value)}
-          value={saveCard}
-        />
-        <Text style={styles.text}>Save card during payment</Text>
-      </View>
-      <TouchableOpacity style={styles.ButtonContainer} onPress={handlePayPress} disabled={loading} >
-            <Text style={styles.ButtonText}>Pay</Text>
-      </TouchableOpacity>
+        <View style={styles.row}>
+          <Switch
+            onValueChange={(value) => setSaveCard(value)}
+            value={saveCard}
+          />
+          <Text style={styles.text}>Save card during payment</Text>
+        </View>
+        <TouchableOpacity style={styles.ButtonContainer} onPress={handlePayPress} disabled={loading} >
+          <Text style={styles.ButtonText}>Pay</Text>
+        </TouchableOpacity>
       </View>
     </StripeProvider>
   )
@@ -137,19 +138,19 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     // alignItems: 'center',
     justifyContent: 'center',
-  }, 
+  },
   cardField: {
-      width: '100%',
-      height: 50,
-      marginVertical: 30,
-    },
+    width: '100%',
+    height: 50,
+    marginVertical: 30,
+  },
   input: {
-      borderWidth: 1,
-      backgroundColor: '#FFFFFF',
-      borderColor: '#000000',
-      borderRadius: 8,
-      fontSize: 14,
-      marginVertical:5
+    borderWidth: 1,
+    backgroundColor: '#FFFFFF',
+    borderColor: '#000000',
+    borderRadius: 8,
+    fontSize: 14,
+    marginVertical: 5
   },
   row: {
     flexDirection: 'row',

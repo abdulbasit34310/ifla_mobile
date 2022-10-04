@@ -1,26 +1,16 @@
 import * as React from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  TextInput,
-  Image,
-  Alert,
-  Platform,
-  ToastAndroid,
-} from "react-native";
-
-import FontAwesome from "react-native-vector-icons/FontAwesome";
-import Feather from "react-native-vector-icons/Feather";
-// import * as SecureStore from 'expo-secure-store';
+import { View, Text, TouchableOpacity, StyleSheet, TextInput, Image, Alert, Platform, ToastAndroid, ScrollView } from "react-native";
+import { MaterialIcons, MaterialCommunityIcons, FontAwesome, Octicons, Feather } from 'react-native-vector-icons';
 import { AuthContext } from "../../components/context";
+import axios from "axios";
+
+// import * as SecureStore from 'expo-secure-store';
 
 import logo from "../images/IFLA.png";
-import axios from "axios";
-import { REST_API_LOCAL } from "@env";
 
-const SignInScreen = ({ route, navigation }) => {
+// import { REST_API_LOCAL } from "@env";
+const REST_API_LOCAL = "http://192.168.100.133:4000"
+const Login = ({ route, navigation }) => {
   const [data, setData] = React.useState({
     email: "",
     password: "",
@@ -170,7 +160,7 @@ const SignInScreen = ({ route, navigation }) => {
           >
             Welcome to IFLA!
           </Text>
-          <Text style={{ color: "#AAAAAA" }}>Sign in to continue</Text>
+          <Text style={{ color: "#AAAAAA" }}>Login to continue</Text>
         </View>
 
         <View style={styles.action}>
@@ -231,32 +221,43 @@ const SignInScreen = ({ route, navigation }) => {
             onPress={() => sendSignInCredentials()}
             style={[styles.button, { backgroundColor: "#068E94" }]}
           >
-            <Text
-              style={[
-                styles.textSign,
-                {
-                  color: "white",
-                },
-              ]}
-            >
-              Sign In
-            </Text>
+
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Octicons name="sign-out" size={18} color={'white'} />
+              <Text
+                style={[
+                  styles.textSign,
+                  {
+                    color: "white",
+                  },
+                ]}
+              >
+                Login
+              </Text>
+            </View>
+
           </TouchableOpacity>
 
           <TouchableOpacity
             onPress={() => navigation.navigate("SignUpScreen")}
             style={[styles.button, { backgroundColor: "white" }]}
           >
-            <Text
-              style={[
-                styles.textSign,
-                {
-                  color: "black",
-                },
-              ]}
-            >
-              Sign Up
-            </Text>
+
+
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Octicons name="sign-out" size={18} color={'black'} />
+              <Text
+                style={[
+                  styles.textSign,
+                  {
+                    color: "black",
+                  },
+                ]}
+              >
+                Sign Up
+              </Text>
+            </View>
+
           </TouchableOpacity>
         </View>
       </View>
@@ -280,8 +281,8 @@ const styles = StyleSheet.create({
   },
   logo: {
     alignSelf: "center",
-    width: 150,
-    height: 100,
+    width: 175,
+    height: 125,
   },
   action: {
     flexDirection: "row",
@@ -309,11 +310,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 14,
     marginTop: 15,
-    elevation: 5,
+    elevation: 3,
   },
   textSign: {
     fontSize: 18,
-    fontWeight: "bold",
+    fontWeight: "bold", marginHorizontal: 5,
   },
   container: {
     flex: 1,
@@ -327,4 +328,4 @@ const styles = StyleSheet.create({
 // Background Primary and Text: #005761
 // Background Secondary: #E0EFF6
 
-export default SignInScreen;
+export default Login;

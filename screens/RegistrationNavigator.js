@@ -1,39 +1,45 @@
 import * as React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import WelcomeScreen from "./WelcomeScreen";
-import SignInScreen from "./Authentication/SignInScreen";
-import SignUpScreen from "./Authentication/SignUpScreen";
-import ForgotPasswordScreen from "./ForgotPasswordScreen";
-import AccountConfigurationScreen from "./Profile/AccountConfigurationScreen";
+import Welcome from "./Registration/Welcome";
+import Login from "./Registration/Login";
+import SignUp from "./Registration/SignUp";
+import ForgotPasswordScreen from "./Registration/ForgotPasswordScreen";
+
+import AccountConfiguration from "./Registration/AccountConfiguration";
 
 const RegistrationStack = createNativeStackNavigator();
 
-const RegistrationNavigationScreen = ({ navigation }) => (
+const RegistrationNavigator = ({ navigation }) => (
   <RegistrationStack.Navigator
-    initialRouteName={"WelcomeScreen"}
+    initialRouteName={"Welcome"}
     headerMode="none"
   >
     <RegistrationStack.Screen
       options={{ headerShown: false, title: "Home" }}
-      name="WelcomeScreen"
-      component={WelcomeScreen}
+      name="Welcome"
+      component={Welcome}
     />
     <RegistrationStack.Screen
       options={{ headerShown: false, title: "Sign In" }}
-      name="SignInScreen"
-      component={SignInScreen}
+      name="Login"
+      component={Login}
     />
     <RegistrationStack.Screen
       options={{ headerShown: false, title: "Sign Up" }}
-      name="SignUpScreen"
-      component={SignUpScreen}
+      name="SignUp"
+      component={SignUp}
     />
     <RegistrationStack.Screen
       options={{ headerShown: false, title: "Forgot Password" }}
       name="ForgotPasswordScreen"
       component={ForgotPasswordScreen}
     />
+    <RegistrationStack.Screen
+    options={{ headerShown: false, title: "Account Configuration" }}
+    name="AccountConfiguration"
+    component={AccountConfiguration}
+  />
   </RegistrationStack.Navigator>
 );
-export default RegistrationNavigationScreen;
+export default RegistrationNavigator;

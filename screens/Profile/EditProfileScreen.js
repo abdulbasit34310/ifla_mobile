@@ -448,7 +448,7 @@ const styles = StyleSheet.create({
     marginTop: 45,
     width: "60%",
     height: 50,
-    elevation: 9,
+    elevation: 3,
   },
   action: {
     flexDirection: "row",

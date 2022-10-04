@@ -10,7 +10,9 @@ import {
   TouchableOpacity,
   ToastAndroid,
 } from "react-native";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
+
+import { MaterialCommunityIcons, FontAwesome } from '@expo/vector-icons';
+import { ThemeConsumer } from "react-native-elements";
 
 import TruckIcon from "../../assets/Truck.png";
 import ContainerIcon from "../../assets/Container.png";
@@ -19,7 +21,7 @@ import PickupIcon from "../../assets/Pickup.png";
 import SuzukiIcon from "../../assets/Suzuki.png";
 import TankerIcon from "../../assets/Tanker.png";
 import TrailerIcon from "../../assets/Trailer.png";
-import { ThemeConsumer } from "react-native-elements";
+
 
 const Theme = {
   Buttons: "#068E94",
@@ -85,6 +87,7 @@ export default function ChooseTruck({
           Choose Vehicle
         </Text>
       </View>
+      
       <View style={styles.innerContainer}>
         {TruckData.map((truck, index) => (
           <TouchableOpacity
