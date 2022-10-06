@@ -2,7 +2,7 @@ import { StyleSheet, Text, Alert,TextInput,  Switch, Button, View, TouchableOpac
 import React,{useState, useEffect} from "react";
 import {CardField, StripeProvider, useConfirmPayment} from '@stripe/stripe-react-native';
 import axios from "axios";
-
+import {REST_API_LOCAL} from "@env"
 const Payment = ({route}) => {
   const [name, setName] = useState('');
   const {confirmPayment, loading} = useConfirmPayment();
@@ -18,7 +18,7 @@ const Payment = ({route}) => {
   
   const getPublishableKey = async ()=>{
     try {
-      const response = await fetch('http://192.168.1.110:4000/payments/config')
+      const response = await fetch(`${REST_API_LOCAL}/payments/config`)
       const {publishableKey} = await response.json();
       console.log(publishableKey);
       return publishableKey;
@@ -35,7 +35,7 @@ const Payment = ({route}) => {
 
   const fetchPaymentIntentClientSecret = async () => {
     const body = { payId: payId, id:id}
-    const response = await axios.post(`http://192.168.1.110:4000/payments/create-checkout-session`, body);
+    const response = await axios.post(`${REST_API_LOCAL}/payments/create-checkout-session`, body);
     const {clientSecret} = await response.data;
 
     return clientSecret;
