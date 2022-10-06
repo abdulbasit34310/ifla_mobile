@@ -6,6 +6,7 @@ import * as SecureStore from "expo-secure-store";
 import { AuthContext } from "../components/context";
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
+import {REST_API_LOCAL} from "@env"
 const axios = require("axios");
 
 Notifications.setNotificationHandler({
@@ -34,7 +35,7 @@ registerForPushNotificationsAsync = async () => {
     console.log(token);
     try {
       var response = await axios.post(
-        "http://192.168.0.177:4000/notifications/token",
+        `${REST_API_LOCAL}/notifications/token`,
         { token: { value: token } }
       );
       console.log(response.data);
@@ -54,7 +55,7 @@ registerForPushNotificationsAsync = async () => {
   console.log(token);
 
   var response = await axios.post(
-    "http://192.168.10.8:3000/notifications/token",
+    `${REST_API_LOCAL}/notifications/token`,
     { token: { value: token } }
   );
   // this.setState({ expoPushToken: token });

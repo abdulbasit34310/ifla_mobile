@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   ToastAndroid,
   KeyboardAvoidingView,
+  ScrollView
 } from "react-native";
 import { Title } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -238,6 +239,7 @@ const EditProfileScreen = ({ navigation, route }) => {
   };
 
   return (
+    <ScrollView>
     <KeyboardAvoidingView style={styles.container}>
       <View style={{ paddingTop: 20, alignItems: "center" }}>
         <TouchableOpacity onPress={() => pickImage()}>
@@ -412,7 +414,11 @@ const EditProfileScreen = ({ navigation, route }) => {
       <TouchableOpacity style={styles.submitButton} onPress={updateData}>
         <Text style={{ fontSize: 18, color: "white" }}>Update</Text>
       </TouchableOpacity>
+      <TouchableOpacity style={styles.submitButton} onPress={()=>navigation.navigate("ChangePassword")}>
+        <Text style={{ fontSize: 18, color: "white" }}>Change Password</Text>
+      </TouchableOpacity>
     </KeyboardAvoidingView>
+    </ScrollView>
   );
 };
 

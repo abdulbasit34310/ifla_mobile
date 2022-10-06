@@ -18,7 +18,7 @@ export function CustomDrawer(props) {
   const getUser = async () => {
     let token1 = await SecureStore.getItemAsync("userToken");
     const headers = { Authorization: `Bearer ${token1}` };
-    const response = await axios.get(`${REST_API_LOCAL}/shipper/image`, {
+    const response = await axios.get(`${REST_API_LOCAL}/users/getUser`, {
       withCredentials: true,
       headers: headers,
     });
@@ -46,7 +46,7 @@ export function CustomDrawer(props) {
                     height: 100,
                     borderRadius: 90,
                   }}
-                  source={{ uri: `http://192.168.0.103:4000/images/${image}` }}
+                  source={{ uri: `${REST_API_LOCAL}/images/${image}` }}
                 />
               ) : null}
               {user !== null ? (

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { SafeAreaView, View, StyleSheet, Image } from "react-native";
+import { SafeAreaView, View, StyleSheet, Image, ScrollView } from "react-native";
 import { Title, Text } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -75,6 +75,7 @@ const ProfileScreen = ({ route, navigation }) => {
   }, [navigation]);
 
   return (
+    <ScrollView>
     <SafeAreaView style={styles.background}>
       <View style={{ paddingBottom: 5 }}>
         <View style={{ alignItems: "center", margin: 10 }}>
@@ -215,6 +216,7 @@ const ProfileScreen = ({ route, navigation }) => {
         </TouchableOpacity>
       </View>
     </SafeAreaView>
+    </ScrollView>
   );
 };
 

@@ -8,6 +8,7 @@ import {
   Image,
   Alert,
   Platform,
+  Button,
   ToastAndroid,
 } from "react-native";
 
@@ -15,10 +16,16 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Feather from "react-native-vector-icons/Feather";
 // import * as SecureStore from 'expo-secure-store';
 import { AuthContext } from "../../components/context";
+import * as WebBrowser from 'expo-web-browser';
+import * as Google from 'expo-auth-session/providers/google';
+import * as Facebook from 'expo-auth-session/providers/facebook';
+// import { ResponseType } from 'expo-auth-session';
 
 import logo from "../images/IFLA.png";
 import axios from "axios";
-import { REST_API_LOCAL } from "@env";
+import { REST_API_LOCAL, GOOGLE_ID, GOOGLE_ID_IOS, GOOGLE_ID_EXPO, GOOGLE_ID_WEB, FB_APPID} from "@env";
+
+WebBrowser.maybeCompleteAuthSession();
 
 const SignInScreen = ({ route, navigation }) => {
   const [data, setData] = React.useState({
@@ -31,6 +38,61 @@ const SignInScreen = ({ route, navigation }) => {
     secureTextEntry: true,
   });
 
+  const [accessToken, setAccessToken] = React.useState();
+  const [userInfo, setUserInfo] = React.useState();
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    expoClientId: GOOGLE_ID_EXPO,
+    iosClientId: GOOGLE_ID_IOS,
+    androidClientId: GOOGLE_ID,
+    webClientId: GOOGLE_ID_WEB,
+  });
+
+  const [requestFb, responseFb, promptAsyncFb] = Facebook.useAuthRequest({
+    clientId: FB_APPID,
+    // responseType: ResponseType.Code,
+  });
+
+  React.useEffect(() => {
+    if (responseFb?.type === 'success') {
+      const { authentication } = responseFb;
+      console.log(authentication)
+      // saveFbUser(code)
+      setAccessToken(authentication.accessToken);
+
+      fbGetUserData()
+    }
+  }, [responseFb]);
+
+  async function fbGetUserData() {
+    let userInfoResponse = await axios.get("https://www.facebook.com/v6.0/dialog/oauth", {
+      headers: { Authorization: `Bearer ${accessToken}`}
+    });
+
+    setUserInfo(userInfoResponse.data)
+    // json().then(data => {
+      // setUserInfo(data);
+      // console.log(data)
+    // });
+  }
+
+  const fbLoginToIfla = async (user)=>{
+    const response = await axios.post(`${REST_API_LOCAL}/users/googleMobile`, {user:user})
+    const data = response.data
+    const foundUser = { userToken: data.token, email: userInfo.email };
+    console.log(foundUser);
+
+    signIn(foundUser);
+
+    if (data) {
+      showToastWithGravity();
+    }
+
+  }
+
+  // const saveFbUser =  async (code)=>{
+  //   const response = await axios.post(`${REST_API_LOCAL}/users/facebookMobile`, {code:code,redirectUri:"https://auth.expo.io/@isala1/IFLA"})
+  //   console.log(response.data)
+  // }
   const { signIn } = React.useContext(AuthContext);
 
   const emailChange = (val) => {
@@ -51,14 +113,41 @@ const SignInScreen = ({ route, navigation }) => {
       });
     }
   };
-  // async function getValueFor(key) {
-  //   let result = await SecureStore.getItemAsync(key);
-  //   if (result) {
-  //     alert("🔐 Here's your value 🔐 \n" + result);
-  //   } else {
-  //     alert('No values stored under that key.');
-  //   }
-  // }
+
+  React.useEffect(() => {
+    if (response?.type === 'success') {
+      const { authentication } = response;
+      console.log(authentication)
+      setAccessToken(authentication.accessToken);
+      getUserData()
+      loginToIfla(userInfo)
+    }
+  }, [response]);
+
+  async function getUserData() {
+    let userInfoResponse = await fetch("https://www.googleapis.com/userinfo/v2/me", {
+      headers: { Authorization: `Bearer ${accessToken}`}
+    });
+
+    userInfoResponse.json().then(data => {
+      setUserInfo(data);
+      console.log(data)
+    });
+  }
+
+  const loginToIfla = async (user)=>{
+    const response = await axios.post(`${REST_API_LOCAL}/users/googleMobile`, {user:user})
+    const data = response.data
+    const foundUser = { userToken: data.token, email: userInfo.email };
+    console.log(foundUser);
+
+    signIn(foundUser);
+
+    if (data) {
+      showToastWithGravity();
+    }
+
+  }
 
   const sendSignInCredentials = async () => {
     // Click Sign In without entering data in any field.
@@ -72,7 +161,7 @@ const SignInScreen = ({ route, navigation }) => {
     }
     console.log(data.email);
     // If Username & password is incorrect.
-    const body = { email: data.email, password: data.password };
+    const body = { email: data.email.trim(), password: data.password };
     console.log(body);
     const response = await axios
       .post(`${REST_API_LOCAL}/users/login`, body)
@@ -242,7 +331,19 @@ const SignInScreen = ({ route, navigation }) => {
               Sign In
             </Text>
           </TouchableOpacity>
-
+          {/* <Button
+            disabled={!request}
+            title="Login"
+            onPress={() => {
+              promptAsync({ useProxy: true, redirectUri :"https://auth.expo.io/@isala1/IFLA" });
+            }}
+          />
+           <Button
+              disabled={!request}
+              title="Login"
+              onPress={() => {
+                promptAsyncFb();}}
+            /> */}
           <TouchableOpacity
             onPress={() => navigation.navigate("SignUpScreen")}
             style={[styles.button, { backgroundColor: "white" }]}

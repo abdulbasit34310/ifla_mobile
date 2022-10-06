@@ -9,10 +9,11 @@ import {
   Button,
   TouchableOpacity,
   ToastAndroid,
+  ScrollView
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
-import TruckIcon from "../../assets/Truck.png";
+import TruckIcon from "../../assets/truck.png";
 import ContainerIcon from "../../assets/Container.png";
 import MazdaIcon from "../../assets/Mazda.png";
 import PickupIcon from "../../assets/Pickup.png";
@@ -66,6 +67,7 @@ export default function ChooseTruck({
     }
   };
   return (
+    <ScrollView>
     <View style={styles.container}>
       <View style={{ display: "flex", flexDirection: "row", paddingTop: 10 }}>
         <TouchableOpacity
@@ -112,6 +114,7 @@ export default function ChooseTruck({
         </TouchableOpacity>
       </View>
     </View>
+    </ScrollView>
   );
 }
 
