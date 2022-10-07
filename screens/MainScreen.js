@@ -168,9 +168,9 @@ const MainScreen = ({ route, navigation }) => {
             <View>
               <Text>Booking</Text>
               <Image source={bookingIllustration} style={{
-                width: 75,
-                height: 75,
-                left: 85
+                width: 85,
+                height: 65,
+                left: 80,
               }} />
             </View>
           </TouchableOpacity>
@@ -178,20 +178,20 @@ const MainScreen = ({ route, navigation }) => {
           <TouchableOpacity style={styles.card} onPress={() => { navigation.navigate("GetAQuote") }}>
             <Text>Get a Quote</Text>
             <Image source={gaqIllustration} style={{
-              width: 75,
-              height: 75,
-              left: 85
+              width: 82,
+              height: 82,
+              left: 70
             }} />
           </TouchableOpacity>
         </View>
 
         <View style={styles.cardRow}>
           <TouchableOpacity style={styles.card} onPress={() => { navigation.navigate("Payments") }}>
-            <Text>Payments</Text>
+            <Text>Payments and Wallet</Text>
             <Image source={walletIllustration} style={{
               width: 75,
-              height: 75,
-              left: 85
+              height: 77,
+              left: 75
             }} />
           </TouchableOpacity>
 
@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   bottomSection: {
-    flex: 4,
+    flex: 2,
     backgroundColor: '#E0EFF6',
     borderTopLeftRadius: 14,
     borderTopRightRadius: 14,

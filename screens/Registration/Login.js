@@ -201,7 +201,7 @@ const Login = ({ route, navigation }) => {
         )}
 
         <TouchableOpacity
-          onPress={() => navigation.navigate("ForgotPasswordScreen")}
+          onPress={() => navigation.navigate("ForgotPassword")}
         >
           <Text
             style={{
@@ -239,7 +239,7 @@ const Login = ({ route, navigation }) => {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => navigation.navigate("SignUpScreen")}
+            onPress={() => navigation.navigate("SignUp")}
             style={[styles.button, { backgroundColor: "white" }]}
           >
 

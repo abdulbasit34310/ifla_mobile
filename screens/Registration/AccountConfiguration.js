@@ -3,7 +3,8 @@ import React, {
   useCallback,
   useEffect,
   useRef,
-  useMemo, } from 'react';
+  useMemo,
+} from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   View,
@@ -19,12 +20,16 @@ import {
   ScrollView,
 } from 'react-native';
 import {
+  AntDesign,
+  Entypo,
   MaterialIcons,
   MaterialCommunityIcons,
   FontAwesome,
+  FontAwesome5,
   Octicons,
   Feather,
 } from 'react-native-vector-icons';
+import { REST_API_LOCAL } from "@env";
 
 const Theme = {
   Buttons: '#068E94',
@@ -45,7 +50,7 @@ const fillToast = () => {
   );
 };
 
-function CompanyName({ nextStep, data, setData }) {
+function Name({ nextStep, data, setData }) {
   return (
     <View style={styles.container}>
       <View style={styles.cardContainer}>
@@ -53,11 +58,11 @@ function CompanyName({ nextStep, data, setData }) {
           <FontAwesome name="building-o" color="#005761" size={22} />
           <TextInput
             style={styles.ti}
-            placeholder="Company Name"
+            placeholder="Name"
             placeholderTextColor="#666666"
             autoCorrect={false}
             onChangeText={(text) =>
-              setData({ ...data, companyName: text })
+              setData({ ...data, name: text })
             }></TextInput>
         </View>
 
@@ -65,7 +70,7 @@ function CompanyName({ nextStep, data, setData }) {
           <TouchableOpacity
             style={styles.customButton}
             onPress={() => {
-              if (data.companyName) {
+              if (data.name) {
                 nextStep();
               } else {
                 fillToast();
@@ -110,7 +115,6 @@ function PhoneNo({ navigation, nextStep, backStep, data, setData }) {
       });
     }
   };
-
   return (
     <View style={styles.container}>
       <View style={styles.cardContainer}>
@@ -121,7 +125,7 @@ function PhoneNo({ navigation, nextStep, backStep, data, setData }) {
             autoCorrect={false}
             placeholder="Phone Number"
             placeholderTextColor="#666666"
-            keyboardType="number-pad"
+            keyboardType="phone-pad"
             onChangeText={(text) =>
               setData({ ...data, phoneNo: text })
             }></TextInput>
@@ -175,6 +179,140 @@ function PhoneNo({ navigation, nextStep, backStep, data, setData }) {
   );
 }
 
+function CNIC({ nextStep, data, setData }) {
+  return (
+    <View style={styles.container}>
+      <View style={styles.cardContainer}>
+        <View style={styles.action}>
+          <AntDesign name="idcard" color="#005761" size={22} />
+          <TextInput
+            style={styles.ti}
+            placeholder="CNIC"
+            placeholderTextColor="#666666"
+            autoCorrect={false}
+            onChangeText={(text) =>
+              setData({ ...data, cnic: text })
+            }></TextInput>
+        </View>
+
+        <View style={{ alignSelf: 'flex-end' }}>
+          <TouchableOpacity
+            style={styles.customButton}
+            onPress={() => {
+              if (data.cnic) {
+                nextStep();
+              } else {
+                fillToast();
+              }
+            }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <MaterialIcons name="navigate-next" size={22} color={'white'} />
+              <Text
+                style={[
+                  styles.buttonText,
+                  {
+                    color: 'white',
+                  },
+                ]}>
+                Next
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </View>
+  );
+}
+
+function NTN({ nextStep, data, setData }) {
+  return (
+    <View style={styles.container}>
+      <View style={styles.cardContainer}>
+        <View style={styles.action}>
+          <Entypo name="address" color="#005761" size={22} />
+          <TextInput
+            style={styles.ti}
+            placeholder="NTN"
+            placeholderTextColor="#666666"
+            autoCorrect={false}
+            onChangeText={(text) =>
+              setData({ ...data, ntn: text })
+            }></TextInput>
+        </View>
+
+        <View style={{ alignSelf: 'flex-end' }}>
+          <TouchableOpacity
+            style={styles.customButton}
+            onPress={() => {
+              if (data.ntn) {
+                nextStep();
+              } else {
+                fillToast();
+              }
+            }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <MaterialIcons name="navigate-next" size={22} color={'white'} />
+              <Text
+                style={[
+                  styles.buttonText,
+                  {
+                    color: 'white',
+                  },
+                ]}>
+                Next
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </View>
+  );
+}
+function Industry({ nextStep, data, setData }) {
+  return (
+    <View style={styles.container}>
+      <View style={styles.cardContainer}>
+        <View style={styles.action}>
+          <FontAwesome name="industry" color="#005761" size={22} />
+          <TextInput
+            style={styles.ti}
+            placeholder="Industry"
+            placeholderTextColor="#666666"
+            autoCorrect={false}
+            onChangeText={(text) =>
+              setData({ ...data, industry: text })
+            }></TextInput>
+        </View>
+
+        <View style={{ alignSelf: 'flex-end' }}>
+          <TouchableOpacity
+            style={styles.customButton}
+            onPress={() => {
+              if (data.industry) {
+                nextStep();
+              } else {
+                fillToast();
+              }
+            }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <MaterialIcons name="navigate-next" size={22} color={'white'} />
+              <Text
+                style={[
+                  styles.buttonText,
+                  {
+                    color: 'white',
+                  },
+                ]}>
+                Next
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </View>
+  );
+}
+
 const Success = ({ navigation, nextStep, backStep, setData, data }) => {
   return <div>Account Configuration Done Succsfully</div>;
 };
@@ -183,21 +321,27 @@ export default function AccountConfiguration({ navigation }) {
   const [step, setStep] = React.useState(0);
 
   const [data, setData] = React.useState({
-    companyName: '',
+    name: '',
     step1: step,
     phoneNo: '',
+    cnic: '',
+    ntn: '',
+    industry: '',
     checkPhoneNoChange: false,
     validPhoneNo: true,
   });
 
   const clear = () => {
     setData({
-      companyName: '',
+      name: '',
       phoneNo: '',
+      cnic: '',
+      ntn: '',
+      industry: '',
     });
   };
 
-  const postData = () => {};
+  const postData = () => { };
 
   const backStep = () => {
     const { step1 } = data;
@@ -219,7 +363,7 @@ export default function AccountConfiguration({ navigation }) {
 
   switch (step1) {
     case 0:
-      return <CompanyName nextStep={nextStep} data={data} setData={setData} />;
+      return <Name nextStep={nextStep} data={data} setData={setData} />;
     case 1:
       return (
         <PhoneNo
@@ -230,6 +374,33 @@ export default function AccountConfiguration({ navigation }) {
         />
       );
     case 2:
+      return (
+        <CNIC
+          nextStep={nextStep}
+          backStep={backStep}
+          data={data}
+          setData={setData}
+        />
+      );
+    case 3:
+      return (
+        <NTN
+          nextStep={nextStep}
+          backStep={backStep}
+          data={data}
+          setData={setData}
+        />
+      );
+    case 4:
+      return (
+        <Industry
+          nextStep={nextStep}
+          backStep={backStep}
+          data={data}
+          setData={setData}
+        />
+      );
+    case 5:
       return (
         <Success
           nextStep={nextStep}
