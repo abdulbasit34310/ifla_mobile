@@ -10,6 +10,7 @@ import IFLAlogo from '../../assets/IFLA.png';
 
 // import { REST_API_LOCAL } from "@env";
 const REST_API_LOCAL = "http://192.168.100.133:4000"
+
 const Login = ({ route, navigation }) => {
   const [data, setData] = React.useState({
     email: "",
@@ -41,31 +42,23 @@ const Login = ({ route, navigation }) => {
       });
     }
   };
-  // async function getValueFor(key) {
-  //   let result = await SecureStore.getItemAsync(key);
-  //   if (result) {
-  //     alert("🔐 Here's your value 🔐 \n" + result);
-  //   } else {
-  //     alert('No values stored under that key.');
-  //   }
-  // }
+
 
   const sendSignInCredentials = async () => {
-    // Click Sign In without entering data in any field.
     if (data.email.length == 0 || data.password.length == 0) {
       Alert.alert(
         "Wrong Input!",
-        "Username or password field cannot be empty.",
+        "Email or Password field cannot be empty.",
         [{ text: "OK" }]
       );
       return;
     }
+    
     console.log(data.email);
-    // If Username & password is incorrect.
     const body = { email: data.email, password: data.password };
     console.log(body);
-    const response = await axios
-      .post(`${REST_API_LOCAL}/users/login`, body)
+
+    const response = await axios.post(`${REST_API_LOCAL}/users/login`, body)
       .catch((error) => {
         if (error.response) {
           console.log(error.response.data);
@@ -96,27 +89,6 @@ const Login = ({ route, navigation }) => {
       ToastAndroid.SHORT,
       ToastAndroid.BOTTOM
     );
-  };
-  const usernameChange = (text) => {
-    // const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    // if (reg.test(String(text).toLowerCase())) {
-
-    setData({
-      ...data,
-      username: text,
-      checkusernameChange: true,
-      notValidusername: true,
-    });
-    // console.log(data.username)
-
-    // } else {
-    //   setData({
-    //     ...data,
-    //     email: text,
-    //     checkEmailChange: false,
-    //     noValidEmail: false,
-    //   });
-    // }
   };
 
   const passwordChange = (text) => {
@@ -219,14 +191,13 @@ const Login = ({ route, navigation }) => {
         <View>
           <TouchableOpacity
             onPress={() => sendSignInCredentials()}
-            style={[styles.button, { backgroundColor: "#068E94" }]}
+            style={[styles.customButton, { backgroundColor: "#068E94" }]}
           >
-
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Octicons name="sign-out" size={18} color={'white'} />
               <Text
                 style={[
-                  styles.textSign,
+                  styles.buttonText,
                   {
                     color: "white",
                   },
@@ -240,15 +211,13 @@ const Login = ({ route, navigation }) => {
 
           <TouchableOpacity
             onPress={() => navigation.navigate("SignUp")}
-            style={[styles.button, { backgroundColor: "white" }]}
+            style={[styles.customButton, { backgroundColor: "white" }]}
           >
-
-
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Octicons name="sign-out" size={18} color={'black'} />
               <Text
                 style={[
-                  styles.textSign,
+                  styles.buttonText,
                   {
                     color: "black",
                   },
@@ -303,7 +272,7 @@ const styles = StyleSheet.create({
     color: "#FF0000",
     fontSize: 12,
   },
-  button: {
+  customButton: {
     width: "100%",
     height: 60,
     justifyContent: "center",
@@ -312,7 +281,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
     elevation: 3,
   },
-  textSign: {
+  buttonText: {
     fontSize: 18,
     fontWeight: "bold", marginHorizontal: 5,
   },
