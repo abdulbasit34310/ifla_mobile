@@ -15,7 +15,7 @@ import MapView, { Callout, Circle, Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import { GOOGLE_API } from "@env";
 import marker from "../../assets/icons8-marker.png";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { AntDesign, MaterialIcons, MaterialCommunityIcons, FontAwesome, Octicons, Feather } from 'react-native-vector-icons';
 import { FAB } from "react-native-elements";
 import * as SecureStore from "expo-secure-store";
 import axios from "axios";
@@ -36,10 +36,7 @@ const latitudeDelta = 0.025;
 const longitudeDelta = 0.025;
 
 export default function AddAddress({ setIsVisible, isVisible, isCompany }) {
-  // const [pin, setPin] = React.useState({
-  //   latitude: 33.6533,
-  //   longitude: 73.0702,
-  // });
+
   const [errorMsg, setErrorMsg] = useState(null);
   const mapRef = useRef(null);
   const [location, setLocation] = React.useState({
@@ -127,19 +124,25 @@ export default function AddAddress({ setIsVisible, isVisible, isCompany }) {
 
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
+
       <TouchableOpacity
         style={{
           padding: 5,
-          margin: 3,
+          marginVertical: 25,
+          marginHorizontal: 15,
           width: 40,
           flex: 1,
           position: "absolute",
           zIndex: 1,
+          backgroundColor: 'white',
+          borderRadius: 22,
+          elevation: 5
         }}
         onPress={hideModal}
       >
-        <FontAwesome name="chevron-left" color="#005761" size={30} />
+        <AntDesign name="swapleft" color="#005761" size={30} />
       </TouchableOpacity>
+
       <GooglePlacesAutocomplete
         placeholder="Your Address"
         fetchDetails={true}
@@ -172,7 +175,7 @@ export default function AddAddress({ setIsVisible, isVisible, isCompany }) {
             position: "absolute",
             width: "100%",
             zIndex: 1,
-            marginTop: 40,
+            marginTop: 75,
           },
           listView: { backgroundColor: "white" },
         }}

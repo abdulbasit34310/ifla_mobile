@@ -245,7 +245,7 @@ const SignUp = ({ route, navigation }) => {
         <View>
           <TouchableOpacity
             onPress={() => postData()}
-            style={[styles.customTo, { backgroundColor: "#068E94" }]}
+            style={[styles.customButton, { backgroundColor: "#068E94" }]}
           >
 
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -265,8 +265,8 @@ const SignUp = ({ route, navigation }) => {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => navigation.navigate("SignInScreen")}
-            style={[styles.customTo, { backgroundColor: "white" }]}
+            onPress={() => navigation.navigate("SignIn")}
+            style={[styles.customButton, { backgroundColor: "white" }]}
           >
 
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -279,7 +279,7 @@ const SignUp = ({ route, navigation }) => {
                   },
                 ]}
               >
-                Sign In
+                Login
               </Text>
             </View>
 
@@ -337,7 +337,7 @@ const styles = StyleSheet.create({
     width: 150,
     height: 100,
   },
-  customTo: {
+  customButton: {
     width: "100%",
     height: 60,
     justifyContent: "center",

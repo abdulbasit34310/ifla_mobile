@@ -192,9 +192,9 @@ const MainScreen = ({ route, navigation }) => {
               <Image
                 source={bookingIllustration}
                 style={{
-                  width: 75,
-                  height: 75,
-                  left: 85,
+                  width: 85,
+                  height: 65,
+                  left: 80,
                 }}
               />
             </View>
@@ -210,9 +210,9 @@ const MainScreen = ({ route, navigation }) => {
             <Image
               source={gaqIllustration}
               style={{
-                width: 75,
-                height: 75,
-                left: 85,
+                width: 82,
+                height: 82,
+                left: 70,
               }}
             />
           </TouchableOpacity>
@@ -225,13 +225,13 @@ const MainScreen = ({ route, navigation }) => {
               navigation.navigate("Payments");
             }}
           >
-            <Text>Payments</Text>
+            <Text>Payments and Wallet</Text>
             <Image
               source={walletIllustration}
               style={{
                 width: 75,
-                height: 75,
-                left: 85,
+                height: 77,
+                left: 75,
               }}
             />
           </TouchableOpacity>
@@ -265,7 +265,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   bottomSection: {
-    flex: 4,
+    flex: 2,
     backgroundColor: "#E0EFF6",
     borderTopLeftRadius: 14,
     borderTopRightRadius: 14,

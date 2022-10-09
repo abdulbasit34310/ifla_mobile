@@ -9,7 +9,7 @@ import {
   Platform,
 } from "react-native";
 
-import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { MaterialCommunityIcons, FontAwesome, Octicons } from 'react-native-vector-icons';
 import Feather from "react-native-vector-icons/Feather";
 import { REST_API_LOCAL } from "@env";
 
@@ -19,7 +19,7 @@ import axios from "axios";
 
 var arr = [];
 
-const ForgotPasswordScreen = ({ navigation }) => {
+const ForgotPassword = ({ navigation }) => {
   const [data, setData] = React.useState({
     email: "",
     checkEmailChange: false,
@@ -56,7 +56,7 @@ const ForgotPasswordScreen = ({ navigation }) => {
 
       <View animation="fadeInUpBig" style={styles.footer}>
         <View style={styles.action}>
-          <FontAwesome name="user-o" color="#009387" size={25} />
+          <FontAwesome name="user-circle" color="#005761" size={25} />
           <TextInput
             style={styles.ti}
             placeholder="Your Email"
@@ -74,12 +74,25 @@ const ForgotPasswordScreen = ({ navigation }) => {
           </View>
         )}
         <TouchableOpacity
-          style={styles.to}
+          style={[styles.customButton, { backgroundColor: "#068E94" }]}
           onPress={() => {
             forgotpassword(data.email);
           }}
         >
-          <Text style={styles.signInText}>Reset Password</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <MaterialCommunityIcons
+              name="lock-reset" size={18} color={'white'} />
+            <Text
+              style={[
+                styles.buttonText,
+                {
+                  color: "white",
+                },
+              ]}
+            >
+              Reset Password
+            </Text>
+          </View>
         </TouchableOpacity>
       </View>
     </View>
@@ -103,23 +116,22 @@ const styles = StyleSheet.create({
     paddingVertical: 30,
   },
   logo: {
-    marginLeft: "35%",
-    width: 80,
-    height: 80,
-    borderRadius: 50,
+    alignSelf: "center",
+    width: 175,
+    height: 125,
   },
   action: {
     flexDirection: "row",
     marginTop: 15,
     borderBottomWidth: 1,
-    borderBottomColor: "#f2f2f2",
+    borderBottomColor: "#AAAAAA",
     paddingBottom: 5,
   },
   ti: {
     flex: 1,
-    marginTop: Platform.OS === "ios" ? 0 : -12,
-    paddingLeft: 10,
+    paddingLeft: 12,
     color: "#05375a",
+    fontSize: 15,
   },
   errorMessage: {
     color: "#FF0000",
@@ -128,22 +140,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    backgroundColor: "#009387",
+    backgroundColor: "#068E94",
   },
-  signInText: {
-    color: "#E0EFF6",
-    fontSize: 26,
+  buttonText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginHorizontal: 5,
   },
-  to: {
-    backgroundColor: "#00ABB2",
-    borderRadius: 45,
+  customButton: {
+    width: "100%",
+    height: 60,
     justifyContent: "center",
     alignItems: "center",
-    width: 175,
-    height: 75,
-    flexDirection: "row",
-    marginTop: 35,
+    borderRadius: 14,
+    marginTop: 15,
+    elevation: 3,
   },
 });
 
-export default ForgotPasswordScreen;
+export default ForgotPassword;

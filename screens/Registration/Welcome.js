@@ -23,16 +23,16 @@ function Welcome({ navigation }) {
             <View style={styles.footer}>
 
                 <Text style={styles.title}>Getting Started ! </Text>
-                <TouchableOpacity style={styles.to} onPress={() => { navigation.navigate("SignInScreen") }}>
+                <TouchableOpacity style={styles.to} onPress={() => { navigation.navigate("Login") }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center', }}>
                         <Octicons name="sign-in" size={18} color={'white'} />
-                        <Text style={styles.signInText}>Sign In</Text>
+                        <Text style={styles.buttonText}>Login</Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.to} onPress={() => { navigation.navigate("SignUpScreen") }}>
+                <TouchableOpacity style={styles.to} onPress={() => { navigation.navigate("SignUp") }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Octicons name="sign-out" size={18} color={'white'} />
-                        <Text style={styles.signInText}>Register</Text>
+                        <Text style={styles.buttonText}>Sign Up</Text>
                     </View>
                 </TouchableOpacity>
 
@@ -86,10 +86,9 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         flexDirection: 'row',
     },
-    signInText: {
-        color: "white",
+    buttonText: {
         fontSize: 18,
-        marginHorizontal: 5,
+        fontWeight: "bold", marginHorizontal: 5, color: 'white'
     },
     to: {
         backgroundColor: '#068E94',
