@@ -9,12 +9,14 @@ import {
   Button,
   TouchableOpacity,
 } from "react-native";
+import { AntDesign, Entypo, EvilIcons, Feather, FontAwesome, FontAwesome5, FontAwesome5Brands, Fontisto, Foundation, Ionicons, MaterialCommunityIcons, MaterialIcons, Octicons, SimpleLineIcons, Zocial } from '@expo/vector-icons';
+import { StatusBar } from 'expo-status-bar';
+
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import MapView, { Callout, Circle, Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import { GOOGLE_API } from "@env";
 import marker from "../../assets/icons8-marker.png";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 const Theme = {
   Buttons: "#068E94",
@@ -38,12 +40,10 @@ export default function SelectLocation({
   bookingData,
   setBooking,
 }) {
-  // const [pin, setPin] = React.useState({
-  //   latitude: 33.6533,
-  //   longitude: 73.0702,
-  // });
+
   const [errorMsg, setErrorMsg] = useState(null);
   const mapRef = useRef(null);
+
   const [location, setLocation] = React.useState({
     latitude: 33.6533,
     longitude: 73.0702,
@@ -67,6 +67,7 @@ export default function SelectLocation({
     }
 
     let getLocation = await Location.getCurrentPositionAsync({});
+    
     const loc = {
       latitude: getLocation.coords.latitude,
       longitude: getLocation.coords.longitude,
@@ -105,11 +106,14 @@ export default function SelectLocation({
   } else if (location) {
     text = JSON.stringify(location);
   }
+
   const hideModal = () => {
     setIsVisible(false);
   };
+
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
+      <StatusBar style="dark" />
       <TouchableOpacity
         style={{
           padding: 5,

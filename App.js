@@ -39,6 +39,7 @@ import ChangePassword from "./screens/Profile/ChangePassword";
 const Drawer = createDrawerNavigator();
 
 export default function App() {
+
   const initialLoginState = {
     isLoading: true,
     userName: null,
@@ -103,6 +104,17 @@ export default function App() {
         }
         dispatch({ type: "LOGOUT" });
       },
+      register: async (foundUser) => {
+        const userToken = foundUser.userToken;
+        const email = foundUser.email;
+
+        try {
+          await SecureStore.setItemAsync("userToken", userToken);
+        } catch (e) {
+          console.log(e);
+        }
+        dispatch({ type: "REGISTER", id: email, token: userToken });
+      }
     }),
     []
   );
@@ -306,7 +318,7 @@ function PaymentsStack({ route }) {
         component={LoadMoneyToWallet}
         options={{ title: "LoadMoneyToWallet" }}
       />
-       <Stack.Screen
+      <Stack.Screen
         name="Payment"
         component={Payment}
         options={{ title: "Pay Now" }}

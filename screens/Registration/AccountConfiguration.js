@@ -317,7 +317,9 @@ const Success = ({ navigation, nextStep, backStep, setData, data }) => {
   return <div>Account Configuration Done Succsfully</div>;
 };
 
-export default function AccountConfiguration({ navigation }) {
+export default function AccountConfiguration({ navigation, route }) {
+  // const foundUser = route.params.item;
+
   const [step, setStep] = React.useState(0);
 
   const [data, setData] = React.useState({

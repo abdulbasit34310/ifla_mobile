@@ -10,13 +10,8 @@ import {
   Image,
 } from "react-native";
 import Checkbox from "expo-checkbox";
-import {
-  MaterialIcons,
-  MaterialCommunityIcons,
-  FontAwesome,
-  Octicons,
-  Feather,
-} from "react-native-vector-icons";
+import { MaterialIcons, MaterialCommunityIcons, FontAwesome, Octicons, Feather } from 'react-native-vector-icons';
+import { AuthContext } from "../../components/context";
 import axios from "axios";
 
 import IFLAlogo from "../../assets/IFLA.png";
@@ -25,6 +20,7 @@ import { REST_API_LOCAL } from "@env";
 
 const SignUp = ({ route, navigation }) => {
   // const { setloggedin } = route.params;
+  const { signIn } = React.useContext(AuthContext);
 
   const [data, setData] = React.useState({
     email: "",
@@ -50,40 +46,71 @@ const SignUp = ({ route, navigation }) => {
   };
 
   const postData = async () => {
+
     if (
-      data.validEmail &&
       data.email &&
-      data.validName &&
-      data.validPassword &&
+      data.companyName &&
       data.password &&
       data.confirmPassword &&
-      data.companyName &&
-      data.validCompanyName
+      data.validEmail &&
+      data.validCompanyName &&
+      data.validPassword
     ) {
-      var body = {
+      var obj = {
         email: data.email,
         password: data.password,
         companyName: data.companyName,
         userRole: "Shipper",
-        isAdmin: false,
+        isAdmin: false
       };
-      console.log(body);
-      let res = await axios.post(`${REST_API_LOCAL}/users/signup`, body);
-      const data1 = await res.data;
-      console.log(data1);
-      if (data1) {
+
+      console.log("Sign Up Body")
+      console.log(obj);
+
+      let res = await axios.post(`${REST_API_LOCAL}/users/signup`, obj);
+      const recievedData = await res.data;
+
+      console.log("Signed Up Data")
+      console.log(recievedData);
+
+      if (recievedData) {
         showToastWithGravity("Signed up");
-        // setloggedin(true)
-        navigation.navigate("AccountConfiguration");
       } else showToastWithGravity("Couldn't Sign up");
-      // navigation.goBack();
     } else {
       showToastWithGravity("Please Enter All Details Correctly");
     }
+
+    const obj2 = {
+      email: data.email,
+      password: data.password,
+    }
+    const response = await axios.post(`${REST_API_LOCAL}/users/login`, obj2)
+      .catch((error) => {
+        if (error.response) {
+          console.log(error.response.data);
+          console.log(error.response.status);
+          Alert.alert("Invalid User!", "Email or password is incorrect.", [
+            { text: "OK" },
+          ]);
+          return;
+        }
+      });
+
+    const recievedData2 = await response.data;
+    const token = recievedData2.token;
+    const email = recievedData2.user.email;
+    const foundUser = { userToken: token, email: email };
+    console.log(foundUser);
+
+    // navigation.navigate("AccountConfiguration", { item: foundUser })
+    signIn(foundUser);
+
   };
 
   const showToastWithGravity = (text) => {
-    ToastAndroid.showWithGravity(text, ToastAndroid.SHORT, ToastAndroid.BOTTOM);
+    if (Platform.OS == 'android') {
+      ToastAndroid.showWithGravity(text, ToastAndroid.SHORT, ToastAndroid.BOTTOM);
+    }
   };
 
   const companyNameChange = (val) => {
