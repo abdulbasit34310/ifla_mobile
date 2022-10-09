@@ -1,7 +1,26 @@
-import React, { useState, useEffect, useRef, useMemo, useCallback } from "react";
-import { View, StyleSheet, Text, Image, Platform, TouchableOpacity, } from "react-native";
-import { MaterialIcons, MaterialCommunityIcons, FontAwesome, Octicons, Feather } from 'react-native-vector-icons';
-import { Card } from 'react-native-paper';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useMemo,
+  useCallback,
+} from "react";
+import {
+  View,
+  StyleSheet,
+  Text,
+  Image,
+  Platform,
+  TouchableOpacity,
+} from "react-native";
+import {
+  MaterialIcons,
+  MaterialCommunityIcons,
+  FontAwesome,
+  Octicons,
+  Feather,
+} from "react-native-vector-icons";
+import { Card } from "react-native-paper";
 import * as SecureStore from "expo-secure-store";
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
@@ -13,7 +32,7 @@ import gaqIllustration from "../assets/gaq.png";
 import walletIllustration from "../assets/Wallet.png";
 import trackingIllustration from "../assets/Tracking.png";
 
-import IFLAlogo from '../assets/IFLA.png';
+import IFLAlogo from "../assets/IFLA.png";
 
 const axios = require("axios");
 
@@ -43,7 +62,7 @@ registerForPushNotificationsAsync = async () => {
     console.log(token);
     try {
       var response = await axios.post(
-        "http://192.168.100.133:4000/notifications/token",
+        "http://192.168.0.114:4000/notifications/token",
         { token: { value: token } }
       );
       console.log(response.data);
@@ -146,15 +165,14 @@ const MainScreen = ({ route, navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.topSection}>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-
-          <Text style={{ color: '#E0EFF6', fontSize: 18, fontWeight: 'bold' }}>
+        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+          <Text style={{ color: "#E0EFF6", fontSize: 18, fontWeight: "bold" }}>
             Welcome, Abdul Basit
           </Text>
           <TouchableOpacity>
             <MaterialCommunityIcons
               name="bell-outline"
-              color={'#E0EFF6'}
+              color={"#E0EFF6"}
               size={26}
             />
           </TouchableOpacity>
@@ -162,37 +180,60 @@ const MainScreen = ({ route, navigation }) => {
       </View>
 
       <View style={styles.bottomSection}>
-
         <View style={styles.cardRow}>
-          <TouchableOpacity style={styles.card} onPress={() => { navigation.navigate("FreightBooking") }}>
+          <TouchableOpacity
+            style={styles.card}
+            onPress={() => {
+              navigation.navigate("FreightBooking");
+            }}
+          >
             <View>
               <Text>Booking</Text>
-              <Image source={bookingIllustration} style={{
-                width: 75,
-                height: 75,
-                left: 85
-              }} />
+              <Image
+                source={bookingIllustration}
+                style={{
+                  width: 75,
+                  height: 75,
+                  left: 85,
+                }}
+              />
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.card} onPress={() => { navigation.navigate("GetAQuote") }}>
+          <TouchableOpacity
+            style={styles.card}
+            onPress={() => {
+              navigation.navigate("GetAQuote");
+            }}
+          >
             <Text>Get a Quote</Text>
-            <Image source={gaqIllustration} style={{
-              width: 75,
-              height: 75,
-              left: 85
-            }} />
+            <Image
+              source={gaqIllustration}
+              style={{
+                width: 75,
+                height: 75,
+                left: 85,
+              }}
+            />
           </TouchableOpacity>
         </View>
 
         <View style={styles.cardRow}>
-          <TouchableOpacity style={styles.card} onPress={() => { navigation.navigate("Payments") }}>
+          <TouchableOpacity
+            style={styles.card}
+            onPress={() => {
+              navigation.navigate("Payments");
+            }}
+          >
             <Text>Payments</Text>
-            <Image source={walletIllustration} style={{
-              width: 75,
-              height: 75,
-              left: 85
-            }} />
+            <Image
+              source={walletIllustration}
+              style={{
+                width: 75,
+                height: 75,
+                left: 85,
+              }}
+            />
           </TouchableOpacity>
 
           {/* <TouchableOpacity style={styles.card} onPress={() => { navigation.navigate("") }}>
@@ -204,7 +245,6 @@ const MainScreen = ({ route, navigation }) => {
             }} />
           </TouchableOpacity> */}
         </View>
-
       </View>
     </View>
   );
@@ -215,18 +255,18 @@ export default MainScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#068E94',
+    backgroundColor: "#068E94",
   },
   topSection: {
     flex: 1,
-    backgroundColor: '#068E94',
+    backgroundColor: "#068E94",
     paddingLeft: 25,
     paddingRight: 25,
     paddingTop: 20,
   },
   bottomSection: {
     flex: 4,
-    backgroundColor: '#E0EFF6',
+    backgroundColor: "#E0EFF6",
     borderTopLeftRadius: 14,
     borderTopRightRadius: 14,
     paddingVertical: 25,
@@ -234,8 +274,8 @@ const styles = StyleSheet.create({
     elevation: 6,
   },
   cardRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between'
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   card: {
     elevation: 3,
@@ -244,7 +284,6 @@ const styles = StyleSheet.create({
     margin: 5,
     padding: 10,
     borderRadius: 14,
-    backgroundColor: 'white'
+    backgroundColor: "white",
   },
-
 });

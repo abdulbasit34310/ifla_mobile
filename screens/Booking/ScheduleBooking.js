@@ -17,7 +17,7 @@ import {
 import axios from "axios";
 // import { REST_API_LOCAL } from "@env";
 import * as SecureStore from "expo-secure-store";
-const REST_API_LOCAL="http://192.168.100.133:4000"
+const REST_API_LOCAL = "http://192.168.0.114:4000";
 
 import GoodsDetails from "../../components/ScheduleBooking/GoodDetails";
 import BookingDetails from "../../components/ScheduleBooking/BookingDetails";
