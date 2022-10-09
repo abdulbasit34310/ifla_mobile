@@ -30,7 +30,7 @@ const Payment = ({ route }) => {
 
   const getPublishableKey = async () => {
     try {
-      const response = await fetch("http://192.168.0.114:4000/payments/config");
+      const response = await fetch("http://192.168.0.111:4000/payments/config");
       const { publishableKey } = await response.json();
       console.log(publishableKey);
       return publishableKey;

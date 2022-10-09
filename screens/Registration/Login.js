@@ -20,19 +20,16 @@ import {
   Feather,
 } from "react-native-vector-icons";
 import { AuthContext } from "../../components/context";
-import axios from "axios";
 
 // import * as SecureStore from 'expo-secure-store';
-import { AuthContext } from "../../components/context";
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
 import * as Facebook from "expo-auth-session/providers/facebook";
 // import { ResponseType } from 'expo-auth-session';
 
-import logo from "../images/IFLA.png";
+import IFLAlogo from "../../assets/IFLA.png";
 import axios from "axios";
 import {
-  REST_API_LOCAL,
   GOOGLE_ID,
   GOOGLE_ID_IOS,
   GOOGLE_ID_EXPO,
@@ -41,7 +38,7 @@ import {
 } from "@env";
 WebBrowser.maybeCompleteAuthSession();
 // import { REST_API_LOCAL } from "@env";
-const REST_API_LOCAL = "http://192.168.0.114:4000";
+const REST_API_LOCAL = "http://192.168.0.111:4000";
 const Login = ({ route, navigation }) => {
   const [data, setData] = React.useState({
     email: "",
@@ -319,7 +316,7 @@ const Login = ({ route, navigation }) => {
         </View>
 
         {data.notValidPassword ? null : (
-          <Text style={styles.errorMessage}>Password must be of length 8</Text>
+          <Text style={styles.errorMessage}>Password must be of length 6</Text>
         )}
 
         <TouchableOpacity onPress={() => navigation.navigate("ForgotPassword")}>

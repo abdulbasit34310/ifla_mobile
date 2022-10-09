@@ -15,7 +15,6 @@ import MapViewDirections from "react-native-maps-directions";
 import sourceTruck from "../../assets/TruckMarker-01.png";
 import sourceMarker from "../../assets/source.png";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import qrcode from "qrcode-generator";
 import { GOOGLE_API } from "@env";
 import { useEffect } from "react";
 import QRCode from "qrcode";

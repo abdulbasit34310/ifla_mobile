@@ -15,7 +15,8 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Company from "../../assets/Company.jpg";
 import * as SecureStore from "expo-secure-store";
 import axios from "axios";
-import { REST_API_LOCAL } from "@env";
+// import { REST_API_LOCAL } from "@env";
+const REST_API_LOCAL = "http://192.168.0.111:4000";
 
 const CompanyInformationScreen = ({ navigation, route }) => {
   var item = route.params.item;
@@ -53,17 +54,7 @@ const CompanyInformationScreen = ({ navigation, route }) => {
 
   const updateData = async () => {
     try {
-      if (
-        data.name &&
-        data.ntn &&
-        data.phoneNo &&
-        data.industry &&
-        data.country &&
-        data.validName &&
-        data.validPhoneNo &&
-        data.validIndustry &&
-        data.ValidCountry
-      ) {
+      if (data.validNtn && data.validPhoneNo) {
         const objToSave = {
           name: data.name,
           ntn: data.ntn,

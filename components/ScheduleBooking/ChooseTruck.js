@@ -9,20 +9,19 @@ import {
   Button,
   TouchableOpacity,
   ToastAndroid,
-  ScrollView
+  ScrollView,
 } from "react-native";
 
-import { MaterialCommunityIcons, FontAwesome } from '@expo/vector-icons';
+import { MaterialCommunityIcons, FontAwesome } from "@expo/vector-icons";
 import { ThemeConsumer } from "react-native-elements";
 
-import TruckIcon from "../../assets/truck.png";
+import TruckIcon from "../../assets/Truck.png";
 import ContainerIcon from "../../assets/Container.png";
 import MazdaIcon from "../../assets/Mazda.png";
 import PickupIcon from "../../assets/Pickup.png";
 import SuzukiIcon from "../../assets/Suzuki.png";
 import TankerIcon from "../../assets/Tanker.png";
 import TrailerIcon from "../../assets/Trailer.png";
-
 
 const Theme = {
   Buttons: "#068E94",
@@ -70,53 +69,53 @@ export default function ChooseTruck({
   };
   return (
     <ScrollView>
-    <View style={styles.container}>
-      <View style={{ display: "flex", flexDirection: "row", paddingTop: 10 }}>
-        <TouchableOpacity
-          style={{ padding: 5, margin: 3, width: 40 }}
-          onPress={hideModal}
-        >
-          <FontAwesome name="chevron-left" color="#005761" size={30} />
-        </TouchableOpacity>
-        <Text
-          style={{
-            fontSize: 25,
-            color: Theme.PrimaryText,
-            fontWeight: "bold",
-            margin: 5,
-          }}
-        >
-          Choose Vehicle
-        </Text>
-      </View>
-      
-      <View style={styles.innerContainer}>
-        {TruckData.map((truck, index) => (
+      <View style={styles.container}>
+        <View style={{ display: "flex", flexDirection: "row", paddingTop: 10 }}>
           <TouchableOpacity
-            key={index + 1}
-            style={
-              index + 1 === selected
-                ? styles.buttonStyleSelected
-                : styles.buttonStyle
-            }
-            onPress={() => setSelected(index + 1)}
+            style={{ padding: 5, margin: 3, width: 40 }}
+            onPress={hideModal}
           >
-            <Image style={styles.iconStyle} source={truck.icon} />
-            <View style={{ marginLeft: 30, marginTop: 10 }}>
-              <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-                {truck.name}
-              </Text>
-              <Text style={{ fontSize: 14, color: Theme.PrimaryText }}>
-                Capacity: {truck.description}
-              </Text>
-            </View>
+            <FontAwesome name="chevron-left" color="#005761" size={30} />
           </TouchableOpacity>
-        ))}
-        <TouchableOpacity style={styles.button} onPress={setVehicle}>
-          <Text style={styles.buttonText}>Select Vehicle</Text>
-        </TouchableOpacity>
+          <Text
+            style={{
+              fontSize: 25,
+              color: Theme.PrimaryText,
+              fontWeight: "bold",
+              margin: 5,
+            }}
+          >
+            Choose Vehicle
+          </Text>
+        </View>
+
+        <View style={styles.innerContainer}>
+          {TruckData.map((truck, index) => (
+            <TouchableOpacity
+              key={index + 1}
+              style={
+                index + 1 === selected
+                  ? styles.buttonStyleSelected
+                  : styles.buttonStyle
+              }
+              onPress={() => setSelected(index + 1)}
+            >
+              <Image style={styles.iconStyle} source={truck.icon} />
+              <View style={{ marginLeft: 30, marginTop: 10 }}>
+                <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+                  {truck.name}
+                </Text>
+                <Text style={{ fontSize: 14, color: Theme.PrimaryText }}>
+                  Capacity: {truck.description}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          ))}
+          <TouchableOpacity style={styles.button} onPress={setVehicle}>
+            <Text style={styles.buttonText}>Select Vehicle</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
     </ScrollView>
   );
 }

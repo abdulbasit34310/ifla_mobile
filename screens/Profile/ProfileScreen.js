@@ -85,9 +85,18 @@ const ProfileScreen = ({ route, navigation }) => {
   return (
     <ScrollView>
       <SafeAreaView style={styles.background}>
-        <View style={{ paddingBottom: 5 }}>
+        <View
+          style={{
+            paddingBottom: 5,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           {getData.personId.image ? (
-            <Image style={{ width: 100, height: 100, borderRadius: 100 }} />
+            <Image
+              style={{ width: 100, height: 100, borderRadius: 100 }}
+              source={{ uri: `data:image;base64,${getData.personId.image}` }}
+            />
           ) : (
             <Image
               style={{ width: 100, height: 100, borderRadius: 100 }}
