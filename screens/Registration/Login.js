@@ -1,12 +1,29 @@
 import * as React from "react";
-import { View, Text, TouchableOpacity, StyleSheet, TextInput, Image, Alert, Platform, ToastAndroid, ScrollView } from "react-native";
-import { MaterialIcons, MaterialCommunityIcons, FontAwesome, Octicons, Feather } from 'react-native-vector-icons';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  TextInput,
+  Image,
+  Alert,
+  Platform,
+  ToastAndroid,
+  ScrollView,
+} from "react-native";
+import {
+  MaterialIcons,
+  MaterialCommunityIcons,
+  FontAwesome,
+  Octicons,
+  Feather,
+} from "react-native-vector-icons";
 import { AuthContext } from "../../components/context";
 import axios from "axios";
 
 // import * as SecureStore from 'expo-secure-store';
 
-import IFLAlogo from '../../assets/IFLA.png';
+import IFLAlogo from "../../assets/IFLA.png";
 
 // import { REST_API_LOCAL } from "@env";
 const REST_API_LOCAL = "http://192.168.100.133:4000"
@@ -193,8 +210,8 @@ const Login = ({ route, navigation }) => {
             onPress={() => sendSignInCredentials()}
             style={[styles.customButton, { backgroundColor: "#068E94" }]}
           >
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Octicons name="sign-out" size={18} color={'white'} />
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Octicons name="sign-out" size={18} color={"white"} />
               <Text
                 style={[
                   styles.buttonText,
@@ -206,15 +223,14 @@ const Login = ({ route, navigation }) => {
                 Login
               </Text>
             </View>
-
           </TouchableOpacity>
 
           <TouchableOpacity
             onPress={() => navigation.navigate("SignUp")}
             style={[styles.customButton, { backgroundColor: "white" }]}
           >
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Octicons name="sign-out" size={18} color={'black'} />
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Octicons name="sign-out" size={18} color={"black"} />
               <Text
                 style={[
                   styles.buttonText,
@@ -226,7 +242,6 @@ const Login = ({ route, navigation }) => {
                 Sign Up
               </Text>
             </View>
-
           </TouchableOpacity>
         </View>
       </View>
@@ -283,7 +298,8 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 18,
-    fontWeight: "bold", marginHorizontal: 5,
+    fontWeight: "bold",
+    marginHorizontal: 5,
   },
   container: {
     flex: 1,
