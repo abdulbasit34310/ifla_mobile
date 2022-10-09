@@ -1,9 +1,17 @@
 import * as React from "react";
-import { SafeAreaView, View, StyleSheet, Image, ScrollView } from "react-native";
+import { View, StyleSheet, Image, ScrollView, StatusBar } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+
 import { Title, Text } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import FontAwesome from "react-native-vector-icons/FontAwesome5";
+import {
+  MaterialIcons,
+  MaterialCommunityIcons,
+  FontAwesome,
+  Octicons,
+  Feather,
+} from "react-native-vector-icons";
+
 const Theme = {
   Buttons: "#068E94",
   PrimaryForeground: "#068E94",
@@ -16,7 +24,7 @@ const Theme = {
 };
 
 import { AuthContext } from "../../components/context";
-import AB from "../images/AB.png";
+
 import { TouchableOpacity } from "react-native-gesture-handler";
 import axios from "axios";
 import Avatar from "../../assets/Avatar.png";
@@ -76,146 +84,136 @@ const ProfileScreen = ({ route, navigation }) => {
 
   return (
     <ScrollView>
-    <SafeAreaView style={styles.background}>
-      <View style={{ paddingBottom: 5 }}>
-        <View style={{ alignItems: "center", margin: 10 }}>
+      <SafeAreaView style={styles.background}>
+        <View style={{ paddingBottom: 5 }}>
           {getData.personId.image ? (
-            <Image
-              style={{ width: 100, height: 100, borderRadius: 100 }}
-              source={{ uri: `data:image;base64,${getData.personId.image}` }}
-            />
+            <Image style={{ width: 100, height: 100, borderRadius: 100 }} />
           ) : (
             <Image
               style={{ width: 100, height: 100, borderRadius: 100 }}
               source={Avatar}
             />
           )}
+
           <SafeAreaView>
-            <Title style={styles.titleStyle}>{getData.personId.name}</Title>
+            <Title style={styles.nameTitle}>{getData.personId.name}</Title>
           </SafeAreaView>
+
+          <View>
+            {getData.personId.email !== "" ? (
+              <Text style={{ color: "#777777" }}>{getData.personId.email}</Text>
+            ) : (
+              <Text style={{ color: "#777777", marginLeft: 20 }}>
+                Email Not Added
+              </Text>
+            )}
+          </View>
         </View>
-      </View>
 
-      <View style={styles.userInfoSection}>
-        {/* Email */}
+        <View>
+          <TouchableOpacity
+            style={styles.infoBox}
+            onPress={() => {
+              navigation.navigate("EditProfileScreen", { item: getData });
+            }}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <View style={[styles.iconView, { backgroundColor: "#50C878" }]}>
+                <FontAwesome name="id-card" solid color="white" size={20} />
+              </View>
+              <Text style={styles.buttonTitle}>Edit Profile</Text>
+            </View>
+            <FontAwesome name="chevron-right" size={25} color="lightgrey" />
+          </TouchableOpacity>
 
-        <View style={styles.row}>
-          <Icon name="email" color="#777777" size={20} />
-          {getData.personId.email !== "" ? (
-            <Text style={{ color: "#777777" }}>{getData.personId.email}</Text>
-          ) : (
-            <Text style={{ color: "#777777", marginLeft: 20 }}>
-              Email Not Added
-            </Text>
-          )}
+          <TouchableOpacity
+            style={styles.infoBox}
+            // onPress={() => {
+            //   navigation.navigate("CompanyInformationScreen", { item: getData });
+            // }}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <View style={[styles.iconView, { backgroundColor: "#FF7F50" }]}>
+                <MaterialCommunityIcons
+                  name="credit-card"
+                  color={"white"}
+                  size={24}
+                />
+              </View>
+              <Text style={styles.buttonTitle}>Wallet</Text>
+            </View>
+            <FontAwesome name="chevron-right" size={25} color="lightgrey" />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.infoBox}
+            onPress={() => {
+              navigation.navigate("CompanyInformationScreen", {
+                item: getData,
+              });
+            }}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <View style={[styles.iconView, { backgroundColor: "#6082B6" }]}>
+                <FontAwesome name="building" solid color="white" size={20} />
+              </View>
+              <Text style={styles.buttonTitle}>Company Information</Text>
+            </View>
+            <FontAwesome name="chevron-right" size={25} color="lightgrey" />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.infoBox}
+            onPress={() => {
+              navigation.navigate("Addresses", { item: getData });
+            }}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <View style={[styles.iconView, { backgroundColor: "#F88379" }]}>
+                <FontAwesome
+                  name="address-book"
+                  solid
+                  color="white"
+                  size={20}
+                />
+              </View>
+              <Text style={styles.buttonTitle}>Addresses</Text>
+            </View>
+            <FontAwesome name="chevron-right" size={25} color="lightgrey" />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.customButton} onPress={signOut}>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <MaterialCommunityIcons
+                name="exit-to-app"
+                color={"white"}
+                size={24}
+              />
+              <Title style={styles.buttonText}>Signout</Title>
+            </View>
+          </TouchableOpacity>
         </View>
-      </View>
-
-      <View style={{ marginTop: 50 }}>
-        <TouchableOpacity
-          style={styles.infoBox}
-          onPress={() => {
-            navigation.navigate("EditProfileScreen", { item: getData });
-          }}
-        >
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            <View style={[styles.iconView, { backgroundColor: "#50C878" }]}>
-              <FontAwesome name="id-card" solid color="white" size={20} />
-            </View>
-            <Text style={styles.buttonTitle}>View Information</Text>
-          </View>
-          <FontAwesome name="chevron-right" size={25} color="lightgrey" />
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.infoBox}
-          // onPress={() => {
-          //   navigation.navigate("CompanyInformationScreen", { item: getData });
-          // }}
-        >
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            <View style={[styles.iconView, { backgroundColor: "#FF7F50" }]}>
-              <FontAwesome name="wallet" solid color="white" size={20} />
-            </View>
-            <Text style={styles.buttonTitle}>Wallet</Text>
-          </View>
-          <FontAwesome name="chevron-right" size={25} color="lightgrey" />
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.infoBox}
-          onPress={() => {
-            navigation.navigate("CompanyInformationScreen", { item: getData });
-          }}
-        >
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            <View style={[styles.iconView, { backgroundColor: "#6082B6" }]}>
-              <FontAwesome name="building" solid color="white" size={20} />
-            </View>
-            <Text style={styles.buttonTitle}>Company Information</Text>
-          </View>
-          <FontAwesome name="chevron-right" size={25} color="lightgrey" />
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.infoBox}
-          onPress={() => {
-            navigation.navigate("Addresses", { item: getData });
-          }}
-        >
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            <View style={[styles.iconView, { backgroundColor: "#F88379" }]}>
-              <FontAwesome name="address-book" solid color="white" size={20} />
-            </View>
-            <Text style={styles.buttonTitle}>Addresses</Text>
-          </View>
-          <FontAwesome name="chevron-right" size={25} color="lightgrey" />
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            marginTop: 40,
-            margin: 20,
-            borderRadius: 10,
-            backgroundColor: Theme.SecondaryBackground,
-            width: 130,
-          }}
-          onPress={signOut}
-        >
-          <FontAwesome
-            name="sign-out-alt"
-            size={20}
-            style={{ padding: 10 }}
-            color={Theme.PrimaryText}
-          />
-          <Title style={{ color: Theme.PrimaryText, fontSize: 16 }}>
-            Signout
-          </Title>
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
     </ScrollView>
   );
 };
@@ -223,13 +221,10 @@ const ProfileScreen = ({ route, navigation }) => {
 export default ProfileScreen;
 
 const styles = StyleSheet.create({
-  background: {
+  container: {
     flex: 1,
     backgroundColor: Theme.WHITE,
-
-    paddingTop: 20,
   },
-
   caption: {
     fontSize: 14,
     lineHeight: 14,
@@ -237,20 +232,15 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: "row",
-    marginBottom: 10,
     justifyContent: "center",
     alignItems: "center",
   },
   infoBox: {
-    borderRadius: 10,
-    backgroundColor: "white",
-    width: "100%",
     height: 80,
     flexDirection: "row",
     alignItems: "center",
-    padding: 10,
-    // backgroundColor: Theme.SecondaryBackground,
-    marginTop: 2,
+    padding: 15,
+    marginBottom: 5,
     borderBottomColor: "grey",
     borderBottomWidth: 1,
     justifyContent: "space-between",
@@ -269,10 +259,25 @@ const styles = StyleSheet.create({
     color: "grey",
     paddingLeft: 10,
   },
-  titleStyle: {
+  nameTitle: {
     fontWeight: "bold",
     color: "black",
-    marginTop: 25,
-    fontSize: 25,
+    fontSize: 26,
+  },
+  customButton: {
+    backgroundColor: Theme.SecondaryForeground,
+    padding: 5,
+    borderRadius: 14,
+    elevation: 3,
+    width: "25%",
+    height: 50,
+    alignSelf: "center",
+    margin: 10,
+  },
+  buttonText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginHorizontal: 5,
+    color: "white",
   },
 });

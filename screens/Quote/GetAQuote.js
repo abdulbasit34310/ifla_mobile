@@ -241,7 +241,7 @@ export default function GetAQuote({ route, navigation }) {
 
           <Text style={styles.buttonInsideText}>Weight (kg): </Text>
           <TextInput
-            keyboardType="numeric"
+            keyboardType="phone-pad"
             style={styles.textInput}
             onChangeText={(v) => {
               setQuote({ ...quoteData, weight: v });
@@ -250,7 +250,7 @@ export default function GetAQuote({ route, navigation }) {
           <Text style={styles.buttonInsideText}>Quantity: </Text>
           <TextInput
             style={styles.textInput}
-            keyboardType="numeric"
+            keyboardType="phone-pad"
             onChangeText={(v) => {
               setQuote({ ...quoteData, quantity: v });
             }}

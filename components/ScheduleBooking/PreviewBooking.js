@@ -8,16 +8,17 @@ import {
   TouchableOpacity,
   Alert,
   SafeAreaView,
+  ImageBackground,
 } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
 import sourceTruck from "../../assets/TruckMarker-01.png";
 import sourceMarker from "../../assets/source.png";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-
+import qrcode from "qrcode-generator";
 import { GOOGLE_API } from "@env";
 import { useEffect } from "react";
-
+import QRCode from "qrcode";
 const screen = Dimensions.get("window");
 const ASPECT_RATIO = screen.width / screen.height;
 const LATITUDE_DELTA = 0.9222;
@@ -56,7 +57,7 @@ export default function PreviewBooking({
     },
     distance: 0,
   });
-
+  const [qrCode, setQrCode] = React.useState("");
   const fetchTime = (d) => {
     updateState({
       distance: d,
@@ -90,6 +91,42 @@ export default function PreviewBooking({
 
   useEffect(() => {
     console.log(bookingData.vehicle);
+    console.log("HERE");
+
+    QRCode.toDataURL("I am a pony!")
+      .then((url) => {
+        console.log(url);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+    // QRCode.toDataURL(
+    //   "some text",
+    //   { errorCorrectionLevel: "H" },
+    //   function (err, url) {
+    //     console.log(url);
+    //   }
+    // );
+    var segs = [
+      { data: "ABCDEFG", mode: "alphanumeric" },
+      { data: "0123456", mode: "numeric" },
+    ];
+
+    QRCode.toDataURL(segs, function (err, url) {
+      console.log(url);
+    });
+    // var typeNumber = 4;
+    // var errorCorrectionLevel = "H";
+    // // var qr = qrcode(typeNumber, errorCorrectionLevel);
+    // // const jsonData = JSON.stringify(bookingData);
+    // // qr.addData(jsonData);
+    // // qr.make();
+    // console.log(qr.createImgTag());
+    // // console.log(qr.createImgTag());
+    // console.log(qr.createDataURL());
+
+    // setQrCode(qr.createDataURL());
+
     animateToLocation(curLoc);
     animateToLocation(destinationCords);
   }, []);
@@ -157,7 +194,15 @@ export default function PreviewBooking({
               </View>
             )}
           </View>
-          <View></View>
+          <View>
+            <Text>Hello</Text>
+
+            {/* <ImageBackground
+              source={{ uri: qrCode }}
+              style={{ height: 125, width: 125 }}
+              imageStyle={{ borderRadius: 90 }}
+            ></ImageBackground> */}
+          </View>
         </View>
 
         <TouchableOpacity style={styles.buttonStyle} onPress={saveBooking}>
@@ -252,7 +297,7 @@ const styles = StyleSheet.create({
   locButtonStyle: {
     backgroundColor: Theme.WHITE,
     // padding: 5,
-    borderRadius: 20,
+    borderRadius: 14,
     justifyContent: "center",
     alignItems: "center",
     display: "flex",

@@ -10,24 +10,39 @@ import {
   Platform,
   Button,
   ToastAndroid,
+  ScrollView,
 } from "react-native";
+import {
+  MaterialIcons,
+  MaterialCommunityIcons,
+  FontAwesome,
+  Octicons,
+  Feather,
+} from "react-native-vector-icons";
+import { AuthContext } from "../../components/context";
+import axios from "axios";
 
-import FontAwesome from "react-native-vector-icons/FontAwesome";
-import Feather from "react-native-vector-icons/Feather";
 // import * as SecureStore from 'expo-secure-store';
 import { AuthContext } from "../../components/context";
-import * as WebBrowser from 'expo-web-browser';
-import * as Google from 'expo-auth-session/providers/google';
-import * as Facebook from 'expo-auth-session/providers/facebook';
+import * as WebBrowser from "expo-web-browser";
+import * as Google from "expo-auth-session/providers/google";
+import * as Facebook from "expo-auth-session/providers/facebook";
 // import { ResponseType } from 'expo-auth-session';
 
 import logo from "../images/IFLA.png";
 import axios from "axios";
-import { REST_API_LOCAL, GOOGLE_ID, GOOGLE_ID_IOS, GOOGLE_ID_EXPO, GOOGLE_ID_WEB, FB_APPID} from "@env";
-
+import {
+  REST_API_LOCAL,
+  GOOGLE_ID,
+  GOOGLE_ID_IOS,
+  GOOGLE_ID_EXPO,
+  GOOGLE_ID_WEB,
+  FB_APPID,
+} from "@env";
 WebBrowser.maybeCompleteAuthSession();
-
-const SignInScreen = ({ route, navigation }) => {
+// import { REST_API_LOCAL } from "@env";
+const REST_API_LOCAL = "http://192.168.0.114:4000";
+const Login = ({ route, navigation }) => {
   const [data, setData] = React.useState({
     email: "",
     password: "",
@@ -53,31 +68,36 @@ const SignInScreen = ({ route, navigation }) => {
   });
 
   React.useEffect(() => {
-    if (responseFb?.type === 'success') {
+    if (responseFb?.type === "success") {
       const { authentication } = responseFb;
-      console.log(authentication)
+      console.log(authentication);
       // saveFbUser(code)
       setAccessToken(authentication.accessToken);
 
-      fbGetUserData()
+      fbGetUserData();
     }
   }, [responseFb]);
 
   async function fbGetUserData() {
-    let userInfoResponse = await axios.get("https://www.facebook.com/v6.0/dialog/oauth", {
-      headers: { Authorization: `Bearer ${accessToken}`}
-    });
+    let userInfoResponse = await axios.get(
+      "https://www.facebook.com/v6.0/dialog/oauth",
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      }
+    );
 
-    setUserInfo(userInfoResponse.data)
+    setUserInfo(userInfoResponse.data);
     // json().then(data => {
-      // setUserInfo(data);
-      // console.log(data)
+    // setUserInfo(data);
+    // console.log(data)
     // });
   }
 
-  const fbLoginToIfla = async (user)=>{
-    const response = await axios.post(`${REST_API_LOCAL}/users/googleMobile`, {user:user})
-    const data = response.data
+  const fbLoginToIfla = async (user) => {
+    const response = await axios.post(`${REST_API_LOCAL}/users/googleMobile`, {
+      user: user,
+    });
+    const data = response.data;
     const foundUser = { userToken: data.token, email: userInfo.email };
     console.log(foundUser);
 
@@ -86,8 +106,7 @@ const SignInScreen = ({ route, navigation }) => {
     if (data) {
       showToastWithGravity();
     }
-
-  }
+  };
 
   // const saveFbUser =  async (code)=>{
   //   const response = await axios.post(`${REST_API_LOCAL}/users/facebookMobile`, {code:code,redirectUri:"https://auth.expo.io/@isala1/IFLA"})
@@ -115,29 +134,34 @@ const SignInScreen = ({ route, navigation }) => {
   };
 
   React.useEffect(() => {
-    if (response?.type === 'success') {
+    if (response?.type === "success") {
       const { authentication } = response;
-      console.log(authentication)
+      console.log(authentication);
       setAccessToken(authentication.accessToken);
-      getUserData()
-      loginToIfla(userInfo)
+      getUserData();
+      loginToIfla(userInfo);
     }
   }, [response]);
 
   async function getUserData() {
-    let userInfoResponse = await fetch("https://www.googleapis.com/userinfo/v2/me", {
-      headers: { Authorization: `Bearer ${accessToken}`}
-    });
+    let userInfoResponse = await fetch(
+      "https://www.googleapis.com/userinfo/v2/me",
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      }
+    );
 
-    userInfoResponse.json().then(data => {
+    userInfoResponse.json().then((data) => {
       setUserInfo(data);
-      console.log(data)
+      console.log(data);
     });
   }
 
-  const loginToIfla = async (user)=>{
-    const response = await axios.post(`${REST_API_LOCAL}/users/googleMobile`, {user:user})
-    const data = response.data
+  const loginToIfla = async (user) => {
+    const response = await axios.post(`${REST_API_LOCAL}/users/googleMobile`, {
+      user: user,
+    });
+    const data = response.data;
     const foundUser = { userToken: data.token, email: userInfo.email };
     console.log(foundUser);
 
@@ -146,8 +170,7 @@ const SignInScreen = ({ route, navigation }) => {
     if (data) {
       showToastWithGravity();
     }
-
-  }
+  };
 
   const sendSignInCredentials = async () => {
     // Click Sign In without entering data in any field.
@@ -244,7 +267,7 @@ const SignInScreen = ({ route, navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Image source={logo} style={styles.logo} />
+        <Image source={IFLAlogo} style={styles.IFLAlogo} />
       </View>
 
       <View style={styles.footer}>
@@ -259,7 +282,7 @@ const SignInScreen = ({ route, navigation }) => {
           >
             Welcome to IFLA!
           </Text>
-          <Text style={{ color: "#AAAAAA" }}>Sign in to continue</Text>
+          <Text style={{ color: "#AAAAAA" }}>Login to continue</Text>
         </View>
 
         <View style={styles.action}>
@@ -299,9 +322,7 @@ const SignInScreen = ({ route, navigation }) => {
           <Text style={styles.errorMessage}>Password must be of length 8</Text>
         )}
 
-        <TouchableOpacity
-          onPress={() => navigation.navigate("ForgotPasswordScreen")}
-        >
+        <TouchableOpacity onPress={() => navigation.navigate("ForgotPassword")}>
           <Text
             style={{
               color: "#009387",
@@ -320,16 +341,19 @@ const SignInScreen = ({ route, navigation }) => {
             onPress={() => sendSignInCredentials()}
             style={[styles.button, { backgroundColor: "#068E94" }]}
           >
-            <Text
-              style={[
-                styles.textSign,
-                {
-                  color: "white",
-                },
-              ]}
-            >
-              Sign In
-            </Text>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Octicons name="sign-out" size={18} color={"white"} />
+              <Text
+                style={[
+                  styles.textSign,
+                  {
+                    color: "white",
+                  },
+                ]}
+              >
+                Login
+              </Text>
+            </View>
           </TouchableOpacity>
           {/* <Button
             disabled={!request}
@@ -345,19 +369,22 @@ const SignInScreen = ({ route, navigation }) => {
                 promptAsyncFb();}}
             /> */}
           <TouchableOpacity
-            onPress={() => navigation.navigate("SignUpScreen")}
+            onPress={() => navigation.navigate("SignUp")}
             style={[styles.button, { backgroundColor: "white" }]}
           >
-            <Text
-              style={[
-                styles.textSign,
-                {
-                  color: "black",
-                },
-              ]}
-            >
-              Sign Up
-            </Text>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Octicons name="sign-out" size={18} color={"black"} />
+              <Text
+                style={[
+                  styles.textSign,
+                  {
+                    color: "black",
+                  },
+                ]}
+              >
+                Sign Up
+              </Text>
+            </View>
           </TouchableOpacity>
         </View>
       </View>
@@ -379,10 +406,10 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 30,
     padding: 25,
   },
-  logo: {
+  IFLAlogo: {
     alignSelf: "center",
-    width: 150,
-    height: 100,
+    width: 175,
+    height: 125,
   },
   action: {
     flexDirection: "row",
@@ -410,11 +437,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 14,
     marginTop: 15,
-    elevation: 5,
+    elevation: 3,
   },
   textSign: {
     fontSize: 18,
     fontWeight: "bold",
+    marginHorizontal: 5,
   },
   container: {
     flex: 1,
@@ -428,4 +456,4 @@ const styles = StyleSheet.create({
 // Background Primary and Text: #005761
 // Background Secondary: #E0EFF6
 
-export default SignInScreen;
+export default Login;

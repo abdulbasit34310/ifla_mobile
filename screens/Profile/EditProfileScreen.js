@@ -16,7 +16,6 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome5";
 import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
-import AB from "../images/AB.png";
 import { REST_API_LOCAL } from "@env";
 import * as SecureStore from "expo-secure-store";
 
@@ -445,16 +444,14 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   submitButton: {
-    borderRadius: 10,
+    borderRadius: 14,
     backgroundColor: "#00ABB2",
     color: "white",
-    justifyContent: "center",
-    alignItems: "center",
     alignSelf: "center",
     marginTop: 45,
     width: "60%",
     height: 50,
-    elevation: 9,
+    elevation: 3,
   },
   action: {
     flexDirection: "row",

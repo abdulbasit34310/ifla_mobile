@@ -15,7 +15,6 @@ import * as Location from "expo-location";
 import { GOOGLE_API } from "@env";
 import marker from "../../assets/icons8-marker.png";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import BookingDetails from "./BookingDetails";
 
 const Theme = {
   Buttons: "#068E94",

@@ -9,23 +9,31 @@ import {
 } from 'react-native';
 import Constants from 'expo-constants';
 
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import logo from './images/IFLA.png';
+import { MaterialIcons, FontAwesome, Octicons } from 'react-native-vector-icons';
+import IFLAlogo from '../../assets/IFLA.png';
 
-function WelcomeScreen({ navigation }) {
+function Welcome({ navigation }) {
     return (
         <View style={styles.container}>
             <View style={styles.header}><Image
-                source={logo}
-                style={styles.logo}
+                source={IFLAlogo}
+                style={styles.IFLAlogo}
             /></View>
 
             <View style={styles.footer}>
 
                 <Text style={styles.title}>Getting Started ! </Text>
-                <TouchableOpacity style={styles.to} onPress={() => { navigation.navigate("SignInScreen") }}>
-                    <Text style={styles.signInText}>Sign In</Text>
-                    {/* <MaterialIcons name="navigate-next" color="#fff" size={27} /> */}
+                <TouchableOpacity style={styles.to} onPress={() => { navigation.navigate("Login") }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+                        <Octicons name="sign-in" size={18} color={'white'} />
+                        <Text style={styles.buttonText}>Login</Text>
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.to} onPress={() => { navigation.navigate("SignUp") }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Octicons name="sign-out" size={18} color={'white'} />
+                        <Text style={styles.buttonText}>Sign Up</Text>
+                    </View>
                 </TouchableOpacity>
 
             </View>
@@ -33,7 +41,7 @@ function WelcomeScreen({ navigation }) {
     );
 }
 
-export default WelcomeScreen;
+export default Welcome;
 
 const { height } = Dimensions.get('screen');
 const height_logo = height * 0.28;
@@ -57,13 +65,13 @@ const styles = StyleSheet.create({
         paddingVertical: 25,
         paddingHorizontal: 30,
     },
-    logo: {
+    IFLAlogo: {
         width: height_logo,
         height: height_logo,
     },
     title: {
         color: "#068E94",
-        fontSize: 30,
+        fontSize: 22,
         fontWeight: 'bold',
     },
     button: {
@@ -78,24 +86,22 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         flexDirection: 'row',
     },
-    signInText: {
-        color: "#E0EFF6",
-        fontSize: 26,
-    
+    buttonText: {
+        fontSize: 18,
+        fontWeight: "bold", marginHorizontal: 5, color: 'white'
     },
     to: {
-        backgroundColor: '#00ABB2',
-        borderRadius: 45,
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: 175,
-        height: 75,
-        flexDirection: 'row',
-        marginTop: 35,
+        backgroundColor: '#068E94',
+        marginTop: 25,
+        width: "100%",
+        height: 60,
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: 14,
+        elevation: 3,
     },
-    logo: {
+    IFLAlogo: {
         width: 250,
         height: 200,
-      
     },
 });
