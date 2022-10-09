@@ -297,7 +297,7 @@ const styles = StyleSheet.create({
   locButtonStyle: {
     backgroundColor: Theme.WHITE,
     // padding: 5,
-    borderRadius: 20,
+    borderRadius: 14,
     justifyContent: "center",
     alignItems: "center",
     display: "flex",

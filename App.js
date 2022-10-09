@@ -4,33 +4,34 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as SecureStore from "expo-secure-store";
-// Buttons and Primary Foreground: #068E94
-// Secondary Foreground: #00ABB2
-// Background Primary and Text: #005761
-// Background Secondary: #E0EFF6
 
-import RegistrationNavigationScreen from "./screens/RegistrationNavigationScreen";
+import RegistrationNavigator from "./screens/RegistrationNavigator";
 import MainScreen from "./screens/MainScreen";
-import TrackingScreen from "./screens/Tracking/TrackingScreen";
+
 import ProfileScreen from "./screens/Profile/ProfileScreen";
 import EditProfileScreen from "./screens/Profile/EditProfileScreen";
 import CompanyInformationScreen from "./screens/Profile/CompanyInformationScreen";
 import BookingScreen from "./screens/Booking/BookingScreen";
 
+import LiveTracking from "./screens/Booking/LiveTracking";
 import PendingBookings from "./screens/Booking/PendingBookings";
 import PendingBookingDetails from "./screens/Booking/PendingBookingDetails";
 import MyBookings from "./screens/Booking/MyBookings";
 import ScheduleBooking from "./screens/Booking/ScheduleBooking";
 import MyBookingDetails from "./screens/Booking/MyBookingDetails";
+
 import GetAQuote from "./screens/Quote/GetAQuote";
 import ViewQuotes from "./screens/Quote/ViewQuotes";
 import QuoteDetails from "./screens/Quote/QuoteDetails";
+
+import Wallet from "./screens/Payment/Wallet";
+import LoadMoneyToWallet from "./screens/Payment/LoadMoneyToWallet";
 import Payment from "./screens/Payment/Payment";
 
 import { CustomDrawer } from "./screens/CustomDrawer";
 import { AuthContext } from "./components/context";
 import ScheduleExample from "./screens/Booking/ScheduleExample";
-import Wallet from "./screens/Payment/Wallet";
+
 import Addresses from "./screens/Profile/Addresses";
 import AddAddress from "./components/Profile/AddAddress";
 
@@ -132,7 +133,7 @@ export default function App() {
         {loginState.userToken !== null ? (
           <Drawer.Navigator
             drawerContent={(props) => <CustomDrawer {...props} />}
-            // screenOptions={{swipeEdgeWidth: 0}}
+          // screenOptions={{swipeEdgeWidth: 0}}
           >
             <Drawer.Screen
               name="MainScreen"
@@ -140,14 +141,9 @@ export default function App() {
               options={{ title: "Home" }}
             />
             <Drawer.Screen
-              name="TrackingScreen"
-              component={TrackingScreen}
-              options={{ title: "Tracking" }}
-            />
-            <Drawer.Screen
               options={{ headerShown: false }}
-              name="Booking"
-              component={BookingStack}
+              name="FreightBooking"
+              component={FreightBookingStack}
             />
             <Drawer.Screen
               options={{ headerShown: false }}
@@ -155,18 +151,13 @@ export default function App() {
               component={ProfileStack}
             />
             <Drawer.Screen
-              // options={{ headerShown: false }}
-              name="Wallet"
-              component={Wallet}
-            />
-            <Drawer.Screen
-              // options={{ headerShown: false }}
+              options={{ headerShown: false }}
               name="Payments"
-              component={Payment}
+              component={PaymentsStack}
             />
           </Drawer.Navigator>
         ) : (
-          <RegistrationNavigationScreen />
+          <RegistrationNavigator />
         )}
       </NavigationContainer>
     </AuthContext.Provider>
@@ -175,7 +166,7 @@ export default function App() {
 
 const Stack = createNativeStackNavigator();
 
-function BookingStack({ route }) {
+function FreightBookingStack({ route }) {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -236,10 +227,15 @@ function BookingStack({ route }) {
         component={MyBookingDetails}
         options={{ title: "Booking Details" }}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Payments"
         component={Payment}
         options={{ title: "Pay Now" }}
+      /> */}
+      <Stack.Screen
+        name="LiveTracking"
+        component={LiveTracking}
+        options={{ title: "LiveTracking" }}
       />
     </Stack.Navigator>
   );
@@ -283,3 +279,37 @@ function ProfileStack({ route }) {
     </Stack.Navigator>
   );
 }
+
+function PaymentsStack({ route }) {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerTintColor: "#005761",
+        headerTitleAlign: "center",
+        headerTitleStyle: { fontWeight: "bold", fontSize: 24 },
+        headerStyle: { backgroundColor: "white", padding: 0 },
+      }}
+    >
+      <Stack.Screen
+        name="Wallet"
+        component={Wallet}
+        options={{ title: "Wallet" }}
+      />
+      <Stack.Screen
+        name="LoadMoneyToWallet"
+        component={LoadMoneyToWallet}
+        options={{ title: "LoadMoneyToWallet" }}
+      />
+       <Stack.Screen
+        name="Payment"
+        component={Payment}
+        options={{ title: "Pay Now" }}
+      />
+    </Stack.Navigator>
+  );
+}
+
+// Buttons and Primary Foreground: #068E94
+// Secondary Foreground: #00ABB2
+// Background Primary and Text: #005761
+// Background Secondary: #E0EFF6

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Text, View, TouchableOpacity, Image, StyleSheet } from "react-native";
-import logo from "../images/IFLA.png";
+import IFLAlogo from '../../assets/IFLA.png';
 
 const BookingScreen = ({ navigation, route }) => {
   return (
@@ -14,7 +14,7 @@ const BookingScreen = ({ navigation, route }) => {
           marginBottom: 5,
           borderRadius: 5,
         }}
-        source={logo}
+        source={IFLAlogo}
       />
       <View>
         <View
