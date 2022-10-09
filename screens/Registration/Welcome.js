@@ -78,14 +78,6 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end',
         marginTop: 30,
     },
-    signIn: {
-        width: 150,
-        height: 40,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 50,
-        flexDirection: 'row',
-    },
     buttonText: {
         fontSize: 18,
         fontWeight: "bold", marginHorizontal: 5, color: 'white'

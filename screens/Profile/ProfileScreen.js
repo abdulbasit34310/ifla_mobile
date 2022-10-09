@@ -191,7 +191,8 @@ const ProfileScreen = ({ route, navigation }) => {
             <MaterialCommunityIcons name="exit-to-app" color={'white'} size={24} />
             <Title style={styles.buttonText}>
               Signout
-            </Title></View>
+            </Title>
+          </View>
         </TouchableOpacity>
 
       </View>
