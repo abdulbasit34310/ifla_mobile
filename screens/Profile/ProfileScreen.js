@@ -1,10 +1,16 @@
 import * as React from "react";
 import { View, StyleSheet, Image, ScrollView, StatusBar } from "react-native";
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import { Title, Text } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { MaterialIcons, MaterialCommunityIcons, FontAwesome, Octicons, Feather } from 'react-native-vector-icons';
+import {
+  MaterialIcons,
+  MaterialCommunityIcons,
+  FontAwesome,
+  Octicons,
+  Feather,
+} from "react-native-vector-icons";
 
 const Theme = {
   Buttons: "#068E94",
@@ -77,10 +83,15 @@ const ProfileScreen = ({ route, navigation }) => {
   }, [navigation]);
 
   return (
-    <SafeAreaView style={styles.container}>
-
-      <View>
-        <View style={{ alignItems: "center" }}>
+    <ScrollView>
+      <SafeAreaView style={styles.background}>
+        <View
+          style={{
+            paddingBottom: 5,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           {getData.personId.image ? (
             <Image
               style={{ width: 100, height: 100, borderRadius: 100 }}
@@ -106,98 +117,113 @@ const ProfileScreen = ({ route, navigation }) => {
               </Text>
             )}
           </View>
-
         </View>
-      </View>
 
-      <View>
-        <TouchableOpacity
-          style={styles.infoBox}
-          onPress={() => {
-            navigation.navigate("EditProfileScreen", { item: getData });
-          }}
-        >
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
+        <View>
+          <TouchableOpacity
+            style={styles.infoBox}
+            onPress={() => {
+              navigation.navigate("EditProfileScreen", { item: getData });
             }}
           >
-            <View style={[styles.iconView, { backgroundColor: "#50C878" }]}>
-              <FontAwesome name="id-card" solid color="white" size={20} />
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <View style={[styles.iconView, { backgroundColor: "#50C878" }]}>
+                <FontAwesome name="id-card" solid color="white" size={20} />
+              </View>
+              <Text style={styles.buttonTitle}>Edit Profile</Text>
             </View>
-            <Text style={styles.buttonTitle}>Edit Profile</Text>
-          </View>
-          <FontAwesome name="chevron-right" size={25} color="lightgrey" />
-        </TouchableOpacity>
+            <FontAwesome name="chevron-right" size={25} color="lightgrey" />
+          </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.infoBox}
-        // onPress={() => {
-        //   navigation.navigate("CompanyInformationScreen", { item: getData });
-        // }}
-        >
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
+          <TouchableOpacity
+            style={styles.infoBox}
+            // onPress={() => {
+            //   navigation.navigate("CompanyInformationScreen", { item: getData });
+            // }}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <View style={[styles.iconView, { backgroundColor: "#FF7F50" }]}>
+                <MaterialCommunityIcons
+                  name="credit-card"
+                  color={"white"}
+                  size={24}
+                />
+              </View>
+              <Text style={styles.buttonTitle}>Wallet</Text>
+            </View>
+            <FontAwesome name="chevron-right" size={25} color="lightgrey" />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.infoBox}
+            onPress={() => {
+              navigation.navigate("CompanyInformationScreen", {
+                item: getData,
+              });
             }}
           >
-            <View style={[styles.iconView, { backgroundColor: "#FF7F50" }]}>
-              <MaterialCommunityIcons name="credit-card" color={'white'} size={24} />
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <View style={[styles.iconView, { backgroundColor: "#6082B6" }]}>
+                <FontAwesome name="building" solid color="white" size={20} />
+              </View>
+              <Text style={styles.buttonTitle}>Company Information</Text>
             </View>
-            <Text style={styles.buttonTitle}>Wallet</Text>
-          </View>
-          <FontAwesome name="chevron-right" size={25} color="lightgrey" />
-        </TouchableOpacity>
+            <FontAwesome name="chevron-right" size={25} color="lightgrey" />
+          </TouchableOpacity>
 
-        <TouchableOpacity style={styles.infoBox} onPress={() => { navigation.navigate("CompanyInformationScreen", { item: getData }); }}>
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
+          <TouchableOpacity
+            style={styles.infoBox}
+            onPress={() => {
+              navigation.navigate("Addresses", { item: getData });
             }}
           >
-            <View style={[styles.iconView, { backgroundColor: "#6082B6" }]}>
-              <FontAwesome name="building" solid color="white" size={20} />
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <View style={[styles.iconView, { backgroundColor: "#F88379" }]}>
+                <FontAwesome
+                  name="address-book"
+                  solid
+                  color="white"
+                  size={20}
+                />
+              </View>
+              <Text style={styles.buttonTitle}>Addresses</Text>
             </View>
-            <Text style={styles.buttonTitle}>Company Information</Text>
-          </View>
-          <FontAwesome name="chevron-right" size={25} color="lightgrey" />
-        </TouchableOpacity>
+            <FontAwesome name="chevron-right" size={25} color="lightgrey" />
+          </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.infoBox}
-          onPress={() => {
-            navigation.navigate("Addresses", { item: getData });
-          }}
-        >
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            <View style={[styles.iconView, { backgroundColor: "#F88379" }]}>
-              <FontAwesome name="address-book" solid color="white" size={20} />
+          <TouchableOpacity style={styles.customButton} onPress={signOut}>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <MaterialCommunityIcons
+                name="exit-to-app"
+                color={"white"}
+                size={24}
+              />
+              <Title style={styles.buttonText}>Signout</Title>
             </View>
-            <Text style={styles.buttonTitle}>Addresses</Text>
-          </View>
-          <FontAwesome name="chevron-right" size={25} color="lightgrey" />
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.customButton} onPress={signOut} >
-          <View style={{ flexDirection: 'row', alignItems: 'center',  }}>
-            <MaterialCommunityIcons name="exit-to-app" color={'white'} size={24} />
-            <Title style={styles.buttonText}>
-              Signout
-            </Title>
-          </View>
-        </TouchableOpacity>
-
-      </View>
-
-    </SafeAreaView>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    </ScrollView>
   );
 };
 
@@ -256,12 +282,11 @@ const styles = StyleSheet.create({
     height: 50,
     alignSelf: "center",
     margin: 10,
-    
   },
   buttonText: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginHorizontal: 5,
-    color: 'white',
+    color: "white",
   },
 });

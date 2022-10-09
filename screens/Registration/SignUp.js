@@ -1,11 +1,20 @@
 import * as React from "react";
-import { View, Text, TouchableOpacity, StyleSheet, TextInput, SafeAreaView, ToastAndroid, Image, } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  TextInput,
+  SafeAreaView,
+  ToastAndroid,
+  Image,
+} from "react-native";
 import Checkbox from "expo-checkbox";
 import { MaterialIcons, MaterialCommunityIcons, FontAwesome, Octicons, Feather } from 'react-native-vector-icons';
 import { AuthContext } from "../../components/context";
 import axios from "axios";
 
-import IFLAlogo from '../../assets/IFLA.png';
+import IFLAlogo from "../../assets/IFLA.png";
 
 import { REST_API_LOCAL } from "@env";
 
@@ -279,9 +288,8 @@ const SignUp = ({ route, navigation }) => {
             onPress={() => postData()}
             style={[styles.customButton, { backgroundColor: "#068E94" }]}
           >
-
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Octicons name="sign-out" size={18} color={'white'} />
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Octicons name="sign-out" size={18} color={"white"} />
               <Text
                 style={[
                   styles.buttonText,
@@ -293,16 +301,14 @@ const SignUp = ({ route, navigation }) => {
                 Sign Up
               </Text>
             </View>
-
           </TouchableOpacity>
 
           <TouchableOpacity
             onPress={() => navigation.navigate("Login")}
             style={[styles.customButton, { backgroundColor: "white" }]}
           >
-
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Octicons name="sign-out" size={18} color={'black'} />
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Octicons name="sign-out" size={18} color={"black"} />
               <Text
                 style={[
                   styles.buttonText,
@@ -314,7 +320,6 @@ const SignUp = ({ route, navigation }) => {
                 Login
               </Text>
             </View>
-
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -380,7 +385,8 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 18,
-    fontWeight: "bold", marginHorizontal: 5,
+    fontWeight: "bold",
+    marginHorizontal: 5,
   },
 });
 

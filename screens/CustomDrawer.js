@@ -1,8 +1,25 @@
 import * as React from "react";
-import { View, Text, TouchableOpacity, StyleSheet, TextInput, Image, Alert, Platform, ToastAndroid, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  TextInput,
+  Image,
+  Alert,
+  Platform,
+  ToastAndroid,
+  ScrollView,
+} from "react-native";
 import { Drawer, Title, Caption } from "react-native-paper";
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
-import { MaterialIcons, MaterialCommunityIcons, FontAwesome, Octicons, Feather } from 'react-native-vector-icons';
+import {
+  MaterialIcons,
+  MaterialCommunityIcons,
+  FontAwesome,
+  Octicons,
+  Feather,
+} from "react-native-vector-icons";
 import { AuthContext } from "../components/context";
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
@@ -44,7 +61,8 @@ export function CustomDrawer(props) {
                     height: 100,
                     borderRadius: 90,
                   }}
-                  source={{ uri: `data:image;base64,${image}` }} />
+                  source={{ uri: `data:image;base64,${image}` }}
+                />
               ) : null}
               {user !== null ? (
                 <View
@@ -64,7 +82,11 @@ export function CustomDrawer(props) {
           <Drawer.Section style={styles.drawerSection}>
             <DrawerItem
               icon={({ color, size }) => (
-                <MaterialCommunityIcons name="home-outline" color={color} size={size} />
+                <MaterialCommunityIcons
+                  name="home-outline"
+                  color={color}
+                  size={size}
+                />
               )}
               label="Home"
               onPress={() => {
@@ -73,7 +95,11 @@ export function CustomDrawer(props) {
             />
             <DrawerItem
               icon={({ color, size }) => (
-                <MaterialCommunityIcons name="account-outline" color={color} size={size} />
+                <MaterialCommunityIcons
+                  name="account-outline"
+                  color={color}
+                  size={size}
+                />
               )}
               label="Profile"
               onPress={() => {
@@ -83,7 +109,11 @@ export function CustomDrawer(props) {
 
             <DrawerItem
               icon={({ color, size }) => (
-                <MaterialCommunityIcons name="credit-card" color={{ color }} size={size} />
+                <MaterialCommunityIcons
+                  name="credit-card"
+                  color={{ color }}
+                  size={size}
+                />
               )}
               label="Payments"
               onPress={() => {
@@ -97,7 +127,11 @@ export function CustomDrawer(props) {
       <Drawer.Section style={styles.bottomDrawerSection}>
         <DrawerItem
           icon={({ color, size }) => (
-            <MaterialCommunityIcons name="exit-to-app" color={color} size={size} />
+            <MaterialCommunityIcons
+              name="exit-to-app"
+              color={color}
+              size={size}
+            />
           )}
           label="Logout"
           onPress={() => {
