@@ -134,7 +134,7 @@ export default function App() {
         {loginState.userToken !== null ? (
           <Drawer.Navigator
             drawerContent={(props) => <CustomDrawer {...props} />}
-          // screenOptions={{swipeEdgeWidth: 0}}
+            // screenOptions={{swipeEdgeWidth: 0}}
           >
             <Drawer.Screen
               name="MainScreen"
@@ -166,6 +166,81 @@ export default function App() {
 }
 
 const Stack = createNativeStackNavigator();
+
+function LoggedInStack(screen) {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerTintColor: "#005761",
+        headerTitleAlign: "center",
+        headerTitleStyle: { fontWeight: "bold", fontSize: 24 },
+        headerStyle: { backgroundColor: "white", padding: 0 },
+      }}
+    >
+      <Stack.Screen
+        name="BookingScreen"
+        component={BookingScreen}
+        options={{ title: "Booking" }}
+      />
+      <Stack.Screen
+        name="ScheduleBooking"
+        component={ScheduleBooking}
+        options={{ title: "Schedule Booking" }}
+      />
+
+      <Stack.Screen
+        name="ScheduleExample"
+        component={ScheduleExample}
+        options={{ title: "Schedule Example" }}
+      />
+      <Stack.Screen
+        name="GetAQuote"
+        component={GetAQuote}
+        options={{ title: "Get a Quote" }}
+      />
+      <Stack.Screen
+        name="ViewQuotes"
+        component={ViewQuotes}
+        options={{ title: "View Quote" }}
+      />
+      <Stack.Screen
+        name="QuoteDetails"
+        component={QuoteDetails}
+        options={{ title: "Quote Details" }}
+      />
+      <Stack.Screen
+        name="PendingBookings"
+        component={PendingBookings}
+        options={{ title: "Pending Bookings" }}
+      />
+      <Stack.Screen
+        name="PendingBookingDetails"
+        component={PendingBookingDetails}
+        options={{ title: "Booking Details" }}
+      />
+      <Stack.Screen
+        name="MyBookings"
+        component={MyBookings}
+        options={{ title: "My Bookings" }}
+      />
+      <Stack.Screen
+        name="MyBookingDetails"
+        component={MyBookingDetails}
+        options={{ title: "Booking Details" }}
+      />
+      {/* <Stack.Screen
+        name="Payments"
+        component={Payment}
+        options={{ title: "Pay Now" }}
+      /> */}
+      <Stack.Screen
+        name="LiveTracking"
+        component={LiveTracking}
+        options={{ title: "LiveTracking" }}
+      />
+    </Stack.Navigator>
+  );
+}
 
 function FreightBookingStack({ route }) {
   return (
@@ -306,7 +381,7 @@ function PaymentsStack({ route }) {
         component={LoadMoneyToWallet}
         options={{ title: "LoadMoneyToWallet" }}
       />
-       <Stack.Screen
+      <Stack.Screen
         name="Payment"
         component={Payment}
         options={{ title: "Pay Now" }}

@@ -194,8 +194,6 @@ export default function PreviewBooking({
             )}
           </View>
           <View>
-            <Text>Hello</Text>
-
             {/* <ImageBackground
               source={{ uri: qrCode }}
               style={{ height: 125, width: 125 }}

@@ -208,6 +208,45 @@ export default function QuoteDetails({ navigation, route }) {
             Delete Quote
           </Text>
         </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => {
+            Alert.alert("Create Booking", "Are you sure?", [
+              {
+                text: "Cancel",
+                onPress: () => console.log("Cancel Pressed"),
+                style: "cancel",
+              },
+              {
+                text: "Confirm",
+                onPress: () => {
+                  navigation.navigate("ScheduleBooking", { item: quoteData });
+                  // navigation.goBack();
+                },
+              },
+            ]);
+          }}
+          style={{
+            marginTop: 20,
+            padding: 10,
+            marginBottom: 20,
+            backgroundColor: "#068E94",
+            width: 200,
+            alignSelf: "center",
+            borderRadius: 5,
+          }}
+        >
+          <Text
+            style={{
+              alignSelf: "center",
+              color: "white",
+              fontWeight: "bold",
+              fontSize: 18,
+            }}
+          >
+            Create Booking
+          </Text>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );
