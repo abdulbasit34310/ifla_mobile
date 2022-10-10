@@ -8,7 +8,7 @@ import {
   View,
   TouchableOpacity,
 } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import {
   CardField,
   StripeProvider,
@@ -30,7 +30,7 @@ const Payment = ({ route }) => {
 
   const getPublishableKey = async () => {
     try {
-      const response = await fetch("http://192.168.0.111:4000/payments/config");
+      const response = await fetch("http://192.168.100.133:4000/payments/config");
       const { publishableKey } = await response.json();
       console.log(publishableKey);
       return publishableKey;
@@ -85,8 +85,7 @@ const Payment = ({ route }) => {
     } else if (paymentIntent) {
       Alert.alert(
         "Success",
-        `The payment was confirmed successfully! currency: ${
-          paymentIntent.amount / 100
+        `The payment was confirmed successfully! currency: ${paymentIntent.amount / 100
         } ${paymentIntent.currency}`
       );
       console.log("Success from promise", paymentIntent);
@@ -143,7 +142,7 @@ const Payment = ({ route }) => {
           onPress={handlePayPress}
           disabled={loading}
         >
-          <Text style={styles.ButtonText}>Pay</Text>
+          <Text style={styles.customButton}>Pay</Text>
         </TouchableOpacity>
       </View>
     </StripeProvider>
@@ -194,6 +193,19 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     textTransform: "uppercase",
   },
+  customButton: {
+    backgroundColor: '#005761',
+    padding: 5,
+    borderRadius: 35,
+    elevation: 5,
+    alignSelf: "center",
+  },
+  ti: {
+    borderColor: 'red',
+    borderBottomWidth: 1,
+    width: '35%',
+    borderBottomColor: "#AAAAAA",
+  }
 });
 
 const inputStyles = {

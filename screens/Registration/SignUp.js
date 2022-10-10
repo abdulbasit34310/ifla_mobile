@@ -11,7 +11,6 @@ import {
 } from "react-native";
 import Checkbox from "expo-checkbox";
 import { MaterialIcons, MaterialCommunityIcons, FontAwesome, Octicons, Feather } from 'react-native-vector-icons';
-import { AuthContext } from "../../components/context";
 import axios from "axios";
 
 import IFLAlogo from "../../assets/IFLA.png";
@@ -19,8 +18,8 @@ import IFLAlogo from "../../assets/IFLA.png";
 import { REST_API_LOCAL } from "@env";
 
 const SignUp = ({ route, navigation }) => {
-  // const { setloggedin } = route.params;
-  const { signIn } = React.useContext(AuthContext);
+
+  const [getData1, setData1] = React.useState({});
 
   const [data, setData] = React.useState({
     email: "",
@@ -46,7 +45,6 @@ const SignUp = ({ route, navigation }) => {
   };
 
   const postData = async () => {
-
     if (
       data.email &&
       data.companyName &&
@@ -67,43 +65,19 @@ const SignUp = ({ route, navigation }) => {
       console.log("Sign Up Body")
       console.log(obj);
 
-      let res = await axios.post(`${REST_API_LOCAL}/users/signup`, obj);
-      const recievedData = await res.data;
+      let response1 = await axios.post(`${REST_API_LOCAL}/users/signup`, obj);
+      const recievedData1 = await response1.data;
 
       console.log("Signed Up Data")
-      console.log(recievedData);
+      console.log(recievedData1);
 
-      if (recievedData) {
+      if (recievedData1) {
         showToastWithGravity("Signed up");
       } else showToastWithGravity("Couldn't Sign up");
     } else {
       showToastWithGravity("Please Enter All Details Correctly");
     }
-
-    const obj2 = {
-      email: data.email,
-      password: data.password,
-    }
-    const response = await axios.post(`${REST_API_LOCAL}/users/login`, obj2)
-      .catch((error) => {
-        if (error.response) {
-          console.log(error.response.data);
-          console.log(error.response.status);
-          Alert.alert("Invalid User!", "Email or password is incorrect.", [
-            { text: "OK" },
-          ]);
-          return;
-        }
-      });
-
-    const recievedData2 = await response.data;
-    const token = recievedData2.token;
-    const email = recievedData2.user.email;
-    const foundUser = { userToken: token, email: email };
-    console.log(foundUser);
-
-    // navigation.navigate("AccountConfiguration", { item: foundUser })
-    signIn(foundUser);
+    navigation.navigate("AccountConfiguration", { item: obj })
 
   };
 
