@@ -7,7 +7,14 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React from "react";
-import { MaterialIcons, MaterialCommunityIcons, FontAwesome, EvilIcons, Octicons, Feather } from 'react-native-vector-icons';
+import {
+  MaterialIcons,
+  MaterialCommunityIcons,
+  FontAwesome,
+  EvilIcons,
+  Octicons,
+  Feather,
+} from "react-native-vector-icons";
 import { useState } from "react";
 import AddAddress from "../../components/Profile/AddAddress";
 
@@ -31,17 +38,13 @@ const Addresses = ({ navigation, route }) => {
           isCompany={false}
         />
       </Modal>
-      <View style={{ alignItems: "flex-end", }}>
+      <View style={{ alignItems: "flex-end" }}>
         <TouchableOpacity
           onPress={() => {
             setVisible(true);
           }}
         >
-          <EvilIcons
-            name="plus"
-            color="#005761"
-            size={30}
-          ></EvilIcons>
+          <EvilIcons name="plus" color="#005761" size={30}></EvilIcons>
         </TouchableOpacity>
       </View>
 
@@ -49,7 +52,7 @@ const Addresses = ({ navigation, route }) => {
         {addresses.map((address, index) => (
           <View style={styles.addressContainer} id={index}>
             <View>
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 style={{
                   backgroundColor: "#E0EFF6",
                   padding: 10,
@@ -61,11 +64,9 @@ const Addresses = ({ navigation, route }) => {
                   size={20}
                   color="#005761"
                 ></EvilIcons>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
-            <View style={{ margin: 5, marginRight: 10 }}>
-
-            </View>
+            <View style={{ margin: 5, marginRight: 10 }}></View>
             <View>
               <Text style={{ fontSize: 16, color: "grey" }}>
                 Builidng: {address.building},
@@ -89,7 +90,7 @@ export default Addresses;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#E0EFF6',
+    backgroundColor: "#E0EFF6",
     padding: 10,
   },
   addressContainer: {

@@ -33,7 +33,6 @@ import walletIllustration from "../assets/Wallet.png";
 import trackingIllustration from "../assets/Tracking.png";
 
 import IFLAlogo from "../assets/IFLA.png";
-
 const axios = require("axios");
 
 Notifications.setNotificationHandler({
@@ -60,10 +59,16 @@ registerForPushNotificationsAsync = async () => {
     }
     token = (await Notifications.getExpoPushTokenAsync()).data;
     console.log(token);
+    let result = await SecureStore.getItemAsync("userToken")
+    console.log(result)
+  
     try {
       var response = await axios.post(
-        "http://192.168.100.133:4000/notifications/token",
-        { token: { value: token } }
+        `${REST_API_LOCAL}/notifications/token`,
+        { token: { value: token } },{
+          withCredentials: true,
+          headers: {Authorization: `Bearer ${result}` },
+        }
       );
       console.log(response.data);
     } catch (error) {
@@ -74,31 +79,16 @@ registerForPushNotificationsAsync = async () => {
   } else {
     alert("Must use physical device for Push Notifications");
   }
-  if (finalStatus !== "granted") {
-    alert("Failed to get push token for push notification!");
-    return;
+  if (Platform.OS === "android") {
+    Notifications.setNotificationChannelAsync("default", {
+      name: "default",
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: "#FF231F7C",
+    });
   }
-  token = (await Notifications.getExpoPushTokenAsync()).data;
-  console.log(token);
-
-  var response = await axios.post(
-    "http://192.168.100.133:3000/notifications/token",
-    { token: { value: token } }
-  );
-  // this.setState({ expoPushToken: token });
-};
-//  else {
-//   alert("Must use physical device for Push Notifications");
-// }
-
-if (Platform.OS === "android") {
-  Notifications.setNotificationChannelAsync("default", {
-    name: "default",
-    importance: Notifications.AndroidImportance.MAX,
-    vibrationPattern: [0, 250, 250, 250],
-    lightColor: "#FF231F7C",
-  });
 }
+const REST_API_LOCAL = "http://192.168.0.111:4000";
 
 const MainScreen = ({ route, navigation }) => {
   const [token, setToken] = React.useState();
@@ -107,8 +97,49 @@ const MainScreen = ({ route, navigation }) => {
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();
+  const [getData, setData] = React.useState("");
+
+  const getSignedInUserCredentials = async () => {
+    let token1 = await SecureStore.getItemAsync("userToken");
+    console.log(token1);
+    const headers = { Authorization: `Bearer ${token1}` };
+    const response = await axios.get(`${REST_API_LOCAL}/users/getUser`, {
+      withCredentials: true,
+      headers: headers,
+    });
+    console.log("HERE");
+
+    const data = await response.data;
+    console.log(data.personId.email);
+    setData(data.personId.email);
+    // var keyValues = Object.keys(data);
+
+    // let credential = {};
+
+    // for (let i = 0; i < keyValues.length; i++) {
+    //     let key = keyValues[i];
+    //     if (data[key].email == email) {
+    //         credential = {
+    //             keyId: key,
+    //             name: data[key].name,
+    //             email: data[key].email,
+    //             address: data[key].address,
+    //             phoneNo: data[key].phoneNo
+    //         };
+    //         setData(credential)
+    //         break;
+    //     }
+    // }
+  };
+
+  React.useEffect(() => {
+    navigation.addListener("focus", () => {
+      getSignedInUserCredentials();
+    });
+  }, [navigation]);
 
   useEffect(() => {
+    getValueFor()
     registerForPushNotificationsAsync().then((token) => setPushToken(token));
 
     // This listener is fired whenever a notification is received while the app is foregrounded
@@ -145,29 +176,30 @@ const MainScreen = ({ route, navigation }) => {
     signOut();
   };
 
-  const isTokenExpired = () => {
-    if (token) {
-      const expiry = JSON.parse(atob(token.split(".")[1])).exp;
-      console.log(expiry);
-      console.log(Math.floor(new Date().getTime() / 1000) >= expiry);
-      return Math.floor(new Date().getTime() / 1000) >= expiry;
-    }
-    return false;
-  };
+  // const isTokenExpired = () => {
+  //   if (token) {
+  //     const expiry = JSON.parse(atob(token.split(".")[1])).exp;
+  //     console.log(expiry);
+  //     console.log(Math.floor(new Date().getTime() / 1000) >= expiry);
+  //     return Math.floor(new Date().getTime() / 1000) >= expiry;
+  //   }
+  //   return false;
+  // };
 
-  React.useEffect(() => {
-    navigation.addListener("focus", () => {
-      getValueFor();
-      if (isTokenExpired()) deleteToken();
-    });
-  }, [navigation]);
+  // React.useEffect(() => {
+  //   navigation.addListener("focus", () => {
+  //     getValueFor();
+  //     if (isTokenExpired()) deleteToken();
+  //   });
+  // }, [navigation]);
 
   return (
     <View style={styles.container}>
       <View style={styles.topSection}>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <Text style={{ color: "#E0EFF6", fontSize: 18, fontWeight: "bold" }}>
-            Welcome, Abdul Basit
+            Welcome,
+            {"\n"} {getData}
           </Text>
           <TouchableOpacity>
             <MaterialCommunityIcons
@@ -203,12 +235,12 @@ const MainScreen = ({ route, navigation }) => {
           <TouchableOpacity
             style={styles.card}
             onPress={() => {
-              navigation.navigate("GetAQuote");
+              navigation.navigate("FreightBooking", { screen: "GetAQuote" });
             }}
           >
             <Text>Get a Quote</Text>
             <Image
-              source={gaqIllustration}
+              source={trackingIllustration}
               style={{
                 width: 82,
                 height: 82,
@@ -228,6 +260,23 @@ const MainScreen = ({ route, navigation }) => {
             <Text>Payments and Wallet</Text>
             <Image
               source={walletIllustration}
+              style={{
+                width: 75,
+                height: 77,
+                left: 75,
+              }}
+            />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.card}
+            onPress={() => {
+              navigation.navigate("Profile");
+            }}
+          >
+            <Text>Profile</Text>
+            <Image
+              source={gaqIllustration}
               style={{
                 width: 75,
                 height: 77,

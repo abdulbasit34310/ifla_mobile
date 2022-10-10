@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Text, View, TouchableOpacity, Image, StyleSheet } from "react-native";
-import IFLAlogo from '../../assets/IFLA.png';
+import IFLAlogo from "../../assets/IFLA.png";
 
 const BookingScreen = ({ navigation, route }) => {
   return (
@@ -87,6 +87,36 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     color: "#005761",
     fontWeight: "bold",
+  },
+
+  topSection: {
+    flex: 1,
+    backgroundColor: "#068E94",
+    paddingLeft: 25,
+    paddingRight: 25,
+    paddingTop: 20,
+  },
+  bottomSection: {
+    flex: 2,
+    backgroundColor: "#E0EFF6",
+    borderTopLeftRadius: 14,
+    borderTopRightRadius: 14,
+    paddingVertical: 25,
+    paddingHorizontal: 25,
+    elevation: 6,
+  },
+  cardRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  card: {
+    elevation: 3,
+    height: 100,
+    width: "46%",
+    margin: 5,
+    padding: 10,
+    borderRadius: 14,
+    backgroundColor: "white",
   },
 });
 

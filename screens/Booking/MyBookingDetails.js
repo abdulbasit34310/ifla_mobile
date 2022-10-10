@@ -18,7 +18,7 @@ export default function MyBookingDetails({ navigation, route }) {
     let token1 = await SecureStore.getItemAsync("userToken");
     const headers = { Authorization: `Bearer ${token1}` };
     const response = await axios
-      .delete(`${REST_API_LOCAl}/shipper/cancelBooking/${bookingData._id}`, {
+      .delete(`${REST_API_LOCAL}/shipper/cancelBooking/${bookingData._id}`, {
         withCredentials: true,
         headers: headers,
       })

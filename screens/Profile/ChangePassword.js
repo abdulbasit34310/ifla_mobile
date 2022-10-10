@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     height: 40,
     paddingHorizontal: 10,
     borderRadius: 50,
-    backgroundColor: "#068E94",
+    backgroundColor: "lightgray",
   },
   formText: {
     alignItems: "center",
