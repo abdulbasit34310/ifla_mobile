@@ -47,10 +47,14 @@ export default function BookingDetails({
       ToastAndroid.CENTER
     );
   };
+
   return (
     <View style={styles.mainContainer}>
+
       <View style={styles.childContainer}>
+
         <Text style={styles.header}>Booking Details</Text>
+
         <Modal
           animationType="slide"
           transparent={true}
@@ -83,6 +87,7 @@ export default function BookingDetails({
             />
           )}
         </Modal>
+
         <Modal
           animationType="slide"
           transparent={true}
@@ -99,6 +104,7 @@ export default function BookingDetails({
             isQuote={false}
           />
         </Modal>
+
         <View style={{ marginTop: 40 }}>
           <Text style={styles.buttonInsideText}>Choose Shipment Type</Text>
           <ButtonGroup
@@ -135,15 +141,17 @@ export default function BookingDetails({
               {bookingData.pickupAddress === ""
                 ? "Choose Location"
                 : bookingData.pickupAddress.building +
-                  ", " +
-                  bookingData.pickupAddress.street +
-                  ", " +
-                  bookingData.pickupAddress.city +
-                  ", " +
-                  bookingData.pickupAddress.country}
+                ", " +
+                bookingData.pickupAddress.street +
+                ", " +
+                bookingData.pickupAddress.city +
+                ", " +
+                bookingData.pickupAddress.country}
             </Text>
           </TouchableOpacity>
+
           <Text style={styles.buttonInsideText}>Dropoff Location: </Text>
+
           <TouchableOpacity
             style={[styles.textInput]}
             onPress={() => {
@@ -155,17 +163,18 @@ export default function BookingDetails({
               {bookingData.dropoffAddress === ""
                 ? "Choose Location"
                 : bookingData.dropoffAddress.building +
-                  ", " +
-                  bookingData.dropoffAddress.street +
-                  ", " +
-                  bookingData.dropoffAddress.city +
-                  ", " +
-                  bookingData.dropoffAddress.country}
+                ", " +
+                bookingData.dropoffAddress.street +
+                ", " +
+                bookingData.dropoffAddress.city +
+                ", " +
+                bookingData.dropoffAddress.country}
             </Text>
-
             {/* <Text>{dropoffCity === "" ? "Select City" : dropoffCity}</Text> */}
           </TouchableOpacity>
+
           <Text style={styles.buttonInsideText}>Select Vehicle Type: </Text>
+
           <TouchableOpacity
             style={[styles.textInput]}
             onPress={() => {
@@ -239,9 +248,10 @@ const styles = StyleSheet.create({
     backgroundColor: Theme.PrimaryForeground,
     padding: 10,
     width: 100,
-    borderRadius: 10,
+    borderRadius: 14,
     alignSelf: "center",
     marginTop: 20,
+    elevation: 3,
   },
   header: {
     fontSize: 25,

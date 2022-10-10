@@ -1,10 +1,25 @@
 import * as React from "react";
-import { View, StyleSheet, Image } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  TextInput,
+  Image,
+  Alert,
+  Platform,
+  ToastAndroid,
+  ScrollView,
+} from "react-native";
 import { Drawer, Title, Caption } from "react-native-paper";
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
-import AB from "./images/AB.png";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-// import * as SecureStore from 'expo-secure-store';
+import {
+  MaterialIcons,
+  MaterialCommunityIcons,
+  FontAwesome,
+  Octicons,
+  Feather,
+} from "react-native-vector-icons";
 import { AuthContext } from "../components/context";
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
@@ -37,7 +52,7 @@ export function CustomDrawer(props) {
       <DrawerContentScrollView {...props}>
         <View style={styles.drawerContent}>
           <View style={styles.userInfoSection}>
-            <View style={{ flexDirection: "row", marginTop: 20 }}>
+            <View style={{ marginTop: 20 }}>
               {image ? (
                 <Image
                   style={{
@@ -46,7 +61,7 @@ export function CustomDrawer(props) {
                     height: 100,
                     borderRadius: 90,
                   }}
-                  source={{ uri: `${REST_API_LOCAL}/images/${image}` }}
+                  source={{ uri: `data:image;base64,${image}` }}
                 />
               ) : null}
               {user !== null ? (
@@ -67,7 +82,11 @@ export function CustomDrawer(props) {
           <Drawer.Section style={styles.drawerSection}>
             <DrawerItem
               icon={({ color, size }) => (
-                <Icon name="home-outline" color={color} size={size} />
+                <MaterialCommunityIcons
+                  name="home-outline"
+                  color={color}
+                  size={size}
+                />
               )}
               label="Home"
               onPress={() => {
@@ -76,38 +95,29 @@ export function CustomDrawer(props) {
             />
             <DrawerItem
               icon={({ color, size }) => (
-                <Icon name="account-outline" color={color} size={size} />
+                <MaterialCommunityIcons
+                  name="account-outline"
+                  color={color}
+                  size={size}
+                />
               )}
               label="Profile"
               onPress={() => {
                 props.navigation.navigate("Profile");
               }}
             />
+
             <DrawerItem
               icon={({ color, size }) => (
-                <Icon name="map-marker-distance" color={color} size={size} />
+                <MaterialCommunityIcons
+                  name="credit-card"
+                  color={{ color }}
+                  size={size}
+                />
               )}
-              label="Tracking"
+              label="Payments"
               onPress={() => {
-                props.navigation.navigate("TrackingScreen");
-              }}
-            />
-            <DrawerItem
-              icon={({ color, size }) => (
-                <Icon name="truck-delivery-outline" color={color} size={size} />
-              )}
-              label="Booking"
-              onPress={() => {
-                props.navigation.navigate("Booking");
-              }}
-            />
-            <DrawerItem
-              icon={({ color, size }) => (
-                <Icon name="credit-card" color={{ color }} size={size} />
-              )}
-              label="Wallet"
-              onPress={() => {
-                props.navigation.navigate("Wallet");
+                props.navigation.navigate("Payments");
               }}
             />
           </Drawer.Section>
@@ -117,7 +127,11 @@ export function CustomDrawer(props) {
       <Drawer.Section style={styles.bottomDrawerSection}>
         <DrawerItem
           icon={({ color, size }) => (
-            <Icon name="exit-to-app" color={color} size={size} />
+            <MaterialCommunityIcons
+              name="exit-to-app"
+              color={color}
+              size={size}
+            />
           )}
           label="Logout"
           onPress={() => {

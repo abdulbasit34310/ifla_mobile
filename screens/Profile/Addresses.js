@@ -7,7 +7,14 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React from "react";
-import FontAwesomeIcon from "react-native-vector-icons/FontAwesome5";
+import {
+  MaterialIcons,
+  MaterialCommunityIcons,
+  FontAwesome,
+  EvilIcons,
+  Octicons,
+  Feather,
+} from "react-native-vector-icons";
 import { useState } from "react";
 import AddAddress from "../../components/Profile/AddAddress";
 
@@ -16,7 +23,7 @@ const Addresses = ({ navigation, route }) => {
   console.log(addresses);
   const [isVisible, setVisible] = useState(false);
   return (
-    <View>
+    <View style={styles.container}>
       <Modal
         animationType="slide"
         transparent={true}
@@ -31,44 +38,35 @@ const Addresses = ({ navigation, route }) => {
           isCompany={false}
         />
       </Modal>
-      <View style={styles.addIconContainer}>
+      <View style={{ alignItems: "flex-end" }}>
         <TouchableOpacity
           onPress={() => {
             setVisible(true);
           }}
         >
-          <FontAwesomeIcon
-            name="plus"
-            color="#005761"
-            size={30}
-          ></FontAwesomeIcon>
+          <EvilIcons name="plus" color="#005761" size={30}></EvilIcons>
         </TouchableOpacity>
       </View>
-      <View style={{ marginTop: 20 }}>
+
+      <View style={{ marginTop: 10 }}>
         {addresses.map((address, index) => (
           <View style={styles.addressContainer} id={index}>
             <View>
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 style={{
                   backgroundColor: "#E0EFF6",
                   padding: 10,
                   borderRadius: 20,
                 }}
               >
-                <FontAwesomeIcon
+                <EvilIcons
                   name="trash"
                   size={20}
                   color="#005761"
-                ></FontAwesomeIcon>
-              </TouchableOpacity>
+                ></EvilIcons>
+              </TouchableOpacity> */}
             </View>
-            <View style={{ margin: 5, marginRight: 10 }}>
-              {/* <FontAwesomeIcon
-                name="map-marker-alt"
-                size={25}
-                color="#005761"
-              ></FontAwesomeIcon> */}
-            </View>
+            <View style={{ margin: 5, marginRight: 10 }}></View>
             <View>
               <Text style={{ fontSize: 16, color: "grey" }}>
                 Builidng: {address.building},
@@ -90,21 +88,19 @@ const Addresses = ({ navigation, route }) => {
 export default Addresses;
 
 const styles = StyleSheet.create({
-  addIconContainer: {
-    display: "flex",
-    justifyContent: "flex-end",
-    alignItems: "flex-end",
-    margin: 20,
+  container: {
+    flex: 1,
+    backgroundColor: "#E0EFF6",
+    padding: 10,
   },
   addressContainer: {
     height: 100,
-    marginTop: 5,
-    // borderBottomColor: "grey",
-    // borderBottomWidth: 1,
+    marginTop: 10,
     alignItems: "center",
     backgroundColor: "white",
-    padding: 15,
+    padding: 10,
     flexDirection: "row",
-    borderRadius: 25,
+    borderRadius: 18,
+    elevation: 5,
   },
 });

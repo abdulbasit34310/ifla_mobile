@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useCallback, useEffect, useRef, useMemo, } from 'react'; import { SafeAreaView } from 'react-native-safe-area-context';
+
 import {
   Image,
   Dimensions,
   StyleSheet,
   Text,
   View,
-  SafeAreaView,
   Button,
   TouchableOpacity,
 } from "react-native";
@@ -14,7 +14,7 @@ import MapView, { Callout, Circle, Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import { GOOGLE_API } from "@env";
 import marker from "../../assets/icons8-marker.png";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { MaterialIcons, MaterialCommunityIcons, FontAwesome, Octicons, Feather } from 'react-native-vector-icons';
 
 const Theme = {
   Buttons: "#068E94",

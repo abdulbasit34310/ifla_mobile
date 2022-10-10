@@ -1,14 +1,7 @@
-import * as React from "react";
-import {
-  Text,
-  View,
-  StyleSheet,
-  ImageBackground,
-  TouchableOpacity,
-  Alert,
-} from "react-native";
+import * as React from "react"; import { SafeAreaView } from 'react-native-safe-area-context';
+import { Text, View, StyleSheet, TouchableOpacity, Alert, } from "react-native";
 import { Divider } from "react-native-paper";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { MaterialIcons, MaterialCommunityIcons, FontAwesome, Octicons, Feather } from 'react-native-vector-icons';
 import { ScrollView } from "react-native-gesture-handler";
 import * as SecureStore from "expo-secure-store";
 import axios from "axios";
@@ -59,7 +52,7 @@ export default function PendingBookingDetails({ navigation, route }) {
             backgroundColor: "white",
             margin: 15,
             padding: 25,
-            borderRadius: 10,
+            borderRadius: 14,
           }}
         >
           <View

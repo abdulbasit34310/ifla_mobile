@@ -1,28 +1,19 @@
 import * as React from "react";
-import {
-  Text,
-  View,
-  StyleSheet,
-  ImageBackground,
-  TouchableOpacity,
-  Image,
-  ScrollView,
-  FlatList,
-  Alert,
-} from "react-native";
-import { Divider } from "react-native-paper";
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Text, View, StyleSheet, ImageBackground, TouchableOpacity, Image, ScrollView, FlatList, Alert, } from "react-native";
+import { Card, Divider } from "react-native-paper";
 import moment from "moment";
-
-import FontAwesome from "react-native-vector-icons/FontAwesome";
 import * as SecureStore from "expo-secure-store";
 import axios from "axios";
+
+import { AntDesign, Entypo, EvilIcons, Feather, FontAwesome, FontAwesome5, FontAwesome5Brands, Fontisto, Foundation, Ionicons, MaterialCommunityIcons, MaterialIcons, Octicons, SimpleLineIcons, Zocial } from '@expo/vector-icons';
 
 import { REST_API_LOCAL } from "@env";
 
 export default function MyBookingDetails({ navigation, route }) {
   const item = route.params;
   const [bookingData, setBookingData] = React.useState(item);
-
+  console.log(bookingData)
   const deleteData = async () => {
     let token1 = await SecureStore.getItemAsync("userToken");
     const headers = { Authorization: `Bearer ${token1}` };
@@ -51,7 +42,7 @@ export default function MyBookingDetails({ navigation, route }) {
       });
 
     let data = await response.data;
-    console.log(data);
+    // console.log(data);
   };
 
   // React.useEffect(() => {
@@ -60,10 +51,11 @@ export default function MyBookingDetails({ navigation, route }) {
 
   return (
     <ScrollView style={{ backgroundColor: "#E0EFF6" }}>
+
       <View style={styles.container}>
         <Text
           style={{
-            fontSize: 30,
+            fontSize: 26,
             fontWeight: "bold",
             marginLeft: 20,
             color: "#005761",
@@ -83,48 +75,41 @@ export default function MyBookingDetails({ navigation, route }) {
         >
           {moment(bookingData.dateTime).utc().format("MMMM Do YYYY, h:mm:ss a")}
         </Text>
-        <View
-          style={{
-            elevation: 8,
-            backgroundColor: "white",
-            margin: 15,
-            padding: 25,
-            borderRadius: 10,
-          }}
-        >
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              marginVertical: 5,
-            }}
-          >
-            <Text style={{ fontSize: 16 }}>
-              <FontAwesome name="location-arrow" color="#005761" size={20} />{" "}
-              Source
-            </Text>
-            <Text style={{ fontSize: 16 }}>
-              <FontAwesome name="map-marker" color="#005761" size={20} />{" "}
-              Destination
-            </Text>
+
+        <Card style={styles.card} >
+          <View style={styles.locationSection}>
+
+            <SafeAreaView style={{width:"50%"}}>
+              <Text>
+                <FontAwesome name="location-arrow" color="#005761" size={18} />{" "}
+                Source
+              </Text>
+              <Text>
+                {bookingData.pickupAddress.city},{" "}
+                {bookingData.pickupAddress.building}{" "}
+                {bookingData.pickupAddress.street}
+              </Text>
+            </SafeAreaView>
+
+            <View>
+            </View>
+
+            <SafeAreaView style={{width:"50%"}}>
+              <Text>
+                <FontAwesome name="map-marker" color="#005761" size={18} />{" "}
+                Destination
+              </Text>
+              <Text>
+                {bookingData.dropoffAddress.city}{" "}
+                {bookingData.dropoffAddress.building}{" "}
+                {bookingData.dropoffAddress.street}{" "}
+              </Text>
+            </SafeAreaView>
           </View>
 
-          <View
-            style={{ flexDirection: "row", justifyContent: "space-between" }}
-          >
-            <Text style={styles.addressContainer}>
-              {bookingData.pickupAddress.city},{" "}
-              {bookingData.pickupAddress.building}{" "}
-              {bookingData.pickupAddress.street}
-            </Text>
-            <Text style={styles.addressContainer}>
-              {bookingData.dropoffAddress.city},{" "}
-              {bookingData.dropoffAddress.building}{" "}
-              {bookingData.dropoffAddress.street}{" "}
-            </Text>
-          </View>
           <Divider />
-          <View style={{ marginVertical: 25 }}>
+
+          <View style={{ paddingBottom: 5 }}>
             <View style={styles.propertyContainerStyle}>
               <Text>Weight</Text>
               <Text style={styles.propertyStyle}>
@@ -149,8 +134,10 @@ export default function MyBookingDetails({ navigation, route }) {
               <Text style={styles.propertyStyle}>{bookingData.status}</Text>
             </View>
           </View>
+
           <Divider />
-          <View style={{ marginVertical: 20 }}>
+
+          <View style={{ paddingBottom: 5 }}>
             <View style={styles.propertyContainerStyle}>
               <Text>Sub Total</Text>
               <Text style={styles.propertyStyle}>
@@ -167,6 +154,7 @@ export default function MyBookingDetails({ navigation, route }) {
             </View>
           </View>
           <Divider />
+
           <View
             style={{
               flexDirection: "row",
@@ -179,7 +167,8 @@ export default function MyBookingDetails({ navigation, route }) {
               {bookingData.payment.amount} Rs
             </Text>
           </View>
-        </View>
+
+        </Card>
 
         <TouchableOpacity
           onPress={() => {
@@ -205,7 +194,7 @@ export default function MyBookingDetails({ navigation, route }) {
             backgroundColor: "#068E94",
             width: 200,
             alignSelf: "center",
-            borderRadius: 5,
+            borderRadius: 14,
           }}
         >
           <Text
@@ -219,20 +208,75 @@ export default function MyBookingDetails({ navigation, route }) {
             Delete Booking
           </Text>
         </TouchableOpacity>
+        
+        <TouchableOpacity
+                style={styles.customButton}
+                onPress={() => {
+                  navigation.push("LiveTracking", bookingData);
+                }}
+              >
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <MaterialCommunityIcons name="truck-delivery-outline" size={22} color={'white'} />
+                  <Text
+                    style={[
+                      styles.buttonText,
+                      {
+                        color: 'white',
+                      },
+                    ]}>
+                    Live Location
+                  </Text>
+                </View></TouchableOpacity>
       </View>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { backgroundColor: "#E0EFF6", height: "100%", padding: 15 },
-  addressContainer: { width: "35%", fontSize: 16, fontWeight: "bold" },
+  container:
+  {
+    backgroundColor: "#E0EFF6",
+    height: "100%",
+    padding: 15
+  },
   propertyContainerStyle: {
     flexDirection: "row",
     justifyContent: "space-between",
     marginTop: 5,
     alignItems: "center",
   },
-  propertyStyle: { fontSize: 16, fontWeight: "bold" },
-  paymentStyle: { fontSize: 22, fontWeight: "bold", color: "#005761" },
+  propertyStyle: {
+    fontSize: 16,
+    fontWeight: "bold"
+  },
+  paymentStyle:
+  {
+    fontSize: 22,
+    fontWeight: "bold",
+    color: "#005761"
+  },
+  card: {
+    elevation: 3,
+    backgroundColor: "white",
+    margin: 15,
+    padding: 20,
+    borderRadius: 14,
+  },
+  customButton: {
+    backgroundColor: "#005761",
+    padding: 5,
+    borderRadius: 14,
+    elevation: 3,
+  },
+  buttonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginHorizontal: 5,
+  },
+  locationSection: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingBottom: 5,
+  },
+
 });

@@ -9,14 +9,13 @@ import {
   TouchableOpacity,
   ToastAndroid,
   KeyboardAvoidingView,
-  ScrollView
+  ScrollView,
 } from "react-native";
 import { Title } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome5";
 import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
-import AB from "../images/AB.png";
 import { REST_API_LOCAL } from "@env";
 import * as SecureStore from "expo-secure-store";
 
@@ -240,30 +239,61 @@ const EditProfileScreen = ({ navigation, route }) => {
 
   return (
     <ScrollView>
-    <KeyboardAvoidingView style={styles.container}>
-      <View style={{ paddingTop: 20, alignItems: "center" }}>
-        <TouchableOpacity onPress={() => pickImage()}>
-          <View
-            style={{
-              width: 150,
-              height: 150,
-              position: "relative",
-            }}
-          >
-            {!image && (
-              <ImageBackground
-                source={{ uri: `data:image;base64,${item.personId.image}` }}
-                style={{ height: 125, width: 125 }}
-                imageStyle={{ borderRadius: 90 }}
-              >
-                <View
-                  style={{
-                    flex: 1,
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
+      <KeyboardAvoidingView style={styles.container}>
+        <View style={{ paddingTop: 20, alignItems: "center" }}>
+          <TouchableOpacity onPress={() => pickImage()}>
+            <View
+              style={{
+                width: 150,
+                height: 150,
+                position: "relative",
+              }}
+            >
+              {!image && (
+                <ImageBackground
+                  source={{ uri: `data:image;base64,${item.personId.image}` }}
+                  style={{ height: 125, width: 125 }}
+                  imageStyle={{ borderRadius: 90 }}
                 >
-                  {!image && (
+                  <View
+                    style={{
+                      flex: 1,
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    {!image && (
+                      <Icon
+                        name="camera-outline"
+                        size={35}
+                        color="grey"
+                        style={{
+                          opacity: 0.5,
+                          alignItems: "center",
+                          justifyContent: "center",
+                          borderWidth: 1,
+                          padding: 30,
+                          borderColor: "grey",
+                          borderRadius: 50,
+                        }}
+                      />
+                    )}
+                  </View>
+                </ImageBackground>
+              )}
+              {image && (
+                <ImageBackground
+                  source={{ uri: image }}
+                  style={{ height: 125, width: 125 }}
+                  imageStyle={{ borderRadius: 90 }}
+                >
+                  <View
+                    style={{
+                      flex: 1,
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
                     <Icon
                       name="camera-outline"
                       size={35}
@@ -278,146 +308,122 @@ const EditProfileScreen = ({ navigation, route }) => {
                         borderRadius: 50,
                       }}
                     />
-                  )}
-                </View>
-              </ImageBackground>
-            )}
-            {image && (
-              <ImageBackground
-                source={{ uri: image }}
-                style={{ height: 125, width: 125 }}
-                imageStyle={{ borderRadius: 90 }}
-              >
-                <View
-                  style={{
-                    flex: 1,
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <Icon
-                    name="camera-outline"
-                    size={35}
-                    color="grey"
-                    style={{
-                      opacity: 0.5,
-                      alignItems: "center",
-                      justifyContent: "center",
-                      borderWidth: 1,
-                      padding: 30,
-                      borderColor: "grey",
-                      borderRadius: 50,
-                    }}
-                  />
-                </View>
-              </ImageBackground>
-            )}
+                  </View>
+                </ImageBackground>
+              )}
 
-            <FontAwesomeIcon
-              name="plus"
-              size={25}
-              color="grey"
-              style={{
-                top: 3,
-                right: 10,
-                opacity: 0.5,
-                position: "absolute",
-              }}
-            />
+              <FontAwesomeIcon
+                name="plus"
+                size={25}
+                color="grey"
+                style={{
+                  top: 3,
+                  right: 10,
+                  opacity: 0.5,
+                  position: "absolute",
+                }}
+              />
+            </View>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.userInfoSection}>
+          {/* Full Name */}
+
+          <View style={{ alignItems: "center", flexDirection: "row" }}>
+            <Icon name="account" color="#666666" size={20} />
+            <Title style={styles.titleStyle}>Full Name</Title>
           </View>
+          <TextInput
+            style={styles.textInputStyle}
+            value={data.name}
+            onChangeText={nameChange}
+          ></TextInput>
+
+          {/* Email */}
+
+          <View style={{ alignItems: "center", flexDirection: "row" }}>
+            <Icon name="email" color="#666666" size={20} />
+            <Title style={styles.titleStyle}>Email</Title>
+          </View>
+          <TextInput
+            style={styles.textInputStyle}
+            value={data.email}
+            placeholderTextColor="#666666"
+            keyboardType="email-address"
+            autoCorrect={false}
+            onChangeText={emailChange}
+          />
+          {!data.validEmail && (
+            <Text style={styles.errorText}>Wrong Email Format</Text>
+          )}
+          {/* Username */}
+
+          <View style={{ alignItems: "center", flexDirection: "row" }}>
+            <Icon name="account-circle" color="#666666" size={20} />
+            <Title style={styles.titleStyle}>Username</Title>
+          </View>
+          <TextInput
+            style={styles.textInputStyle}
+            value={data.username}
+            placeholderTextColor="#666666"
+            autoCorrect={false}
+            onChangeText={usernameChange}
+          />
+          {!data.validUsername && (
+            <Text style={styles.errorText}>Wrong Username Format</Text>
+          )}
+
+          <View style={{ alignItems: "center", flexDirection: "row" }}>
+            <Icon name="id-card" color="#666666" size={20} />
+            <Title style={styles.titleStyle}>CNIC</Title>
+          </View>
+          <TextInput
+            placeholderTextColor="#666666"
+            value={data.cnic}
+            keyboardType="number-pad"
+            autoCorrect={false}
+            style={styles.textInputStyle}
+            onChangeText={cnicChange}
+          />
+          {!data.validCnic && (
+            <Text style={styles.errorText}>Wrong CNIC Format</Text>
+          )}
+
+          {/* Phone Number */}
+
+          <View style={{ alignItems: "center", flexDirection: "row" }}>
+            <Icon name="cellphone" color="#666666" size={20} />
+            <Title style={styles.titleStyle}>Phone Number</Title>
+          </View>
+
+          <TextInput
+            value={data.phoneNo}
+            placeholderTextColor="#666666"
+            keyboardType="number-pad"
+            autoCorrect={false}
+            style={styles.textInputStyle}
+            onChangeText={phoneNoChange}
+          />
+        </View>
+        {!data.validPhoneNo && (
+          <Text style={styles.errorText}>Wrong Phone No Format</Text>
+        )}
+
+        <TouchableOpacity style={styles.submitButton} onPress={updateData}>
+          <Text style={{ fontSize: 18, color: "white", textAlign: "center" }}>
+            Update
+          </Text>
         </TouchableOpacity>
-      </View>
-
-      <View style={styles.userInfoSection}>
-        {/* Full Name */}
-
-        <View style={{ alignItems: "center", flexDirection: "row" }}>
-          <Icon name="account" color="#666666" size={20} />
-          <Title style={styles.titleStyle}>Full Name</Title>
-        </View>
-        <TextInput
-          style={styles.textInputStyle}
-          value={data.name}
-          onChangeText={nameChange}
-        ></TextInput>
-
-        {/* Email */}
-
-        <View style={{ alignItems: "center", flexDirection: "row" }}>
-          <Icon name="email" color="#666666" size={20} />
-          <Title style={styles.titleStyle}>Email</Title>
-        </View>
-        <TextInput
-          style={styles.textInputStyle}
-          value={data.email}
-          placeholderTextColor="#666666"
-          keyboardType="email-address"
-          autoCorrect={false}
-          onChangeText={emailChange}
-        />
-        {!data.validEmail && (
-          <Text style={styles.errorText}>Wrong Email Format</Text>
-        )}
-        {/* Username */}
-
-        <View style={{ alignItems: "center", flexDirection: "row" }}>
-          <Icon name="account-circle" color="#666666" size={20} />
-          <Title style={styles.titleStyle}>Username</Title>
-        </View>
-        <TextInput
-          style={styles.textInputStyle}
-          value={data.username}
-          placeholderTextColor="#666666"
-          autoCorrect={false}
-          onChangeText={usernameChange}
-        />
-        {!data.validUsername && (
-          <Text style={styles.errorText}>Wrong Username Format</Text>
-        )}
-
-        <View style={{ alignItems: "center", flexDirection: "row" }}>
-          <Icon name="id-card" color="#666666" size={20} />
-          <Title style={styles.titleStyle}>CNIC</Title>
-        </View>
-        <TextInput
-          placeholderTextColor="#666666"
-          value={data.cnic}
-          keyboardType="number-pad"
-          autoCorrect={false}
-          style={styles.textInputStyle}
-          onChangeText={cnicChange}
-        />
-        {!data.validCnic && (
-          <Text style={styles.errorText}>Wrong CNIC Format</Text>
-        )}
-
-        {/* Phone Number */}
-
-        <View style={{ alignItems: "center", flexDirection: "row" }}>
-          <Icon name="cellphone" color="#666666" size={20} />
-          <Title style={styles.titleStyle}>Phone Number</Title>
-        </View>
-
-        <TextInput
-          value={data.phoneNo}
-          placeholderTextColor="#666666"
-          keyboardType="number-pad"
-          autoCorrect={false}
-          style={styles.textInputStyle}
-          onChangeText={phoneNoChange}
-        />
-      </View>
-      {!data.validPhoneNo && (
-        <Text style={styles.errorText}>Wrong Phone No Format</Text>
-      )}
-
-      <TouchableOpacity style={styles.submitButton} onPress={updateData}>
-        <Text style={{ fontSize: 18, color: "white" }}>Update</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.submitButton} onPress={()=>navigation.navigate("ChangePassword")}>
-        <Text style={{ fontSize: 18, color: "white" }}>Change Password</Text>
-      </TouchableOpacity>
-    </KeyboardAvoidingView>
+        <TouchableOpacity
+          style={styles.submitButton}
+          onPress={() => navigation.navigate("ChangePassword")}
+        >
+          <Text style={{ fontSize: 18, color: "white", textAlign: "center" }}>
+            Change Password
+          </Text>
+        </TouchableOpacity>
+      </KeyboardAvoidingView>
     </ScrollView>
   );
 };
@@ -445,16 +451,15 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   submitButton: {
-    borderRadius: 10,
+    borderRadius: 14,
     backgroundColor: "#00ABB2",
     color: "white",
-    justifyContent: "center",
-    alignItems: "center",
     alignSelf: "center",
+    justifyContent: "center",
     marginTop: 45,
     width: "60%",
     height: 50,
-    elevation: 9,
+    elevation: 3,
   },
   action: {
     flexDirection: "row",

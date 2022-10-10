@@ -5,41 +5,38 @@ import {
   TouchableOpacity,
   StyleSheet,
   TextInput,
-  Platform,
+  SafeAreaView,
   ToastAndroid,
   Image,
 } from "react-native";
 import Checkbox from "expo-checkbox";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
-import Feather from "react-native-vector-icons/Feather";
+import { MaterialIcons, MaterialCommunityIcons, FontAwesome, Octicons, Feather } from 'react-native-vector-icons';
+import { AuthContext } from "../../components/context";
 import axios from "axios";
-import logo from "../images/IFLA.png";
+
+import IFLAlogo from "../../assets/IFLA.png";
 
 import { REST_API_LOCAL } from "@env";
 
-const SignUpScreen = ({ route, navigation }) => {
+const SignUp = ({ route, navigation }) => {
   // const { setloggedin } = route.params;
+  const { signIn } = React.useContext(AuthContext);
 
   const [data, setData] = React.useState({
-    name: "",
     email: "",
-    phoneNo: "",
     companyName: "",
     password: "",
     confirmPassword: "",
-    checkNameChange: false,
     checkEmailChange: false,
-    checkPhoneNoChange: false,
     checkPasswordChange: false,
     checkConfirmPasswordChange: false,
     checkCompanyNameChange: false,
-    validName: true,
     validEmail: true,
-    validPhoneNo: true,
     validPassword: true,
     validCompanyName: true,
     secureTextEntry: true,
   });
+
   const checkConditions = (condition1, condition2) => {
     if (condition1 && condition2) {
       return true;
@@ -47,63 +44,72 @@ const SignUpScreen = ({ route, navigation }) => {
       return false;
     }
   };
+
   const postData = async () => {
+
     if (
-      data.validEmail &&
       data.email &&
-      data.name &&
-      data.validName &&
-      data.validPassword &&
-      data.password &&
-      data.validPhoneNo &&
-      data.phoneNo &&
-      data.confirmPassword &&
       data.companyName &&
-      data.validCompanyName
+      data.password &&
+      data.confirmPassword &&
+      data.validEmail &&
+      data.validCompanyName &&
+      data.validPassword
     ) {
-      var body = {
-        username: data.name,
+      var obj = {
         email: data.email,
-        phone: data.phoneNo,
         password: data.password,
         companyName: data.companyName,
         userRole: "Shipper",
-        isAdmin: false,
+        isAdmin: false
       };
-      console.log(body);
-      let res = await axios.post(`${REST_API_LOCAL}/users/signup`, body);
-      const data1 = await res.data;
-      console.log(data1);
-      if (data1) {
+
+      console.log("Sign Up Body")
+      console.log(obj);
+
+      let res = await axios.post(`${REST_API_LOCAL}/users/signup`, obj);
+      const recievedData = await res.data;
+
+      console.log("Signed Up Data")
+      console.log(recievedData);
+
+      if (recievedData) {
         showToastWithGravity("Signed up");
-        // setloggedin(true)
-        navigation.navigate("SignInScreen");
       } else showToastWithGravity("Couldn't Sign up");
-      // navigation.goBack();
     } else {
       showToastWithGravity("Please Enter All Details Correctly");
     }
+
+    const obj2 = {
+      email: data.email,
+      password: data.password,
+    }
+    const response = await axios.post(`${REST_API_LOCAL}/users/login`, obj2)
+      .catch((error) => {
+        if (error.response) {
+          console.log(error.response.data);
+          console.log(error.response.status);
+          Alert.alert("Invalid User!", "Email or password is incorrect.", [
+            { text: "OK" },
+          ]);
+          return;
+        }
+      });
+
+    const recievedData2 = await response.data;
+    const token = recievedData2.token;
+    const email = recievedData2.user.email;
+    const foundUser = { userToken: token, email: email };
+    console.log(foundUser);
+
+    // navigation.navigate("AccountConfiguration", { item: foundUser })
+    signIn(foundUser);
+
   };
 
   const showToastWithGravity = (text) => {
-    ToastAndroid.showWithGravity(text, ToastAndroid.SHORT, ToastAndroid.BOTTOM);
-  };
-
-  const nameChange = (val) => {
-    if (val.length >= 6) {
-      setData({
-        ...data,
-        name: val,
-        checkNameChange: true,
-        validName: true,
-      });
-    } else {
-      setData({
-        ...data,
-        name: val,
-        checkNameChange: true,
-        validName: false,
-      });
+    if (Platform.OS == 'android') {
+      ToastAndroid.showWithGravity(text, ToastAndroid.SHORT, ToastAndroid.BOTTOM);
     }
   };
 
@@ -131,25 +137,6 @@ const SignUpScreen = ({ route, navigation }) => {
         email: val,
         checkEmailChange: true,
         validEmail: false,
-      });
-    }
-  };
-  const phoneNoChange = (val) => {
-    const reg =
-      /^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$/;
-    if (reg.test(String(val))) {
-      setData({
-        ...data,
-        phoneNo: val,
-        checkPhoneNoChange: true,
-        validPhoneNo: true,
-      });
-    } else {
-      setData({
-        ...data,
-        phoneNo: val,
-        checkPhoneNoChange: true,
-        validPhoneNo: false,
       });
     }
   };
@@ -185,12 +172,12 @@ const SignUpScreen = ({ route, navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Image source={logo} style={styles.logo} />
+        <Image source={IFLAlogo} style={styles.IFLAlogo} />
       </View>
-      {/* Username */}
-      <View style={styles.footer}>
+
+      <SafeAreaView style={styles.footer}>
         <View>
           <Text
             style={{
@@ -204,26 +191,7 @@ const SignUpScreen = ({ route, navigation }) => {
           </Text>
           <Text style={{ color: "#AAAAAA" }}>Book your first shipment</Text>
         </View>
-        <View style={styles.action}>
-          <FontAwesome name="user-circle" color="#005761" size={25} />
-          <TextInput
-            style={styles.ti}
-            placeholder="Your Userame"
-            placeholderTextColor="#666666"
-            onChangeText={(val) => nameChange(val)}
-          ></TextInput>
-          {checkConditions(data.checkNameChange, data.validName) ? (
-            <Feather name="check-circle" color="green" size={25} />
-          ) : null}
-        </View>
-        {data.validName ? null : (
-          <View duration={500}>
-            <Text style={styles.errorMsg}>
-              User Name must be 6 characters long.
-            </Text>
-          </View>
-        )}
-        {/* Email */}
+
         <View style={styles.action}>
           <FontAwesome name="envelope" color="#005761" size={25} />
           <TextInput
@@ -244,22 +212,6 @@ const SignUpScreen = ({ route, navigation }) => {
             </Text>
           </View>
         )}
-        {/* Phone Number */}
-        <View style={styles.action}>
-          <Feather name="phone" color="#005761" size={25} />
-          <TextInput
-            style={styles.ti}
-            placeholder="Phone Number"
-            placeholderTextColor="#666666"
-            keyboardType="number-pad"
-            onChangeText={(text) => phoneNoChange(text)}
-          ></TextInput>
-        </View>
-        {data.validPhoneNo ? null : (
-          <View duration={500}>
-            <Text style={styles.errorMessage}>Phone Number is not Valid.</Text>
-          </View>
-        )}
 
         {/* Company Name */}
         <View style={styles.action}>
@@ -278,6 +230,7 @@ const SignUpScreen = ({ route, navigation }) => {
             </Text>
           </View>
         )}
+
         <View style={styles.action}>
           <Feather name="lock" color="#005761" size={25} />
           <TextInput
@@ -303,6 +256,7 @@ const SignUpScreen = ({ route, navigation }) => {
             </Text>
           </View>
         )}
+
         <View style={styles.action}>
           <Feather name="lock" color="#005761" size={25} />
           <TextInput
@@ -332,38 +286,44 @@ const SignUpScreen = ({ route, navigation }) => {
         <View>
           <TouchableOpacity
             onPress={() => postData()}
-            style={[styles.button, { backgroundColor: "#068E94" }]}
+            style={[styles.customButton, { backgroundColor: "#068E94" }]}
           >
-            <Text
-              style={[
-                styles.textSign,
-                {
-                  color: "white",
-                },
-              ]}
-            >
-              Sign Up
-            </Text>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Octicons name="sign-out" size={18} color={"white"} />
+              <Text
+                style={[
+                  styles.buttonText,
+                  {
+                    color: "white",
+                  },
+                ]}
+              >
+                Sign Up
+              </Text>
+            </View>
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => navigation.navigate("SignInScreen")}
-            style={[styles.button, { backgroundColor: "white" }]}
+            onPress={() => navigation.navigate("Login")}
+            style={[styles.customButton, { backgroundColor: "white" }]}
           >
-            <Text
-              style={[
-                styles.textSign,
-                {
-                  color: "black",
-                },
-              ]}
-            >
-              Sign In
-            </Text>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Octicons name="sign-out" size={18} color={"black"} />
+              <Text
+                style={[
+                  styles.buttonText,
+                  {
+                    color: "black",
+                  },
+                ]}
+              >
+                Login
+              </Text>
+            </View>
           </TouchableOpacity>
         </View>
-      </View>
-    </View>
+      </SafeAreaView>
+    </SafeAreaView>
   );
 };
 
@@ -409,24 +369,25 @@ const styles = StyleSheet.create({
     color: "#FF0000",
     fontSize: 12,
   },
-  logo: {
+  IFLAlogo: {
     alignSelf: "center",
     width: 150,
     height: 100,
   },
-  button: {
+  customButton: {
     width: "100%",
     height: 60,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 14,
     marginTop: 15,
-    elevation: 5,
+    elevation: 3,
   },
-  textSign: {
+  buttonText: {
     fontSize: 18,
     fontWeight: "bold",
+    marginHorizontal: 5,
   },
 });
 
-export default SignUpScreen;
+export default SignUp;

@@ -10,7 +10,26 @@ import {
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 import moment from "moment";
-import { REST_API_LOCAL } from "@env";
+// import { REST_API_LOCAL } from "@env";
+const REST_API_LOCAL = "http://192.168.0.111:4000";
+
+import {
+  AntDesign,
+  Entypo,
+  EvilIcons,
+  Feather,
+  FontAwesome,
+  FontAwesome5,
+  FontAwesome5Brands,
+  Fontisto,
+  Foundation,
+  Ionicons,
+  MaterialCommunityIcons,
+  MaterialIcons,
+  Octicons,
+  SimpleLineIcons,
+  Zocial,
+} from "@expo/vector-icons";
 
 export default function MyBookings({ route, navigation }) {
   const [bookingData, setBookingData] = React.useState();
@@ -152,8 +171,8 @@ const styles = StyleSheet.create({
     borderBottomColor: "#005761",
     backgroundColor: "white",
     margin: 5,
-    borderRadius: 10,
-    elevation: 8,
+    borderRadius: 14,
+    elevation: 3,
   },
   timeStyle: { fontWeight: "bold", fontSize: 17, color: "#005761" },
   paymentStyle: { fontSize: 15, fontWeight: "bold", color: "#00ABB2" },
@@ -166,7 +185,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     padding: 5,
     elevation: 3,
-    borderRadius: 3,
+    borderRadius: 14,
     backgroundColor: "#068E94",
   },
 });
