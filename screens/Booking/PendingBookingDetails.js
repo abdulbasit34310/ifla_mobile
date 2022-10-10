@@ -19,8 +19,10 @@ export default function PendingBookingDetails({ navigation, route }) {
   const [bookingData, setBookingData] = React.useState(route.params);
 
   const deleteData = async () => {
+    let token = await SecureStore.getItemAsync("userToken")
     let response = await axios.delete(
-      `${REST_API_LOCAL}/shipper/deleteBooking/${bookingData._id}`
+      `${REST_API_LOCAL}/shipper/deleteBooking/${bookingData._id}`,
+      {withCredentials:true, headers:{Authorization:`Bearer ${token}`}}
     );
     let data = await response.data;
     console.log(data);

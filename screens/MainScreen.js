@@ -33,10 +33,16 @@ registerForPushNotificationsAsync = async () => {
     }
     token = (await Notifications.getExpoPushTokenAsync()).data;
     console.log(token);
+    let result = await SecureStore.getItemAsync("userToken")
+    console.log(result)
+  
     try {
       var response = await axios.post(
         `${REST_API_LOCAL}/notifications/token`,
-        { token: { value: token } }
+        { token: { value: token } },{
+          withCredentials: true,
+          headers: {Authorization: `Bearer ${result}` },
+        }
       );
       console.log(response.data);
     } catch (error) {
@@ -47,30 +53,14 @@ registerForPushNotificationsAsync = async () => {
   } else {
     alert("Must use physical device for Push Notifications");
   }
-  if (finalStatus !== "granted") {
-    alert("Failed to get push token for push notification!");
-    return;
+  if (Platform.OS === "android") {
+    Notifications.setNotificationChannelAsync("default", {
+      name: "default",
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: "#FF231F7C",
+    });
   }
-  token = (await Notifications.getExpoPushTokenAsync()).data;
-  console.log(token);
-
-  var response = await axios.post(
-    `${REST_API_LOCAL}/notifications/token`,
-    { token: { value: token } }
-  );
-  // this.setState({ expoPushToken: token });
-};
-//  else {
-//   alert("Must use physical device for Push Notifications");
-// }
-
-if (Platform.OS === "android") {
-  Notifications.setNotificationChannelAsync("default", {
-    name: "default",
-    importance: Notifications.AndroidImportance.MAX,
-    vibrationPattern: [0, 250, 250, 250],
-    lightColor: "#FF231F7C",
-  });
 }
 
 const MainScreen = ({ route, navigation }) => {
@@ -82,6 +72,7 @@ const MainScreen = ({ route, navigation }) => {
   const responseListener = useRef();
 
   useEffect(() => {
+    getValueFor()
     registerForPushNotificationsAsync().then((token) => setPushToken(token));
 
     // This listener is fired whenever a notification is received while the app is foregrounded
@@ -128,12 +119,12 @@ const MainScreen = ({ route, navigation }) => {
     return false;
   };
 
-  React.useEffect(() => {
-    navigation.addListener("focus", () => {
-      getValueFor();
-      if (isTokenExpired()) deleteToken();
-    });
-  }, [navigation]);
+  // React.useEffect(() => {
+  //   navigation.addListener("focus", () => {
+  //     getValueFor();
+  //     if (isTokenExpired()) deleteToken();
+  //   });
+  // }, [navigation]);
   return (
     <View style={styles.container}>
       <Image
