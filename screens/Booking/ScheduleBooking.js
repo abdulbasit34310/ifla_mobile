@@ -11,6 +11,7 @@ import {
   ScrollView,
   Alert,
   Modal,
+  ActivityIndicator,
   ToastAndroid,
 } from "react-native";
 
@@ -23,6 +24,7 @@ import GoodsDetails from "../../components/ScheduleBooking/GoodDetails";
 import BookingDetails from "../../components/ScheduleBooking/BookingDetails";
 import ScheduleDetails from "../../components/ScheduleBooking/ScheduleDetails";
 import PreviewBooking from "../../components/ScheduleBooking/PreviewBooking";
+import { useEffect } from "react";
 const Success = ({
   navigation,
   nextStep,
@@ -35,7 +37,55 @@ const Success = ({
 
 export default function ScheduleBooking({ route, navigation }) {
   const [step, setStep] = React.useState(0);
+  const [loading, setLoading] = React.useState(false);
   const [date, setDate] = React.useState(new Date());
+
+  var quote = "";
+  if (route.params) {
+    quote = {
+      type: route.params.item.shipmentDetails.type,
+      step1: step,
+      pickupAddress: route.params.item.pickupAddress,
+      dropoffAddress: route.params.item.dropoffAddress,
+      goodsType: "",
+      description: "",
+      weight: route.params.item.shipmentDetails.weight,
+      height: "",
+      quantity: route.params.item.shipmentDetails.quantity,
+      vehicle: "",
+      length: "",
+      width: "",
+      date: date.toDateString(),
+      time: date.toTimeString(),
+      status: "Pending",
+      package: true,
+      packageName: "",
+      packageType: "",
+      amount: route.params.item.payment.amount,
+    };
+  } else {
+    quote = {
+      type: "",
+      step1: step,
+      pickupAddress: "",
+      dropoffAddress: "",
+      goodsType: "",
+      description: "",
+      weight: "",
+      height: "",
+      quantity: "",
+      vehicle: "",
+      length: "",
+      width: "",
+      date: date.toDateString(),
+      time: date.toTimeString(),
+      status: "Pending",
+      package: true,
+      packageName: "",
+      packageType: "",
+      amount: "",
+    };
+  }
   //const [token,setToken] = React.useState(route.params.token)
   // async function getValueFor(key) {
   //     let result = await SecureStore.getItemAsync(key);
@@ -52,25 +102,7 @@ export default function ScheduleBooking({ route, navigation }) {
   //       });
   // },[navigation])
 
-  const [bookingData, setBooking] = React.useState({
-    type: "LTL",
-    step1: step,
-    pickupAddress: "",
-    dropoffAddress: "",
-    goodsType: "",
-    description: "",
-    weight: "",
-    height: "",
-    vehicle: "",
-    length: "",
-    width: "",
-    date: date.toDateString(),
-    time: date.toTimeString(),
-    status: "Pending",
-    package: false,
-    packageName: "",
-    packageType: "",
-  });
+  const [bookingData, setBooking] = React.useState(quote);
 
   const clear = () => {
     setBooking({
@@ -158,11 +190,17 @@ export default function ScheduleBooking({ route, navigation }) {
   switch (step1) {
     case 0:
       return (
-        <BookingDetails
-          nextStep={nextStep}
-          bookingData={bookingData}
-          setBooking={setBooking}
-        />
+        <>
+          {loading ? (
+            <ActivityIndicator />
+          ) : (
+            <BookingDetails
+              nextStep={nextStep}
+              bookingData={bookingData}
+              setBooking={setBooking}
+            />
+          )}
+        </>
       );
     case 1:
       return (

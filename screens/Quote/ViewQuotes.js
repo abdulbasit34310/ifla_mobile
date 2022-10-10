@@ -8,15 +8,18 @@ import {
   ScrollView,
   FlatList,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
-import { REST_API_LOCAL } from "@env";
-
+// import { REST_API_LOCAL } from "@env";
+const REST_API_LOCAL = "http://192.168.0.111:4000";
 export default function ViewQuotes({ navigation, route }) {
   const [quoteData, setQuoteData] = React.useState();
-
+  const [loading, setLoading] = React.useState(false);
   const getQuoteData = async () => {
+    setLoading(true);
+
     let token1 = await SecureStore.getItemAsync("userToken");
     const headers = { Authorization: `Bearer ${token1}` };
 
@@ -37,6 +40,7 @@ export default function ViewQuotes({ navigation, route }) {
     // }
     console.log(data);
     setQuoteData(data);
+    setLoading(false);
   };
 
   // React.useEffect(() => {
@@ -51,73 +55,81 @@ export default function ViewQuotes({ navigation, route }) {
 
   return (
     <View style={styles.container}>
-      <FlatList
-        refreshing={false}
-        onRefresh={getQuoteData}
-        keyExtractor={(item, index) => index}
-        data={quoteData}
-        ListEmptyComponent={
-          <Text style={{ fontSize: 24, alignSelf: "center", marginTop: 30 }}>
-            No Bookings Found
-          </Text>
-        }
-        renderItem={({ item, index }) => (
-          <TouchableOpacity
-            style={styles.flatListStyle}
-            onPress={() => {
-              navigation.push("QuoteDetails", { item: item });
-            }}
-          >
-            <View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  borderBottomColor: "#AAAAAA",
-                  borderBottomWidth: 1,
-                  paddingBottom: 10,
-                }}
-              >
-                <Text
-                  style={{ fontWeight: "bold", fontSize: 17, color: "#005761" }}
+      {loading ? (
+        <ActivityIndicator />
+      ) : (
+        <FlatList
+          refreshing={false}
+          onRefresh={getQuoteData}
+          keyExtractor={(item, index) => index}
+          data={quoteData}
+          ListEmptyComponent={
+            <Text style={{ fontSize: 24, alignSelf: "center", marginTop: 30 }}>
+              No Bookings Found
+            </Text>
+          }
+          renderItem={({ item, index }) => (
+            <TouchableOpacity
+              style={styles.flatListStyle}
+              onPress={() => {
+                navigation.push("QuoteDetails", { item: item });
+              }}
+            >
+              <View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    borderBottomColor: "#AAAAAA",
+                    borderBottomWidth: 1,
+                    paddingBottom: 10,
+                  }}
                 >
-                  Estimated Price
-                </Text>
-                <Text style={styles.paymentStyle}>
-                  {item.payment.amount} PKR
-                </Text>
-              </View>
+                  <Text
+                    style={{
+                      fontWeight: "bold",
+                      fontSize: 17,
+                      color: "#005761",
+                    }}
+                  >
+                    Estimated Price
+                  </Text>
+                  <Text style={styles.paymentStyle}>
+                    {item.payment.amount} PKR
+                  </Text>
+                </View>
 
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  paddingTop: 10,
-                }}
-              >
-                <View>
-                  <Text style={styles.heading}>Type</Text>
-                  <Text style={styles.cityNameStyle}>
-                    {item.shipmentDetails.type}
-                  </Text>
-                </View>
-                <View>
-                  <Text style={styles.heading}>Source</Text>
-                  <Text style={styles.cityNameStyle}>
-                    {item.pickupAddress.city}
-                  </Text>
-                </View>
-                <View>
-                  <Text style={styles.heading}>Desitination</Text>
-                  <Text style={styles.cityNameStyle}>
-                    {item.dropoffAddress.city}
-                  </Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    paddingTop: 10,
+                  }}
+                >
+                  <View>
+                    <Text style={styles.heading}>Type</Text>
+                    <Text style={styles.cityNameStyle}>
+                      {item.shipmentDetails.type}
+                    </Text>
+                  </View>
+                  <View>
+                    <Text style={styles.heading}>Source</Text>
+                    <Text style={styles.cityNameStyle}>
+                      {item.pickupAddress.city}
+                    </Text>
+                  </View>
+                  <View>
+                    <Text style={styles.heading}>Desitination</Text>
+                    <Text style={styles.cityNameStyle}>
+                      {item.dropoffAddress.city}
+                    </Text>
+                  </View>
                 </View>
               </View>
-            </View>
-          </TouchableOpacity>
-        )}
-      />
+            </TouchableOpacity>
+          )}
+        />
+      )}
     </View>
   );
 }

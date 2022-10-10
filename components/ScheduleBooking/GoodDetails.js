@@ -35,6 +35,7 @@ export default function GoodsDetails({
   setBooking,
 }) {
   const [selectedValue, setSelectedValue] = React.useState("");
+  console.log(bookingData);
   const fillToast = () => {
     ToastAndroid.showWithGravity(
       "Please Add Details First",
@@ -72,7 +73,7 @@ export default function GoodsDetails({
             onChangeText={(v) => {
               setBooking({ ...bookingData, weight: v });
             }}
-            value={bookingData.weight}
+            value={bookingData.weight.toString()}
           />
           <Text style={styles.buttonInsideText}>Quantity: </Text>
           <TextInput
@@ -81,7 +82,7 @@ export default function GoodsDetails({
             onChangeText={(v) => {
               setBooking({ ...bookingData, quantity: v });
             }}
-            value={bookingData.quantity}
+            value={bookingData.quantity.toString()}
           />
           <Text style={styles.buttonInsideText}>Dimensions (cm): </Text>
           <View style={{ flexDirection: "row" }}>
