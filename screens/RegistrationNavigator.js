@@ -4,6 +4,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Welcome from "./Registration/Welcome";
 import Login from "./Registration/Login";
 import SignUp from "./Registration/SignUp";
+import ForgotPassword from "./Registration/ForgotPassword";
+import AccountConfiguration from "./Registration/AccountConfiguration";
 
 const RegistrationStack = createNativeStackNavigator();
 

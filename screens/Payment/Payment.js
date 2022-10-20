@@ -26,7 +26,7 @@ const Payment = ({ route }) => {
   let payId,
     id = undefined;
   if (route.params.hasOwnProperty("payId")) payId = route.params.payId;
-  if (route.params.hasOwnProperty("id")) id = route.params.id;
+  if (route.params.hasOwnProperty("amount")) amount = route.params.getNo;
 
   const getPublishableKey = async () => {
     try {
@@ -46,7 +46,7 @@ const Payment = ({ route }) => {
   };
 
   const fetchPaymentIntentClientSecret = async () => {
-    const body = { payId: payId, id: id };
+    const body = { payId: payId, id: id, amount:route.params.getNo};
     const response = await axios.post(
       `${REST_API_LOCAL}/payments/create-checkout-session`,
       body
