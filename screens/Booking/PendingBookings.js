@@ -7,10 +7,10 @@ import {
   StyleSheet,
 } from "react-native";
 import axios from "axios";
-// import { REST_API_LOCAL } from "@env";
+import { REST_API_LOCAL } from "@env";
 import * as SecureStore from "expo-secure-store";
 import moment from "moment";
-const REST_API_LOCAL = "http://192.168.0.111:4000";
+// const REST_API_LOCAL = "http://192.168.0.111:4000";
 
 export default function PendingBookings({ route, navigation }) {
   const [bookingData, setBookingData] = React.useState();
