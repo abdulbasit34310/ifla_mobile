@@ -36,6 +36,9 @@ import Addresses from "./screens/Profile/Addresses";
 import AddAddress from "./components/Profile/AddAddress";
 import ChangePassword from "./screens/Profile/ChangePassword";
 
+import Feedback from "./screens/Feedback";
+import Complaint from "./screens/Complaint";
+
 const Drawer = createDrawerNavigator();
 
 export default function App() {
@@ -146,7 +149,9 @@ export default function App() {
         {loginState.userToken !== null ? (
           <Drawer.Navigator
             drawerContent={(props) => <CustomDrawer {...props} />}
-            // screenOptions={{swipeEdgeWidth: 0}}
+            screenOptions={{
+              headerShown: false
+            }}
           >
             <Drawer.Screen
               name="MainScreen"
@@ -167,6 +172,16 @@ export default function App() {
               options={{ headerShown: false }}
               name="Payments"
               component={PaymentsStack}
+            />
+            <Drawer.Screen
+              options={{ headerShown: false }}
+              name="Feedback"
+              component={Feedback}
+            />
+            <Drawer.Screen
+              options={{ headerShown: false }}
+              name="Complaint"
+              component={Complaint}
             />
           </Drawer.Navigator>
         ) : (
@@ -405,4 +420,4 @@ function PaymentsStack({ route }) {
 // Buttons and Primary Foreground: #068E94
 // Secondary Foreground: #00ABB2
 // Background Primary and Text: #005761
-// Background Secondary: #E0EFF6
+// Background Secondary: #E0EFF6 173340
