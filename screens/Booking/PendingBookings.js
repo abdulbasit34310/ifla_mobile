@@ -27,26 +27,13 @@ export default function PendingBookings({ route, navigation }) {
   const getBookingsData = async () => {
     let isSubscribed = true;
     let token1 = await SecureStore.getItemAsync("userToken");
-    // .then(val=>setToken(val));
-    // console.log(token1)
-    // var obj = {
-    //     method: 'GET',
-    //     withCredentials: true,
-    //     credentials: 'include',
-    //     headers: {
-    //         'Authorization': `Bearer ${token1}`
-    //     }
-    //   }
-    // const response = await fetch(`${REST_API_LOCAL}/shipper/getPendingBookings`, obj)
-    // let data = await response.json()
-    // const token = getValueFor('userToken')
+
     const headers = { Authorization: `Bearer ${token1}` };
     const response = await axios.get(
       `${REST_API_LOCAL}/shipper/getPendingBookings`,
       { withCredentials: true, headers: headers }
     );
     const data = await response.data.bookings;
-    console.log(data);
     isSubscribed ? setBookingData(data) : null;
     // setLoading(false);
 

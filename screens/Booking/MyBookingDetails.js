@@ -42,12 +42,7 @@ export default function MyBookingDetails({ navigation, route }) {
       });
 
     let data = await response.data;
-    // console.log(data);
   };
-
-  // React.useEffect(() => {
-  //   getBookingsData();
-  // }, [setBookingData]);
 
   return (
     <ScrollView style={{ backgroundColor: "#E0EFF6" }}>

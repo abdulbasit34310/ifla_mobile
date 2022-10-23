@@ -89,8 +89,6 @@ export default function PreviewBooking({
   };
 
   useEffect(() => {
-    console.log(bookingData.vehicle);
-    console.log("HERE");
 
     QRCode.toDataURL("I am a pony!")
       .then((url) => {

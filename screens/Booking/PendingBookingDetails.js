@@ -18,7 +18,6 @@ export default function PendingBookingDetails({ navigation, route }) {
       {withCredentials:true, headers:{Authorization:`Bearer ${token}`}}
     );
     let data = await response.data;
-    console.log(data);
   };
 
   return (
