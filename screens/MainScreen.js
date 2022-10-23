@@ -197,7 +197,7 @@ const MainScreen = ({ route, navigation }) => {
           <TouchableOpacity
             style={styles.card}
             onPress={() => {
-              navigation.navigate("FreightBooking");
+              navigation.navigate("FreightBooking", { screen: "BookingScreen" });
             }}
           >
             <View>
