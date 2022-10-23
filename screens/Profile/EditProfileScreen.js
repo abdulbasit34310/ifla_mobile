@@ -72,10 +72,6 @@ const EditProfileScreen = ({ navigation, route }) => {
         });
         let token1 = await SecureStore.getItemAsync("userToken");
 
-        var requestOptions = {
-          method: "PATCH",
-          body: JSON.stringify(objToSave),
-        };
         const [res1, res2] = await Promise.all([
           axios.patch(`${REST_API_LOCAL}/users/update`, objToSave, {
             withCredentials: true,

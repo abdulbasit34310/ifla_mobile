@@ -24,7 +24,9 @@ import { Card } from "react-native-paper";
 import * as SecureStore from "expo-secure-store";
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
+import * as Animatable from 'react-native-animatable';
 
+import { StatusBar } from 'expo-status-bar';
 import { AuthContext } from "../components/context";
 
 import bookingIllustration from "../assets/Booking.png";
@@ -61,14 +63,14 @@ registerForPushNotificationsAsync = async () => {
     console.log(token);
     let result = await SecureStore.getItemAsync("userToken")
     console.log(result)
-  
+
     try {
       var response = await axios.post(
         `${REST_API_LOCAL}/notifications/token`,
-        { token: { value: token } },{
-          withCredentials: true,
-          headers: {Authorization: `Bearer ${result}` },
-        }
+        { token: { value: token } }, {
+        withCredentials: true,
+        headers: { Authorization: `Bearer ${result}` },
+      }
       );
       console.log(response.data);
     } catch (error) {
@@ -88,7 +90,6 @@ registerForPushNotificationsAsync = async () => {
     });
   }
 }
-// const REST_API_LOCAL = "http://192.168.0.111:4000";
 
 const MainScreen = ({ route, navigation }) => {
   const [token, setToken] = React.useState();
@@ -171,12 +172,13 @@ const MainScreen = ({ route, navigation }) => {
   };
 
   return (
+
     <View style={styles.container}>
+      <StatusBar style="light" />
       <View style={styles.topSection}>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <Text style={{ color: "#E0EFF6", fontSize: 18, fontWeight: "bold" }}>
-            Welcome,
-            {"\n"} {getData}
+            Welcome, {"\n"} {getData}
           </Text>
           <TouchableOpacity>
             <MaterialCommunityIcons
@@ -188,7 +190,9 @@ const MainScreen = ({ route, navigation }) => {
         </View>
       </View>
 
-      <View style={styles.bottomSection}>
+      <Animatable.View style={styles.bottomSection}
+        animation="fadeInUp"
+      >
         <View style={styles.cardRow}>
           <TouchableOpacity
             style={styles.card}
@@ -271,7 +275,7 @@ const MainScreen = ({ route, navigation }) => {
             }} />
           </TouchableOpacity> */}
         </View>
-      </View>
+      </Animatable.View>
     </View>
   );
 };
@@ -291,7 +295,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   bottomSection: {
-    flex: 2,
+    flex: 1,
     backgroundColor: "#E0EFF6",
     borderTopLeftRadius: 14,
     borderTopRightRadius: 14,

@@ -13,13 +13,7 @@ import {
 } from "react-native";
 import { Drawer, Title, Caption } from "react-native-paper";
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
-import {
-  MaterialIcons,
-  MaterialCommunityIcons,
-  FontAwesome,
-  Octicons,
-  Feather,
-} from "react-native-vector-icons";
+import { AntDesign, Entypo, EvilIcons, Feather, FontAwesome, FontAwesome5, FontAwesome5Brands, Fontisto, Foundation, Ionicons, MaterialCommunityIcons, MaterialIcons, Octicons, SimpleLineIcons, Zocial } from '@expo/vector-icons';
 import { AuthContext } from "../components/context";
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
@@ -81,8 +75,8 @@ export function CustomDrawer(props) {
           <Drawer.Section style={styles.drawerSection}>
             <DrawerItem
               icon={({ color, size }) => (
-                <MaterialCommunityIcons
-                  name="home-outline"
+                <Ionicons
+                  name="home"
                   color={color}
                   size={size}
                 />
@@ -94,8 +88,8 @@ export function CustomDrawer(props) {
             />
             <DrawerItem
               icon={({ color, size }) => (
-                <MaterialCommunityIcons
-                  name="account-outline"
+                <FontAwesome
+                  name="user-circle"
                   color={color}
                   size={size}
                 />
@@ -110,7 +104,7 @@ export function CustomDrawer(props) {
               icon={({ color, size }) => (
                 <MaterialCommunityIcons
                   name="credit-card"
-                  color={{ color }}
+                  color={color}
                   size={size}
                 />
               )}
@@ -119,6 +113,47 @@ export function CustomDrawer(props) {
                 props.navigation.navigate("Payments");
               }}
             />
+
+            <DrawerItem
+              icon={({ color, size }) => (
+                <MaterialIcons
+                  name="feedback"
+                  color={color}
+                  size={size}
+                />
+              )}
+              label="Feedback"
+              onPress={() => {
+                props.navigation.navigate("Feedback");
+              }}
+            />
+
+            <DrawerItem
+              icon={({ color, size }) => (
+                <FontAwesome name='wrench'
+                  color={color}
+                  size={size}
+                />
+              )}
+              label="Complaint"
+              onPress={() => {
+                props.navigation.navigate("Complaint");
+              }}
+            />
+
+            <DrawerItem
+              icon={({ color, size }) => (
+                <Ionicons name='ios-moon'
+                  color={color}
+                  size={size}
+                />
+              )}
+              label="Dark Mode"
+              onPress={() => {
+                props.navigation.navigate("Complaint");
+              }}
+            />
+
           </Drawer.Section>
         </View>
       </DrawerContentScrollView>
@@ -126,8 +161,8 @@ export function CustomDrawer(props) {
       <Drawer.Section style={styles.bottomDrawerSection}>
         <DrawerItem
           icon={({ color, size }) => (
-            <MaterialCommunityIcons
-              name="exit-to-app"
+            <Entypo
+              name="log-out"
               color={color}
               size={size}
             />

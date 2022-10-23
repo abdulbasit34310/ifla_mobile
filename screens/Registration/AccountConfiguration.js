@@ -29,6 +29,9 @@ import {
   Octicons,
   Feather,
 } from 'react-native-vector-icons';
+import { AuthContext } from "../../components/context";
+import axios from "axios";
+
 import { REST_API_LOCAL } from "@env";
 
 const Theme = {
@@ -268,7 +271,7 @@ function NTN({ nextStep, data, setData }) {
     </View>
   );
 }
-function Industry({ nextStep, data, setData }) {
+function Industry({ nextStep, data, setData, postData }) {
   return (
     <View style={styles.container}>
       <View style={styles.cardContainer}>
@@ -290,6 +293,7 @@ function Industry({ nextStep, data, setData }) {
             onPress={() => {
               if (data.industry) {
                 nextStep();
+                postData();
               } else {
                 fillToast();
               }
@@ -303,7 +307,7 @@ function Industry({ nextStep, data, setData }) {
                     color: 'white',
                   },
                 ]}>
-                Next
+                Welcome
               </Text>
             </View>
           </TouchableOpacity>
@@ -314,11 +318,78 @@ function Industry({ nextStep, data, setData }) {
 }
 
 const Success = ({ navigation, nextStep, backStep, setData, data }) => {
-  return <div>Account Configuration Done Succsfully</div>;
+  return (
+    <View><Text> Nice</Text></View>
+  )
 };
 
 export default function AccountConfiguration({ navigation, route }) {
-  // const foundUser = route.params.item;
+  const { signIn } = React.useContext(AuthContext);
+
+  var item = route.params.item;
+
+  const itemData = {
+    email: item.email,
+    password: item.password,
+  }
+
+  console.log("Item Data which came from Sign Up Screen");
+  console.log(itemData);
+
+  const postData = async () => {
+
+    var obj = {
+      name: data.name,
+      phoneNo: data.phoneNo,
+      cnic: data.cnic,
+      ntn: data.ntn,
+      industry: data.industry,
+    }
+
+
+    const response2 = await axios.post(`${REST_API_LOCAL}/users/login`, itemData)
+      .catch((error) => {
+        if (error.response) {
+          console.log(error.response2.data);
+          console.log(error.response2.status);
+          Alert.alert("Invalid User!", "Email or password is incorrect.", [
+            { text: "OK" },
+          ]);
+          return;
+        }
+      });
+
+    const recievedData2 = await response2.data;
+
+    const token = recievedData2.token;
+    const email = recievedData2.user.email;
+    const foundUser = { userToken: token, email: email };
+
+    const headers = { Authorization: `Bearer ${token}` };
+    const response3 = await axios.get(`${REST_API_LOCAL}/users/getUser`, {
+      withCredentials: true,
+      headers: headers,
+    });
+    const recievedData3 = await response3.data;
+
+    const companyId = recievedData3.company._id;
+
+    const response = await axios.patch(`${REST_API_LOCAL}/users/config/${companyId}`, obj, {
+      withCredentials: true,
+      headers: { Authorization: `Bearer ${token}` }
+    }).catch((error) => {
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      } else if (error.request) {
+        console.log(error.request);
+      }
+    });
+    console.log(response.data);
+    signIn(foundUser);
+  };
+
 
   const [step, setStep] = React.useState(0);
 
@@ -342,8 +413,6 @@ export default function AccountConfiguration({ navigation, route }) {
       industry: '',
     });
   };
-
-  const postData = () => { };
 
   const backStep = () => {
     const { step1 } = data;
@@ -400,6 +469,7 @@ export default function AccountConfiguration({ navigation, route }) {
           backStep={backStep}
           data={data}
           setData={setData}
+          postData={postData}
         />
       );
     case 5:
