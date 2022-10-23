@@ -15,6 +15,7 @@ import {
   useConfirmPayment,
 } from "@stripe/stripe-react-native";
 import axios from "axios";
+import { REST_API_LOCAL } from "@env";
 
 const Payment = ({ route }) => {
   const [name, setName] = useState("");
@@ -30,7 +31,7 @@ const Payment = ({ route }) => {
 
   const getPublishableKey = async () => {
     try {
-      const response = await fetch("http://192.168.100.133:4000/payments/config");
+      const response = await fetch(`${REST_API_LOCAL}/payments/config`);
       const { publishableKey } = await response.json();
       console.log(publishableKey);
       return publishableKey;

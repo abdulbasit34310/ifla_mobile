@@ -33,7 +33,7 @@ import bookingIllustration from "../assets/Booking.png";
 import gaqIllustration from "../assets/gaq.png";
 import walletIllustration from "../assets/Wallet.png";
 import trackingIllustration from "../assets/Tracking.png";
-
+import { REST_API_LOCAL } from "@env";
 import IFLAlogo from "../assets/IFLA.png";
 const axios = require("axios");
 
@@ -90,7 +90,6 @@ registerForPushNotificationsAsync = async () => {
     });
   }
 }
-const REST_API_LOCAL = "http://192.168.100.133:4000";
 
 const MainScreen = ({ route, navigation }) => {
   const [token, setToken] = React.useState();

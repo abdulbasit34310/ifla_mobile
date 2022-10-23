@@ -12,8 +12,8 @@ import {
 } from "react-native";
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
-// import { REST_API_LOCAL } from "@env";
-const REST_API_LOCAL = "http://192.168.100.133:4000";
+import { REST_API_LOCAL } from "@env";
+
 export default function ViewQuotes({ navigation, route }) {
   const [quoteData, setQuoteData] = React.useState();
   const [loading, setLoading] = React.useState(false);
