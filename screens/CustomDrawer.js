@@ -102,20 +102,6 @@ export function CustomDrawer(props) {
 
             <DrawerItem
               icon={({ color, size }) => (
-                <MaterialCommunityIcons
-                  name="credit-card"
-                  color={color}
-                  size={size}
-                />
-              )}
-              label="Payments"
-              onPress={() => {
-                props.navigation.navigate("Payments");
-              }}
-            />
-
-            <DrawerItem
-              icon={({ color, size }) => (
                 <MaterialIcons
                   name="feedback"
                   color={color}

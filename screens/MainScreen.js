@@ -60,9 +60,7 @@ registerForPushNotificationsAsync = async () => {
       return;
     }
     token = (await Notifications.getExpoPushTokenAsync()).data;
-    console.log(token);
     let result = await SecureStore.getItemAsync("userToken")
-    console.log(result)
 
     try {
       var response = await axios.post(
@@ -72,7 +70,6 @@ registerForPushNotificationsAsync = async () => {
         headers: { Authorization: `Bearer ${result}` },
       }
       );
-      console.log(response.data);
     } catch (error) {
       console.warn(error);
       console.log(error);
@@ -102,7 +99,6 @@ const MainScreen = ({ route, navigation }) => {
 
   const getSignedInUserCredentials = async () => {
     let token1 = await SecureStore.getItemAsync("userToken");
-    console.log(token1);
     const headers = { Authorization: `Bearer ${token1}` };
     const response = await axios.get(`${REST_API_LOCAL}/users/getUser`, {
       withCredentials: true,

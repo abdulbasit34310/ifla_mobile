@@ -1,9 +1,6 @@
-import React, { useState, useCallback, useEffect, useRef, useMemo } from 'react';
+import React from 'react';
 import { StyleSheet, Text, View, Button, TouchableOpacity, TextInput, Dimensions, FlatList, ActivityIndicator, } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { AntDesign, Entypo, EvilIcons, Feather, FontAwesome, FontAwesome5, FontAwesome5Brands, Fontisto, Foundation, Ionicons, MaterialCommunityIcons, MaterialIcons, Octicons, SimpleLineIcons, Zocial } from '@expo/vector-icons';
-
-import RadioButton from './RadioButton';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const LoadMoneyToWallet = ({ navigation }) => {
 
@@ -35,7 +32,7 @@ const LoadMoneyToWallet = ({ navigation }) => {
       </View>
 
       <TouchableOpacity style={styles.customButton}
-        onPress={() => { navigation.navigate("Payment", { id: getNo }) }}>
+        onPress={() => { navigation.navigate("Payment", { getNo: parseInt(getNo) }) }}>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <MaterialCommunityIcons name="bank-transfer-in" size={26} color={"white"} />
           <Text
