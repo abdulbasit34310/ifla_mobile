@@ -1,9 +1,30 @@
-import React, { useState, useCallback, useEffect, useRef, useMemo, } from 'react';
+import React from 'react';
 import { StyleSheet, View, SafeAreaView, TouchableOpacity, Image, } from 'react-native';
-import { Card, Text, Title } from 'react-native-paper';
-import { MaterialIcons, MaterialCommunityIcons, FontAwesome, Octicons, Feather, EvilIcons } from 'react-native-vector-icons';
+import { Text, Title } from 'react-native-paper';
+import { EvilIcons } from 'react-native-vector-icons';
+import axios from "axios";
+import { REST_API_LOCAL } from "@env";
+import * as SecureStore from "expo-secure-store";
 
 export default function Wallet({ route, navigation }) {
+    const [balance, setBalance] = React.useState(0)
+    
+    async function getBalance() {
+        let token1 = await SecureStore.getItemAsync("userToken");
+        const headers = { Authorization: `Bearer ${token1}` };
+        const response = await axios.get(`${REST_API_LOCAL}/users/getUser`, {
+            withCredentials: true,
+            headers: headers,
+        });
+        setBalance(response.data.wallet)
+    }
+
+    React.useEffect(()=>{
+			navigation.addListener("focus", () => {
+				getBalance()
+			});
+    },[navigation])
+
     return (
         <View style={styles.container}>
 
@@ -17,7 +38,7 @@ export default function Wallet({ route, navigation }) {
                                     fontSize: 24,
                                     fontWeight: 'bold',
                                 }}>
-                                PKR.
+                                PKR.{balance}
                             </Title>
                             <EvilIcons name='arrow-right' size={28} style={{ left: 125, top: 90 }} />
                         </View>

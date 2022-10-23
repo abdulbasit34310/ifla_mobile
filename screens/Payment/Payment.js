@@ -16,24 +16,21 @@ import {
 } from "@stripe/stripe-react-native";
 import axios from "axios";
 import { REST_API_LOCAL } from "@env";
+import * as SecureStore from "expo-secure-store";
 
-const Payment = ({ route }) => {
+const Payment = ({ navigation, route }) => {
   const [name, setName] = useState("");
   const { confirmPayment, loading } = useConfirmPayment();
   const [saveCard, setSaveCard] = useState(false);
   const [isComplete, setComplete] = useState(false);
   const [publishableKey, setPublishableKey] = useState(null);
 
-  let payId,
-    id = undefined;
-  if (route.params.hasOwnProperty("payId")) payId = route.params.payId;
-  if (route.params.hasOwnProperty("amount")) amount = route.params.getNo;
 
   const getPublishableKey = async () => {
     try {
       const response = await fetch(`${REST_API_LOCAL}/payments/config`);
       const { publishableKey } = await response.json();
-      console.log(publishableKey);
+      console.log(publishableKey)
       return publishableKey;
     } catch (e) {
       console.log(e);
@@ -47,7 +44,12 @@ const Payment = ({ route }) => {
   };
 
   const fetchPaymentIntentClientSecret = async () => {
-    const body = { payId: payId, id: id, amount:route.params.getNo};
+    let payId,amount = undefined;
+    if (route.params.hasOwnProperty("payId")) payId = route.params.payId;
+    if (route.params.hasOwnProperty("getNo")){
+      amount = route.params.getNo;
+    }
+    const body = { payId: payId, amount:amount};
     const response = await axios.post(
       `${REST_API_LOCAL}/payments/create-checkout-session`,
       body
@@ -89,7 +91,18 @@ const Payment = ({ route }) => {
         `The payment was confirmed successfully! currency: ${paymentIntent.amount / 100
         } ${paymentIntent.currency}`
       );
-      console.log("Success from promise", paymentIntent);
+      // console.log("Success from promise", paymentIntent);
+
+      if (route.params.hasOwnProperty("getNo")){
+        let token1 = await SecureStore.getItemAsync("userToken");
+        const headers = { Authorization: `Bearer ${token1}` };
+        const response = await axios.post(`${REST_API_LOCAL}/payments/addToWallet`, {amount: route.params.getNo}, {
+          withCredentials: true,
+          headers: headers,
+        });
+      }
+
+      navigation.popToTop()
     }
   };
 
@@ -103,31 +116,17 @@ const Payment = ({ route }) => {
           onChange={(value) => setName(value.nativeEvent.text)}
           style={styles.input}
         />
-        <TextInput
-          autoCapitalize="none"
-          placeholder="Email"
-          keyboardType="email-address"
-          onChange={(value) => setName(value.nativeEvent.text)}
-          style={styles.input}
-        />
-        <TextInput
-          autoCapitalize="none"
-          placeholder="Contact Number"
-          keyboardType="number-pad"
-          onChange={(value) => setName(value.nativeEvent.text)}
-          style={styles.input}
-        />
         <CardField
           postalCodeEnabled={false}
           placeholder={{
             number: "4242 4242 4242 4242",
           }}
-          onCardChange={(cardDetails) => {
-            console.log("cardDetails", cardDetails);
-          }}
-          onFocus={(focusedField) => {
-            console.log("focusField", focusedField);
-          }}
+          // onCardChange={(cardDetails) => {
+          //   console.log("cardDetails", cardDetails);
+          // }}
+          // onFocus={(focusedField) => {
+          //   console.log("focusField", focusedField);
+          // }}
           cardStyle={inputStyles}
           style={styles.cardField}
         />
