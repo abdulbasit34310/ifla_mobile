@@ -35,7 +35,6 @@ export default function GoodsDetails({
   setBooking,
 }) {
   const [selectedValue, setSelectedValue] = React.useState("");
-  console.log(bookingData);
   const fillToast = () => {
     ToastAndroid.showWithGravity(
       "Please Add Details First",
@@ -164,7 +163,6 @@ export default function GoodsDetails({
                 ) {
                   nextStep();
                 } else {
-                  console.log(bookingData);
                   fillToast();
                 }
               }}

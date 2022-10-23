@@ -108,10 +108,8 @@ const MainScreen = ({ route, navigation }) => {
       withCredentials: true,
       headers: headers,
     });
-    console.log("HERE");
 
     const data = await response.data;
-    console.log(data.personId.email);
     setData(data.personId.email);
     // var keyValues = Object.keys(data);
 
@@ -167,32 +165,11 @@ const MainScreen = ({ route, navigation }) => {
     let result = SecureStore.getItemAsync("userToken").then((val) =>
       setToken(val)
     );
-    // console.log(result)
-    // if (result)
-    // // {
-    //     setToken(result)
   }
   const deleteToken = () => {
     SecureStore.deleteItemAsync("userToken");
     signOut();
   };
-
-  // const isTokenExpired = () => {
-  //   if (token) {
-  //     const expiry = JSON.parse(atob(token.split(".")[1])).exp;
-  //     console.log(expiry);
-  //     console.log(Math.floor(new Date().getTime() / 1000) >= expiry);
-  //     return Math.floor(new Date().getTime() / 1000) >= expiry;
-  //   }
-  //   return false;
-  // };
-
-  // React.useEffect(() => {
-  //   navigation.addListener("focus", () => {
-  //     getValueFor();
-  //     if (isTokenExpired()) deleteToken();
-  //   });
-  // }, [navigation]);
 
   return (
 
@@ -220,7 +197,7 @@ const MainScreen = ({ route, navigation }) => {
           <TouchableOpacity
             style={styles.card}
             onPress={() => {
-              navigation.navigate("FreightBooking");
+              navigation.navigate("FreightBooking", { screen: "BookingScreen" });
             }}
           >
             <View>

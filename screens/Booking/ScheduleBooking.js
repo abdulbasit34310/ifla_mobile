@@ -123,8 +123,6 @@ export default function ScheduleBooking({ route, navigation }) {
     const token = getValueFor("userToken");
     let token1 = await SecureStore.getItemAsync("userToken");
     const body = bookingData;
-    // body.package = packaging;
-    console.log(body);
     const headers = { Authorization: `Bearer ${token1}` };
     try {
       let res = await axios.post(
@@ -142,27 +140,6 @@ export default function ScheduleBooking({ route, navigation }) {
     } catch (error) {
       console.log(error.response.data);
     }
-
-    // let token1 = await SecureStore.getItemAsync("userToken")
-    // .then(val=>setToken(val));
-    console.log(token1);
-    // var obj = {
-    //     method: 'POST',
-    //     body: JSON.stringify(body),
-    //     withCredentials: true,
-    //     credentials: 'include',
-    //     headers: {
-    //         'Authorization': `Bearer ${token1}`
-    //     }
-    //   }
-    // const response =
-    // fetch(`${REST_API_LOCAL}/shipper/saveBookingMobile`, obj).then(response => console.log(response.json())).catch(err => console.log(err))
-    // const token = getValueFor('userToken')
-    // const headers = { "Authorization": `Bearer ${token}` }
-    // const response = await axios.get(`${REST_API_LOCAL}/shipper/getPendingBookings`, { headers: headers });
-    // const data = await response.data.bookings;
-    // let data = await response.json()
-    // console.log(data)
   };
 
   async function getValueFor(key) {

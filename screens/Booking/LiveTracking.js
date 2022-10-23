@@ -14,7 +14,6 @@ const LATITUDE_DELTA = 0.4;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 const LiveTracking = ({ route, navigation }) => {
-  // console.log(route.params)
   const [bookingData, setBookingData] = React.useState(route.params);
   // const [getLatitude, setLatitude] = React.useState(0);
   // const [getLongitude, setLongitude] = React.useState(0);

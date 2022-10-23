@@ -204,7 +204,6 @@ export default function BookingDetails({
                 ) {
                   nextStep();
                 } else {
-                  console.log(bookingData);
                   fillToast();
                 }
               }}
