@@ -4,11 +4,11 @@
     "slug": "IFLA",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/IFLA.png",
     "scheme": "mycoolredirect",
     "facebookScheme": "fb289957453344043",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/IFLA.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },

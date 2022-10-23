@@ -30,7 +30,6 @@ const Payment = ({ navigation, route }) => {
     try {
       const response = await fetch(`${REST_API_LOCAL}/payments/config`);
       const { publishableKey } = await response.json();
-      console.log(publishableKey)
       return publishableKey;
     } catch (e) {
       console.log(e);
