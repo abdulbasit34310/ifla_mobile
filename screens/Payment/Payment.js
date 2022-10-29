@@ -100,9 +100,10 @@ const Payment = ({ navigation, route }) => {
           withCredentials: true,
           headers: headers,
         });
+        navigation.popToTop()
       }
-
-      navigation.popToTop()
+      else
+        navigation.navigate("BookingScreen")
     }
   };
 

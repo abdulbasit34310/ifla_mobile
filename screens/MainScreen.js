@@ -107,24 +107,6 @@ const MainScreen = ({ route, navigation }) => {
 
     const data = await response.data;
     setData(data.personId.email);
-    // var keyValues = Object.keys(data);
-
-    // let credential = {};
-
-    // for (let i = 0; i < keyValues.length; i++) {
-    //     let key = keyValues[i];
-    //     if (data[key].email == email) {
-    //         credential = {
-    //             keyId: key,
-    //             name: data[key].name,
-    //             email: data[key].email,
-    //             address: data[key].address,
-    //             phoneNo: data[key].phoneNo
-    //         };
-    //         setData(credential)
-    //         break;
-    //     }
-    // }
   };
 
   React.useEffect(() => {

@@ -4,7 +4,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const LoadMoneyToWallet = ({ navigation }) => {
 
-  const [getNo, setNo] = React.useState(0);
+  const [getNo, setNo] = React.useState("150");
 
   return (
     <View style={styles.container}>
@@ -30,8 +30,10 @@ const LoadMoneyToWallet = ({ navigation }) => {
           onChangeText={(text) => setNo(text)}
         />
       </View>
-
-      <TouchableOpacity style={styles.customButton}
+      {
+        parseInt(getNo) < 150 || getNo=="" ? (<Text style={{color:"red"}}>Choose an amount more than 150</Text>):null
+      }
+      <TouchableOpacity style={styles.customButton} disabled={parseInt(getNo) < 150 ? true:false}
         onPress={() => { navigation.navigate("Payment", { getNo: parseInt(getNo) }) }}>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <MaterialCommunityIcons name="bank-transfer-in" size={26} color={"white"} />
@@ -43,7 +45,7 @@ const LoadMoneyToWallet = ({ navigation }) => {
               },
             ]}
           >
-            Transfer
+            Deposit
           </Text>
         </View>
       </TouchableOpacity>

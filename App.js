@@ -38,6 +38,8 @@ import ChangePassword from "./screens/Profile/ChangePassword";
 
 import Feedback from "./screens/Feedback";
 import Complaint from "./screens/Complaint";
+import PaymentMethod from "./screens/Payment/PaymentMethod";
+import PayByWallet from "./screens/Payment/PayByWallet";
 
 const Drawer = createDrawerNavigator();
 
@@ -330,11 +332,11 @@ function FreightBookingStack({ route }) {
         component={MyBookingDetails}
         options={{ title: "Booking Details" }}
       />
-      {/* <Stack.Screen
+      <Stack.Screen
         name="Payments"
-        component={Payment}
-        options={{ title: "Pay Now" }}
-      /> */}
+        component={PaymentsStack}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen
         name="LiveTracking"
         component={LiveTracking}
@@ -406,12 +408,22 @@ function PaymentsStack({ route }) {
       <Stack.Screen
         name="LoadMoneyToWallet"
         component={LoadMoneyToWallet}
-        options={{ title: "LoadMoneyToWallet" }}
+        options={{ title: "Load Money" }}
       />
       <Stack.Screen
         name="Payment"
         component={Payment}
         options={{ title: "Pay Now" }}
+      />
+      <Stack.Screen
+        name="PaymentMethod"
+        component={PaymentMethod}
+        options={{ title: "Payment Method" }}
+      />
+      <Stack.Screen
+        name="PayByWallet"
+        component={PayByWallet}
+        options={{ title: "Paid By Wallet" }}
       />
     </Stack.Navigator>
   );

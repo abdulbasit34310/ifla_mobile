@@ -142,6 +142,16 @@ export default function PendingBookingDetails({ navigation, route }) {
             </Text>
           </View>
         </View>
+        {bookingData.payment.status == "Paid" ? null:
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("Payments", { screen:"PaymentMethod", params: {payId: bookingData.payment._id, amount:bookingData.payment.amount, bookingId:bookingData._id} });
+            }}
+            style={styles.button}
+          >
+          <Text style={styles.buttonText}>Pay Now</Text>
+          </TouchableOpacity>
+        }
         <TouchableOpacity
           onPress={() => {
             Alert.alert("Cancel Booking", "Are you sure?", [
@@ -162,14 +172,6 @@ export default function PendingBookingDetails({ navigation, route }) {
           style={styles.button}
         >
           <Text style={styles.buttonText}>Cancel Booking</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate("Payments", { payId: bookingData.payment._id });
-          }}
-          style={styles.button}
-        >
-          <Text style={styles.buttonText}>Pay Now</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
