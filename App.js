@@ -386,6 +386,11 @@ function ProfileStack({ route }) {
         component={ChangePassword}
         options={{ title: "Change Password" }}
       />
+      <Stack.Screen
+        name="Payments"
+        component={PaymentsStack}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 }
@@ -423,7 +428,7 @@ function PaymentsStack({ route }) {
       <Stack.Screen
         name="PayByWallet"
         component={PayByWallet}
-        options={{ title: "Paid By Wallet" }}
+        options={{ title: "Paid By Wallet", headerShown: false }}
       />
     </Stack.Navigator>
   );

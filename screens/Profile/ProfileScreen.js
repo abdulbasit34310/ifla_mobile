@@ -142,9 +142,13 @@ const ProfileScreen = ({ route, navigation }) => {
 
           <TouchableOpacity
             style={styles.infoBox}
-            // onPress={() => {
-            //   navigation.navigate("CompanyInformationScreen", { item: getData });
-            // }}
+            onPress={() => {
+              navigation.navigate("Payments", 
+             { screen: 'Wallet',
+              initial: false,
+              params:{item: getData}
+            });
+            }}
           >
             <View
               style={{
