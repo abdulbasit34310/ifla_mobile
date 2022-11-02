@@ -67,6 +67,7 @@ export default function GetAQuote({ route, navigation }) {
     console.log(data);
     console.log("Saving Done!");
     showToastWithGravity();
+    navigation.replace("ViewQuotes")
   };
 
   const showToastWithGravity = () => {

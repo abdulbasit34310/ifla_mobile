@@ -12,7 +12,7 @@ export default function Wallet({ route, navigation }) {
     async function getBalance() {
         let token1 = await SecureStore.getItemAsync("userToken");
         const headers = { Authorization: `Bearer ${token1}` };
-        const response = await axios.get(`${REST_API_LOCAL}/users/getUser`, {
+        const response = await axios.get(`${REST_API_LOCAL}/payments/getBalance`, {
             withCredentials: true,
             headers: headers,
         });
