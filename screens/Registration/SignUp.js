@@ -1,16 +1,9 @@
 import * as React from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  TextInput,
-  SafeAreaView,
-  ToastAndroid,
-  Image,
-} from "react-native";
+import { ActivityIndicator, Alert, Button, Dimensions, FlatList, ImageBackground, Image, ImageScrollView, Picker, Platform, StyleSheet, Switch, Text, TextInput, ToastAndroid, TouchableOpacity, View } from 'react-native';
 import Checkbox from "expo-checkbox";
-import { MaterialIcons, MaterialCommunityIcons, FontAwesome, Octicons, Feather } from 'react-native-vector-icons';
+import * as Animatable from 'react-native-animatable';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { AntDesign, Entypo, EvilIcons, Feather, FontAwesome, FontAwesome5, FontAwesome5Brands, Fontisto, Foundation, Ionicons, MaterialCommunityIcons, MaterialIcons, Octicons, SimpleLineIcons, Zocial } from '@expo/vector-icons';
 import axios from "axios";
 
 import IFLAlogo from "../../assets/IFLA.png";
@@ -148,10 +141,13 @@ const SignUp = ({ route, navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Image source={IFLAlogo} style={styles.IFLAlogo} />
+        <Animatable.Image
+          animation="lightSpeedIn"
+          duraton="1500" source={IFLAlogo} style={styles.IFLAlogo} />
       </View>
 
-      <SafeAreaView style={styles.footer}>
+      <Animatable.View
+        animation="fadeInUpBig" style={styles.footer}>
         <View>
           <Text
             style={{
@@ -296,7 +292,7 @@ const SignUp = ({ route, navigation }) => {
             </View>
           </TouchableOpacity>
         </View>
-      </SafeAreaView>
+      </Animatable.View>
     </SafeAreaView>
   );
 };
@@ -345,8 +341,8 @@ const styles = StyleSheet.create({
   },
   IFLAlogo: {
     alignSelf: "center",
-    width: 150,
-    height: 100,
+    width: 175,
+    height: 150,
   },
   customButton: {
     width: "100%",
@@ -355,7 +351,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 14,
     marginTop: 15,
-    elevation: 3,
+    elevation: 5,
   },
   buttonText: {
     fontSize: 18,

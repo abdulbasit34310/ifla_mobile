@@ -366,6 +366,7 @@ export default function AccountConfiguration({ navigation, route }) {
     const foundUser = { userToken: token, email: email };
 
     const headers = { Authorization: `Bearer ${token}` };
+    
     const response3 = await axios.get(`${REST_API_LOCAL}/users/getUser`, {
       withCredentials: true,
       headers: headers,
@@ -503,7 +504,7 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: 'white',
     borderRadius: 14,
-    elevation: 3,
+    elevation: 5,
     justifyContent: 'center',
     display: 'flex',
   },
@@ -514,7 +515,7 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     alignSelf: 'flex-end',
     marginTop: 20,
-    elevation: 3,
+    elevation: 5,
   },
   buttonText: {
     fontSize: 18,

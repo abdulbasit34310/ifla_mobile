@@ -13,7 +13,7 @@ import {
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 // import { REST_API_LOCAL } from "@env";
-const REST_API_LOCAL = "http://192.168.100.133:4000";
+const REST_API_LOCAL = "http://192.168.0.112:4000";
 export default function ViewQuotes({ navigation, route }) {
   const [quoteData, setQuoteData] = React.useState();
   const [loading, setLoading] = React.useState(false);
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     padding: 5,
-    elevation: 3,
+    elevation: 5,
     borderRadius: 3,
     backgroundColor: "#068E94",
   },

@@ -1,34 +1,15 @@
 import * as React from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  TextInput,
-  Image,
-  Alert,
-  Platform,
-  Button,
-  ToastAndroid,
-  ScrollView,
-} from "react-native";
-import {
-  MaterialIcons,
-  MaterialCommunityIcons,
-  FontAwesome,
-  Octicons,
-  Feather,
-} from "react-native-vector-icons";
-import { AuthContext } from "../../components/context";
-
-// import * as SecureStore from 'expo-secure-store';
+import { ActivityIndicator, Alert, Button, Dimensions, FlatList, ImageBackground, Image, ImageScrollView, Picker, Platform, StyleSheet, Switch, Text, TextInput, ToastAndroid, TouchableOpacity, View } from 'react-native';
+import * as Animatable from 'react-native-animatable';
+import { AntDesign, Entypo, EvilIcons, Feather, FontAwesome, FontAwesome5, FontAwesome5Brands, Fontisto, Foundation, Ionicons, MaterialCommunityIcons, MaterialIcons, Octicons, SimpleLineIcons, Zocial } from '@expo/vector-icons';
+import axios from "axios";
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
 import * as Facebook from "expo-auth-session/providers/facebook";
-// import { ResponseType } from 'expo-auth-session';
 
+import { AuthContext } from "../../components/context";
 import IFLAlogo from "../../assets/IFLA.png";
-import axios from "axios";
+
 import {
   GOOGLE_ID,
   GOOGLE_ID_IOS,
@@ -37,8 +18,8 @@ import {
   FB_APPID,
 } from "@env";
 WebBrowser.maybeCompleteAuthSession();
-// import { REST_API_LOCAL } from "@env";
-const REST_API_LOCAL = "http://192.168.100.133:4000"
+
+const REST_API_LOCAL = "http://192.168.0.112:4000"
 
 const Login = ({ route, navigation }) => {
   const [data, setData] = React.useState({
@@ -62,14 +43,12 @@ const Login = ({ route, navigation }) => {
 
   const [requestFb, responseFb, promptAsyncFb] = Facebook.useAuthRequest({
     clientId: FB_APPID,
-    // responseType: ResponseType.Code,
   });
 
   React.useEffect(() => {
     if (responseFb?.type === "success") {
       const { authentication } = responseFb;
       console.log(authentication);
-      // saveFbUser(code)
       setAccessToken(authentication.accessToken);
 
       fbGetUserData();
@@ -83,12 +62,7 @@ const Login = ({ route, navigation }) => {
         headers: { Authorization: `Bearer ${accessToken}` },
       }
     );
-
     setUserInfo(userInfoResponse.data);
-    // json().then(data => {
-    // setUserInfo(data);
-    // console.log(data)
-    // });
   }
 
   const fbLoginToIfla = async (user) => {
@@ -106,10 +80,7 @@ const Login = ({ route, navigation }) => {
     }
   };
 
-  // const saveFbUser =  async (code)=>{
-  //   const response = await axios.post(`${REST_API_LOCAL}/users/facebookMobile`, {code:code,redirectUri:"https://auth.expo.io/@isala1/IFLA"})
-  //   console.log(response.data)
-  // }
+
   const { signIn } = React.useContext(AuthContext);
 
   const emailChange = (val) => {
@@ -179,8 +150,9 @@ const Login = ({ route, navigation }) => {
       );
       return;
     }
-    
+
     console.log(data.email);
+
     // If Username & password is incorrect.
     const body = { email: data.email.trim(), password: data.password };
     console.log(body);
@@ -244,10 +216,13 @@ const Login = ({ route, navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Image source={IFLAlogo} style={styles.IFLAlogo} />
+        <Animatable.Image
+          animation="lightSpeedIn"
+          duraton="1500" source={IFLAlogo} style={styles.IFLAlogo} />
       </View>
 
-      <View style={styles.footer}>
+      <Animatable.View
+        animation="fadeInUpBig" style={styles.footer}>
         <View>
           <Text
             style={{
@@ -364,7 +339,7 @@ const Login = ({ route, navigation }) => {
             </View>
           </TouchableOpacity>
         </View>
-      </View>
+      </Animatable.View>
     </View>
   );
 };
@@ -386,7 +361,7 @@ const styles = StyleSheet.create({
   IFLAlogo: {
     alignSelf: "center",
     width: 175,
-    height: 125,
+    height: 150,
   },
   action: {
     flexDirection: "row",
@@ -400,8 +375,6 @@ const styles = StyleSheet.create({
     paddingLeft: 12,
     color: "#05375a",
     fontSize: 15,
-    // borderBottomColor: '#777777',
-    // borderBottomWidth: 1
   },
   errorMessage: {
     color: "#FF0000",
@@ -414,7 +387,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 14,
     marginTop: 15,
-    elevation: 3,
+    elevation: 5,
   },
   buttonText: {
     fontSize: 18,

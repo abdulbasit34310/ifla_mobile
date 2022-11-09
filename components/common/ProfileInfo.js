@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
 	modalInnerContainer: {
 		backgroundColor: "white",
 		borderRadius: 20,
-		elevation: 3,
+		elevation: 5,
 		overflow: 'hidden' 
 	},
 	image: {

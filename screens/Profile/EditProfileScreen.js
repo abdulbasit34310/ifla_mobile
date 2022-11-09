@@ -428,8 +428,9 @@ export default EditProfileScreen;
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: "#E0EFF6",
     flex: 1,
-    padding: 25,
+    padding: 20,
   },
   userInfoSection: {
     marginTop: 10,
@@ -455,7 +456,7 @@ const styles = StyleSheet.create({
     marginTop: 45,
     width: "60%",
     height: 50,
-    elevation: 3,
+    elevation: 5,
   },
   action: {
     flexDirection: "row",

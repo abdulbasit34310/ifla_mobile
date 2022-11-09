@@ -17,25 +17,10 @@ import * as SecureStore from "expo-secure-store";
 import { REST_API_LOCAL } from "@env";
 
 export default function QuoteDetails({ navigation, route }) {
-  // const id= route.params;
+ 
   const [quoteData, setQuoteData] = React.useState(route.params.item);
-  // const{ PickupCity,  DropoffCity, Price, Weight }=quoteData;
 
-  // const getQuoteData = async () => {
-  //   const response = await fetch(`${FIREBASE_API_ENDPOINT}/bookings/${id}.json`);
-  //   const data = await response.json();
-  //   setQuoteData(data);
-
-  // };
   const deleteData = async () => {
-    // var requestOptions = {
-    //   method: 'DELETE',
-    // };
-
-    // fetch(`${FIREBASE_API_ENDPOINT}/bookings/${id}.json`, requestOptions)
-    //   .then((response) => response.json())
-    //   .then((result) => console.log('Delete Response:', result))
-    //   .catch((error) => console.log('error', error));
     let token1 = await SecureStore.getItemAsync("userToken");
     const headers = { Authorization: `Bearer ${token1}` };
 
@@ -48,9 +33,6 @@ export default function QuoteDetails({ navigation, route }) {
     console.log("Quote Deleted");
   };
 
-  // React.useEffect(() => {
-  //   getQuoteData();
-  // }, [setQuoteData]);
 
   return (
     <ScrollView>

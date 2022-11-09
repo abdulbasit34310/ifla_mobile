@@ -14,7 +14,8 @@ export default function MyBookingDetails({ navigation, route }) {
   const item = route.params;
   const [bookingData, setBookingData] = React.useState(item);
   console.log(bookingData)
-  const deleteData = async () => {
+
+  const deleteBookingDataFromShipperSide = async () => {
     let token1 = await SecureStore.getItemAsync("userToken");
     const headers = { Authorization: `Bearer ${token1}` };
     const response = await axios
@@ -24,152 +25,125 @@ export default function MyBookingDetails({ navigation, route }) {
       })
       .catch(function (error) {
         if (error.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
+
           console.log(error.response.data);
           console.log(error.response.status);
           console.log(error.response.headers);
         } else if (error.request) {
-          // The request was made but no response was received
-          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-          // http.ClientRequest in node.js
           console.log(error.request);
         } else {
-          // Something happened in setting up the request that triggered an Error
+
           console.log("Error", error.message);
         }
         console.log(error.config);
       });
 
     let data = await response.data;
-    // console.log(data);
+
   };
 
-  // React.useEffect(() => {
-  //   getBookingsData();
-  // }, [setBookingData]);
-
   return (
-    <ScrollView style={{ backgroundColor: "#E0EFF6" }}>
+    <View style={styles.container}>
 
-      <View style={styles.container}>
-        <Text
-          style={{
-            fontSize: 26,
-            fontWeight: "bold",
-            marginLeft: 20,
-            color: "#005761",
-          }}
-        >
-          {bookingData.shipmentDetails.type == "FTL"
-            ? "Full Truck Load"
-            : "Less Than Truck Load"}
-        </Text>
-        <Text
-          style={{
-            fontSize: 16,
-            fontWeight: "bold",
-            marginLeft: 20,
-            color: "black",
-          }}
-        >
-          {moment(bookingData.dateTime).utc().format("MMMM Do YYYY, h:mm:ss a")}
-        </Text>
+      <View style={styles.card} >
 
-        <Card style={styles.card} >
-          <View style={styles.locationSection}>
-
-            <SafeAreaView style={{width:"50%"}}>
-              <Text>
-                <FontAwesome name="location-arrow" color="#005761" size={18} />{" "}
-                Source
-              </Text>
-              <Text>
-                {bookingData.pickupAddress.city},{" "}
-                {bookingData.pickupAddress.building}{" "}
-                {bookingData.pickupAddress.street}
-              </Text>
-            </SafeAreaView>
-
-            <View>
-            </View>
-
-            <SafeAreaView style={{width:"50%"}}>
-              <Text>
-                <FontAwesome name="map-marker" color="#005761" size={18} />{" "}
-                Destination
-              </Text>
-              <Text>
-                {bookingData.dropoffAddress.city}{" "}
-                {bookingData.dropoffAddress.building}{" "}
-                {bookingData.dropoffAddress.street}{" "}
-              </Text>
-            </SafeAreaView>
+        <View style={{ paddingBottom: 10 }}>
+          <View style={styles.row}>
+            <Text style={styles.dataAndTimeStyle} >
+              {moment(bookingData.dateTime).utc().format("MMMM Do YYYY, h:mm a")}
+            </Text>
+            <Text style={styles.shipmentType}>
+              {bookingData.shipmentDetails.type == "FTL"
+                ? "FTL"
+                : "LTL"}
+            </Text>
           </View>
+        </View>
 
-          <Divider />
+        <Divider />
 
-          <View style={{ paddingBottom: 5 }}>
-            <View style={styles.propertyContainerStyle}>
-              <Text>Weight</Text>
-              <Text style={styles.propertyStyle}>
-                {bookingData.shipmentDetails.weight} kg
-              </Text>
-            </View>
+        <View style={styles.section}>
+          <View>
+            <Text style={styles.heading}>Pickup Location </Text>
+            <Text style={styles.addressContainer}>
+              {bookingData.pickupAddress.city},{" "}
+              {bookingData.pickupAddress.street}
+            </Text>
 
-            <View style={styles.propertyContainerStyle}>
-              <Text>Insurance</Text>
-              <Text style={styles.propertyStyle}>No</Text>
-            </View>
-
-            <View style={styles.propertyContainerStyle}>
-              <Text>Quantity</Text>
-              <Text style={styles.propertyStyle}>
-                {bookingData.shipmentDetails.quantity} Pcs
-              </Text>
-            </View>
-
-            <View style={styles.propertyContainerStyle}>
-              <Text>Status</Text>
-              <Text style={styles.propertyStyle}>{bookingData.status}</Text>
-            </View>
+            {bookingData.status == 'Assigned' ? null : (
+              <View>
+                <Text style={styles.heading}>Dropoff Location </Text>
+                <Text style={styles.addressContainer}>{bookingData.dropoffAddress.city},{" "}
+                  {bookingData.dropoffAddress.street}{" "}
+                </Text>
+              </View>
+            )}
           </View>
+        </View>
 
-          <Divider />
+        <Divider />
 
-          <View style={{ paddingBottom: 5 }}>
-            <View style={styles.propertyContainerStyle}>
-              <Text>Sub Total</Text>
-              <Text style={styles.propertyStyle}>
-                {bookingData.payment.amount} Rs
-              </Text>
-            </View>
-            <View style={styles.propertyContainerStyle}>
-              <Text>Insured Amount</Text>
-              <Text style={styles.propertyStyle}>N/A</Text>
-            </View>
-            <View style={styles.propertyContainerStyle}>
-              <Text>Tax</Text>
-              <Text style={styles.propertyStyle}>N/A</Text>
-            </View>
-          </View>
-          <Divider />
+        <View style={styles.section}>
 
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              marginTop: 10,
-            }}
-          >
-            <Text style={{ fontSize: 18 }}>Total</Text>
-            <Text style={styles.paymentStyle}>
-              {bookingData.payment.amount} Rs
+          <Text style={styles.heading}>Shipment Details</Text>
+
+          <View style={styles.row}>
+            <Text>Weight</Text>
+            <Text style={styles.propertyStyle}>
+              {bookingData.shipmentDetails.weight} kg
             </Text>
           </View>
 
-        </Card>
+          <View style={styles.row}>
+            <Text>Insurance</Text>
+            <Text style={styles.propertyStyle}>No</Text>
+          </View>
 
+          <View style={styles.row}>
+            <Text>Quantity</Text>
+            <Text style={styles.propertyStyle}>
+              {bookingData.shipmentDetails.quantity} Pcs
+            </Text>
+          </View>
+
+          <View style={styles.row}>
+            <Text>Status</Text>
+            <Text style={styles.propertyStyle}>{bookingData.status}</Text>
+          </View>
+        </View>
+
+        <Divider />
+
+        <View style={styles.section}>
+          <View style={styles.row}>
+            <Text>Sub Total</Text>
+            <Text style={styles.propertyStyle}>
+              {bookingData.payment.amount} Rs
+            </Text>
+          </View>
+          <View style={styles.row}>
+            <Text>Insured Amount</Text>
+            <Text style={styles.propertyStyle}>N/A</Text>
+          </View>
+          <View style={styles.row}>
+            <Text>Tax</Text>
+            <Text style={styles.propertyStyle}>N/A</Text>
+          </View>
+        </View>
+        <Divider />
+
+        <View style={styles.section}>
+          <View style={styles.row}>
+            <Text style={{ fontSize: 18 }}>Total</Text>
+            <Text style={styles.paymentStyle}>
+              {bookingData.payment.amount} PKR
+            </Text>
+          </View>
+        </View>
+
+      </View>
+
+      <View style={styles.row}>
         <TouchableOpacity
           onPress={() => {
             Alert.alert("Delete Booking Record", "Are you sure?", [
@@ -181,65 +155,82 @@ export default function MyBookingDetails({ navigation, route }) {
               {
                 text: "Confirm",
                 onPress: () => {
-                  deleteData();
+                  deleteBookingDataFromShipperSide();
                   navigation.goBack();
                 },
               },
             ]);
           }}
-          style={{
-            marginTop: 20,
-            padding: 10,
-            marginBottom: 20,
-            backgroundColor: "#068E94",
-            width: 200,
-            alignSelf: "center",
-            borderRadius: 14,
+          style={[styles.customButton, { backgroundColor: "#068E94" }]}
+        >
+          <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+            <Text style={[styles.buttonText, { color: "white", },]}>
+              Delete Booking
+            </Text>
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.customButton, { backgroundColor: "#068E94" }]}
+          onPress={() => {
+            navigation.push("LiveTracking", bookingData);
           }}
         >
-          <Text
-            style={{
-              alignSelf: "center",
-              color: "white",
-              fontWeight: "bold",
-              fontSize: 18,
-            }}
-          >
-            Delete Booking
-          </Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text
+              style={[
+                styles.buttonText,
+                {
+                  color: 'white',
+                },
+              ]}>
+              Live Location
+            </Text>
+          </View>
         </TouchableOpacity>
         
-        <TouchableOpacity
-                style={styles.customButton}
-                onPress={() => {
-                  navigation.push("LiveTracking", bookingData);
-                }}
-              >
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <MaterialCommunityIcons name="truck-delivery-outline" size={22} color={'white'} />
-                  <Text
-                    style={[
-                      styles.buttonText,
-                      {
-                        color: 'white',
-                      },
-                    ]}>
-                    Live Location
-                  </Text>
-                </View></TouchableOpacity>
       </View>
-    </ScrollView>
+
+    </View>
+
   );
 }
 
 const styles = StyleSheet.create({
-  container:
-  {
+  container: {
     backgroundColor: "#E0EFF6",
     height: "100%",
-    padding: 15
+    padding: 20,
   },
-  propertyContainerStyle: {
+  buttonText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginHorizontal: 5,
+  },
+  customButton: {
+    width: "100%",
+    height: 60,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 14,
+    marginTop: 20,
+    elevation: 5,
+  },
+  card: {
+    elevation: 5,
+    backgroundColor: "white",
+    padding: 20,
+    borderRadius: 14,
+  },
+  section: {
+    marginVertical: 10
+  },
+  heading: {
+    fontWeight: "bold",
+    fontSize: 15,
+    color: "#005761",
+  },
+  row: {
     flexDirection: "row",
     justifyContent: "space-between",
     marginTop: 5,
@@ -247,26 +238,34 @@ const styles = StyleSheet.create({
   },
   propertyStyle: {
     fontSize: 16,
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
-  paymentStyle:
-  {
+  paymentStyle:  {
     fontSize: 22,
     fontWeight: "bold",
     color: "#005761"
   },
-  card: {
-    elevation: 3,
-    backgroundColor: "white",
-    margin: 15,
-    padding: 20,
-    borderRadius: 14,
+  shipmentType: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: "#005761"
+  },
+  addressContainer: {
+    padding: 5,
+  },
+  dataAndTimeStyle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "black",
   },
   customButton: {
-    backgroundColor: "#005761",
-    padding: 5,
+    width: "45%",
+    height: 60,
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: 14,
-    elevation: 3,
+    marginTop: 20,
+    elevation: 5,
   },
   buttonText: {
     fontSize: 16,

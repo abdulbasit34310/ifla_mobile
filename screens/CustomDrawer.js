@@ -1,16 +1,5 @@
 import * as React from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  TextInput,
-  Image,
-  Alert,
-  Platform,
-  ToastAndroid,
-  ScrollView,
-} from "react-native";
+import { ActivityIndicator, Alert, Button, Dimensions, FlatList, ImageBackground, Image, ImageScrollView, Picker, Platform, StyleSheet, Switch, Text, TextInput, ToastAndroid, TouchableOpacity, View } from 'react-native';
 import { Drawer, Title, Caption } from "react-native-paper";
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
 import { AntDesign, Entypo, EvilIcons, Feather, FontAwesome, FontAwesome5, FontAwesome5Brands, Fontisto, Foundation, Ionicons, MaterialCommunityIcons, MaterialIcons, Octicons, SimpleLineIcons, Zocial } from '@expo/vector-icons';
@@ -41,10 +30,13 @@ export function CustomDrawer(props) {
   React.useEffect(() => {
     getUser();
   }, []);
+
   return (
+
     <View style={{ flex: 1, backgroundColor: "#E0EFF6" }}>
       <DrawerContentScrollView {...props}>
         <View style={styles.drawerContent}>
+
           <View style={styles.userInfoSection}>
             <View style={{ marginTop: 20 }}>
               {image ? (
@@ -59,16 +51,7 @@ export function CustomDrawer(props) {
                 />
               ) : null}
               {user !== null ? (
-                <View
-                  style={{
-                    marginLeft: 15,
-                    marginTop: 30,
-                    flexDirection: "column",
-                  }}
-                >
-                  <Title style={styles.title}>{user.username}</Title>
-                  <Caption style={styles.email}>{user.email}</Caption>
-                </View>
+                <Caption style={styles.emailStyle}>{user.email}</Caption>
               ) : null}
             </View>
           </View>
@@ -98,20 +81,6 @@ export function CustomDrawer(props) {
               label="Profile"
               onPress={() => {
                 props.navigation.navigate("Profile");
-              }}
-            />
-
-            <DrawerItem
-              icon={({ color, size }) => (
-                <MaterialCommunityIcons
-                  name="credit-card"
-                  color={color}
-                  size={size}
-                />
-              )}
-              label="Payments"
-              onPress={() => {
-                props.navigation.navigate("Payments");
               }}
             />
 
@@ -190,9 +159,9 @@ const styles = StyleSheet.create({
     marginTop: 3,
     fontWeight: "bold",
   },
-  email: {
-    fontSize: 13,
-    lineHeight: 13,
+  emailStyle: {
+    fontSize: 14,
+    marginTop: 15,
   },
   drawerSection: {
     marginTop: 15,

@@ -8,19 +8,23 @@ import {
     Image
 } from 'react-native';
 import Constants from 'expo-constants';
-
+import * as Animatable from 'react-native-animatable';
 import { MaterialIcons, FontAwesome, Octicons } from 'react-native-vector-icons';
 import IFLAlogo from '../../assets/IFLA.png';
 
 function Welcome({ navigation }) {
     return (
         <View style={styles.container}>
-            <View style={styles.header}><Image
+            <View style={styles.header}><Animatable.Image
+                animation="lightSpeedIn"
+                duraton="1500"
                 source={IFLAlogo}
                 style={styles.IFLAlogo}
             /></View>
 
-            <View style={styles.footer}>
+            <Animatable.View 
+            animation="fadeInUpBig"
+            style={styles.footer}>
 
                 <Text style={styles.title}>Getting Started ! </Text>
                 <TouchableOpacity style={styles.to} onPress={() => { navigation.navigate("Login") }}>
@@ -36,7 +40,7 @@ function Welcome({ navigation }) {
                     </View>
                 </TouchableOpacity>
 
-            </View>
+            </Animatable.View>
         </View>
     );
 }
@@ -90,7 +94,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 14,
-        elevation: 3,
+        elevation: 5,
     },
     IFLAlogo: {
         width: 250,

@@ -1,15 +1,66 @@
 import React, { useState, useCallback, useEffect, useRef, useMemo } from 'react';
-import { Animated, ActivityIndicator, Alert, Button, Dimensions, FlatList, Image, StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
+import { Card, Divider, TouchableRipple } from "react-native-paper";
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Animated, ActivityIndicator, Alert, Button, Dimensions, FlatList, Image, StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import { AntDesign, Entypo, EvilIcons, Feather, FontAwesome, FontAwesome5, FontAwesome5Brands, Fontisto, Foundation, Ionicons, MaterialCommunityIcons, MaterialIcons, Octicons, SimpleLineIcons, Zocial } from '@expo/vector-icons';
+
+import * as SecureStore from "expo-secure-store";
+import moment from "moment";
+import axios from "axios";
+
 import RadioButton from './RadioButton';
 
-function Ratings() {
+const REST_API_LOCAL = "http://192.168.0.112:4000";
+
+function Ratings({ navigation }) {
+
+    const [getData, setData] = React.useState({
+        ratings: defaultRating,
+        feedback: "",
+    })
+
     const [defaultRating, setDefaultRating] = React.useState(0);
     const [maxRating, setMaxRating] = React.useState([1, 2, 3, 4, 5]);
 
     const starImageFilled = 'https://raw.githubusercontent.com/tranhonghan/images/main/star_filled.png';
     const starImageCorner = 'https://raw.githubusercontent.com/tranhonghan/images/main/star_corner.png';
+
+    const saveRatingAndFeedback = async () => {
+        let token = await SecureStore.getItemAsync("userToken")
+        const headers = { Authorization: `Bearer ${token}` };
+        const body = getData;
+
+        const response1 = await axios.get(`${REST_API_LOCAL}/users/getUser`, {
+            withCredentials: true,
+            headers: headers,
+        });
+        const recievedData1 = await response1.data;
+
+        const shipperId = recievedData1.user._id;
+
+        console.log("Shipper Id");
+        console.log(shipperId);
+
+        try {
+            let response = await axios.post(
+                `${REST_API_LOCAL}/customerMobile/saveReviewAndFeedback/${shipperId}`,
+                body,
+                { withCredentials: true, headers: headers }
+            );
+            console.log("Response.Data");
+            console.log(response.data);
+            if (Platform.OS == 'android') {
+                ToastAndroid.showWithGravity(
+                    "Rating and Feedback Given",
+                    ToastAndroid.SHORT,
+                    ToastAndroid.CENTER
+                );
+            }
+            navigation.goBack();
+        } catch (error) {
+            console.log(error.response.data);
+        }
+    }
 
     const CustomRatingBar = () => {
         return (
@@ -50,14 +101,18 @@ function Ratings() {
 
     return (
         <View style={styles.container}>
+
+            <View style={{ paddingBottom: 15 }}>
+                <TouchableRipple style={{ width: '12%', borderRadius: 14, padding: 7, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', }} onPress={() => {
+                    navigation.goBack();
+                }}>
+                    <Entypo name='chevron-small-left' size={34} />
+                </TouchableRipple>
+            </View>
+
             <SafeAreaView style={styles.card}>
                 <View
-                    style={{
-                        borderBottomWidth: 1,
-                        borderBottomColor: "#AAAAAA"
-                    }}
-
-                >
+                    style={{ borderBottomWidth: 1, borderBottomColor: "#AAAAAA" }}>
                     <Text style={{ fontSize: 27 }}>Rate Your Experience</Text>
                     <Text style={{ fontSize: 12, color: 'grey', marginTop: 10, }} >Are you satisfied with the service?</Text>
                     <CustomRatingBar />
@@ -73,10 +128,13 @@ function Ratings() {
                     style={styles.ti}
                     placeholder="Tell us on how can we improve..."
                     placeholderTextColor="#666666"
+                    onChangeText={(text) => setData.feedback(text)}
                 ></TextInput>
 
                 <View>
-                    <TouchableOpacity style={styles.to}>
+                    <TouchableOpacity style={styles.to}
+                        onPress={saveRatingAndFeedback}
+                    >
                         <Text style={styles.buttonText}>Submit</Text>
                     </TouchableOpacity>
                 </View>
@@ -84,20 +142,20 @@ function Ratings() {
         </View>
     )
 }
+
 export default Ratings
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingHorizontal: 15,
-        paddingVertical: 35,
+        padding: 20,
         backgroundColor: "#00ABB2",
     },
     card: {
         backgroundColor: "#E0EFF6",
-        height: '100%',
+        height: '90%',
         borderRadius: 14,
-        padding: 15,
+        paddingHorizontal: 15,
     },
     customRatingBarStyle: {
         marginVertical: 15,
@@ -120,7 +178,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 14,
-        elevation: 3,
+        elevation: 5,
     },
     ti: {
         borderWidth: 1,

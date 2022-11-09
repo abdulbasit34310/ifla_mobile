@@ -1,30 +1,18 @@
-// Don't proceed to next screen without filling the necessary data, disable the next button
-
 import * as React from "react";
-import {
-  Text,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  TextInput,
-  FlatList,
-  ScrollView,
-  Alert,
-  Modal,
-  ActivityIndicator,
-  ToastAndroid,
-} from "react-native";
-
+import { ActivityIndicator, Alert, Button, Dimensions, FlatList, ImageBackground, Image, ImageScrollView, Modal, Picker, Platform, StyleSheet, Switch, Text, TextInput, ToastAndroid, TouchableOpacity, View } from 'react-native';
+import { AntDesign, Entypo, EvilIcons, Feather, FontAwesome, FontAwesome5, FontAwesome5Brands, Fontisto, Foundation, Ionicons, MaterialCommunityIcons, MaterialIcons, Octicons, SimpleLineIcons, Zocial } from '@expo/vector-icons';
+import { StatusBar } from 'expo-status-bar';
 import axios from "axios";
-// import { REST_API_LOCAL } from "@env";
 import * as SecureStore from "expo-secure-store";
-const REST_API_LOCAL = "http://192.168.100.133:4000";
 
 import GoodsDetails from "../../components/ScheduleBooking/GoodDetails";
-import BookingDetails from "../../components/ScheduleBooking/BookingDetails";
+import ShipmentDetails from "../../components/ScheduleBooking/ShipmentDetails";
 import ScheduleDetails from "../../components/ScheduleBooking/ScheduleDetails";
 import PreviewBooking from "../../components/ScheduleBooking/PreviewBooking";
-import { useEffect } from "react";
+
+// import { REST_API_LOCAL } from "@env";
+const REST_API_LOCAL = "http://192.168.0.112:4000";
+
 const Success = ({
   navigation,
   nextStep,
@@ -86,22 +74,6 @@ export default function ScheduleBooking({ route, navigation }) {
       amount: "",
     };
   }
-  //const [token,setToken] = React.useState(route.params.token)
-  // async function getValueFor(key) {
-  //     let result = await SecureStore.getItemAsync(key);
-  //     if (result) {
-  //         setToken(result)
-  //     } else {
-  //         navigation.navigate("RegisteringScreen")
-  //     }
-  //   }
-
-  // React.useEffect(()=>{
-  //     navigation.addListener('focus', () => {
-  //         getValueFor('token')
-  //       });
-  // },[navigation])
-
   const [bookingData, setBooking] = React.useState(quote);
 
   const clear = () => {
@@ -121,10 +93,9 @@ export default function ScheduleBooking({ route, navigation }) {
   };
 
   const postData = async () => {
-    const token = getValueFor("userToken");
     let token1 = await SecureStore.getItemAsync("userToken");
     const body = bookingData;
-    // body.package = packaging;
+
     console.log(body);
     const headers = { Authorization: `Bearer ${token1}` };
     try {
@@ -134,36 +105,19 @@ export default function ScheduleBooking({ route, navigation }) {
         { withCredentials: true, headers: headers }
       );
       console.log(res.data);
-      ToastAndroid.showWithGravity(
-        "Booking Saved",
-        ToastAndroid.SHORT,
-        ToastAndroid.CENTER
-      );
+      if (Platform.OS == 'android') {
+        ToastAndroid.showWithGravity(
+          "Booking Saved",
+          ToastAndroid.SHORT,
+          ToastAndroid.CENTER
+        );
+      }
       navigation.goBack();
     } catch (error) {
       console.log(error.response.data);
     }
 
-    // let token1 = await SecureStore.getItemAsync("userToken")
-    // .then(val=>setToken(val));
     console.log(token1);
-    // var obj = {
-    //     method: 'POST',
-    //     body: JSON.stringify(body),
-    //     withCredentials: true,
-    //     credentials: 'include',
-    //     headers: {
-    //         'Authorization': `Bearer ${token1}`
-    //     }
-    //   }
-    // const response =
-    // fetch(`${REST_API_LOCAL}/shipper/saveBookingMobile`, obj).then(response => console.log(response.json())).catch(err => console.log(err))
-    // const token = getValueFor('userToken')
-    // const headers = { "Authorization": `Bearer ${token}` }
-    // const response = await axios.get(`${REST_API_LOCAL}/shipper/getPendingBookings`, { headers: headers });
-    // const data = await response.data.bookings;
-    // let data = await response.json()
-    // console.log(data)
   };
 
   async function getValueFor(key) {
@@ -194,7 +148,8 @@ export default function ScheduleBooking({ route, navigation }) {
           {loading ? (
             <ActivityIndicator />
           ) : (
-            <BookingDetails
+            <ShipmentDetails
+              navigation={navigation}
               nextStep={nextStep}
               bookingData={bookingData}
               setBooking={setBooking}
@@ -243,7 +198,6 @@ export default function ScheduleBooking({ route, navigation }) {
         />
       );
     default:
-    //do nothing
   }
 }
 

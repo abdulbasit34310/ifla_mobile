@@ -1,11 +1,20 @@
-import React, { useState, useCallback, useEffect, useRef, useMemo, } from 'react';
-import { StyleSheet, View, SafeAreaView, TouchableOpacity, Image, } from 'react-native';
-import { Card, Text, Title } from 'react-native-paper';
-import { MaterialIcons, MaterialCommunityIcons, FontAwesome, Octicons, Feather, EvilIcons } from 'react-native-vector-icons';
+import React, { useState, useCallback, useEffect, useRef, useMemo } from 'react';
+import { Animated, ActivityIndicator, Alert, Button, Dimensions, FlatList, Image, StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Card, Divider, Title, TouchableRipple } from "react-native-paper";
+import { AntDesign, Entypo, EvilIcons, Feather, FontAwesome, FontAwesome5, FontAwesome5Brands, Fontisto, Foundation, Ionicons, MaterialCommunityIcons, MaterialIcons, Octicons, SimpleLineIcons, Zocial } from '@expo/vector-icons';
 
 export default function Wallet({ route, navigation }) {
     return (
         <View style={styles.container}>
+
+            <View style={{ padding: 5, paddingBottom: 15 }}>
+                <TouchableRipple style={{ width: '12%', borderRadius: 14, padding: 7, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', }} onPress={() => {
+                    navigation.goBack();
+                }}>
+                    <Entypo name='chevron-small-left' size={34} />
+                </TouchableRipple>
+            </View>
 
             <View style={styles.topSection}>
                 <View style={{ flexDirection: 'row', }}>
@@ -24,14 +33,14 @@ export default function Wallet({ route, navigation }) {
                     </TouchableOpacity>
 
                     <TouchableOpacity style={[styles.currentBalanceCard, { backgroundColor: 'white' }]}
-                        onPress={() => { navigation.navigate('LoadMoneyToWallet') }}>
+                        onPress={() => { navigation.push('LoadMoneyToWallet') }}>
                         <View>
                             <EvilIcons name='arrow-down' size={28} color={'black'} />
                             <Title
                                 style={{
                                     fontSize: 24,
                                     fontWeight: 'bold',
-                                    left: 30, top: 110
+                                    left: 20, top: 110
                                 }}>
                                 Load Money
                             </Title>

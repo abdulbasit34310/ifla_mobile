@@ -1,19 +1,9 @@
-import {
-  StyleSheet,
-  Text,
-  Alert,
-  TextInput,
-  Switch,
-  Button,
-  View,
-  TouchableOpacity,
-} from "react-native";
 import React, { useState, useCallback, useEffect, useRef, useMemo } from 'react';
-import {
-  CardField,
-  StripeProvider,
-  useConfirmPayment,
-} from "@stripe/stripe-react-native";
+import { Animated, ActivityIndicator, Alert, Button, Dimensions, FlatList, Image, StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Card, Divider, TouchableRipple } from "react-native-paper";
+import { AntDesign, Entypo, EvilIcons, Feather, FontAwesome, FontAwesome5, FontAwesome5Brands, Fontisto, Foundation, Ionicons, MaterialCommunityIcons, MaterialIcons, Octicons, SimpleLineIcons, Zocial } from '@expo/vector-icons';
+import { CardField, StripeProvider, useConfirmPayment, } from "@stripe/stripe-react-native";
 import axios from "axios";
 
 const Payment = ({ route }) => {
@@ -30,7 +20,7 @@ const Payment = ({ route }) => {
 
   const getPublishableKey = async () => {
     try {
-      const response = await fetch("http://192.168.100.133:4000/payments/config");
+      const response = await fetch("http://192.168.0.112:4000/payments/config");
       const { publishableKey } = await response.json();
       console.log(publishableKey);
       return publishableKey;
@@ -46,7 +36,7 @@ const Payment = ({ route }) => {
   };
 
   const fetchPaymentIntentClientSecret = async () => {
-    const body = { payId: payId, id: id, amount:route.params.getNo};
+    const body = { payId: payId, id: id, amount: route.params.getNo };
     const response = await axios.post(
       `${REST_API_LOCAL}/payments/create-checkout-session`,
       body
