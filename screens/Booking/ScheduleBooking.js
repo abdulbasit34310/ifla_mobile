@@ -3,6 +3,7 @@ import { ActivityIndicator, Alert, Button, Dimensions, FlatList, ImageBackground
 import { AntDesign, Entypo, EvilIcons, Feather, FontAwesome, FontAwesome5, FontAwesome5Brands, Fontisto, Foundation, Ionicons, MaterialCommunityIcons, MaterialIcons, Octicons, SimpleLineIcons, Zocial } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
 import axios from "axios";
+import { REST_API_LOCAL } from "@env";
 import * as SecureStore from "expo-secure-store";
 
 import GoodsDetails from "../../components/ScheduleBooking/GoodDetails";

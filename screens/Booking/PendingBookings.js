@@ -6,7 +6,7 @@ import { StatusBar } from 'expo-status-bar';
 import * as Animatable from 'react-native-animatable';
 import { Divider, TouchableRipple } from "react-native-paper";
 
-// import { REST_API_LOCAL } from "@env";
+import { REST_API_LOCAL } from "@env";
 import * as SecureStore from "expo-secure-store";
 import moment from "moment";
 
