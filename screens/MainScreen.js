@@ -73,27 +73,26 @@ registerForPushNotificationsAsync = async () => {
 }
 
 const MainScreen = ({ route, navigation }) => {
-  const [token, setToken] = React.useState();
   const { signOut } = React.useContext(AuthContext);
+
   const [pushToken, setPushToken] = useState(null);
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();
-  const [getData, setData] = React.useState("");
+
+  const [token, setToken] = React.useState();
+  const [shipperData, setShipperData] = React.useState("");
 
   const getSignedInUserCredentials = async () => {
-    let token1 = await SecureStore.getItemAsync("userToken");
-    // console.log(token1);
-    const headers = { Authorization: `Bearer ${token1}` };
+    let token = await SecureStore.getItemAsync("userToken");
+    const headers = { Authorization: `Bearer ${token}` };
     const response = await axios.get(`${REST_API_LOCAL}/users/getUser`, {
       withCredentials: true,
       headers: headers,
     });
-    // console.log("HERE");
 
     const data = await response.data;
-    // console.log(data.personId.name);
-    setData(data.personId.name);
+    Shipper(data.personId);
   };
 
   React.useEffect(() => {
@@ -145,7 +144,7 @@ const MainScreen = ({ route, navigation }) => {
       <View style={styles.topSection}>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <Text style={{ color: "#E0EFF6", fontSize: 18, fontWeight: "bold" }}>
-            Welcome, {getData}
+            Welcome, {shipperData.name}
           </Text>
           <TouchableOpacity>
             <MaterialCommunityIcons
@@ -164,7 +163,7 @@ const MainScreen = ({ route, navigation }) => {
           <TouchableOpacity
             style={styles.card}
             onPress={() => {
-              navigation.navigate("FreightBooking");
+              navigation.navigate("FreightBooking", shipperData);
             }}
           >
             <View>

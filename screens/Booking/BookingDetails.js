@@ -8,7 +8,7 @@ import * as SecureStore from "expo-secure-store";
 import moment from "moment";
 import axios from "axios";
 
-const REST_API_LOCAL = "http://192.168.0.112:4000";
+const REST_API_LOCAL = "http://192.168.0.115:4000";
 
 export default function BookingDetails({ navigation, route }) {
 
@@ -64,8 +64,44 @@ export default function BookingDetails({ navigation, route }) {
 
   };
 
+  const [getFeedback, setFeedback] = React.useState();
   const [defaultRating, setDefaultRating] = React.useState(0);
   const [maxRating, setMaxRating] = React.useState([1, 2, 3, 4, 5]);
+
+
+  const saveRatingAndFeedback = async () => {
+    console.log("Ratings " + getRatings);
+    console.log("Feedback " + getFeedback);
+
+    const body = {
+      ratings: getRatings,
+      feedback: getFeedback,
+      shipperId: id,
+    }
+
+    console.log("Body: -" + body);
+
+    let token = await SecureStore.getItemAsync("userToken");
+    const headers = { Authorization: `Bearer ${token}` };
+
+    let response = await axios.patch(
+      `${REST_API_LOCAL}/customerMobile/saveReviewAndFeedback`,
+      body,
+      { withCredentials: true, headers: headers }
+    );
+    console.log("Response.Data");
+    console.log(response.data);
+    if (Platform.OS == 'android') {
+      ToastAndroid.showWithGravity(
+        "Rating and Feedback Given",
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER
+      );
+    }
+    navigation.goBack();
+
+  }
+
 
   const CustomRatingBar = () => {
     return (

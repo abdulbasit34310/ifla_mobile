@@ -7,6 +7,8 @@ import * as Animatable from 'react-native-animatable';
 import IFLAlogo from "../../assets/IFLA.png";
 
 const BookingScreen = ({ navigation, route }) => {
+  const shipperData = route.params;
+
   return (
     <View style={styles.container}>
 
@@ -49,12 +51,9 @@ const BookingScreen = ({ navigation, route }) => {
           </TouchableOpacity>
         </View>
 
-
-
-
         <TouchableOpacity
           style={[styles.card, { width: '100%' }]}
-          onPress={() => navigation.navigate("TopTabNavigatorStack")}
+          onPress={() => navigation.navigate("TopTabNavigatorStack", shipperData)}
         >
           <Text style={styles.cardText}>My Bookings</Text>
         </TouchableOpacity>
