@@ -94,7 +94,7 @@ export function CustomDrawer(props) {
               )}
               label="Feedback"
               onPress={() => {
-                props.navigation.navigate("Feedback");
+                props.navigation.navigate("Feedback", user._id);
               }}
             />
 

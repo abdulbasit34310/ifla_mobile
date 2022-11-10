@@ -5,14 +5,13 @@ import axios from "axios";
 import { StatusBar } from 'expo-status-bar';
 import * as Animatable from 'react-native-animatable';
 import { Divider, TouchableRipple } from "react-native-paper";
-
-import { REST_API_LOCAL } from "@env";
 import * as SecureStore from "expo-secure-store";
 import moment from "moment";
 
 import NoBookingIllustration from "../../assets/NoBooking.png";
 
-const REST_API_LOCAL = "http://192.168.0.112:4000";
+// import { REST_API_LOCAL } from "@env";
+const REST_API_LOCAL = "http://192.168.0.115:4000";
 
 export default function PendingBookings({ route, navigation }) {
   const [bookingData, setBookingData] = React.useState();

@@ -11,7 +11,7 @@ import ShipmentDetails from "../../components/ScheduleBooking/ShipmentDetails";
 import ScheduleDetails from "../../components/ScheduleBooking/ScheduleDetails";
 import PreviewBooking from "../../components/ScheduleBooking/PreviewBooking";
 
-// const REST_API_LOCAL = "http://192.168.0.112:4000";
+// const REST_API_LOCAL = "http://192.168.0.115:4000";
 
 const Success = ({
   navigation,

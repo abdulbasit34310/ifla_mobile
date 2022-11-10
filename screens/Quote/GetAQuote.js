@@ -30,6 +30,7 @@ const Theme = {
   BLACK: "#00000",
   WHITE: "#FFFFFF",
 };
+
 export default function GetAQuote({ route, navigation }) {
   const [category, setCategory] = React.useState(0);
   const [isPickup, setIsPickup] = React.useState(true);
@@ -100,7 +101,7 @@ export default function GetAQuote({ route, navigation }) {
   });
 
   return (
-    <ScrollView>
+    <ScrollView style={{backgroundColor: Theme.SecondaryBackground}}>
       <View style={styles.container}>
         <StatusBar style="dark" />
 
@@ -395,7 +396,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   container: {
-    backgroundColor: Theme.SecondaryBackground,
+    // backgroundColor: Theme.SecondaryBackground,
     height: "100%",
     padding: 20,
     justifyContent: "center",

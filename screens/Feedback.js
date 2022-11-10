@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import { Card, Divider, TouchableRipple } from "react-native-paper";
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Animated, ActivityIndicator, Alert, Button, Dimensions, FlatList, Image, StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
+import { Animated, ActivityIndicator, Alert, Button, Dimensions, FlatList, Image, KeyboardAvoidingView, StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import { AntDesign, Entypo, EvilIcons, Feather, FontAwesome, FontAwesome5, FontAwesome5Brands, Fontisto, Foundation, Ionicons, MaterialCommunityIcons, MaterialIcons, Octicons, SimpleLineIcons, Zocial } from '@expo/vector-icons';
 
 import * as SecureStore from "expo-secure-store";
@@ -10,56 +10,49 @@ import axios from "axios";
 
 import RadioButton from './RadioButton';
 
-const REST_API_LOCAL = "http://192.168.0.112:4000";
+const REST_API_LOCAL = "http://192.168.0.115:4000";
 
-function Ratings({ navigation }) {
+function Ratings({ route, navigation }) {
 
-    const [getData, setData] = React.useState({
-        ratings: defaultRating,
-        feedback: "",
-    })
+    const id = route.params;
 
-    const [defaultRating, setDefaultRating] = React.useState(0);
+    const [getFeedback, setFeedback] = React.useState();
+
+    const [getRatings, setRatings] = React.useState(0);
     const [maxRating, setMaxRating] = React.useState([1, 2, 3, 4, 5]);
 
     const starImageFilled = 'https://raw.githubusercontent.com/tranhonghan/images/main/star_filled.png';
     const starImageCorner = 'https://raw.githubusercontent.com/tranhonghan/images/main/star_corner.png';
 
+
     const saveRatingAndFeedback = async () => {
-        let token = await SecureStore.getItemAsync("userToken")
-        const headers = { Authorization: `Bearer ${token}` };
-        const body = getData;
+        console.log("Ratings " + getRatings);
+        console.log("Feedback " + getFeedback);
 
-        const response1 = await axios.get(`${REST_API_LOCAL}/users/getUser`, {
-            withCredentials: true,
-            headers: headers,
-        });
-        const recievedData1 = await response1.data;
-
-        const shipperId = recievedData1.user._id;
-
-        console.log("Shipper Id");
-        console.log(shipperId);
-
-        try {
-            let response = await axios.post(
-                `${REST_API_LOCAL}/customerMobile/saveReviewAndFeedback/${shipperId}`,
-                body,
-                { withCredentials: true, headers: headers }
-            );
-            console.log("Response.Data");
-            console.log(response.data);
-            if (Platform.OS == 'android') {
-                ToastAndroid.showWithGravity(
-                    "Rating and Feedback Given",
-                    ToastAndroid.SHORT,
-                    ToastAndroid.CENTER
-                );
-            }
-            navigation.goBack();
-        } catch (error) {
-            console.log(error.response.data);
+        const body = {
+            ratings: getRatings,
+            feedback: getFeedback,
+            shipperId: id,
         }
+
+        let token = await SecureStore.getItemAsync("userToken");
+        const headers = { Authorization: `Bearer ${token}` };
+
+        let response = await axios.patch(
+            `${REST_API_LOCAL}/customerMobile/saveReviewAndFeedback`,
+            body,
+            { withCredentials: true, headers: headers }
+        );
+        console.log("Response.Data");
+        console.log(response.data);
+        if (Platform.OS == 'android') {
+            ToastAndroid.showWithGravity(
+                "Rating and Feedback Given",
+                ToastAndroid.SHORT,
+                ToastAndroid.CENTER
+            );
+        }
+        navigation.goBack();
     }
 
     const CustomRatingBar = () => {
@@ -71,12 +64,12 @@ function Ratings({ navigation }) {
                             <TouchableOpacity
                                 activeOpacity={0.7}
                                 key={item}
-                                onPress={() => { setDefaultRating(item) }}
+                                onPress={() => { setRatings(item) }}
                             >
                                 <Image
                                     style={styles.starImgStyle}
                                     source={
-                                        item <= defaultRating ? { uri: starImageFilled } :
+                                        item <= getRatings ? { uri: starImageFilled } :
                                             { uri: starImageCorner }
                                     }
                                 ></Image>
@@ -100,7 +93,7 @@ function Ratings({ navigation }) {
     ];
 
     return (
-        <View style={styles.container}>
+        <KeyboardAvoidingView style={styles.container}>
 
             <View style={{ paddingBottom: 15 }}>
                 <TouchableRipple style={{ width: '12%', borderRadius: 14, padding: 7, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', }} onPress={() => {
@@ -110,7 +103,7 @@ function Ratings({ navigation }) {
                 </TouchableRipple>
             </View>
 
-            <SafeAreaView style={styles.card}>
+            <View style={styles.card}>
                 <View
                     style={{ borderBottomWidth: 1, borderBottomColor: "#AAAAAA" }}>
                     <Text style={{ fontSize: 27 }}>Rate Your Experience</Text>
@@ -128,7 +121,7 @@ function Ratings({ navigation }) {
                     style={styles.ti}
                     placeholder="Tell us on how can we improve..."
                     placeholderTextColor="#666666"
-                    onChangeText={(text) => setData.feedback(text)}
+                    onChangeText={(text) => setFeedback(text)}
                 ></TextInput>
 
                 <View>
@@ -138,8 +131,8 @@ function Ratings({ navigation }) {
                         <Text style={styles.buttonText}>Submit</Text>
                     </TouchableOpacity>
                 </View>
-            </SafeAreaView>
-        </View>
+            </View>
+        </KeyboardAvoidingView>
     )
 }
 
