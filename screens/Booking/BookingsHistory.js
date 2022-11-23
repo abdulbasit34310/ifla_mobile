@@ -8,10 +8,11 @@ import * as SecureStore from "expo-secure-store";
 import moment from "moment";
 
 // import { REST_API_LOCAL } from "@env";
-const REST_API_LOCAL = "http://192.168.0.115:4000";
+const REST_API_LOCAL = "http://192.168.0.116:4000";
 
 export default function BookingsHistory({ route, navigation }) {
-    
+
+
     const [bookingData, setBookingData] = React.useState();
     const [loading, setLoading] = React.useState(true);
     const [token, setToken] = React.useState();
@@ -76,7 +77,10 @@ export default function BookingsHistory({ route, navigation }) {
                         >
                             <View>
 
-                                <View style={styles.action}>
+                                <View style={styles.action}><Text style={styles.dataAndTimeStyle}>ID: - {bookingData[index]._id}</Text></View>
+                                <Divider />
+
+                                <View style={[styles.action, { paddingTop: 5 }]}>
                                     <Text style={styles.dataAndTimeStyle}>
                                         {moment(bookingData[index].dateTime)
                                             .utc()

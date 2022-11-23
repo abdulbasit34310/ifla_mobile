@@ -36,10 +36,12 @@ export default function GoodsDetails({
   };
 
   return (
-    <View style={styles.container}>
-      <StatusBar style="dark" />
-      <View style={styles.card}>
-        <ScrollView>
+    <ScrollView>
+      <View style={styles.container}>
+        <StatusBar style="dark" />
+
+        <View style={styles.card}>
+
           <Text style={styles.header}>Goods Details</Text>
           <Text style={styles.buttonInsideText}>Select Goods Type: </Text>
           <Picker
@@ -57,6 +59,8 @@ export default function GoodsDetails({
             <Picker.Item label="Clothing" value="Clothing" />
             <Picker.Item label="Food" value="Food" />
             <Picker.Item label="Furniture" value="Furniture" />
+            <Picker.Item label="Petroleum" value="Petroleum" />
+
           </Picker>
 
           <Text style={styles.buttonInsideText}>Approx. Weight (kgs): </Text>
@@ -178,9 +182,10 @@ export default function GoodsDetails({
               ]}>Next</Text>
             </TouchableOpacity>
           </View>
-        </ScrollView>
+
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 

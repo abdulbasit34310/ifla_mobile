@@ -8,7 +8,7 @@ import * as SecureStore from "expo-secure-store";
 import moment from "moment";
 import axios from "axios";
 
-const REST_API_LOCAL = "http://192.168.0.115:4000";
+const REST_API_LOCAL = "http://192.168.0.116:4000";
 
 export default function BookingDetails({ navigation, route }) {
 
@@ -65,7 +65,7 @@ export default function BookingDetails({ navigation, route }) {
   };
 
   const [getFeedback, setFeedback] = React.useState();
-  const [defaultRating, setDefaultRating] = React.useState(0);
+  const [getRatings, setRatings] = React.useState(0);
   const [maxRating, setMaxRating] = React.useState([1, 2, 3, 4, 5]);
 
 
@@ -73,24 +73,34 @@ export default function BookingDetails({ navigation, route }) {
     console.log("Ratings " + getRatings);
     console.log("Feedback " + getFeedback);
 
+    let token = await SecureStore.getItemAsync("userToken");
+    const headers = { Authorization: `Bearer ${token}` };
+
+    const response = await axios.get(`${REST_API_LOCAL}/users/getUser`, {
+      withCredentials: true,
+      headers: headers,
+    });
+
+    const id = response.data.personId._id;
+    console.log("ID " + id);
+
     const body = {
       ratings: getRatings,
       feedback: getFeedback,
       shipperId: id,
+      bookingId: receivedData._id
     }
 
-    console.log("Body: -" + body);
+    console.log("Body: " + body);
 
-    let token = await SecureStore.getItemAsync("userToken");
-    const headers = { Authorization: `Bearer ${token}` };
-
-    let response = await axios.patch(
+    let response1 = await axios.patch(
       `${REST_API_LOCAL}/customerMobile/saveReviewAndFeedback`,
       body,
       { withCredentials: true, headers: headers }
     );
     console.log("Response.Data");
-    console.log(response.data);
+    console.log(response1.data);
+    
     if (Platform.OS == 'android') {
       ToastAndroid.showWithGravity(
         "Rating and Feedback Given",
@@ -102,7 +112,6 @@ export default function BookingDetails({ navigation, route }) {
 
   }
 
-
   const CustomRatingBar = () => {
     return (
       <View style={styles.customRatingBarStyle}>
@@ -112,12 +121,12 @@ export default function BookingDetails({ navigation, route }) {
               <TouchableOpacity
                 activeOpacity={0.7}
                 key={item}
-                onPress={() => { setDefaultRating(item) }}
+                onPress={() => { setRatings(item) }}
               >
                 <Image
                   style={styles.starImgStyle}
                   source={
-                    item <= defaultRating ? { uri: 'https://raw.githubusercontent.com/tranhonghan/images/main/star_filled.png' } :
+                    item <= getRatings ? { uri: 'https://raw.githubusercontent.com/tranhonghan/images/main/star_filled.png' } :
                       { uri: 'https://raw.githubusercontent.com/tranhonghan/images/main/star_corner.png' }
                   }
                 ></Image>
@@ -129,7 +138,6 @@ export default function BookingDetails({ navigation, route }) {
       </View>
     )
   }
-
 
   return (
     <ScrollView style={{ backgroundColor: "#E0EFF6", }}>
@@ -348,12 +356,14 @@ export default function BookingDetails({ navigation, route }) {
               style={styles.ti}
               placeholder="Tell us on how can we improve..."
               placeholderTextColor="#666666"
+              onChangeText={(text) => setFeedback(text)}
             ></TextInput>
 
 
             <View>
               <TouchableOpacity
                 style={[styles.customButton, { backgroundColor: "#068E94" }]}
+                onPress={saveRatingAndFeedback}
               >
                 <Text
                   style={[

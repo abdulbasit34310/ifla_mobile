@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import { Card, Divider, TouchableRipple } from "react-native-paper";
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Animated, ActivityIndicator, Alert, Button, Dimensions, FlatList, Image, KeyboardAvoidingView, StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
+import { Animated, ActivityIndicator, Alert, Button, Dimensions, FlatList, Image, KeyboardAvoidingView, StyleSheet, Text, View, ToastAndroid, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import { AntDesign, Entypo, EvilIcons, Feather, FontAwesome, FontAwesome5, FontAwesome5Brands, Fontisto, Foundation, Ionicons, MaterialCommunityIcons, MaterialIcons, Octicons, SimpleLineIcons, Zocial } from '@expo/vector-icons';
 
 import * as SecureStore from "expo-secure-store";
@@ -10,7 +10,7 @@ import axios from "axios";
 
 import RadioButton from './RadioButton';
 
-const REST_API_LOCAL = "http://192.168.0.115:4000";
+const REST_API_LOCAL = "http://192.168.0.116:4000";
 
 function Ratings({ route, navigation }) {
 
@@ -26,33 +26,45 @@ function Ratings({ route, navigation }) {
 
 
     const saveRatingAndFeedback = async () => {
-        console.log("Ratings " + getRatings);
-        console.log("Feedback " + getFeedback);
+        if (getFeedback || getRatings) {
 
-        const body = {
-            ratings: getRatings,
-            feedback: getFeedback,
-            shipperId: id,
-        }
+            console.log("Ratings " + getRatings);
+            console.log("Feedback " + getFeedback);
 
-        let token = await SecureStore.getItemAsync("userToken");
-        const headers = { Authorization: `Bearer ${token}` };
+            const body = {
+                ratings: getRatings,
+                feedback: getFeedback,
+                suggestion: option,
+                shipperId: id,
+            }
 
-        let response = await axios.patch(
-            `${REST_API_LOCAL}/customerMobile/saveReviewAndFeedback`,
-            body,
-            { withCredentials: true, headers: headers }
-        );
-        console.log("Response.Data");
-        console.log(response.data);
-        if (Platform.OS == 'android') {
-            ToastAndroid.showWithGravity(
-                "Rating and Feedback Given",
-                ToastAndroid.SHORT,
-                ToastAndroid.CENTER
+            let token = await SecureStore.getItemAsync("userToken");
+            const headers = { Authorization: `Bearer ${token}` };
+
+            let response = await axios.patch(
+                `${REST_API_LOCAL}/customerMobile/saveReviewAndFeedback`,
+                body,
+                { withCredentials: true, headers: headers }
             );
+            console.log("Response.Data");
+            console.log(response.data);
+            if (Platform.OS == 'android') {
+                ToastAndroid.showWithGravity(
+                    "Rating and Feedback Given",
+                    ToastAndroid.SHORT,
+                    ToastAndroid.CENTER
+                );
+            }
+            navigation.goBack();
+        } else {
+            if (Platform.OS == 'android') {
+                ToastAndroid.showWithGravity(
+                    "Atleast give rating or feedback.",
+                    ToastAndroid.SHORT,
+                    ToastAndroid.CENTER
+                );
+            }
         }
-        navigation.goBack();
     }
 
     const CustomRatingBar = () => {
@@ -82,7 +94,7 @@ function Ratings({ route, navigation }) {
         )
     }
 
-    const [option, setOption] = useState(null);
+    const [option, setOption] = useState();
 
     const data = [
         { value: 'Overall Service' },
@@ -105,7 +117,7 @@ function Ratings({ route, navigation }) {
 
             <View style={styles.card}>
                 <View
-                    style={{ borderBottomWidth: 1, borderBottomColor: "#AAAAAA" }}>
+                    style={{ borderBottomWidth: 1, borderBottomColor: "#AAAAAA", paddingTop: 10 }}>
                     <Text style={{ fontSize: 27 }}>Rate Your Experience</Text>
                     <Text style={{ fontSize: 12, color: 'grey', marginTop: 10, }} >Are you satisfied with the service?</Text>
                     <CustomRatingBar />
@@ -128,7 +140,7 @@ function Ratings({ route, navigation }) {
                     <TouchableOpacity style={styles.to}
                         onPress={saveRatingAndFeedback}
                     >
-                        <Text style={styles.buttonText}>Submit</Text>
+                        <Text style={styles.buttonText}>Submit </Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -142,13 +154,14 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 20,
-        backgroundColor: "#00ABB2",
+        backgroundColor: "#E0EFF6",
     },
     card: {
-        backgroundColor: "#E0EFF6",
+        backgroundColor: "white",
         height: '90%',
         borderRadius: 14,
         paddingHorizontal: 15,
+        paddingVertical: 10,
     },
     customRatingBarStyle: {
         marginVertical: 15,
