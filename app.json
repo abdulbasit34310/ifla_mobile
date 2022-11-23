@@ -4,7 +4,7 @@
     "slug": "IFLA",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/IFLA.png",
+    "icon": "./assets/IFLA_icon.png",
     "scheme": "mycoolredirect",
     "facebookScheme": "fb289957453344043",
     "splash": {
