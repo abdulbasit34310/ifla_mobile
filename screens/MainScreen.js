@@ -92,7 +92,7 @@ const MainScreen = ({ route, navigation }) => {
     });
 
     const data = await response.data;
-    Shipper(data.personId);
+    setShipperData(data.personId);
   };
 
   React.useEffect(() => {
