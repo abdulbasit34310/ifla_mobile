@@ -182,7 +182,7 @@ const Login = ({ route, navigation }) => {
     
     console.log(data.email);
     // If Username & password is incorrect.
-    const body = { email: data.email.trim(), password: data.password };
+    const body = { email: data.email.trim().toLowerCase(), password: data.password };
     console.log(body);
 
     const response = await axios.post(`${REST_API_LOCAL}/users/login`, body)
