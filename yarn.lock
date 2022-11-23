@@ -1096,7 +1096,7 @@
   "version" "0.4.8"
   dependencies:
     "@babel/runtime" "^7.14.0"
-    "@expo/code-signing-certificates" "^0.0.2"
+    "@expo/code-signing-certificates" "0.0.5"
     "@expo/config" "~7.0.2"
     "@expo/config-plugins" "~5.0.3"
     "@expo/dev-server" "0.1.123"
@@ -1106,7 +1106,7 @@
     "@expo/osascript" "^2.0.31"
     "@expo/package-manager" "~0.0.53"
     "@expo/plist" "^0.0.18"
-    "@expo/prebuild-config" "5.0.6"
+    "@expo/prebuild-config" "5.0.7"
     "@expo/rudder-sdk-node" "1.1.1"
     "@expo/spawn-async" "1.5.0"
     "@expo/xcpretty" "^4.2.1"
@@ -4139,7 +4139,7 @@
   "version" "47.0.3"
   dependencies:
     "@babel/runtime" "^7.14.0"
-    "@expo/cli" "0.4.8"
+    "@expo/cli" "0.4.10"
     "@expo/config" "7.0.3"
     "@expo/config-plugins" "5.0.4"
     "@expo/vector-icons" "^13.0.0"

@@ -22,7 +22,7 @@ export function CustomDrawer(props) {
     });
 
     const data = await response.data;
-    console.log(data);
+    // console.log(data);
     setImage(data.personId.image);
     setUser(data.personId);
   };
