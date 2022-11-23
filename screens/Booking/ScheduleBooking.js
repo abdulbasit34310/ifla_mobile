@@ -2,15 +2,7 @@
 
 import * as React from "react";
 import {
-  Text,
-  View,
   StyleSheet,
-  TouchableOpacity,
-  TextInput,
-  FlatList,
-  ScrollView,
-  Alert,
-  Modal,
   ActivityIndicator,
   ToastAndroid,
 } from "react-native";
@@ -31,7 +23,7 @@ const Success = ({
   setBooking,
   bookingData,
 }) => {
-  return <div>Booking Done Succsfully</div>;
+  return <div>Booking Done Successfully</div>;
 };
 
 export default function ScheduleBooking({ route, navigation }) {
@@ -54,6 +46,7 @@ export default function ScheduleBooking({ route, navigation }) {
       vehicle: "",
       length: "",
       width: "",
+      storage: "",
       date: date.toDateString(),
       time: date.toTimeString(),
       status: "Pending",
@@ -76,6 +69,7 @@ export default function ScheduleBooking({ route, navigation }) {
       vehicle: "",
       length: "",
       width: "",
+      storage: "",
       date: date.toDateString(),
       time: date.toTimeString(),
       status: "Pending",
@@ -85,21 +79,6 @@ export default function ScheduleBooking({ route, navigation }) {
       amount: "",
     };
   }
-  //const [token,setToken] = React.useState(route.params.token)
-  // async function getValueFor(key) {
-  //     let result = await SecureStore.getItemAsync(key);
-  //     if (result) {
-  //         setToken(result)
-  //     } else {
-  //         navigation.navigate("RegisteringScreen")
-  //     }
-  //   }
-
-  // React.useEffect(()=>{
-  //     navigation.addListener('focus', () => {
-  //         getValueFor('token')
-  //       });
-  // },[navigation])
 
   const [bookingData, setBooking] = React.useState(quote);
 
@@ -111,7 +90,6 @@ export default function ScheduleBooking({ route, navigation }) {
       vehicle: "",
       description: "",
       weight: "",
-      vehicle: "",
       offer: "",
       date: date.toDateString(),
       time: date.toTimeString(),
@@ -120,7 +98,6 @@ export default function ScheduleBooking({ route, navigation }) {
   };
 
   const postData = async () => {
-    const token = getValueFor("userToken");
     let token1 = await SecureStore.getItemAsync("userToken");
     const body = bookingData;
     const headers = { Authorization: `Bearer ${token1}` };
@@ -142,14 +119,6 @@ export default function ScheduleBooking({ route, navigation }) {
     }
   };
 
-  async function getValueFor(key) {
-    let result = await SecureStore.getItemAsync(key);
-    if (result) {
-      return result;
-    } else {
-      return "Token not in SecureStore";
-    }
-  }
 
   const prevStep = () => {
     const { step1 } = bookingData;

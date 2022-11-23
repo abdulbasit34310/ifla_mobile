@@ -55,7 +55,7 @@ const SignUp = ({ route, navigation }) => {
       data.validPassword
     ) {
       var obj = {
-        email: data.email,
+        email: data.email.toLowerCase(),
         password: data.password,
         companyName: data.companyName,
         userRole: "Shipper",
