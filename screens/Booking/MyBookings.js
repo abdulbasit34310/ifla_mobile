@@ -7,9 +7,7 @@ import { Divider, TouchableRipple } from "react-native-paper";
 import * as SecureStore from "expo-secure-store";
 import moment from "moment";
 import { StatusBar } from 'expo-status-bar';
-
-// import { REST_API_LOCAL } from "@env";
-const REST_API_LOCAL = "http://192.168.0.115:4000";
+import { REST_API_LOCAL } from "@env";
 
 export default function MyBookings({ route, navigation }) {
   const [bookingData, setBookingData] = React.useState();

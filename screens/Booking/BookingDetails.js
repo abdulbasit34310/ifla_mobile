@@ -7,8 +7,8 @@ import { AntDesign, Entypo, EvilIcons, Feather, FontAwesome, FontAwesome5, FontA
 import * as SecureStore from "expo-secure-store";
 import moment from "moment";
 import axios from "axios";
+import { REST_API_LOCAL } from "@env";
 
-const REST_API_LOCAL = "http://192.168.0.115:4000";
 
 export default function BookingDetails({ navigation, route }) {
 
