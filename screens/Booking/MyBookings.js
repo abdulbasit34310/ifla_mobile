@@ -17,7 +17,7 @@ export default function MyBookings({ route, navigation }) {
   const getBookingsData = async () => {
     let isSubscribed = true;
     let token1 = await SecureStore.getItemAsync("userToken");
-    // console.log(token1);
+    
     const headers = { Authorization: `Bearer ${token1}` };
     const resp = await axios.get(`${REST_API_LOCAL}/shipper/getBookings`, {
       withCredentials: true,

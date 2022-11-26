@@ -70,6 +70,7 @@ export default function GetAQuote({ route, navigation }) {
     console.log(data);
     console.log("Saving Done!");
     showToastWithGravity();
+    navigation.push("ViewQuotes")
   };
 
   const showToastWithGravity = () => {
@@ -107,7 +108,7 @@ export default function GetAQuote({ route, navigation }) {
 
         <View style={{ paddingBottom: 15, paddingTop: 10 }}>
           <TouchableRipple style={{ width: '12%', borderRadius: 14, padding: 7, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', }} onPress={() => {
-            navigation.popToTop();
+            navigation.goBack();
           }}>
             <Entypo name='chevron-small-left' size={34} />
           </TouchableRipple>
@@ -283,7 +284,7 @@ export default function GetAQuote({ route, navigation }) {
               <TouchableOpacity
                 onPress={() => {
                   SaveQuote();
-                  navigation.popToTop();
+                  // navigation.goBack()
 
                 }}
                 style={[styles.customButton, { backgroundColor: "#068E94" }]}

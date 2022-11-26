@@ -41,9 +41,7 @@ registerForPushNotificationsAsync = async () => {
       return;
     }
     token = (await Notifications.getExpoPushTokenAsync()).data;
-    console.log(token);
     let result = await SecureStore.getItemAsync("userToken")
-    console.log(result)
 
     try {
       var response = await axios.post(
@@ -53,7 +51,6 @@ registerForPushNotificationsAsync = async () => {
         headers: { Authorization: `Bearer ${result}` },
       }
       );
-      console.log(response.data);
     } catch (error) {
       console.warn(error);
       console.log(error);
@@ -163,7 +160,7 @@ const MainScreen = ({ route, navigation }) => {
           <TouchableOpacity
             style={styles.card}
             onPress={() => {
-              navigation.navigate("FreightBooking", shipperData);
+              navigation.navigate("FreightBooking", { screen: "BookingScreen", shipperData:shipperData });
             }}
           >
             <View>

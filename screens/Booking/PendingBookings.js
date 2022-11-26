@@ -18,6 +18,7 @@ export default function PendingBookings({ route, navigation }) {
   const getBookingsData = async () => {
     let isSubscribed = true;
     let token1 = await SecureStore.getItemAsync("userToken");
+
     const headers = { Authorization: `Bearer ${token1}` };
     const response = await axios.get(
       `${REST_API_LOCAL}/shipper/getPendingBookings`,
