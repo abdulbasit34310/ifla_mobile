@@ -1,31 +1,11 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useMemo,
-  useCallback,
-} from "react";
-import {
-  View,
-  StyleSheet,
-  Text,
-  Image,
-  Platform,
-  TouchableOpacity,
-} from "react-native";
-import {
-  MaterialIcons,
-  MaterialCommunityIcons,
-  FontAwesome,
-  Octicons,
-  Feather,
-} from "react-native-vector-icons";
+import React, { useState, useCallback, useEffect, useRef, useMemo } from 'react';
+import { ActivityIndicator, Alert, Button, Dimensions, FlatList, ImageBackground, Image, ImageScrollView, Modal, Picker, Platform, StyleSheet, Switch, Text, TextInput, ToastAndroid, TouchableOpacity, View } from 'react-native';
+import { AntDesign, Entypo, EvilIcons, Feather, FontAwesome, FontAwesome5, FontAwesome5Brands, Fontisto, Foundation, Ionicons, MaterialCommunityIcons, MaterialIcons, Octicons, SimpleLineIcons, Zocial } from '@expo/vector-icons';
 import { Card } from "react-native-paper";
 import * as SecureStore from "expo-secure-store";
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import * as Animatable from 'react-native-animatable';
-
 import { StatusBar } from 'expo-status-bar';
 import { AuthContext } from "../components/context";
 
@@ -35,6 +15,7 @@ import walletIllustration from "../assets/Wallet.png";
 import trackingIllustration from "../assets/Tracking.png";
 import { REST_API_LOCAL } from "@env";
 import IFLAlogo from "../assets/IFLA.png";
+
 const axios = require("axios");
 
 Notifications.setNotificationHandler({
@@ -66,7 +47,6 @@ registerForPushNotificationsAsync = async () => {
       var response = await axios.post(
         `${REST_API_LOCAL}/notifications/token`,
         { token: { value: token } }, {
-        withCredentials: true,
         headers: { Authorization: `Bearer ${result}` },
       }
       );
@@ -89,24 +69,27 @@ registerForPushNotificationsAsync = async () => {
 }
 
 const MainScreen = ({ route, navigation }) => {
-  const [token, setToken] = React.useState();
   const { signOut } = React.useContext(AuthContext);
+
   const [pushToken, setPushToken] = useState(null);
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();
-  const [getData, setData] = React.useState("");
+
+  const [token, setToken] = React.useState();
+  const [shipperName, setShipperName] = React.useState("");
 
   const getSignedInUserCredentials = async () => {
-    let token1 = await SecureStore.getItemAsync("userToken");
-    const headers = { Authorization: `Bearer ${token1}` };
+
+    let token = await SecureStore.getItemAsync("userToken");
+    const headers = { Authorization: `Bearer ${token}` };
     const response = await axios.get(`${REST_API_LOCAL}/users/getUser`, {
       withCredentials: true,
       headers: headers,
     });
 
     const data = await response.data;
-    setData(data.personId.email);
+    setShipperName(data.personId.name);
   };
 
   React.useEffect(() => {
@@ -152,11 +135,13 @@ const MainScreen = ({ route, navigation }) => {
   return (
 
     <View style={styles.container}>
+
       <StatusBar style="light" />
+
       <View style={styles.topSection}>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <Text style={{ color: "#E0EFF6", fontSize: 18, fontWeight: "bold" }}>
-            Welcome, {"\n"} {getData}
+            Welcome {shipperName}
           </Text>
           <TouchableOpacity>
             <MaterialCommunityIcons
@@ -175,7 +160,7 @@ const MainScreen = ({ route, navigation }) => {
           <TouchableOpacity
             style={styles.card}
             onPress={() => {
-              navigation.navigate("FreightBooking", { screen: "BookingScreen" });
+              navigation.navigate("FreightBooking", { screen: "BookingScreen", shipperData:shipperData });
             }}
           >
             <View>
@@ -202,7 +187,7 @@ const MainScreen = ({ route, navigation }) => {
               source={trackingIllustration}
               style={{
                 width: 82,
-                height: 82,
+                height: 70,
                 left: 70,
               }}
             />
@@ -243,15 +228,6 @@ const MainScreen = ({ route, navigation }) => {
               }}
             />
           </TouchableOpacity>
-
-          {/* <TouchableOpacity style={styles.card} onPress={() => { navigation.navigate("") }}>
-            <Text>Tracking</Text>
-            <Image source={trackingIllustration} style={{
-              width: 75,
-              height: 75,
-              left: 85
-            }} />
-          </TouchableOpacity> */}
         </View>
       </Animatable.View>
     </View>
@@ -266,11 +242,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#068E94",
   },
   topSection: {
-    flex: 1,
+    flex: 2,
     backgroundColor: "#068E94",
-    paddingLeft: 25,
-    paddingRight: 25,
-    paddingTop: 20,
+    paddingHorizontal: 20,
+    paddingTop: 25,
   },
   bottomSection: {
     flex: 1,
@@ -286,7 +261,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   card: {
-    elevation: 3,
+    elevation: 5,
     height: 100,
     width: "46%",
     margin: 5,

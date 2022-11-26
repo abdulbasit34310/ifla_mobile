@@ -1,7 +1,8 @@
 import React from 'react';
-import { StyleSheet, View, SafeAreaView, TouchableOpacity, Image, } from 'react-native';
-import { Text, Title } from 'react-native-paper';
-import { EvilIcons } from 'react-native-vector-icons';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { Text,Title, TouchableRipple } from "react-native-paper";
+import { Entypo, EvilIcons } from '@expo/vector-icons';
+// import { EvilIcons } from 'react-native-vector-icons';
 import axios from "axios";
 import { REST_API_LOCAL } from "@env";
 import * as SecureStore from "expo-secure-store";
@@ -28,6 +29,14 @@ export default function Wallet({ route, navigation }) {
     return (
         <View style={styles.container}>
 
+            <View style={{ padding: 5, paddingBottom: 15 }}>
+                <TouchableRipple style={{ width: '12%', borderRadius: 14, padding: 7, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', }} onPress={() => {
+                    navigation.goBack();
+                }}>
+                    <Entypo name='chevron-small-left' size={34} />
+                </TouchableRipple>
+            </View>
+
             <View style={styles.topSection}>
                 <View style={{ flexDirection: 'row', }}>
                     <TouchableOpacity style={[styles.currentBalanceCard, { backgroundColor: '#00ABB2' }]}>
@@ -45,14 +54,14 @@ export default function Wallet({ route, navigation }) {
                     </TouchableOpacity>
 
                     <TouchableOpacity style={[styles.currentBalanceCard, { backgroundColor: 'white' }]}
-                        onPress={() => { navigation.navigate('LoadMoneyToWallet') }}>
+                        onPress={() => { navigation.push('LoadMoneyToWallet') }}>
                         <View>
                             <EvilIcons name='arrow-down' size={28} color={'black'} />
                             <Title
                                 style={{
                                     fontSize: 24,
                                     fontWeight: 'bold',
-                                    left: 30, top: 110
+                                    left: 20, top: 110
                                 }}>
                                 Load Money
                             </Title>

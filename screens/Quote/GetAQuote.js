@@ -6,10 +6,12 @@ import {
   TouchableOpacity,
   TextInput,
   Modal,
-  FlatList,
+  ScrollView,
   ToastAndroid,
 } from "react-native";
-
+import { AntDesign, Entypo, EvilIcons, Feather, FontAwesome, FontAwesome5, FontAwesome5Brands, Fontisto, Foundation, Ionicons, MaterialCommunityIcons, MaterialIcons, Octicons, SimpleLineIcons, Zocial } from '@expo/vector-icons';
+import { StatusBar } from 'expo-status-bar';
+import { Card, Divider, Chip, TouchableRipple } from "react-native-paper";
 import { ButtonGroup } from "react-native-elements";
 import { Checkbox } from "react-native-paper";
 import axios from "axios";
@@ -28,6 +30,7 @@ const Theme = {
   BLACK: "#00000",
   WHITE: "#FFFFFF",
 };
+
 export default function GetAQuote({ route, navigation }) {
   const [category, setCategory] = React.useState(0);
   const [isPickup, setIsPickup] = React.useState(true);
@@ -67,7 +70,7 @@ export default function GetAQuote({ route, navigation }) {
     console.log(data);
     console.log("Saving Done!");
     showToastWithGravity();
-    navigation.replace("ViewQuotes")
+    navigation.push("ViewQuotes")
   };
 
   const showToastWithGravity = () => {
@@ -99,234 +102,236 @@ export default function GetAQuote({ route, navigation }) {
   });
 
   return (
-    <View>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}
-      >
-        {isPickup ? (
-          <SelectLocation
-            address={pickupAddress}
-            setAddress={setPickupAddress}
-            isPickup={isPickup}
-            isVisible={modalVisible}
-            setIsVisible={setModalVisible}
-            bookingData={quoteData}
-            setBooking={setQuote}
-            isQuote={true}
-          />
-        ) : (
-          <SelectLocation
-            address={dropoffAddress}
-            setAddress={setDropoffAddress}
-            isPickup={isPickup}
-            isVisible={modalVisible}
-            setIsVisible={setModalVisible}
-            bookingData={quoteData}
-            setBooking={setQuote}
-            isQuote={true}
-          />
-        )}
-      </Modal>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={vehicleModal}
-        onRequestClose={() => {
-          setVehicleModal(!vehicleModal);
-        }}
-      >
-        <ChooseTruck
-          setIsVisible={setVehicleModal}
-          setSelectedVehicle={setVehicle}
-          setBooking={setQuote}
-          bookingData={quoteData}
-          isQuote={true}
-        />
-      </Modal>
-      <View
-        style={{
-          padding: 20,
-          justifyContent: "center",
-          backgroundColor: "#E0EFF6",
-          height: "100%",
-        }}
-      >
-        <View
-          style={{
-            padding: 20,
-            backgroundColor: "white",
-            borderRadius: 10,
-            elevation: 24,
+    <ScrollView style={{backgroundColor: Theme.SecondaryBackground}}>
+      <View style={styles.container}>
+        <StatusBar style="dark" />
+
+        <View style={{ paddingBottom: 15, paddingTop: 10 }}>
+          <TouchableRipple style={{ width: '12%', borderRadius: 14, padding: 7, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', }} onPress={() => {
+            navigation.goBack();
+          }}>
+            <Entypo name='chevron-small-left' size={34} />
+          </TouchableRipple>
+        </View>
+
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
           }}
         >
-          <ButtonGroup
-            buttons={["Less than Truckload", "Full Truckload"]}
-            selectedIndex={category}
-            onPress={(value) => {
-              setCategory(value);
-              if (value === 0) {
-                setQuote({ ...quoteData, Type: "LTL" });
-              } else {
-                setQuote({ ...quoteData, Type: "FTL" });
-              }
-            }}
-            containerStyle={{
-              backgroundColor: "white",
-              height: 100,
-              width: "90%",
-              borderRadius: 10,
-            }}
-            buttonStyle={{ padding: 10, color: "black" }}
-            selectedButtonStyle={{
-              backgroundColor: "#00ABB2",
-            }}
+          {isPickup ? (
+            <SelectLocation
+              address={pickupAddress}
+              setAddress={setPickupAddress}
+              isPickup={isPickup}
+              isVisible={modalVisible}
+              setIsVisible={setModalVisible}
+              bookingData={quoteData}
+              setBooking={setQuote}
+              isQuote={true}
+            />
+          ) : (
+            <SelectLocation
+              address={dropoffAddress}
+              setAddress={setDropoffAddress}
+              isPickup={isPickup}
+              isVisible={modalVisible}
+              setIsVisible={setModalVisible}
+              bookingData={quoteData}
+              setBooking={setQuote}
+              isQuote={true}
+            />
+          )}
+        </Modal>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={vehicleModal}
+          onRequestClose={() => {
+            setVehicleModal(!vehicleModal);
+          }}
+        >
+          <ChooseTruck
+            setIsVisible={setVehicleModal}
+            setSelectedVehicle={setVehicle}
+            setBooking={setQuote}
+            bookingData={quoteData}
+            isQuote={true}
           />
-          <Text style={styles.buttonInsideText}>Pickup Location </Text>
-          <TouchableOpacity
-            style={[styles.textInput, { padding: 15 }]}
-            onPress={() => {
-              setIsPickup(true);
-              setModalVisible(true);
-            }}
-          >
-            <Text>
-              {quoteData.pickupAddress === ""
-                ? "Choose Location"
-                : quoteData.pickupAddress.building +
+        </Modal>
+
+        <View style={styles.card}>
+          <View>
+            <ButtonGroup
+              buttons={["Less than Truckload", "Full Truckload"]}
+              selectedIndex={category}
+              onPress={(value) => {
+                setCategory(value);
+                if (value === 0) {
+                  setQuote({ ...quoteData, Type: "LTL" });
+                } else {
+                  setQuote({ ...quoteData, Type: "FTL" });
+                }
+              }}
+              containerStyle={{
+                backgroundColor: "white",
+                height: 100,
+                width: "90%",
+                borderRadius: 10,
+              }}
+              buttonStyle={{ padding: 10, color: "black" }}
+              selectedButtonStyle={{
+                backgroundColor: "#00ABB2",
+              }}
+            />
+            <Text style={styles.buttonInsideText}>Pickup Location </Text>
+            <TouchableOpacity
+              style={[styles.textInput, { padding: 15 }]}
+              onPress={() => {
+                setIsPickup(true);
+                setModalVisible(true);
+              }}
+            >
+              <Text>
+                {quoteData.pickupAddress === ""
+                  ? "Choose Location"
+                  : quoteData.pickupAddress.building +
                   ", " +
                   quoteData.pickupAddress.street +
                   ", " +
                   quoteData.pickupAddress.city +
                   ", " +
                   quoteData.pickupAddress.country}
-            </Text>
-          </TouchableOpacity>
-          <Text style={styles.buttonInsideText}>Dropoff Location: </Text>
-          <TouchableOpacity
-            style={[styles.textInput, { padding: 15 }]}
-            onPress={() => {
-              setIsPickup(false);
-              setModalVisible(true);
-            }}
-          >
-            <Text>
-              {quoteData.dropoffAddress === ""
-                ? "Choose Location"
-                : quoteData.dropoffAddress.building +
+              </Text>
+            </TouchableOpacity>
+            <Text style={styles.buttonInsideText}>Dropoff Location: </Text>
+            <TouchableOpacity
+              style={[styles.textInput, { padding: 15 }]}
+              onPress={() => {
+                setIsPickup(false);
+                setModalVisible(true);
+              }}
+            >
+              <Text>
+                {quoteData.dropoffAddress === ""
+                  ? "Choose Location"
+                  : quoteData.dropoffAddress.building +
                   ", " +
                   quoteData.dropoffAddress.street +
                   ", " +
                   quoteData.dropoffAddress.city +
                   ", " +
                   quoteData.dropoffAddress.country}
-            </Text>
+              </Text>
 
-            {/* <Text>{dropoffCity === "" ? "Select City" : dropoffCity}</Text> */}
-          </TouchableOpacity>
-          <Text style={styles.buttonInsideText}>Select Vehicle Type: </Text>
-          <TouchableOpacity
-            style={[styles.textInput, { padding: 15 }]}
-            onPress={() => {
-              setVehicleModal(true);
-            }}
-          >
-            <Text>
-              {quoteData.vehicle === "" ? "Select Vehicle" : quoteData.vehicle}
-            </Text>
-          </TouchableOpacity>
-
-          <Text style={styles.buttonInsideText}>Weight (kg): </Text>
-          <TextInput
-            keyboardType="phone-pad"
-            style={styles.textInput}
-            onChangeText={(v) => {
-              setQuote({ ...quoteData, weight: v });
-            }}
-          />
-          <Text style={styles.buttonInsideText}>Quantity: </Text>
-          <TextInput
-            style={styles.textInput}
-            keyboardType="phone-pad"
-            onChangeText={(v) => {
-              setQuote({ ...quoteData, quantity: v });
-            }}
-          />
-          {/* <Text style={{ padding: 10 }}>Pickup City: </Text>
-          <TouchableOpacity
-            style={[styles.textInput, { padding: 5 }]}
-            onPress={() => {
-              setIsPickup(true);
-              setModalVisible(true);
-            }}
-          >
-            <Text>{pickupCity === "" ? "Select City" : pickupCity}</Text>
-          </TouchableOpacity>
-
-          <Text style={{ padding: 10 }}>Dropoff City: </Text>
-          <TouchableOpacity
-            style={[styles.textInput, { padding: 5 }]}
-            onPress={() => {
-              setIsPickup(false);
-              setModalVisible(true);
-            }}
-          >
-            <Text>{dropoffCity === "" ? "Select City" : dropoffCity}</Text>
-          </TouchableOpacity> */}
-
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              marginTop: 10,
-            }}
-          >
-            <Checkbox
-              status={checked ? "checked" : "unchecked"}
+              {/* <Text>{dropoffCity === "" ? "Select City" : dropoffCity}</Text> */}
+            </TouchableOpacity>
+            <Text style={styles.buttonInsideText}>Select Vehicle Type: </Text>
+            <TouchableOpacity
+              style={[styles.textInput, { padding: 15 }]}
               onPress={() => {
-                setChecked(!checked);
+                setVehicleModal(true);
+              }}
+            >
+              <Text>
+                {quoteData.vehicle === "" ? "Select Vehicle" : quoteData.vehicle}
+              </Text>
+            </TouchableOpacity>
+
+            <Text style={styles.buttonInsideText}>Weight (kg): </Text>
+            <TextInput
+              keyboardType="phone-pad"
+              style={styles.textInput}
+              onChangeText={(v) => {
+                setQuote({ ...quoteData, weight: v });
               }}
             />
-            <Text style={{ fontSize: 16 }}>
-              Do you want to pack your items?
-            </Text>
-          </View>
+            <Text style={styles.buttonInsideText}>Quantity: </Text>
+            <TextInput
+              style={styles.textInput}
+              keyboardType="phone-pad"
+              onChangeText={(v) => {
+                setQuote({ ...quoteData, quantity: v });
+              }}
+            />
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                marginTop: 10,
+              }}
+            >
+              <Checkbox
+                status={checked ? "checked" : "unchecked"}
+                onPress={() => {
+                  setChecked(!checked);
+                }}
+              />
+              <Text style={{ fontSize: 16 }}>
+                Do you want to pack your items?
+              </Text>
+            </View>
 
-          <TouchableOpacity
-            style={{
-              backgroundColor: "#068E94",
-              padding: 10,
-              width: 100,
-              borderRadius: 10,
-              alignSelf: "center",
-              marginTop: 20,
-            }}
-            onPress={() => {
-              SaveQuote();
-              navigation.goBack();
-            }}
-          >
-            <Text style={{ alignSelf: "center", color: "white" }}>
-              Save Quote
-            </Text>
-          </TouchableOpacity>
+            <View
+              style={{
+                justifyContent: "center",
+                margin: 5,
+              }}
+            >
+              <TouchableOpacity
+                onPress={() => {
+                  SaveQuote();
+                  // navigation.goBack()
+
+                }}
+                style={[styles.customButton, { backgroundColor: "#068E94" }]}
+              >
+                <Text style={[
+                  styles.buttonText,
+                  {
+                    color: "white",
+                  },
+                ]}>Save Quote</Text>
+
+              </TouchableOpacity>
+            </View>
+          </View>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 const styles = StyleSheet.create({
   textInput: {
-    borderColor: "#068E94",
+    borderColor: Theme.PrimaryBackground,
     borderWidth: 1,
-    padding: 3,
+    padding: 15,
     marginLeft: 10,
     width: "90%",
     borderRadius: 4,
+  },
+  customButton: {
+    width: "100%",
+    height: 60,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 14,
+    elevation: 5,
+  },
+  buttonText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginHorizontal: 5,
+  },
+  card: {
+    padding: 20,
+    backgroundColor: "white",
+    borderRadius: 14,
+    elevation: 5,
+    justifyContent: "center",
   },
   textInput2: {
     borderColor: "#068E94",
@@ -350,10 +355,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     color: Theme.PrimaryText,
-  },
-  buttonText: {
-    alignSelf: "center",
-    color: "white",
   },
   image: {
     flex: 1,
@@ -394,5 +395,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 1,
     borderRadius: 10,
+  },
+  container: {
+    // backgroundColor: Theme.SecondaryBackground,
+    height: "100%",
+    padding: 20,
+    justifyContent: "center",
   },
 });

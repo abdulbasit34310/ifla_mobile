@@ -1,6 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TouchableOpacity, TextInput, Dimensions, FlatList, ActivityIndicator, } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Text, View, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
+import { TouchableRipple } from "react-native-paper";
+import { Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
 
 const LoadMoneyToWallet = ({ navigation }) => {
 
@@ -9,17 +10,27 @@ const LoadMoneyToWallet = ({ navigation }) => {
   return (
     <View style={styles.container}>
 
-      <Text
-        style={[
-          styles.buttonText,
-          {
-            fontSize: 22,
-            color: "#AAAAAA",
-          },
-        ]}
-      >
-        Enter Amount
-      </Text>
+      <View>
+        <TouchableRipple style={{ width: '12%', borderRadius: 14, padding: 7, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', }} onPress={() => {
+          navigation.goBack();
+        }}>
+          <Entypo name='chevron-small-left' size={34} />
+        </TouchableRipple>
+      </View>
+
+      <View style={{justifyContent: 'center', alignItems: 'center'}}>
+
+        <Text
+          style={[
+            styles.buttonText,
+            {
+              fontSize: 22,
+              color: "#AAAAAA",
+            },
+          ]}
+        >
+          Deposit
+        </Text>
 
       <View style={{ flexDirection: "row", alignItems: "center", margin: 20 }}>
         <Text style={{ fontSize: 26, fontWeight: 'bold', marginRight: 15 }}>PKR</Text>
@@ -33,7 +44,7 @@ const LoadMoneyToWallet = ({ navigation }) => {
       {
         parseInt(getNo) < 150 || getNo=="" ? (<Text style={{color:"red"}}>Choose an amount more than 150</Text>):null
       }
-      <TouchableOpacity style={styles.customButton} disabled={parseInt(getNo) < 150 ? true:false}
+      <TouchableOpacity style={styles.customButton}  disabled={parseInt(getNo) < 150 ? true:false}
         onPress={() => { navigation.navigate("Payment", { getNo: parseInt(getNo) }) }}>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <MaterialCommunityIcons name="bank-transfer-in" size={26} color={"white"} />
@@ -49,16 +60,16 @@ const LoadMoneyToWallet = ({ navigation }) => {
           </Text>
         </View>
       </TouchableOpacity>
+      </View>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    height: "100%",
     backgroundColor: '#E0EFF6',
-    alignItems: 'center',
-    justifyContent: 'center',
+    padding: 20,
   },
   customButton: {
     width: "85%",
@@ -67,7 +78,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 14,
     marginTop: 15,
-    elevation: 3,
+    elevation: 5,
     backgroundColor: "#005761",
   },
   ti: {

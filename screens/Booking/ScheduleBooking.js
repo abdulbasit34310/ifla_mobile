@@ -1,21 +1,16 @@
-// Don't proceed to next screen without filling the necessary data, disable the next button
-
 import * as React from "react";
-import {
-  StyleSheet,
-  ActivityIndicator,
-  ToastAndroid,
-} from "react-native";
+import { StyleSheet,ActivityIndicator,ToastAndroid } from "react-native";
 
 import axios from "axios";
 import { REST_API_LOCAL } from "@env";
 import * as SecureStore from "expo-secure-store";
 
 import GoodsDetails from "../../components/ScheduleBooking/GoodDetails";
-import BookingDetails from "../../components/ScheduleBooking/BookingDetails";
+import ShipmentDetails from "../../components/ScheduleBooking/ShipmentDetails";
 import ScheduleDetails from "../../components/ScheduleBooking/ScheduleDetails";
 import PreviewBooking from "../../components/ScheduleBooking/PreviewBooking";
-import { useEffect } from "react";
+
+
 const Success = ({
   navigation,
   nextStep,
@@ -79,7 +74,6 @@ export default function ScheduleBooking({ route, navigation }) {
       amount: "",
     };
   }
-
   const [bookingData, setBooking] = React.useState(quote);
 
   const clear = () => {
@@ -108,11 +102,13 @@ export default function ScheduleBooking({ route, navigation }) {
         { withCredentials: true, headers: headers }
       );
       console.log(res.data);
-      ToastAndroid.showWithGravity(
-        "Booking Saved",
-        ToastAndroid.SHORT,
-        ToastAndroid.CENTER
-      );
+      if (Platform.OS == 'android') {
+        ToastAndroid.showWithGravity(
+          "Booking Saved",
+          ToastAndroid.SHORT,
+          ToastAndroid.CENTER
+        );
+      }
       navigation.goBack();
     } catch (error) {
       console.log(error.response.data);
@@ -139,7 +135,8 @@ export default function ScheduleBooking({ route, navigation }) {
           {loading ? (
             <ActivityIndicator />
           ) : (
-            <BookingDetails
+            <ShipmentDetails
+              navigation={navigation}
               nextStep={nextStep}
               bookingData={bookingData}
               setBooking={setBooking}
@@ -188,7 +185,6 @@ export default function ScheduleBooking({ route, navigation }) {
         />
       );
     default:
-    //do nothing
   }
 }
 

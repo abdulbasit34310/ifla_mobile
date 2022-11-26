@@ -5,7 +5,9 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as SecureStore from "expo-secure-store";
 
-import RegistrationNavigator from "./screens/RegistrationNavigator";
+import RegistrationNavigator from "./navigation/RegistrationNavigator";
+import TopTabNavigator from "./navigation/TopTabNavigator";
+
 import MainScreen from "./screens/MainScreen";
 
 import ProfileScreen from "./screens/Profile/ProfileScreen";
@@ -15,10 +17,8 @@ import BookingScreen from "./screens/Booking/BookingScreen";
 
 import LiveTracking from "./screens/Booking/LiveTracking";
 import PendingBookings from "./screens/Booking/PendingBookings";
-import PendingBookingDetails from "./screens/Booking/PendingBookingDetails";
-import MyBookings from "./screens/Booking/MyBookings";
 import ScheduleBooking from "./screens/Booking/ScheduleBooking";
-import MyBookingDetails from "./screens/Booking/MyBookingDetails";
+import BookingDetails from "./screens/Booking/BookingDetails";
 
 import GetAQuote from "./screens/Quote/GetAQuote";
 import ViewQuotes from "./screens/Quote/ViewQuotes";
@@ -42,6 +42,7 @@ import PaymentMethod from "./screens/Payment/PaymentMethod";
 import PayByWallet from "./screens/Payment/PayByWallet";
 
 const Drawer = createDrawerNavigator();
+const Stack = createNativeStackNavigator();
 
 export default function App() {
 
@@ -194,16 +195,16 @@ export default function App() {
   );
 }
 
-const Stack = createNativeStackNavigator();
 
-function LoggedInStack(screen) {
+function FreightBookingStack({ navigation, route }) {
   return (
     <Stack.Navigator
       screenOptions={{
         headerTintColor: "#005761",
         headerTitleAlign: "center",
-        headerTitleStyle: { fontWeight: "bold", fontSize: 24 },
+        headerTitleStyle: { fontSize: 20 },
         headerStyle: { backgroundColor: "white", padding: 0 },
+        headerShown: false,
       }}
     >
       <Stack.Screen
@@ -225,7 +226,7 @@ function LoggedInStack(screen) {
       <Stack.Screen
         name="GetAQuote"
         component={GetAQuote}
-        options={{ title: "Get a Quote" }}
+        options={{ title: "Get a Quote", headerShown: true  }}
       />
       <Stack.Screen
         name="ViewQuotes"
@@ -243,110 +244,32 @@ function LoggedInStack(screen) {
         options={{ title: "Pending Bookings" }}
       />
       <Stack.Screen
-        name="PendingBookingDetails"
-        component={PendingBookingDetails}
-        options={{ title: "Booking Details" }}
+        name="BookingDetails"
+        component={BookingDetails}
       />
-      <Stack.Screen
-        name="MyBookings"
-        component={MyBookings}
-        options={{ title: "My Bookings" }}
-      />
-      <Stack.Screen
-        name="MyBookingDetails"
-        component={MyBookingDetails}
-        options={{ title: "Booking Details" }}
-      />
-      {/* <Stack.Screen
-        name="Payments"
-        component={Payment}
-        options={{ title: "Pay Now" }}
-      /> */}
       <Stack.Screen
         name="LiveTracking"
         component={LiveTracking}
         options={{ title: "LiveTracking" }}
       />
-    </Stack.Navigator>
-  );
-}
-
-function FreightBookingStack({ route }) {
-  return (
-    <Stack.Navigator
-      screenOptions={{
-        headerTintColor: "#005761",
-        headerTitleAlign: "center",
-        headerTitleStyle: { fontWeight: "bold", fontSize: 24 },
-        headerStyle: { backgroundColor: "white", padding: 0 },
-      }}
-    >
-      <Stack.Screen
-        name="BookingScreen"
-        component={BookingScreen}
-        options={{ title: "Booking" }}
-      />
-      <Stack.Screen
-        name="ScheduleBooking"
-        component={ScheduleBooking}
-        options={{ title: "Schedule Booking" }}
-      />
-
-      <Stack.Screen
-        name="ScheduleExample"
-        component={ScheduleExample}
-        options={{ title: "Schedule Example" }}
-      />
-      <Stack.Screen
-        name="GetAQuote"
-        component={GetAQuote}
-        options={{ title: "Get a Quote" }}
-      />
-      <Stack.Screen
-        name="ViewQuotes"
-        component={ViewQuotes}
-        options={{ title: "View Quote" }}
-      />
-      <Stack.Screen
-        name="QuoteDetails"
-        component={QuoteDetails}
-        options={{ title: "Quote Details" }}
-      />
-      <Stack.Screen
-        name="PendingBookings"
-        component={PendingBookings}
-        options={{ title: "Pending Bookings" }}
-      />
-      <Stack.Screen
-        name="PendingBookingDetails"
-        component={PendingBookingDetails}
-        options={{ title: "Booking Details" }}
-      />
-      <Stack.Screen
-        name="MyBookings"
-        component={MyBookings}
-        options={{ title: "My Bookings" }}
-      />
-      <Stack.Screen
-        name="MyBookingDetails"
-        component={MyBookingDetails}
-        options={{ title: "Booking Details" }}
-      />
+      <Stack.Screen name="TopTabNavigatorStack" component={TopTabNavigatorStack}
+        options={{
+          tabBarLabel: 'Bookings',
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="truck-delivery" color={color} size={26} />
+          ),
+          tabBarColor: '#005761',
+        }} />
       <Stack.Screen
         name="Payments"
         component={PaymentsStack}
         options={{ headerShown: false }}
       />
-      <Stack.Screen
-        name="LiveTracking"
-        component={LiveTracking}
-        options={{ title: "LiveTracking" }}
-      />
     </Stack.Navigator>
   );
 }
 
-function ProfileStack({ route }) {
+function ProfileStack({ navigation, route }) {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -395,20 +318,12 @@ function ProfileStack({ route }) {
   );
 }
 
-function PaymentsStack({ route }) {
+function PaymentsStack({ navigation, route }) {
   return (
-    <Stack.Navigator
-      screenOptions={{
-        headerTintColor: "#005761",
-        headerTitleAlign: "center",
-        headerTitleStyle: { fontWeight: "bold", fontSize: 24 },
-        headerStyle: { backgroundColor: "white", padding: 0 },
-      }}
-    >
+    <Stack.Navigator>
       <Stack.Screen
         name="Wallet"
         component={Wallet}
-        options={{ title: "Wallet" }}
       />
       <Stack.Screen
         name="LoadMoneyToWallet"
@@ -434,6 +349,11 @@ function PaymentsStack({ route }) {
   );
 }
 
+function TopTabNavigatorStack({ navigation, route }) {
+  return (
+    <TopTabNavigator />
+  )
+}
 // Buttons and Primary Foreground: #068E94
 // Secondary Foreground: #00ABB2
 // Background Primary and Text: #005761

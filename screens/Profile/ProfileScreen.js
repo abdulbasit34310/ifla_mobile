@@ -1,16 +1,16 @@
 import * as React from "react";
-import { View, StyleSheet, Image, ScrollView, StatusBar } from "react-native";
+import { View, StyleSheet, Image, ScrollView, StatusBar, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Card, Divider, Title, TouchableRipple } from "react-native-paper";
+import { AntDesign, Entypo, EvilIcons, Feather, FontAwesome, FontAwesome5, FontAwesome5Brands, Fontisto, Foundation, Ionicons, MaterialCommunityIcons, MaterialIcons, Octicons, SimpleLineIcons, Zocial } from '@expo/vector-icons';
+import { TouchableOpacity } from "react-native-gesture-handler";
+import axios from "axios";
+import * as SecureStore from "expo-secure-store";
 
-import { Title, Text } from "react-native-paper";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import {
-  MaterialIcons,
-  MaterialCommunityIcons,
-  FontAwesome,
-  Octicons,
-  Feather,
-} from "react-native-vector-icons";
+import Avatar from "../../assets/Avatar.png";
+import { AuthContext } from "../../components/context";
+
+import { REST_API_LOCAL } from "@env";
 
 const Theme = {
   Buttons: "#068E94",
@@ -23,14 +23,6 @@ const Theme = {
   WHITE: "#FFFFFF",
 };
 
-import { AuthContext } from "../../components/context";
-
-import { TouchableOpacity } from "react-native-gesture-handler";
-import axios from "axios";
-import Avatar from "../../assets/Avatar.png";
-import * as SecureStore from "expo-secure-store";
-import { REST_API_LOCAL } from "@env";
-
 const ProfileScreen = ({ route, navigation }) => {
   var email = "";
   const { signOut } = React.useContext(AuthContext);
@@ -39,41 +31,16 @@ const ProfileScreen = ({ route, navigation }) => {
     personId: { name: "", email: "", phone: "" },
     addresses: [{ City: "" }, { City: "" }],
   });
-  //const [token,setToken] = React.useState(route.params.token)
 
   const getSignedInUserCredentials = async () => {
     let token1 = await SecureStore.getItemAsync("userToken");
-    // console.log(token1);
     const headers = { Authorization: `Bearer ${token1}` };
     const response = await axios.get(`${REST_API_LOCAL}/users/getUser`, {
       withCredentials: true,
       headers: headers,
     });
-
-    // const response = await fetch(
-    //     `${FIREBASE_API_LOCAL}/users/userCredentials.json`
-    // );
     const data = await response.data;
-    // console.log(data);
     setData(data);
-    // var keyValues = Object.keys(data);
-
-    // let credential = {};
-
-    // for (let i = 0; i < keyValues.length; i++) {
-    //     let key = keyValues[i];
-    //     if (data[key].email == email) {
-    //         credential = {
-    //             keyId: key,
-    //             name: data[key].name,
-    //             email: data[key].email,
-    //             address: data[key].address,
-    //             phoneNo: data[key].phoneNo
-    //         };
-    //         setData(credential)
-    //         break;
-    //     }
-    // }
   };
 
   React.useEffect(() => {
@@ -83,64 +50,71 @@ const ProfileScreen = ({ route, navigation }) => {
   }, [navigation]);
 
   return (
-    <ScrollView>
-      <SafeAreaView style={styles.background}>
-        <View
-          style={{
-            paddingBottom: 5,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          {getData.personId.image ? (
-            <Image
-              style={{ width: 100, height: 100, borderRadius: 100 }}
-              source={{ uri: `data:image;base64,${getData.personId.image}` }}
-            />
-          ) : (
-            <Image
-              style={{ width: 100, height: 100, borderRadius: 100 }}
-              source={Avatar}
-            />
-          )}
+    <View style={styles.container}>
 
-          <SafeAreaView>
-            <Title style={styles.nameTitle}>{getData.personId.name}</Title>
-          </SafeAreaView>
+      <View>
+        <TouchableRipple style={{ width: '12%', borderRadius: 14, padding: 7, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', }} onPress={() => {
+          navigation.goBack();
+        }}>
+          <Entypo name='chevron-small-left' size={34} />
+        </TouchableRipple>
+      </View>
 
-          <View>
-            {getData.personId.email !== "" ? (
-              <Text style={{ color: "#777777" }}>{getData.personId.email}</Text>
-            ) : (
-              <Text style={{ color: "#777777", marginLeft: 20 }}>
-                Email Not Added
-              </Text>
-            )}
-          </View>
-        </View>
+      <View
+        style={{
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        {getData.personId.image ? (
+          <Image
+            style={{ width: 100, height: 100, borderRadius: 100 }}
+            source={{ uri: `data:image;base64,${getData.personId.image}` }}
+          />
+        ) : (
+          <Image
+            style={{ width: 100, height: 100, borderRadius: 100 }}
+            source={Avatar}
+          />
+        )}
+
+        <SafeAreaView>
+          <Title style={styles.nameTitle}>{getData.personId.name}</Title>
+        </SafeAreaView>
 
         <View>
-          <TouchableOpacity
-            style={styles.infoBox}
-            onPress={() => {
-              navigation.navigate("EditProfileScreen", { item: getData });
+          {getData.personId.email !== "" ? (
+            <Text style={{ color: "#777777", alignItems: 'center', fontSize: 16 }}>{getData.personId.email}</Text>
+          ) : (
+            <Text style={{ color: "#777777", marginLeft: 20 }}>
+              Email Not Added
+            </Text>
+          )}
+        </View>
+      </View>
+
+      <View>
+        <TouchableOpacity
+          style={styles.infoBox}
+          onPress={() => {
+            navigation.navigate("EditProfileScreen", { item: getData });
+          }}
+        >
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
             }}
           >
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <View style={[styles.iconView, { backgroundColor: "#50C878" }]}>
-                <FontAwesome name="id-card" solid color="white" size={20} />
-              </View>
-              <Text style={styles.buttonTitle}>Edit Profile</Text>
+            <View style={[styles.iconView, { backgroundColor: "#50C878" }]}>
+              <FontAwesome name="id-card" solid color="white" size={20} />
             </View>
-            <FontAwesome name="chevron-right" size={25} color="lightgrey" />
-          </TouchableOpacity>
+            <Text style={styles.buttonTitle}>Edit Profile</Text>
+          </View>
+          <FontAwesome name="chevron-right" size={25} color="lightgrey" />
+        </TouchableOpacity>
 
-          <TouchableOpacity
+        <TouchableOpacity
             style={styles.infoBox}
             onPress={() => {
               navigation.navigate("Payments", 
@@ -168,66 +142,71 @@ const ProfileScreen = ({ route, navigation }) => {
             <FontAwesome name="chevron-right" size={25} color="lightgrey" />
           </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.infoBox}
-            onPress={() => {
-              navigation.navigate("CompanyInformationScreen", {
-                item: getData,
-              });
+        <TouchableOpacity
+          style={styles.infoBox}
+          onPress={() => {
+            navigation.navigate("CompanyInformationScreen", {
+              item: getData,
+            });
+          }}
+        >
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
             }}
           >
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <View style={[styles.iconView, { backgroundColor: "#6082B6" }]}>
-                <FontAwesome name="building" solid color="white" size={20} />
-              </View>
-              <Text style={styles.buttonTitle}>Company Information</Text>
+            <View style={[styles.iconView, { backgroundColor: "#6082B6" }]}>
+              <FontAwesome name="building" solid color="white" size={20} />
             </View>
-            <FontAwesome name="chevron-right" size={25} color="lightgrey" />
-          </TouchableOpacity>
+            <Text style={styles.buttonTitle}>Company Information</Text>
+          </View>
+          <FontAwesome name="chevron-right" size={25} color="lightgrey" />
+        </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.infoBox}
-            onPress={() => {
-              navigation.navigate("Addresses", { item: getData });
+        <TouchableOpacity
+          style={styles.infoBox}
+          onPress={() => {
+            navigation.navigate("Addresses", { item: getData });
+          }}
+        >
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
             }}
           >
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <View style={[styles.iconView, { backgroundColor: "#F88379" }]}>
-                <FontAwesome
-                  name="address-book"
-                  solid
-                  color="white"
-                  size={20}
-                />
-              </View>
-              <Text style={styles.buttonTitle}>Addresses</Text>
+            <View style={[styles.iconView, { backgroundColor: "#F88379" }]}>
+              <FontAwesome
+                name="address-book"
+                solid
+                color="white"
+                size={20}
+              />
             </View>
-            <FontAwesome name="chevron-right" size={25} color="lightgrey" />
-          </TouchableOpacity>
+            <Text style={styles.buttonTitle}>Addresses</Text>
+          </View>
+          <FontAwesome name="chevron-right" size={25} color="lightgrey" />
+        </TouchableOpacity>
 
-          <TouchableOpacity style={styles.customButton} onPress={signOut}>
+        <View>
+          <TouchableOpacity
+            style={[styles.customButton, { backgroundColor: "#068E94" }]}
+            onPress={signOut}>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <MaterialCommunityIcons
                 name="exit-to-app"
                 color={"white"}
                 size={24}
               />
-              <Title style={styles.buttonText}>Signout</Title>
+              <Title style={styles.buttonText}>Sign Out</Title>
             </View>
           </TouchableOpacity>
         </View>
-      </SafeAreaView>
-    </ScrollView>
+
+      </View>
+    </View>
+
   );
 };
 
@@ -235,8 +214,9 @@ export default ProfileScreen;
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: "#E0EFF6",
+    padding: 20,
     flex: 1,
-    backgroundColor: Theme.WHITE,
   },
   caption: {
     fontSize: 14,
@@ -253,8 +233,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     padding: 15,
-    marginBottom: 5,
-    borderBottomColor: "grey",
+    borderBottomColor: "#AAAAAA",
     borderBottomWidth: 1,
     justifyContent: "space-between",
   },
@@ -274,18 +253,17 @@ const styles = StyleSheet.create({
   },
   nameTitle: {
     fontWeight: "bold",
-    color: "black",
     fontSize: 26,
   },
   customButton: {
-    backgroundColor: Theme.SecondaryForeground,
-    padding: 5,
+    width: "100%",
+    height: 60,
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: 14,
-    elevation: 3,
-    width: "25%",
-    height: 50,
-    alignSelf: "center",
-    margin: 10,
+    marginTop: 20,
+    marginBottom: '50%',
+    elevation: 5,
   },
   buttonText: {
     fontSize: 16,

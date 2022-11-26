@@ -1,19 +1,7 @@
-import * as React from "react";
-import {
-  Text,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  TextInput,
-  FlatList,
-  ScrollView,
-  Alert,
-  Modal,
-  ToastAndroid,
-} from "react-native";
-import { Chip } from "react-native-paper";
-
-import { ButtonGroup } from "react-native-elements";
+import React, { useState, useCallback, useEffect, useRef, useMemo } from 'react';
+import { ActivityIndicator, Alert, Button, Dimensions, FlatList, ImageBackground, Image, ImageScrollView, Modal, Platform, ScrollView, StyleSheet, Switch, Text, TextInput, ToastAndroid, TouchableOpacity, View } from 'react-native';
+import { AntDesign, Entypo, EvilIcons, Feather, FontAwesome, FontAwesome5, FontAwesome5Brands, Fontisto, Foundation, Ionicons, MaterialCommunityIcons, MaterialIcons, Octicons, SimpleLineIcons, Zocial } from '@expo/vector-icons';
+import { StatusBar } from 'expo-status-bar';
 import { Picker } from "@react-native-picker/picker";
 
 const Theme = {
@@ -36,16 +24,22 @@ export default function GoodsDetails({
 }) {
   const [selectedValue, setSelectedValue] = React.useState("");
   const fillToast = () => {
-    ToastAndroid.showWithGravity(
-      "Please Add Details First",
-      ToastAndroid.SHORT,
-      ToastAndroid.CENTER
-    );
+    if (Platform.OS == 'android') {
+      ToastAndroid.showWithGravity(
+        "Please Add Details First",
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER
+      );
+    }
   };
+
   return (
-    <View style={styles.mainContainer}>
-      <View style={styles.childContainer}>
-        <ScrollView>
+    <ScrollView>
+      <View style={styles.container}>
+        <StatusBar style="dark" />
+
+        <View style={styles.card}>
+
           <Text style={styles.header}>Goods Details</Text>
           <Text style={styles.buttonInsideText}>Select Goods Type: </Text>
           <Picker
@@ -63,6 +57,8 @@ export default function GoodsDetails({
             <Picker.Item label="Clothing" value="Clothing" />
             <Picker.Item label="Food" value="Food" />
             <Picker.Item label="Furniture" value="Furniture" />
+            <Picker.Item label="Petroleum" value="Petroleum" />
+
           </Picker>
           
           <Text style={styles.buttonInsideText}>Select Storage Type: </Text>
@@ -166,9 +162,16 @@ export default function GoodsDetails({
               margin: 15,
             }}
           >
-            <TouchableOpacity onPress={prevStep} style={styles.buttonStyle}>
-              <Text style={styles.buttonText}>Previous</Text>
+            <TouchableOpacity onPress={prevStep} style={[styles.customButton, { backgroundColor: "#068E94" }]}
+            >
+              <Text style={[
+                styles.buttonText,
+                {
+                  color: "white",
+                },
+              ]}>Previous</Text>
             </TouchableOpacity>
+
             <TouchableOpacity
               onPress={() => {
                 if (
@@ -185,29 +188,35 @@ export default function GoodsDetails({
                   fillToast();
                 }
               }}
-              style={styles.buttonStyle}
+              style={[styles.customButton, { backgroundColor: "#068E94" }]}
             >
-              <Text style={styles.buttonText}>Next</Text>
+              <Text style={[
+                styles.buttonText,
+                {
+                  color: "white",
+                },
+              ]}>Next</Text>
             </TouchableOpacity>
           </View>
-        </ScrollView>
+
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  mainContainer: {
+  container: {
     backgroundColor: Theme.SecondaryBackground,
     height: "100%",
-    padding: 20,
+    padding: 25,
     justifyContent: "center",
   },
-  childContainer: {
+  card: {
     padding: 20,
     backgroundColor: "white",
     borderRadius: 10,
-    elevation: 24,
+    elevation: 5,
     height: "95%",
     justifyContent: "center",
     display: "flex",
@@ -217,7 +226,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 5,
     marginLeft: 10,
-    width: "90%",
+    width: "95%",
     borderRadius: 4,
   },
 
@@ -235,9 +244,19 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: Theme.PrimaryText,
   },
+  customButton: {
+    width: "47%",
+    height: 60,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 14,
+    marginTop: 20,
+    elevation: 5,
+  },
   buttonText: {
-    alignSelf: "center",
-    color: "white",
+    fontSize: 18,
+    fontWeight: "bold",
+    marginHorizontal: 5,
   },
   buttonInsideText: {
     marginVertical: 10,

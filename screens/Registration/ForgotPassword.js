@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 14,
     marginTop: 15,
-    elevation: 3,
+    elevation: 5,
   },
 });
 

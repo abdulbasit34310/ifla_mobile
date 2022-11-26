@@ -1,13 +1,23 @@
 import React, { useState, useCallback, useEffect, useRef, useMemo } from 'react';
-import { Animated, ActivityIndicator, Alert, Button, Dimensions, FlatList, Image, StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
+import { Card, Divider, TouchableRipple } from "react-native-paper";
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Animated, ActivityIndicator, Alert, Button, Dimensions, FlatList, Image, KeyboardAvoidingView, StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import { AntDesign, Entypo, EvilIcons, Feather, FontAwesome, FontAwesome5, FontAwesome5Brands, Fontisto, Foundation, Ionicons, MaterialCommunityIcons, MaterialIcons, Octicons, SimpleLineIcons, Zocial } from '@expo/vector-icons';
 
-function Complaint() {
+function Complaint({ navigation }) {
     return (
         <View style={styles.container}>
-            <SafeAreaView style={styles.card}>
-                <FontAwesome name='wrench' size={48} color={'#31302C'} />
+
+            <View style={{ paddingBottom: 15 }}>
+                <TouchableRipple style={{ width: '12%', borderRadius: 14, padding: 7, backgroundColor: "white", alignItems: 'center', justifyContent: 'center', }} onPress={() => {
+                    navigation.goBack();
+                }}>
+                    <Entypo name='chevron-small-left' size={34} />
+                </TouchableRipple>
+            </View>
+
+            <View style={styles.card}>
+                <FontAwesome name='wrench' size={40} color={'#31302C'} />
                 <Text style={{ fontSize: 42, color: '#31302C', fontWeight: "bold", marginVertical: 15 }}>Report {'\n'} an issue
                 </Text>
                 <Text style={{ fontSize: 16, color: 'grey', marginBottom: 15 }}> Sorry to hear that you have a problem. {'\n'} Our technician is here to help you.</Text>
@@ -24,7 +34,7 @@ function Complaint() {
                         <Text style={styles.buttonText}>Submit</Text>
                     </TouchableOpacity>
                 </View>
-            </SafeAreaView>
+            </View>
         </View>
     )
 }
@@ -38,9 +48,9 @@ const styles = StyleSheet.create({
     },
     card: {
         backgroundColor: "#E0EFF6",
-        height: '100%',
+        height: '90%',
         borderRadius: 14,
-        padding: 15,
+        padding: 20,
     },
     ti: {
         borderWidth: 1,
@@ -61,7 +71,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 14,
-        elevation: 3,
+        elevation: 5,
     },
 })
 

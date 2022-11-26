@@ -10,6 +10,8 @@ import {
   Alert,
   ActivityIndicator,
 } from "react-native";
+import { Entypo } from '@expo/vector-icons';
+import { TouchableRipple } from "react-native-paper";
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 import { REST_API_LOCAL } from "@env";
@@ -55,6 +57,13 @@ export default function ViewQuotes({ navigation, route }) {
 
   return (
     <View style={styles.container}>
+       <View style={{ paddingBottom: 15, paddingTop: 10 }}>
+          <TouchableRipple style={{ width: '12%', borderRadius: 14, padding: 7, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', }} onPress={() => {
+            navigation.goBack();
+          }}>
+            <Entypo name='chevron-small-left' size={34} />
+          </TouchableRipple>
+        </View>
       {loading ? (
         <ActivityIndicator />
       ) : (
@@ -153,7 +162,7 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     padding: 5,
-    elevation: 3,
+    elevation: 5,
     borderRadius: 3,
     backgroundColor: "#068E94",
   },

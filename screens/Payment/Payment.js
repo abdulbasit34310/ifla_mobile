@@ -1,19 +1,9 @@
-import {
-  StyleSheet,
-  Text,
-  Alert,
-  TextInput,
-  Switch,
-  Button,
-  View,
-  TouchableOpacity,
-} from "react-native";
 import React, { useState, useCallback, useEffect, useRef, useMemo } from 'react';
-import {
-  CardField,
-  StripeProvider,
-  useConfirmPayment,
-} from "@stripe/stripe-react-native";
+import { Animated, ActivityIndicator, Alert, Button, Dimensions, FlatList, Image, StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView, Switch } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Card, Divider, TouchableRipple } from "react-native-paper";
+import { AntDesign, Entypo, EvilIcons, Feather, FontAwesome, FontAwesome5, FontAwesome5Brands, Fontisto, Foundation, Ionicons, MaterialCommunityIcons, MaterialIcons, Octicons, SimpleLineIcons, Zocial } from '@expo/vector-icons';
+import { CardField, StripeProvider, useConfirmPayment, } from "@stripe/stripe-react-native";
 import axios from "axios";
 import { REST_API_LOCAL } from "@env";
 import * as SecureStore from "expo-secure-store";

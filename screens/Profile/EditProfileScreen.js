@@ -234,7 +234,7 @@ const EditProfileScreen = ({ navigation, route }) => {
   };
 
   return (
-    <ScrollView>
+    <ScrollView style={{ backgroundColor: "#E0EFF6" }}>
       <KeyboardAvoidingView style={styles.container}>
         <View style={{ paddingTop: 20, alignItems: "center" }}>
           <TouchableOpacity onPress={() => pickImage()}>
@@ -411,6 +411,7 @@ const EditProfileScreen = ({ navigation, route }) => {
             Update
           </Text>
         </TouchableOpacity>
+
         <TouchableOpacity
           style={styles.submitButton}
           onPress={() => navigation.navigate("ChangePassword")}
@@ -428,8 +429,9 @@ export default EditProfileScreen;
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: "#E0EFF6",
     flex: 1,
-    padding: 25,
+    padding: 20,
   },
   userInfoSection: {
     marginTop: 10,
@@ -447,15 +449,14 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   submitButton: {
-    borderRadius: 14,
-    backgroundColor: "#00ABB2",
-    color: "white",
-    alignSelf: "center",
+    width: "100%",
+    height: 60,
     justifyContent: "center",
-    marginTop: 45,
-    width: "60%",
-    height: 50,
-    elevation: 3,
+    alignItems: "center",
+    borderRadius: 14,
+    marginTop: 20,
+    elevation: 5,
+    backgroundColor: "#068E94"
   },
   action: {
     flexDirection: "row",

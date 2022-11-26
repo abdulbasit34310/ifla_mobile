@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 14,
-        elevation: 3,
+        elevation: 5,
     },
     IFLAlogo: {
         width: 250,

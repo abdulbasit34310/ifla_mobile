@@ -4,9 +4,9 @@ import { View, Text, Pressable, StyleSheet } from 'react-native';
 
 export default function RadioButton({ data, onSelect }) {
     const [userOption, setUserOption] = useState(null);
-    const selectHandler = (value) => {
-        onSelect(value);
-        setUserOption(value);
+    const selectHandler = (index) => {
+        onSelect(data[index].value);
+        setUserOption(index);
     };
 
     return (
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
         padding: 10,
         margin: 5,
         borderRadius: 19,
-        elevation: 55,
+        elevation: 5,
     },
 
 })

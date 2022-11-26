@@ -1,50 +1,18 @@
 import * as React from "react";
-import {
-  Text,
-  View,
-  TouchableOpacity,
-  FlatList,
-  ActivityIndicator,
-  StyleSheet,
-} from "react-native";
+import { ActivityIndicator, Alert, Button, Dimensions, FlatList, ImageBackground, Image, ImageScrollView, Picker, Platform, StyleSheet, Switch, Text, TextInput, ToastAndroid, TouchableOpacity, View } from 'react-native';
+import * as Animatable from 'react-native-animatable';
+import { AntDesign, Entypo, EvilIcons, Feather, FontAwesome, FontAwesome5, FontAwesome5Brands, Fontisto, Foundation, Ionicons, MaterialCommunityIcons, MaterialIcons, Octicons, SimpleLineIcons, Zocial } from '@expo/vector-icons';
 import axios from "axios";
+import { Divider, TouchableRipple } from "react-native-paper";
 import * as SecureStore from "expo-secure-store";
 import moment from "moment";
+import { StatusBar } from 'expo-status-bar';
 import { REST_API_LOCAL } from "@env";
-
-
-import {
-  AntDesign,
-  Entypo,
-  EvilIcons,
-  Feather,
-  FontAwesome,
-  FontAwesome5,
-  FontAwesome5Brands,
-  Fontisto,
-  Foundation,
-  Ionicons,
-  MaterialCommunityIcons,
-  MaterialIcons,
-  Octicons,
-  SimpleLineIcons,
-  Zocial,
-} from "@expo/vector-icons";
 
 export default function MyBookings({ route, navigation }) {
   const [bookingData, setBookingData] = React.useState();
   const [loading, setLoading] = React.useState(true);
   const [token, setToken] = React.useState();
-
-  function getValueFor() {
-    // let result =
-    SecureStore.getItemAsync("userToken").then((val) => setToken(val));
-    // if (result) {
-    //   return result
-    // } else {
-    //   return "Token not in SecureStore"
-    // }
-  }
 
   const getBookingsData = async () => {
     let isSubscribed = true;
@@ -56,27 +24,36 @@ export default function MyBookings({ route, navigation }) {
       headers: headers,
     });
     const data = resp.data.bookings;
-    isSubscribed ? setBookingData(data) : null;
+    // console.log(data);
+    let x = data.filter((a) => {
+      if (a.status == 'Assigned') {
+        return a;
+      }
+    })
+    isSubscribed ? setBookingData(x.reverse()) : null;
     setLoading(false);
 
     return () => (isSubscribed = false);
   };
 
   React.useEffect(() => {
+    console.log("MyBookingsScreen")
     navigation.addListener("focus", () => {
-      // getValueFor();
       getBookingsData();
     });
   }, [navigation]);
 
-  // React.useEffect(() => {
-
-  //   getBookingsData();
-
-  // }, [setBookingData]);
 
   return (
     <View style={styles.container}>
+      <StatusBar style="dark" />
+
+      <View style={{ paddingBottom: 15 }}>
+        <TouchableRipple style={{ width: '12%', borderRadius: 14, padding: 7, backgroundColor: 'white', }} onPress={() => { navigation.goBack() }}>
+          <Entypo name='chevron-small-left' size={34} />
+        </TouchableRipple>
+      </View>
+
       {loading && <ActivityIndicator />}
       {bookingData && (
         <FlatList
@@ -93,81 +70,110 @@ export default function MyBookings({ route, navigation }) {
             <TouchableOpacity
               style={styles.flatListStyle}
               onPress={() => {
-                navigation.push("MyBookingDetails", item);
+                navigation.push("BookingDetails", item);
               }}
             >
               <View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    borderBottomColor: "#AAAAAA",
-                    borderBottomWidth: 1,
-                    paddingBottom: 10,
-                  }}
-                >
-                  <Text style={styles.timeStyle}>
+
+                <View style={styles.action}><Text style={styles.dataAndTimeStyle}>ID: {bookingData[index]._id}</Text></View>
+                <Divider />
+
+                <View style={[styles.action, {paddingTop: 5}]}>
+                  <Text style={styles.dataAndTimeStyle}>
                     {moment(bookingData[index].dateTime)
                       .utc()
-                      .format("MMM Do YYYY, h:mm:ss a")}
+                      .format("MMM Do YYYY, h:mm a")}
                   </Text>
                   <Text style={styles.paymentStyle}>
                     {bookingData[index].payment.amount} PKR
                   </Text>
                 </View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    paddingTop: 10,
-                  }}
-                >
+
+                <Divider />
+
+                <View style={styles.action1}>
                   <View>
-                    <Text style={styles.heading}>Source</Text>
+                    <Text style={styles.heading}>Pickup Location</Text>
                     <Text style={styles.cityNameStyle}>
                       {bookingData[index].pickupAddress.city}{" "}
                       {bookingData[index].pickupAddress.street}
                     </Text>
                   </View>
                   <View>
-                    <Text style={styles.heading}>Destination</Text>
+                    <Text style={styles.heading}>Dropoff Location</Text>
                     <Text style={styles.cityNameStyle}>
                       {bookingData[index].dropoffAddress.city}{" "}
                       {bookingData[index].dropoffAddress.street}
                     </Text>
                   </View>
                 </View>
+
               </View>
             </TouchableOpacity>
-          )}
+          )
+          }
         />
       )}
-    </View>
+    </View >
   );
 }
 
 const styles = StyleSheet.create({
-  container: { backgroundColor: "#E0EFF6", height: "100%", padding: 15 },
+  container: {
+    backgroundColor: "#E0EFF6",
+    height: "100%",
+    padding: 15
+  },
+  action: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingBottom: 10,
+  },
   flatListStyle: {
     padding: 15,
     borderBottomColor: "#005761",
     backgroundColor: "white",
     margin: 5,
     borderRadius: 14,
-    elevation: 3,
+    elevation: 5,
   },
-  timeStyle: { fontWeight: "bold", fontSize: 17, color: "#005761" },
-  paymentStyle: { fontSize: 15, fontWeight: "bold", color: "#00ABB2" },
-  heading: { color: "#AAAAAA", fontSize: 12 },
-  cityNameStyle: { color: "#005761", fontWeight: "bold", width: "50%" },
+  dataAndTimeStyle: {
+    fontWeight: "bold",
+    fontSize: 17,
+    color: "#005761"
+  },
+  paymentStyle: {
+    fontSize: 15,
+    fontWeight: "bold",
+    color: "#00ABB2"
+  },
+  heading: {
+    color: "#AAAAAA",
+    fontSize: 12
+  },
+  addressStyle: {
+    color: "black",
+    fontWeight: "bold",
+    width: "50%",
+    fontSize: 15,
+  },
   statusStyle: {
     fontSize: 12,
     margin: 5,
     color: "white",
     fontWeight: "bold",
     padding: 5,
-    elevation: 3,
+    elevation: 5,
     borderRadius: 14,
     backgroundColor: "#068E94",
   },
+  cityNameStyle: {
+    color: "#005761",
+    fontWeight: "bold",
+  },
+  action1: {
+    // flexDirection: "row",
+    // justifyContent: "space-between",
+    paddingTop: 10,
+  }
 });

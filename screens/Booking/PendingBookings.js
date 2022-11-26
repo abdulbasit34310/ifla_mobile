@@ -1,28 +1,20 @@
 import * as React from "react";
-import {
-  Text,
-  View,
-  TouchableOpacity,
-  FlatList,
-  StyleSheet,
-} from "react-native";
+import { ActivityIndicator, Alert, Button, Dimensions, FlatList, ImageBackground, Image, ImageScrollView, Picker, Platform, StyleSheet, Switch, Text, TextInput, ToastAndroid, TouchableOpacity, View } from 'react-native';
+import { AntDesign, Entypo, EvilIcons, Feather, FontAwesome, FontAwesome5, FontAwesome5Brands, Fontisto, Foundation, Ionicons, MaterialCommunityIcons, MaterialIcons, Octicons, SimpleLineIcons, Zocial } from '@expo/vector-icons';
 import axios from "axios";
-import { REST_API_LOCAL } from "@env";
+import { StatusBar } from 'expo-status-bar';
+import * as Animatable from 'react-native-animatable';
+import { Divider, TouchableRipple } from "react-native-paper";
 import * as SecureStore from "expo-secure-store";
 import moment from "moment";
 
+import NoBookingIllustration from "../../assets/NoBooking.png";
+
+import { REST_API_LOCAL } from "@env";
+
 export default function PendingBookings({ route, navigation }) {
   const [bookingData, setBookingData] = React.useState();
-  //const [token,setToken] = React.useState(route.params.token)
 
-  async function getValueFor(key) {
-    let result = await SecureStore.getItemAsync(key);
-    if (result) {
-      return result;
-    } else {
-      return "Token not in SecureStore";
-    }
-  }
   const getBookingsData = async () => {
     let isSubscribed = true;
     let token1 = await SecureStore.getItemAsync("userToken");
@@ -33,15 +25,17 @@ export default function PendingBookings({ route, navigation }) {
       { withCredentials: true, headers: headers }
     );
     const data = await response.data.bookings;
-    isSubscribed ? setBookingData(data) : null;
-    // setLoading(false);
+    // console.log(data);
 
+    let x = data.filter((a) => {
+      if (a.status == 'Pending') {
+        return a;
+      }
+    })
+
+    isSubscribed ? setBookingData(x.reverse()) : null;
     return () => (isSubscribed = false);
   };
-
-  // React.useEffect(() => {
-  //   getBookingsData();
-  // }, [setBookingData]);
 
   React.useEffect(() => {
     navigation.addListener("focus", () => {
@@ -51,59 +45,67 @@ export default function PendingBookings({ route, navigation }) {
 
   return (
     <View style={styles.container}>
+      <View style={{ paddingBottom: 15, paddingTop: 10 }}>
+        <TouchableRipple style={{ width: '12%', borderRadius: 14, padding: 7, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', }} onPress={() => {
+          navigation.popToTop();
+        }}>
+          <Entypo name='chevron-small-left' size={34} />
+        </TouchableRipple>
+      </View>
+      <StatusBar style="dark" />
+
       <FlatList
         refreshing={false}
         onRefresh={getBookingsData}
         keyExtractor={(item, index) => index}
         data={bookingData}
         ListEmptyComponent={
-          <Text style={{ fontSize: 24, alignSelf: "center", marginTop: 30 }}>
-            No Bookings Found
-          </Text>
+          <View style={{
+            justifyContent: 'center',
+            alignSelf: "center",
+            marginTop: '50%',
+            alignContent: 'center',
+          }}>
+            <Animatable.Image
+              animation="lightSpeedIn"
+              style={styles.illustrationStyle}
+              source={NoBookingIllustration}
+            />
+            <Text style={styles.timeStyle}>Schedule A Booking</Text>
+          </View>
         }
         renderItem={({ item, index }) => (
           <TouchableOpacity
             style={styles.flatListStyle}
             onPress={() => {
-              navigation.push("PendingBookingDetails", item);
+              navigation.push("BookingDetails", item);
             }}
           >
             <View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  borderBottomColor: "#AAAAAA",
-                  borderBottomWidth: 1,
-                  paddingBottom: 10,
-                }}
-              >
+              <View style={styles.action}><Text style={styles.dataAndTimeStyle}>ID: - {bookingData[index]._id}</Text></View>
+              <Divider />
+
+              <View style={[styles.action, { paddingTop: 5 }]}>
                 <Text style={styles.timeStyle}>
                   {moment(bookingData[index].dateTime)
                     .utc()
-                    .format("MMM Do YYYY, h:mm:ss a")}
+                    .format("MMM Do YYYY, h:mm a")}
                 </Text>
                 <Text style={styles.paymentStyle}>
                   {bookingData[index].payment.amount} PKR
                 </Text>
               </View>
 
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  paddingTop: 10,
-                }}
-              >
+              <View style={styles.action1}>
                 <View>
-                  <Text style={styles.heading}>Source</Text>
+                  <Text style={styles.heading}>Pickup Location</Text>
                   <Text style={styles.cityNameStyle}>
                     {bookingData[index].pickupAddress.city}{" "}
                     {bookingData[index].pickupAddress.street}
                   </Text>
                 </View>
                 <View>
-                  <Text style={styles.heading}>Destination</Text>
+                  <Text style={styles.heading}>Dropoff Location</Text>
                   <Text style={styles.cityNameStyle}>
                     {bookingData[index].dropoffAddress.city}{" "}
                     {bookingData[index].dropoffAddress.street}
@@ -134,16 +136,21 @@ const styles = StyleSheet.create({
   cityNameStyle: {
     color: "#005761",
     fontWeight: "bold",
-    width: "50%",
   },
-  statusStyle: {
-    fontSize: 12,
-    margin: 5,
-    color: "white",
-    fontWeight: "bold",
-    padding: 5,
-    elevation: 3,
-    borderRadius: 3,
-    backgroundColor: "#068E94",
+  illustrationStyle: {
+    width: 200,
+    height: 200,
   },
+  action: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    borderBottomColor: "#AAAAAA",
+    borderBottomWidth: 1,
+    paddingBottom: 10,
+  },
+  action1: {
+    // flexDirection: "row",
+    // justifyContent: "space-between",
+    paddingTop: 10,
+  }
 });
