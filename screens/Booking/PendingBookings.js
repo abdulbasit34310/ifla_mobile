@@ -82,7 +82,10 @@ export default function PendingBookings({ route, navigation }) {
             }}
           >
             <View>
-              <View style={styles.action} >
+              <View style={styles.action}><Text style={styles.dataAndTimeStyle}>ID: - {bookingData[index]._id}</Text></View>
+              <Divider />
+
+              <View style={[styles.action, { paddingTop: 5 }]}>
                 <Text style={styles.timeStyle}>
                   {moment(bookingData[index].dateTime)
                     .utc()

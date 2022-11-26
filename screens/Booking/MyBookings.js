@@ -24,7 +24,7 @@ export default function MyBookings({ route, navigation }) {
       headers: headers,
     });
     const data = resp.data.bookings;
-
+    // console.log(data);
     let x = data.filter((a) => {
       if (a.status == 'Assigned') {
         return a;
@@ -75,7 +75,10 @@ export default function MyBookings({ route, navigation }) {
             >
               <View>
 
-                <View style={styles.action}>
+                <View style={styles.action}><Text style={styles.dataAndTimeStyle}>ID: {bookingData[index]._id}</Text></View>
+                <Divider />
+
+                <View style={[styles.action, {paddingTop: 5}]}>
                   <Text style={styles.dataAndTimeStyle}>
                     {moment(bookingData[index].dateTime)
                       .utc()
@@ -104,12 +107,14 @@ export default function MyBookings({ route, navigation }) {
                     </Text>
                   </View>
                 </View>
+
               </View>
             </TouchableOpacity>
-          )}
+          )
+          }
         />
       )}
-    </View>
+    </View >
   );
 }
 

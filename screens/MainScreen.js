@@ -47,7 +47,6 @@ registerForPushNotificationsAsync = async () => {
       var response = await axios.post(
         `${REST_API_LOCAL}/notifications/token`,
         { token: { value: token } }, {
-        withCredentials: true,
         headers: { Authorization: `Bearer ${result}` },
       }
       );
@@ -78,9 +77,10 @@ const MainScreen = ({ route, navigation }) => {
   const responseListener = useRef();
 
   const [token, setToken] = React.useState();
-  const [shipperData, setShipperData] = React.useState("");
+  const [shipperName, setShipperName] = React.useState("");
 
   const getSignedInUserCredentials = async () => {
+
     let token = await SecureStore.getItemAsync("userToken");
     const headers = { Authorization: `Bearer ${token}` };
     const response = await axios.get(`${REST_API_LOCAL}/users/getUser`, {
@@ -89,7 +89,7 @@ const MainScreen = ({ route, navigation }) => {
     });
 
     const data = await response.data;
-    setShipperData(data.personId);
+    setShipperName(data.personId.name);
   };
 
   React.useEffect(() => {
@@ -141,7 +141,7 @@ const MainScreen = ({ route, navigation }) => {
       <View style={styles.topSection}>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <Text style={{ color: "#E0EFF6", fontSize: 18, fontWeight: "bold" }}>
-            Welcome, {shipperData.name}
+            Welcome {shipperName}
           </Text>
           <TouchableOpacity>
             <MaterialCommunityIcons
@@ -187,7 +187,7 @@ const MainScreen = ({ route, navigation }) => {
               source={trackingIllustration}
               style={{
                 width: 82,
-                height: 82,
+                height: 70,
                 left: 70,
               }}
             />
