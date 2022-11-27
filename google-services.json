@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "986030216636",
+    "project_id": "ifla-349312",
+    "storage_bucket": "ifla-349312.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:986030216636:android:ae35d9cbb7a7025e5c47b9",
+        "android_client_info": {
+          "package_name": "com.IFLA.ifla_shipper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "986030216636-ae2rbgvrf2dfu4lfo4a0a0ujv7uebqmu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDN3MD-1jiRx3QwxW98J6Z7pO6HICrzkyk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "986030216636-ae2rbgvrf2dfu4lfo4a0a0ujv7uebqmu.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "986030216636-jrs4gcba41s7s77ill6upbip6k4h0ldd.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "host.exp.exponent"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

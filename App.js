@@ -168,6 +168,11 @@ export default function App() {
             />
             <Drawer.Screen
               options={{ headerShown: false }}
+              name="QuoteStack"
+              component={QuoteStack}
+            />
+            <Drawer.Screen
+              options={{ headerShown: false }}
               name="Profile"
               component={ProfileStack}
             />
@@ -224,21 +229,6 @@ function FreightBookingStack({ navigation, route }) {
         options={{ title: "Schedule Example" }}
       />
       <Stack.Screen
-        name="GetAQuote"
-        component={GetAQuote}
-        options={{ title: "Get a Quote", headerShown: true  }}
-      />
-      <Stack.Screen
-        name="ViewQuotes"
-        component={ViewQuotes}
-        options={{ title: "View Quote" }}
-      />
-      <Stack.Screen
-        name="QuoteDetails"
-        component={QuoteDetails}
-        options={{ title: "Quote Details" }}
-      />
-      <Stack.Screen
         name="PendingBookings"
         component={PendingBookings}
         options={{ title: "Pending Bookings" }}
@@ -268,6 +258,35 @@ function FreightBookingStack({ navigation, route }) {
     </Stack.Navigator>
   );
 }
+
+function QuoteStack({navigation, route}){
+  return(
+    <Stack.Navigator
+    screenOptions={{
+      headerTintColor: "#005761",
+      headerTitleAlign: "center",
+      headerTitleStyle: { fontSize: 20 },
+      headerStyle: { backgroundColor: "white", padding: 0 },
+      headerShown: false,
+    }}
+    >
+      <Stack.Screen
+        name="GetAQuote"
+        component={GetAQuote}
+        options={{ title: "Get a Quote" }}
+      />
+      <Stack.Screen
+        name="ViewQuotes"
+        component={ViewQuotes}
+        options={{ title: "View Quote" }}
+      />
+      <Stack.Screen
+        name="QuoteDetails"
+        component={QuoteDetails}
+        options={{ title: "Quote Details", headerShown: true }}
+      />
+    </Stack.Navigator>
+)}
 
 function ProfileStack({ navigation, route }) {
   return (
@@ -354,6 +373,12 @@ function TopTabNavigatorStack({ navigation, route }) {
     <TopTabNavigator />
   )
 }
+
+const onOpenNotification = async (notify) => {
+  
+  console.log('notify', notify);
+}
+
 // Buttons and Primary Foreground: #068E94
 // Secondary Foreground: #00ABB2
 // Background Primary and Text: #005761

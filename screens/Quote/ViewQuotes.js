@@ -30,24 +30,10 @@ export default function ViewQuotes({ navigation, route }) {
       headers: headers,
     });
     const data = await response.data.bookings;
-    //   var id=Object.keys(data);
-    //   var pendingData={};
-    //   console.log(id);
-    //   for (let i=0;i<id.length;i++){
-    //       let key=id[i];
-    //       console.log(data[key].Status);
-    //         if(data[key].Status==="In-Process"){
-    //             pendingData[key]=data[key];
-    //         }
-    // }
-    console.log(data);
+
     setQuoteData(data);
     setLoading(false);
   };
-
-  // React.useEffect(() => {
-  //   getQuoteData();
-  // }, [setQuoteData]);
 
   React.useEffect(() => {
     navigation.addListener("focus", () => {

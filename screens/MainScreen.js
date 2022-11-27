@@ -160,7 +160,7 @@ const MainScreen = ({ route, navigation }) => {
           <TouchableOpacity
             style={styles.card}
             onPress={() => {
-              navigation.navigate("FreightBooking", { screen: "BookingScreen", shipperData:shipperData });
+              navigation.navigate("FreightBooking", { screen: "BookingScreen"});
             }}
           >
             <View>
@@ -179,7 +179,7 @@ const MainScreen = ({ route, navigation }) => {
           <TouchableOpacity
             style={styles.card}
             onPress={() => {
-              navigation.navigate("FreightBooking", { screen: "GetAQuote" });
+              navigation.navigate("QuoteStack", { screen: "GetAQuote" });
             }}
           >
             <Text>Get a Quote</Text>
