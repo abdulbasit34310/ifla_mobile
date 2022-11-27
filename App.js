@@ -41,6 +41,8 @@ import Complaint from "./screens/Complaint";
 import PaymentMethod from "./screens/Payment/PaymentMethod";
 import PayByWallet from "./screens/Payment/PayByWallet";
 
+import Notification from "./screens/Notification";
+
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -162,34 +164,32 @@ export default function App() {
               options={{ title: "Home" }}
             />
             <Drawer.Screen
-              options={{ headerShown: false }}
               name="FreightBooking"
               component={FreightBookingStack}
             />
             <Drawer.Screen
-              options={{ headerShown: false }}
               name="QuoteStack"
               component={QuoteStack}
             />
             <Drawer.Screen
-              options={{ headerShown: false }}
               name="Profile"
               component={ProfileStack}
             />
             <Drawer.Screen
-              options={{ headerShown: false }}
               name="Payments"
               component={PaymentsStack}
             />
             <Drawer.Screen
-              options={{ headerShown: false }}
               name="Feedback"
               component={Feedback}
             />
             <Drawer.Screen
-              options={{ headerShown: false }}
               name="Complaint"
               component={Complaint}
+            />
+            <Drawer.Screen
+              name="Notification"
+              component={Notification}
             />
           </Drawer.Navigator>
         ) : (
@@ -301,12 +301,12 @@ function ProfileStack({ navigation, route }) {
       <Stack.Screen
         name="ProfileScreen"
         component={ProfileScreen}
-        options={{ title: "Profile" }}
+        options={{ title: "Profile", headerShown: false }}
       />
       <Stack.Screen
         name="EditProfileScreen"
         component={EditProfileScreen}
-        options={{ title: "Edit Profile" }}
+        options={{ title: "Edit Profile", headerShown: false }}
       />
       <Stack.Screen
         name="CompanyInformationScreen"
@@ -343,11 +343,12 @@ function PaymentsStack({ navigation, route }) {
       <Stack.Screen
         name="Wallet"
         component={Wallet}
+        options={{ headerShown:false }}
       />
       <Stack.Screen
         name="LoadMoneyToWallet"
         component={LoadMoneyToWallet}
-        options={{ title: "Load Money" }}
+        options={{ title: "Load Money", headerShown:false }}
       />
       <Stack.Screen
         name="Payment"

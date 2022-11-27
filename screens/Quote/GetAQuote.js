@@ -32,7 +32,7 @@ const Theme = {
 };
 
 export default function GetAQuote({ route, navigation }) {
-  const [category, setCategory] = React.useState(0);
+  const [category, setCategory] = React.useState(2);
   const [isPickup, setIsPickup] = React.useState(true);
   const [vehicleModal, setVehicleModal] = React.useState(false);
   const [modalVisible, setModalVisible] = React.useState(false);
@@ -56,17 +56,15 @@ export default function GetAQuote({ route, navigation }) {
 
   const SaveQuote = async () => {
     const body = quoteData;
-    console.log(quoteData);
-    var obj = quoteData;
-    let token1 = await SecureStore.getItemAsync("userToken");
-    const headers = { Authorization: `Bearer ${token1}` };
 
-    var response = await axios.post(
+    let token = await SecureStore.getItemAsync("userToken");
+    const headers = { Authorization: `Bearer ${token}` };
+
+    await axios.post(
       REST_API_LOCAL + "/shipper/saveQuoteMobile",
       body,
       { withCredentials: true, headers: headers }
     );
-    var data = response.data;
     console.log("Saving Done!");
     showToastWithGravity();
     navigation.push("ViewQuotes")

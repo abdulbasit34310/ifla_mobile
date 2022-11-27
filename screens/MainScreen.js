@@ -143,7 +143,7 @@ const MainScreen = ({ route, navigation }) => {
           <Text style={{ color: "#E0EFF6", fontSize: 18, fontWeight: "bold" }}>
             Welcome {shipperName}
           </Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={()=>{navigation.navigate("Notification")}}>
             <MaterialCommunityIcons
               name="bell-outline"
               color={"#E0EFF6"}

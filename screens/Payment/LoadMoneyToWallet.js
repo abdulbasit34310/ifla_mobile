@@ -18,7 +18,7 @@ const LoadMoneyToWallet = ({ navigation }) => {
         </TouchableRipple>
       </View>
 
-      <View style={{justifyContent: 'center', alignItems: 'center'}}>
+      <View style={{justifyContent: 'center', alignItems: 'center', marginVertical:"20%"}}>
 
         <Text
           style={[
@@ -29,7 +29,7 @@ const LoadMoneyToWallet = ({ navigation }) => {
             },
           ]}
         >
-          Deposit
+          Enter Amount
         </Text>
 
       <View style={{ flexDirection: "row", alignItems: "center", margin: 20 }}>

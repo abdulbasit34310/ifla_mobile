@@ -37,7 +37,6 @@ export default function MyBookings({ route, navigation }) {
   };
 
   React.useEffect(() => {
-    console.log("MyBookingsScreen")
     navigation.addListener("focus", () => {
       getBookingsData();
     });
