@@ -1,10 +1,11 @@
 import React from 'react'
-import { ActivityIndicator, StyleSheet, Text, View, FlatList } from 'react-native'
+import { ActivityIndicator, StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native'
 import { TouchableRipple } from "react-native-paper";
 import { Entypo } from '@expo/vector-icons';
 import axios from 'axios'
 import { REST_API_LOCAL } from "@env"
 import * as SecureStore from "expo-secure-store";
+import moment from "moment";
 
 
 const Notification = ({ navigation }) => {
@@ -27,7 +28,7 @@ const Notification = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-        <TouchableRipple style={{ width: '12%', borderRadius: 14, padding: 7, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', }} onPress={() => {
+        <TouchableRipple style={{ width: '12%', borderRadius: 14, padding: 7, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', marginBottom:"10%" }} onPress={() => {
           navigation.goBack();
         }}>
           <Entypo name='chevron-small-left' size={34} />
@@ -46,7 +47,18 @@ const Notification = ({ navigation }) => {
                     </Text>
                 }
                 renderItem={({ item, index }) => (
-                    <Text>{ item.body }</Text>
+                    <TouchableOpacity style={{backgroundColor:"#fff", paddingHorizontal:"5%", marginVertical:"1%", borderRadius:10}}
+                        onPress={()=>navigation.navigate("FreightBooking", { screen: "BookingDetails", params: item.booking})}
+                    >
+                        <View  style={{flex:1, flexDirection:"row",alignContent:"space-between", marginVertical:"1%", paddingVertical:"10%"}}>
+                            <View style={{flex:1}}>
+                                <Text style={{fontSize:20, fontWeight:"bold", color:"#005761"}}>{ item.title }</Text>
+                                <Text style={{color:"#005761"}}>{ item.body }</Text>
+                            </View>
+                            <Text style={{color:"#005761"}}>{ moment(item.time).utc().format("MMM Do, h:mm a") }</Text>
+                        </View>
+                    </TouchableOpacity>
+                    
                 )}
             />
         )}

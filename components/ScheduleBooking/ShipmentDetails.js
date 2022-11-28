@@ -171,21 +171,24 @@ export default function BookingDetails({
             </Text>
             {/* <Text>{dropoffCity === "" ? "Select City" : dropoffCity}</Text> */}
           </TouchableOpacity>
+          {type===1 ? null:(
+            <View>
+              <Text style={styles.buttonInsideText}>Select Vehicle Type: </Text>
 
-          <Text style={styles.buttonInsideText}>Select Vehicle Type: </Text>
-
-          <TouchableOpacity
-            style={[styles.textInput]}
-            onPress={() => {
-              setVehicleModal(true);
-            }}
-          >
-            <Text>
-              {bookingData.vehicle === ""
-                ? "Select Vehicle"
-                : bookingData.vehicle}
-            </Text>
-          </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.textInput]}
+                onPress={() => {
+                  setVehicleModal(true);
+                }}
+              >
+                <Text>
+                  {bookingData.vehicle === ""
+                    ? "Select Vehicle"
+                    : bookingData.vehicle}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          )}
 
           <View
             style={{
@@ -198,8 +201,8 @@ export default function BookingDetails({
                 if (
                   bookingData.pickupAddress &&
                   bookingData.dropoffAddress &&
-                  bookingData.vehicle &&
-                  bookingData.type
+                  bookingData.type  == "LTL" ||
+                  (bookingData.vehicle && bookingData.type)
                 ) {
                   nextStep();
                 } else {
