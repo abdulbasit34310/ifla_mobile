@@ -84,7 +84,7 @@ export default function ScheduleDetails({
             />
           )}
 
-          <View
+          <TouchableOpacity onPress={()=>{ setBooking({ ...bookingData, package: !bookingData.package }); }}
             style={{ flexDirection: "row", alignItems: "center", marginTop: 10 }}
           >
             <Checkbox
@@ -95,7 +95,7 @@ export default function ScheduleDetails({
               }}
             />
             <Text style={{ fontSize: 16 }}>Do you want to pack your items?</Text>
-          </View>
+          </TouchableOpacity>
           {bookingData.package && (
             <View style={{ marginTop: 40 }}>
               <Text style={styles.header}>Package Details</Text>

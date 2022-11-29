@@ -38,7 +38,6 @@ export default function BookingsHistory({ route, navigation }) {
     };
 
     React.useEffect(() => {
-        console.log("Bookings History Screen")
         navigation.addListener("focus", () => {
             getBookingsData();
         });
@@ -49,7 +48,7 @@ export default function BookingsHistory({ route, navigation }) {
         <View style={styles.container}>
 
             <View style={{ paddingBottom: 15 }}>
-                <TouchableRipple style={{ width: '12%', borderRadius: 14, padding: 7, backgroundColor: 'white', }} onPress={() => { navigation.goBack() }}>
+                <TouchableRipple style={{ width: '12%', borderRadius: 14, padding: 7, backgroundColor: 'white', }} onPress={() => { navigation.popToTop() }}>
                     <Entypo name='chevron-small-left' size={34} />
                 </TouchableRipple>
             </View>

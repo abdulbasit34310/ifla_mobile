@@ -22,8 +22,8 @@ export default function ViewQuotes({ navigation, route }) {
   const getQuoteData = async () => {
     setLoading(true);
 
-    let token1 = await SecureStore.getItemAsync("userToken");
-    const headers = { Authorization: `Bearer ${token1}` };
+    let token = await SecureStore.getItemAsync("userToken");
+    const headers = { Authorization: `Bearer ${token}` };
 
     const response = await axios.get(`${REST_API_LOCAL}/shipper/getQuotes`, {
       withCredentials: true,

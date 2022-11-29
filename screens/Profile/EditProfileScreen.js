@@ -18,6 +18,8 @@ import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
 import { REST_API_LOCAL } from "@env";
 import * as SecureStore from "expo-secure-store";
+import { TouchableRipple } from "react-native-paper";
+import { Entypo } from '@expo/vector-icons';
 
 const EditProfileScreen = ({ navigation, route }) => {
   var item = route.params.item;
@@ -236,6 +238,11 @@ const EditProfileScreen = ({ navigation, route }) => {
   return (
     <ScrollView style={{ backgroundColor: "#E0EFF6" }}>
       <KeyboardAvoidingView style={styles.container}>
+          <TouchableRipple style={{ width: '12%', borderRadius: 14, padding: 7, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', }} onPress={() => {
+            navigation.goBack();
+          }}>
+            <Entypo name='chevron-small-left' size={34} />
+          </TouchableRipple>
         <View style={{ paddingTop: 20, alignItems: "center" }}>
           <TouchableOpacity onPress={() => pickImage()}>
             <View
