@@ -13,7 +13,8 @@ import bookingIllustration from "../assets/Booking.png";
 import gaqIllustration from "../assets/gaq.png";
 import walletIllustration from "../assets/Wallet.png";
 import trackingIllustration from "../assets/Tracking.png";
-import { REST_API_LOCAL } from "@env";
+// import { REST_API_LOCAL } from "@env";
+const REST_API_LOCAL="http://192.168.100.143:4000";
 import IFLAlogo from "../assets/IFLA.png";
 
 const axios = require("axios");
@@ -218,7 +219,7 @@ const MainScreen = ({ route, navigation }) => {
           <TouchableOpacity
             style={styles.card}
             onPress={() => {
-              navigation.navigate("Profile");
+              navigation.navigate("ProfileStack");
             }}
           >
             <Text>Profile</Text>

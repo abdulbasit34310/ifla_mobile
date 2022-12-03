@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef, useMemo } from 'react';
-import { Animated, ActivityIndicator, Alert, Button, Dimensions, FlatList, Image, StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
+import { Animated, ActivityIndicator, Alert, Button, Dimensions, FlatList, Image, StyleSheet, Switch, Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Card, Divider, TouchableRipple } from "react-native-paper";
 import { AntDesign, Entypo, EvilIcons, Feather, FontAwesome, FontAwesome5, FontAwesome5Brands, Fontisto, Foundation, Ionicons, MaterialCommunityIcons, MaterialIcons, Octicons, SimpleLineIcons, Zocial } from '@expo/vector-icons';
@@ -86,27 +86,33 @@ const Payment = ({ route }) => {
   return (
     <StripeProvider publishableKey={publishableKey}>
       <View style={styles.container}>
-        <TextInput
-          autoCapitalize="none"
-          placeholder="Name"
-          keyboardType="name-phone-pad"
-          onChange={(value) => setName(value.nativeEvent.text)}
-          style={styles.input}
-        />
-        <TextInput
-          autoCapitalize="none"
-          placeholder="Email"
-          keyboardType="email-address"
-          onChange={(value) => setName(value.nativeEvent.text)}
-          style={styles.input}
-        />
-        <TextInput
-          autoCapitalize="none"
-          placeholder="Contact Number"
-          keyboardType="number-pad"
-          onChange={(value) => setName(value.nativeEvent.text)}
-          style={styles.input}
-        />
+        <View style={styles.action}>
+          <TextInput
+            autoCapitalize="none"
+            placeholder="Name"
+            keyboardType="name-phone-pad"
+            onChange={(value) => setName(value.nativeEvent.text)}
+            style={styles.input}
+          />
+        </View>
+        <View style={styles.action}>
+          <TextInput
+            autoCapitalize="none"
+            placeholder="Email"
+            keyboardType="email-address"
+            onChange={(value) => setName(value.nativeEvent.text)}
+            style={styles.input}
+          />
+        </View>
+        <View style={styles.action}>
+          <TextInput
+            autoCapitalize="none"
+            placeholder="Contact Number"
+            keyboardType="number-pad"
+            onChange={(value) => setName(value.nativeEvent.text)}
+            style={styles.input}
+          />
+        </View>
         <CardField
           postalCodeEnabled={false}
           placeholder={{
@@ -126,14 +132,20 @@ const Payment = ({ route }) => {
             onValueChange={(value) => setSaveCard(value)}
             value={saveCard}
           />
-          <Text style={styles.text}>Save card during payment</Text>
+          <Text style={styles.text}>Save Card During Payment</Text>
         </View>
+
         <TouchableOpacity
-          style={styles.ButtonContainer}
+          style={[styles.customButton, { backgroundColor: "#068E94" }]}
           onPress={handlePayPress}
           disabled={loading}
         >
-          <Text style={styles.customButton}>Pay</Text>
+          <Text style={[
+            styles.buttonText,
+            {
+              color: "white",
+            },
+          ]}>Pay </Text>
         </TouchableOpacity>
       </View>
     </StripeProvider>
@@ -145,30 +157,38 @@ export default Payment;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    // alignItems: 'center',
+    backgroundColor: '#E0EFF6',
     justifyContent: "center",
+    paddingHorizontal: 20,
+    paddingBottom: 50,
+  },
+  action: {
+    flexDirection: "row",
+    marginTop: 15,
+    borderWidth: 1,
+    borderColor: "#AAAAAA",
+    paddingBottom: 5,
+    borderRadius: 8,
   },
   cardField: {
     width: "100%",
     height: 50,
-    marginVertical: 30,
+    marginTop: 70,
   },
   input: {
-    borderWidth: 1,
-    backgroundColor: "#FFFFFF",
-    borderColor: "#000000",
-    borderRadius: 8,
-    fontSize: 14,
-    marginVertical: 5,
+    paddingLeft: 12,
+    color: "#05375a",
+    fontSize: 16,
+    height: 40,
   },
   row: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: 'center',
     marginBottom: 20,
   },
   text: {
-    marginLeft: 12,
+    marginLeft: 14,
   },
   ButtonContainer: {
     elevation: 8,
@@ -177,19 +197,18 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 12,
   },
-  ButtonText: {
+  buttonText: {
     fontSize: 18,
-    color: "#fff",
     fontWeight: "bold",
-    alignSelf: "center",
-    textTransform: "uppercase",
+    marginHorizontal: 5,
   },
   customButton: {
-    backgroundColor: '#005761',
-    padding: 5,
-    borderRadius: 35,
+    width: "100%",
+    height: 60,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 14,
     elevation: 5,
-    alignSelf: "center",
   },
   ti: {
     borderColor: 'red',

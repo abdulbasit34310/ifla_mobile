@@ -80,7 +80,7 @@ export function CustomDrawer(props) {
               )}
               label="Profile"
               onPress={() => {
-                props.navigation.navigate("Profile");
+                props.navigation.navigate("ProfileStack");
               }}
             />
 

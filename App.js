@@ -10,6 +10,7 @@ import TopTabNavigator from "./navigation/TopTabNavigator";
 
 import MainScreen from "./screens/MainScreen";
 
+import Insurance from "./screens/Insurance/Insurance";
 import ProfileScreen from "./screens/Profile/ProfileScreen";
 import EditProfileScreen from "./screens/Profile/EditProfileScreen";
 import CompanyInformationScreen from "./screens/Profile/CompanyInformationScreen";
@@ -150,6 +151,7 @@ export default function App() {
         {loginState.userToken !== null ? (
           <Drawer.Navigator
             drawerContent={(props) => <CustomDrawer {...props} />}
+
             screenOptions={{
               headerShown: false
             }}
@@ -166,7 +168,7 @@ export default function App() {
             />
             <Drawer.Screen
               options={{ headerShown: false }}
-              name="Profile"
+              name="ProfileStack"
               component={ProfileStack}
             />
             <Drawer.Screen
@@ -208,38 +210,38 @@ function FreightBookingStack({ navigation, route }) {
       <Stack.Screen
         name="BookingScreen"
         component={BookingScreen}
-        options={{ title: "Booking" }}
+
       />
       <Stack.Screen
         name="ScheduleBooking"
         component={ScheduleBooking}
-        options={{ title: "Schedule Booking" }}
+
       />
 
       <Stack.Screen
         name="ScheduleExample"
         component={ScheduleExample}
-        options={{ title: "Schedule Example" }}
+
       />
       <Stack.Screen
         name="GetAQuote"
         component={GetAQuote}
-        options={{ title: "Get a Quote" }}
+
       />
       <Stack.Screen
         name="ViewQuotes"
         component={ViewQuotes}
-        options={{ title: "View Quote" }}
+
       />
       <Stack.Screen
         name="QuoteDetails"
         component={QuoteDetails}
-        options={{ title: "Quote Details" }}
+
       />
       <Stack.Screen
         name="PendingBookings"
         component={PendingBookings}
-        options={{ title: "Pending Bookings" }}
+
       />
       <Stack.Screen
         name="BookingDetails"
@@ -248,7 +250,7 @@ function FreightBookingStack({ navigation, route }) {
       <Stack.Screen
         name="LiveTracking"
         component={LiveTracking}
-        options={{ title: "LiveTracking" }}
+
       />
       <Stack.Screen name="TopTabNavigatorStack" component={TopTabNavigatorStack}
         options={{
@@ -265,44 +267,43 @@ function FreightBookingStack({ navigation, route }) {
 
 function ProfileStack({ navigation, route }) {
   return (
-    <Stack.Navigator
-      screenOptions={{
-        headerTintColor: "#005761",
-        headerTitleAlign: "center",
-        headerTitleStyle: { fontWeight: "bold", fontSize: 24 },
-        headerStyle: { backgroundColor: "white", padding: 0 },
-      }}
-    >
+    <Stack.Navigator>
+
       <Stack.Screen
         name="ProfileScreen"
         component={ProfileScreen}
-        options={{ title: "Profile" }}
+
       />
       <Stack.Screen
         name="EditProfileScreen"
         component={EditProfileScreen}
-        options={{ title: "Edit Profile" }}
+
       />
       <Stack.Screen
         name="CompanyInformationScreen"
         component={CompanyInformationScreen}
-        options={{ title: "Company Info" }}
       />
       <Stack.Screen
         name="Addresses"
         component={Addresses}
-        options={{ title: "Addresses" }}
+
       />
       <Stack.Screen
         name="AddAddress"
         component={AddAddress}
-        options={{ title: "Add Address" }}
+
       />
       <Stack.Screen
         name="ChangePassword"
         component={ChangePassword}
-        options={{ title: "Change Password" }}
+
       />
+      <Stack.Screen
+        name="Insurance"
+        component={Insurance}
+
+      />
+
     </Stack.Navigator>
   );
 }
@@ -334,4 +335,4 @@ function TopTabNavigatorStack({ navigation, route }) {
 // Buttons and Primary Foreground: #068E94
 // Secondary Foreground: #00ABB2
 // Background Primary and Text: #005761
-// Background Secondary: #E0EFF6 173340
+// Background Secondary: #E0EFF6

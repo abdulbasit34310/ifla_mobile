@@ -161,6 +161,31 @@ const ProfileScreen = ({ route, navigation }) => {
           <FontAwesome name="chevron-right" size={25} color="lightgrey" />
         </TouchableOpacity>
 
+        <TouchableOpacity
+          style={styles.infoBox}
+          onPress={() => {
+            navigation.navigate("Insurance", { item: getData });
+          }}
+        >
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <View style={[styles.iconView, { backgroundColor: "#FF6666" }]}>
+              <MaterialCommunityIcons
+                name="shield-sun-outline"
+                solid
+                color="white"
+                size={24}
+              />
+            </View>
+            <Text style={styles.buttonTitle}>Insurance</Text>
+          </View>
+          <FontAwesome name="chevron-right" size={25} color="lightgrey" />
+        </TouchableOpacity>
+
         <View>
           <TouchableOpacity
             style={[styles.customButton, { backgroundColor: "#068E94" }]}

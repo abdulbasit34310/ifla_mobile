@@ -21,6 +21,8 @@ import * as SecureStore from "expo-secure-store";
 
 const EditProfileScreen = ({ navigation, route }) => {
   var item = route.params.item;
+  console.log(item);
+
   const [hasGalleyPermission, setHasGalleryPermission] = React.useState(null);
   const [image, setImage] = React.useState();
 

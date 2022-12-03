@@ -18,8 +18,9 @@ import {
   FB_APPID,
 } from "@env";
 WebBrowser.maybeCompleteAuthSession();
-import { REST_API_LOCAL } from "@env";
-// const REST_API_LOCAL = "http://192.168.100.133:4000"
+// import { REST_API_LOCAL } from "@env";
+const REST_API_LOCAL="http://192.168.100.143:4000"
+
 
 const Login = ({ route, navigation }) => {
   const [data, setData] = React.useState({
