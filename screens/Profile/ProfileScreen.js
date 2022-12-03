@@ -115,6 +115,34 @@ const ProfileScreen = ({ route, navigation }) => {
         </TouchableOpacity>
 
         <TouchableOpacity
+            style={styles.infoBox}
+            onPress={() => {
+              navigation.navigate("Payments", 
+             { screen: 'Wallet',
+              initial: false,
+              params:{item: getData}
+            });
+            }}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <View style={[styles.iconView, { backgroundColor: "#FF7F50" }]}>
+                <MaterialCommunityIcons
+                  name="credit-card"
+                  color={"white"}
+                  size={24}
+                />
+              </View>
+              <Text style={styles.buttonTitle}>Wallet</Text>
+            </View>
+            <FontAwesome name="chevron-right" size={25} color="lightgrey" />
+          </TouchableOpacity>
+
+        <TouchableOpacity
           style={styles.infoBox}
           onPress={() => {
             navigation.navigate("CompanyInformationScreen", {

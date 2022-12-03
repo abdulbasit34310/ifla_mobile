@@ -39,6 +39,8 @@ import ChangePassword from "./screens/Profile/ChangePassword";
 
 import Feedback from "./screens/Feedback";
 import Complaint from "./screens/Complaint";
+import PaymentMethod from "./screens/Payment/PaymentMethod";
+import PayByWallet from "./screens/Payment/PayByWallet";
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -227,6 +229,7 @@ function FreightBookingStack({ navigation, route }) {
         name="GetAQuote"
         component={GetAQuote}
 
+        options={{ title: "Get a Quote", headerShown: true  }}
       />
       <Stack.Screen
         name="ViewQuotes"
@@ -260,7 +263,11 @@ function FreightBookingStack({ navigation, route }) {
           ),
           tabBarColor: '#005761',
         }} />
-
+      <Stack.Screen
+        name="Payments"
+        component={PaymentsStack}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 }
@@ -296,14 +303,8 @@ function ProfileStack({ navigation, route }) {
       <Stack.Screen
         name="ChangePassword"
         component={ChangePassword}
-
+        options={{ title: "Change Password" }}
       />
-      <Stack.Screen
-        name="Insurance"
-        component={Insurance}
-
-      />
-
     </Stack.Navigator>
   );
 }
@@ -318,10 +319,22 @@ function PaymentsStack({ navigation, route }) {
       <Stack.Screen
         name="LoadMoneyToWallet"
         component={LoadMoneyToWallet}
+        options={{ title: "Load Money" }}
       />
       <Stack.Screen
         name="Payment"
         component={Payment}
+        options={{ title: "Pay Now" }}
+      />
+      <Stack.Screen
+        name="PaymentMethod"
+        component={PaymentMethod}
+        options={{ title: "Payment Method" }}
+      />
+      <Stack.Screen
+        name="PayByWallet"
+        component={PayByWallet}
+        options={{ title: "Paid By Wallet", headerShown: false }}
       />
     </Stack.Navigator>
   );

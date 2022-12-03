@@ -1,14 +1,11 @@
-import React, { useState, useCallback, useEffect, useRef, useMemo } from 'react';
-import { Animated, ActivityIndicator, Alert, Button, Dimensions, FlatList, Image, StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Card, Divider, TouchableRipple } from "react-native-paper";
-import { AntDesign, Entypo, EvilIcons, Feather, FontAwesome, FontAwesome5, FontAwesome5Brands, Fontisto, Foundation, Ionicons, MaterialCommunityIcons, MaterialIcons, Octicons, SimpleLineIcons, Zocial } from '@expo/vector-icons';
-
-import RadioButton from './RadioButton';
+import React from 'react';
+import { Text, View, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
+import { TouchableRipple } from "react-native-paper";
+import { Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
 
 const LoadMoneyToWallet = ({ navigation }) => {
 
-  const [getNo, setNo] = React.useState(0);
+  const [getNo, setNo] = React.useState("150");
 
   return (
     <View style={styles.container}>
@@ -32,35 +29,37 @@ const LoadMoneyToWallet = ({ navigation }) => {
             },
           ]}
         >
-          Enter Amount
+          Deposit
         </Text>
 
-        <View style={{ flexDirection: "row", alignItems: "center", margin: 20 }}>
-          <Text style={{ fontSize: 26, fontWeight: 'bold', marginRight: 15 }}>PKR</Text>
-          <TextInput
-            style={styles.ti}
-            value={getNo}
-            keyboardType="phone-pad"
-            onChangeText={(text) => setNo(text)}
-          />
+      <View style={{ flexDirection: "row", alignItems: "center", margin: 20 }}>
+        <Text style={{ fontSize: 26, fontWeight: 'bold', marginRight: 15 }}>PKR</Text>
+        <TextInput
+          style={styles.ti}
+          value={getNo}
+          keyboardType="phone-pad"
+          onChangeText={(text) => setNo(text)}
+        />
+      </View>
+      {
+        parseInt(getNo) < 150 || getNo=="" ? (<Text style={{color:"red"}}>Choose an amount more than 150</Text>):null
+      }
+      <TouchableOpacity style={styles.customButton}  disabled={parseInt(getNo) < 150 ? true:false}
+        onPress={() => { navigation.navigate("Payment", { getNo: parseInt(getNo) }) }}>
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <MaterialCommunityIcons name="bank-transfer-in" size={26} color={"white"} />
+          <Text
+            style={[
+              styles.buttonText,
+              {
+                color: "white",
+              },
+            ]}
+          >
+            Deposit
+          </Text>
         </View>
-
-        <TouchableOpacity style={styles.customButton}
-          onPress={() => { navigation.navigate("Payment", { id: getNo }) }}>
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <MaterialCommunityIcons name="bank-transfer-in" size={26} color={"white"} />
-            <Text
-              style={[
-                styles.buttonText,
-                {
-                  color: "white",
-                },
-              ]}
-            >
-              Transfer
-            </Text>
-          </View>
-        </TouchableOpacity>
+      </TouchableOpacity>
       </View>
     </View>
   )

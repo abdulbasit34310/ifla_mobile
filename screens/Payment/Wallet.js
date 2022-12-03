@@ -1,10 +1,31 @@
-import React, { useState, useCallback, useEffect, useRef, useMemo } from 'react';
-import { Animated, ActivityIndicator, Alert, Button, Dimensions, FlatList, Image, StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Card, Divider, Title, TouchableRipple } from "react-native-paper";
-import { AntDesign, Entypo, EvilIcons, Feather, FontAwesome, FontAwesome5, FontAwesome5Brands, Fontisto, Foundation, Ionicons, MaterialCommunityIcons, MaterialIcons, Octicons, SimpleLineIcons, Zocial } from '@expo/vector-icons';
+import React from 'react';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { Text,Title, TouchableRipple } from "react-native-paper";
+import { Entypo, EvilIcons } from '@expo/vector-icons';
+// import { EvilIcons } from 'react-native-vector-icons';
+import axios from "axios";
+import { REST_API_LOCAL } from "@env";
+import * as SecureStore from "expo-secure-store";
 
 export default function Wallet({ route, navigation }) {
+    const [balance, setBalance] = React.useState(0)
+    
+    async function getBalance() {
+        let token1 = await SecureStore.getItemAsync("userToken");
+        const headers = { Authorization: `Bearer ${token1}` };
+        const response = await axios.get(`${REST_API_LOCAL}/payments/getBalance`, {
+            withCredentials: true,
+            headers: headers,
+        });
+        setBalance(response.data.wallet)
+    }
+
+    React.useEffect(()=>{
+			navigation.addListener("focus", () => {
+				getBalance()
+			});
+    },[navigation])
+
     return (
         <View style={styles.container}>
 
@@ -26,7 +47,7 @@ export default function Wallet({ route, navigation }) {
                                     fontSize: 24,
                                     fontWeight: 'bold',
                                 }}>
-                                PKR.
+                                PKR.{balance}
                             </Title>
                             <EvilIcons name='arrow-right' size={28} style={{ left: 125, top: 90 }} />
                         </View>

@@ -30,7 +30,7 @@ export default function BookingDetails({
   const [dropoffAddress, setDropoffAddress] = React.useState("");
   const [vehicle, setVehicle] = React.useState("");
   const [vehicleModal, setVehicleModal] = React.useState(false);
-  const [type, setType] = React.useState(1);
+  const [type, setType] = React.useState(2);
 
   const fillToast = () => {
     if (Platform.OS == 'android') {
@@ -203,7 +203,6 @@ export default function BookingDetails({
                 ) {
                   nextStep();
                 } else {
-                  console.log(bookingData);
                   fillToast();
                 }
               }}

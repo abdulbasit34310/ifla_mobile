@@ -134,8 +134,6 @@ export default function SelectLocation({
           rankby: "distance",
         }}
         onPress={(data, details = null) => {
-          // 'details' is provided when fetchDetails = true
-          // console.log(details);
           const region = {
             latitude: details.geometry.location.lat,
             longitude: details.geometry.location.lng,

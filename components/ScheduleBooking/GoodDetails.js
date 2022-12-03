@@ -23,8 +23,6 @@ export default function GoodsDetails({
   setBooking,
 }) {
   const [selectedValue, setSelectedValue] = React.useState("");
-  console.log(bookingData);
-
   const fillToast = () => {
     if (Platform.OS == 'android') {
       ToastAndroid.showWithGravity(
@@ -53,7 +51,7 @@ export default function GoodsDetails({
             }}
           >
             <Picker.Item label="Please Specify" value="" />
-            <Picker.Item label="Raw Materials" value="Raw Naterials" />
+            <Picker.Item label="Raw Materials" value="Raw Materials" />
             <Picker.Item label="Electronics" value="Electronics" />
             <Picker.Item label="Agriculture" value="Agriculture" />
             <Picker.Item label="Clothing" value="Clothing" />
@@ -61,6 +59,25 @@ export default function GoodsDetails({
             <Picker.Item label="Furniture" value="Furniture" />
             <Picker.Item label="Petroleum" value="Petroleum" />
 
+          </Picker>
+          
+          <Text style={styles.buttonInsideText}>Select Storage Type: </Text>
+          <Picker
+            selectedValue={bookingData.storage}
+            style={[styles.textInput, { fontSize: 12 }]}
+            onValueChange={(itemValue) => {
+              setSelectedValue(itemValue);
+              setBooking({ ...bookingData, storage: itemValue });
+            }}
+          >
+            <Picker.Item label="Please Specify" value="" />
+            <Picker.Item label="Inflammable" value="Inflammable" />
+            <Picker.Item label="Fragile" value="Fragile" />
+            <Picker.Item label="Liquid" value="Liquid" />
+            <Picker.Item label="Frozen" value="Frozen" />
+            <Picker.Item label="Dry" value="Dry" />
+            <Picker.Item label="Heavy Material" value="Heavy Material" />
+            <Picker.Item label="None" value="N/A" />
           </Picker>
 
           <Text style={styles.buttonInsideText}>Approx. Weight (kgs): </Text>
@@ -168,7 +185,6 @@ export default function GoodsDetails({
                 ) {
                   nextStep();
                 } else {
-                  console.log(bookingData);
                   fillToast();
                 }
               }}

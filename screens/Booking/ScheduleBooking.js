@@ -1,7 +1,6 @@
 import * as React from "react";
-import { ActivityIndicator, Alert, Button, Dimensions, FlatList, ImageBackground, Image, ImageScrollView, Modal, Picker, Platform, StyleSheet, Switch, Text, TextInput, ToastAndroid, TouchableOpacity, View } from 'react-native';
-import { AntDesign, Entypo, EvilIcons, Feather, FontAwesome, FontAwesome5, FontAwesome5Brands, Fontisto, Foundation, Ionicons, MaterialCommunityIcons, MaterialIcons, Octicons, SimpleLineIcons, Zocial } from '@expo/vector-icons';
-import { StatusBar } from 'expo-status-bar';
+import { StyleSheet,ActivityIndicator,ToastAndroid } from "react-native";
+
 import axios from "axios";
 import { REST_API_LOCAL } from "@env";
 import * as SecureStore from "expo-secure-store";
@@ -20,7 +19,7 @@ const Success = ({
   setBooking,
   bookingData,
 }) => {
-  return <div>Booking Done Succsfully</div>;
+  return <div>Booking Done Successfully</div>;
 };
 
 export default function ScheduleBooking({ route, navigation }) {
@@ -43,6 +42,7 @@ export default function ScheduleBooking({ route, navigation }) {
       vehicle: "",
       length: "",
       width: "",
+      storage: "",
       date: date.toDateString(),
       time: date.toTimeString(),
       status: "Pending",
@@ -65,6 +65,7 @@ export default function ScheduleBooking({ route, navigation }) {
       vehicle: "",
       length: "",
       width: "",
+      storage: "",
       date: date.toDateString(),
       time: date.toTimeString(),
       status: "Pending",
@@ -84,7 +85,6 @@ export default function ScheduleBooking({ route, navigation }) {
       vehicle: "",
       description: "",
       weight: "",
-      vehicle: "",
       offer: "",
       date: date.toDateString(),
       time: date.toTimeString(),
@@ -95,8 +95,6 @@ export default function ScheduleBooking({ route, navigation }) {
   const postData = async () => {
     let token1 = await SecureStore.getItemAsync("userToken");
     const body = bookingData;
-
-    console.log(body);
     const headers = { Authorization: `Bearer ${token1}` };
     try {
       let res = await axios.post(
@@ -116,18 +114,8 @@ export default function ScheduleBooking({ route, navigation }) {
     } catch (error) {
       console.log(error.response.data);
     }
-
-    console.log(token1);
   };
 
-  async function getValueFor(key) {
-    let result = await SecureStore.getItemAsync(key);
-    if (result) {
-      return result;
-    } else {
-      return "Token not in SecureStore";
-    }
-  }
 
   const prevStep = () => {
     const { step1 } = bookingData;

@@ -7,6 +7,7 @@ import { AntDesign, Entypo, EvilIcons, Feather, FontAwesome, FontAwesome5, FontA
 import * as SecureStore from "expo-secure-store";
 import moment from "moment";
 import axios from "axios";
+import { REST_API_LOCAL } from "@env";
 
 import RadioButton from './RadioButton';
 

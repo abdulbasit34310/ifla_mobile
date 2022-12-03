@@ -39,7 +39,6 @@ export default function MyBookingDetails({ navigation, route }) {
       });
 
     let data = await response.data;
-
   };
 
   return (

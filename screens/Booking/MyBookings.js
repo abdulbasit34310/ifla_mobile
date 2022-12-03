@@ -7,9 +7,7 @@ import { Divider, TouchableRipple } from "react-native-paper";
 import * as SecureStore from "expo-secure-store";
 import moment from "moment";
 import { StatusBar } from 'expo-status-bar';
-
-// import { REST_API_LOCAL } from "@env";
-const REST_API_LOCAL = "http://192.168.100.143:4000";
+import { REST_API_LOCAL } from "@env";
 
 export default function MyBookings({ route, navigation }) {
   const [bookingData, setBookingData] = React.useState();
@@ -19,7 +17,7 @@ export default function MyBookings({ route, navigation }) {
   const getBookingsData = async () => {
     let isSubscribed = true;
     let token1 = await SecureStore.getItemAsync("userToken");
-    // console.log(token1);
+    
     const headers = { Authorization: `Bearer ${token1}` };
     const resp = await axios.get(`${REST_API_LOCAL}/shipper/getBookings`, {
       withCredentials: true,
