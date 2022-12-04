@@ -10,8 +10,10 @@ import moment from "moment";
 
 const Notification = ({ navigation }) => {
     const [data,setData] = React.useState(null)
+    const [loading, setLoading] = React.useState(false);
 
     const getNotificationData = async ()=>{
+        setLoading(true);
         let token = await SecureStore.getItemAsync("userToken");
         const headers = { Authorization: `Bearer ${token}` };
         const res = await axios.get(`${REST_API_LOCAL}/notifications/getNotifications`,{
@@ -20,21 +22,35 @@ const Notification = ({ navigation }) => {
         })
 
         setData(res.data)
+        setLoading(false);
+
     }
 
     React.useEffect(()=>{
+    navigation.addListener("focus", () => {
         getNotificationData()
-    }, [])
+    });
+    }, [navigation])
 
   return (
     <View style={styles.container}>
-        <TouchableRipple style={{ width: '12%', borderRadius: 14, padding: 7, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', marginBottom:"10%" }} onPress={() => {
-          navigation.goBack();
-        }}>
-          <Entypo name='chevron-small-left' size={34} />
-        </TouchableRipple>
-        {data === null ? (
+        <View style={styles.flexView}>
+            <TouchableRipple style={{ width: '12%', height:"100%", borderRadius: 14, padding: 25, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center' }} onPress={() => {
+              navigation.goBack();
+            }}>
+              <Entypo name='chevron-small-left' size={34} />
+            </TouchableRipple>
+
+            <TouchableRipple style={{ height:"100%", borderRadius: 14, padding: 25, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', }} onPress={() => {
+                console.log("pressed")
+            }}>
+              <Text>Clear</Text>
+            </TouchableRipple>
+        </View>
+        {loading ? (
+            <View style={[styles.flexView,{flexDirection:"column", justifyContent:"center"}]}>
             <ActivityIndicator size="large"/>
+            </View>
         ):(
             <FlatList
                 data={data}
@@ -47,8 +63,11 @@ const Notification = ({ navigation }) => {
                     </Text>
                 }
                 renderItem={({ item, index }) => (
-                    <TouchableOpacity style={{backgroundColor:"#fff", paddingHorizontal:"5%", marginVertical:"1%", borderRadius:10}}
-                        onPress={()=>navigation.navigate("FreightBooking", { screen: "BookingDetails", params: item.booking})}
+                    <TouchableOpacity style={styles.flatListStyle}
+                        onPress={()=>{
+                            if(item.hasOwnProperty("booking"))
+                                navigation.navigate("FreightBooking", { screen: "BookingDetails", params: item.booking})
+                        }}
                     >
                         <View  style={{flex:1, flexDirection:"row",alignContent:"space-between", marginVertical:"1%", paddingVertical:"10%"}}>
                             <View style={{flex:1}}>
@@ -57,8 +76,7 @@ const Notification = ({ navigation }) => {
                             </View>
                             <Text style={{color:"#005761"}}>{ moment(item.time).utc().format("MMM Do, h:mm a") }</Text>
                         </View>
-                    </TouchableOpacity>
-                    
+                    </TouchableOpacity>                    
                 )}
             />
         )}
@@ -70,8 +88,22 @@ export default Notification
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         padding: 20,
-        backgroundColor: "#E0EFF6",
-    }
+        backgroundColor: "#E0EFF6", height: "100%"
+    },
+    flexView:{
+        flex:1,
+        flexDirection:"row",
+        paddingBottom: 15, paddingTop: 10,
+        justifyContent:"space-between",
+        marginVertical:"15%"
+    },
+    flatListStyle: {
+        padding: 15,
+        borderBottomColor: "#005761",
+        backgroundColor: "white",
+        margin: 2,
+        borderRadius: 14,
+        elevation: 5,
+    },
 })

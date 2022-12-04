@@ -10,6 +10,7 @@ import TopTabNavigator from "./navigation/TopTabNavigator";
 
 import MainScreen from "./screens/MainScreen";
 
+import Insurance from "./screens/Insurance/Insurance";
 import ProfileScreen from "./screens/Profile/ProfileScreen";
 import EditProfileScreen from "./screens/Profile/EditProfileScreen";
 import CompanyInformationScreen from "./screens/Profile/CompanyInformationScreen";
@@ -42,6 +43,7 @@ import PaymentMethod from "./screens/Payment/PaymentMethod";
 import PayByWallet from "./screens/Payment/PayByWallet";
 
 import Notification from "./screens/Notification";
+import PaymentHistory from "./screens/Payment/PaymentHistory";
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -52,6 +54,7 @@ export default function App() {
     isLoading: true,
     userName: null,
     userToken: null,
+    disablePrompt: false
   };
 
   const loginReducer = (prevState, action) => {
@@ -61,6 +64,7 @@ export default function App() {
           ...prevState,
           userToken: action.token,
           isLoading: false,
+          disablePrompt: false
         };
       case "LOGIN":
         return {
@@ -68,6 +72,15 @@ export default function App() {
           userName: action.id,
           userToken: action.token,
           isLoading: false,
+          disablePrompt: false
+        };
+      case "DISABLED_ACC_LOGIN":
+        return {
+          ...prevState,
+          userName: action.id,
+          userToken: action.token,
+          isLoading: false,
+          disablePrompt: true
         };
       case "LOGOUT":
         return {
@@ -75,6 +88,7 @@ export default function App() {
           userName: null,
           userToken: null,
           isLoading: false,
+          disablePrompt: false
         };
       case "REGISTER":
         return {
@@ -82,6 +96,7 @@ export default function App() {
           userName: action.id,
           userToken: action.token,
           isLoading: false,
+          disablePrompt: false
         };
     }
   };
@@ -122,8 +137,20 @@ export default function App() {
           console.log(e);
         }
         dispatch({ type: "REGISTER", id: email, token: userToken });
+      },
+      disabledSignIn: async (foundUser) => {
+        const userToken = foundUser.userToken;
+        const email = foundUser.email;
+  
+        try {
+          await SecureStore.setItemAsync("userToken", userToken);
+        } catch (e) {
+          console.log(e);
+        }
+        dispatch({ type: "DISABLED_ACC_LOGIN", id: email, token: userToken });
       }
     }),
+
     []
   );
 
@@ -172,7 +199,7 @@ export default function App() {
               component={QuoteStack}
             />
             <Drawer.Screen
-              name="Profile"
+              name="ProfileStack"
               component={ProfileStack}
             />
             <Drawer.Screen
@@ -333,6 +360,11 @@ function ProfileStack({ navigation, route }) {
         component={PaymentsStack}
         options={{ headerShown: false }}
       />
+      <Stack.Screen
+        name="Insurance"
+        component={Insurance}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 }
@@ -365,6 +397,11 @@ function PaymentsStack({ navigation, route }) {
         component={PayByWallet}
         options={{ title: "Paid By Wallet", headerShown: false }}
       />
+      <Stack.Screen
+        name="PaymentHistory"
+        component={PaymentHistory}
+        options={{ title: "Payment History", headerShown: false }}
+      />
     </Stack.Navigator>
   );
 }
@@ -375,12 +412,7 @@ function TopTabNavigatorStack({ navigation, route }) {
   )
 }
 
-const onOpenNotification = async (notify) => {
-  
-  console.log('notify', notify);
-}
-
 // Buttons and Primary Foreground: #068E94
 // Secondary Foreground: #00ABB2
 // Background Primary and Text: #005761
-// Background Secondary: #E0EFF6 173340
+// Background Secondary: #E0EFF6

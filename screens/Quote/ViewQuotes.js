@@ -90,7 +90,7 @@ export default function ViewQuotes({ navigation, route }) {
                     Estimated Price
                   </Text>
                   <Text style={styles.paymentStyle}>
-                    {item.payment.amount} PKR
+                    PKR {item.payment.amount}
                   </Text>
                 </View>
 

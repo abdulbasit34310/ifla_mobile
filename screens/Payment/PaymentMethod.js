@@ -5,7 +5,7 @@ import * as SecureStore from "expo-secure-store";
 import axios from "axios";
 
 export default function PaymentMethod({navigation, route}){
-    const {payId, amount, bookingId} = route.params
+    const {payId, amount, bookingId, isInsurance} = route.params
     const [balance,setBalance] = React.useState(0)
     const [disable, isDisabled] = React.useState(true)
     const getBalance = async ()=>{
@@ -35,7 +35,7 @@ export default function PaymentMethod({navigation, route}){
                 <TouchableOpacity style={styles.button} disabled={disable} onPress={()=>navigation.navigate("PayByWallet", {bookingId : bookingId, payId : payId, amount: amount, isPayable:balance>=amount})}>
                     <Text style={styles.buttonText}>Wallet</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={()=>navigation.navigate("Payment", { payId : payId})}>
+                <TouchableOpacity style={styles.button} onPress={()=>navigation.navigate("Payment", { payId : payId, getNo: amount ,isInsurance:isInsurance})}>
                     <Text style={styles.buttonText}>Credit Card</Text>
                 </TouchableOpacity>
             </View>

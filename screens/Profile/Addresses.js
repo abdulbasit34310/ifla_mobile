@@ -50,7 +50,7 @@ const Addresses = ({ navigation, route }) => {
 
       <View style={{ marginTop: 10 }}>
         {addresses.map((address, index) => (
-          <View style={styles.addressContainer} id={index}>
+          <View style={styles.addressContainer} id={index} key={index}>
             <View>
               {/* <TouchableOpacity
                 style={{
