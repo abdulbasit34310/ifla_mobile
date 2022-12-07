@@ -19,6 +19,7 @@ import LiveTracking from "./screens/Booking/LiveTracking";
 import PendingBookings from "./screens/Booking/PendingBookings";
 import ScheduleBooking from "./screens/Booking/ScheduleBooking";
 import BookingDetails from "./screens/Booking/BookingDetails";
+import BillofLading from "./components/BillofLading";
 
 import GetAQuote from "./screens/Quote/GetAQuote";
 import ViewQuotes from "./screens/Quote/ViewQuotes";
@@ -47,7 +48,6 @@ const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-
   const initialLoginState = {
     isLoading: true,
     userName: null,
@@ -122,7 +122,7 @@ export default function App() {
           console.log(e);
         }
         dispatch({ type: "REGISTER", id: email, token: userToken });
-      }
+      },
     }),
     []
   );
@@ -155,7 +155,7 @@ export default function App() {
           <Drawer.Navigator
             drawerContent={(props) => <CustomDrawer {...props} />}
             screenOptions={{
-              headerShown: false
+              headerShown: false,
             }}
           >
             <Drawer.Screen
@@ -167,30 +167,12 @@ export default function App() {
               name="FreightBooking"
               component={FreightBookingStack}
             />
-            <Drawer.Screen
-              name="QuoteStack"
-              component={QuoteStack}
-            />
-            <Drawer.Screen
-              name="Profile"
-              component={ProfileStack}
-            />
-            <Drawer.Screen
-              name="Payments"
-              component={PaymentsStack}
-            />
-            <Drawer.Screen
-              name="Feedback"
-              component={Feedback}
-            />
-            <Drawer.Screen
-              name="Complaint"
-              component={Complaint}
-            />
-            <Drawer.Screen
-              name="Notification"
-              component={Notification}
-            />
+            <Drawer.Screen name="QuoteStack" component={QuoteStack} />
+            <Drawer.Screen name="Profile" component={ProfileStack} />
+            <Drawer.Screen name="Payments" component={PaymentsStack} />
+            <Drawer.Screen name="Feedback" component={Feedback} />
+            <Drawer.Screen name="Complaint" component={Complaint} />
+            <Drawer.Screen name="Notification" component={Notification} />
           </Drawer.Navigator>
         ) : (
           <RegistrationNavigator />
@@ -199,7 +181,6 @@ export default function App() {
     </AuthContext.Provider>
   );
 }
-
 
 function FreightBookingStack({ navigation, route }) {
   return (
@@ -233,23 +214,28 @@ function FreightBookingStack({ navigation, route }) {
         component={PendingBookings}
         options={{ title: "Pending Bookings" }}
       />
-      <Stack.Screen
-        name="BookingDetails"
-        component={BookingDetails}
-      />
+      <Stack.Screen name="BookingDetails" component={BookingDetails} />
+      <Stack.Screen name="BillofLading" component={BillofLading} />
       <Stack.Screen
         name="LiveTracking"
         component={LiveTracking}
         options={{ title: "LiveTracking" }}
       />
-      <Stack.Screen name="TopTabNavigatorStack" component={TopTabNavigatorStack}
+      <Stack.Screen
+        name="TopTabNavigatorStack"
+        component={TopTabNavigatorStack}
         options={{
-          tabBarLabel: 'Bookings',
+          tabBarLabel: "Bookings",
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="truck-delivery" color={color} size={26} />
+            <MaterialCommunityIcons
+              name="truck-delivery"
+              color={color}
+              size={26}
+            />
           ),
-          tabBarColor: '#005761',
-        }} />
+          tabBarColor: "#005761",
+        }}
+      />
       <Stack.Screen
         name="Payments"
         component={PaymentsStack}
@@ -259,16 +245,16 @@ function FreightBookingStack({ navigation, route }) {
   );
 }
 
-function QuoteStack({navigation, route}){
-  return(
+function QuoteStack({ navigation, route }) {
+  return (
     <Stack.Navigator
-    screenOptions={{
-      headerTintColor: "#005761",
-      headerTitleAlign: "center",
-      headerTitleStyle: { fontSize: 20 },
-      headerStyle: { backgroundColor: "white", padding: 0 },
-      headerShown: false,
-    }}
+      screenOptions={{
+        headerTintColor: "#005761",
+        headerTitleAlign: "center",
+        headerTitleStyle: { fontSize: 20 },
+        headerStyle: { backgroundColor: "white", padding: 0 },
+        headerShown: false,
+      }}
     >
       <Stack.Screen
         name="GetAQuote"
@@ -286,7 +272,8 @@ function QuoteStack({navigation, route}){
         options={{ title: "Quote Details", headerShown: true }}
       />
     </Stack.Navigator>
-)}
+  );
+}
 
 function ProfileStack({ navigation, route }) {
   return (
@@ -343,12 +330,12 @@ function PaymentsStack({ navigation, route }) {
       <Stack.Screen
         name="Wallet"
         component={Wallet}
-        options={{ headerShown:false }}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="LoadMoneyToWallet"
         component={LoadMoneyToWallet}
-        options={{ title: "Load Money", headerShown:false }}
+        options={{ title: "Load Money", headerShown: false }}
       />
       <Stack.Screen
         name="Payment"
@@ -370,15 +357,12 @@ function PaymentsStack({ navigation, route }) {
 }
 
 function TopTabNavigatorStack({ navigation, route }) {
-  return (
-    <TopTabNavigator />
-  )
+  return <TopTabNavigator />;
 }
 
 const onOpenNotification = async (notify) => {
-  
-  console.log('notify', notify);
-}
+  console.log("notify", notify);
+};
 
 // Buttons and Primary Foreground: #068E94
 // Secondary Foreground: #00ABB2
