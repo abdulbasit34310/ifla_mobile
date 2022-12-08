@@ -21,6 +21,7 @@ import AddAddress from "../../components/Profile/AddAddress";
 const Addresses = ({ navigation, route }) => {
   const addresses = route.params.item.addresses;
   console.log(addresses);
+  
   const [isVisible, setVisible] = useState(false);
   return (
     <View style={styles.container}>

@@ -1136,7 +1136,7 @@
   integrity sha512-Q0kXWS+L96bv5GBrotw0XtDpoN0zbB0DOFel7Vb6GKwAKcQPifCdakbLP4cz8t7ED89lLgLpYT54t6aD5eEVFA==
   dependencies:
     "@babel/runtime" "^7.14.0"
-    "@expo/code-signing-certificates" "^0.0.2"
+    "@expo/code-signing-certificates" "0.0.5"
     "@expo/config" "~7.0.2"
     "@expo/config-plugins" "~5.0.3"
     "@expo/dev-server" "0.1.123"
@@ -7646,7 +7646,7 @@ regexpu-core@^5.1.0:
     regjsgen "^0.7.1"
     regjsparser "^0.9.1"
     unicode-match-property-ecmascript "^2.0.0"
-    unicode-match-property-value-ecmascript "^2.0.0"
+    unicode-match-property-value-ecmascript "^2.1.0"
 
 regjsgen@^0.7.1:
   version "0.7.1"

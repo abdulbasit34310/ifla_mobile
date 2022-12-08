@@ -5,11 +5,12 @@ import { TouchableRipple } from "react-native-paper";
 import * as SecureStore from "expo-secure-store";
 import axios from "axios";
 import {REST_API_LOCAL} from '@env'
+import { StatusBar } from 'expo-status-bar';
 
 const Insurance = ({ navigation, route }) => {
 
     var isInsurance = false;
-
+    var item = route.params.item
 
     const [subscribed, setSubscribed] = React.useState();
 
@@ -42,47 +43,70 @@ const Insurance = ({ navigation, route }) => {
 
     return (
         <View style={styles.container}>
+        <StatusBar style="dark" />
 
-            <View style={styles.topSection}>
-                <View style={{ paddingTop: 5, }}>
-                    <TouchableRipple style={{ width: '12%', height: '80%', borderRadius: 14, padding: 7, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', }} onPress={() => {
-                        navigation.goBack();
-                    }}>
-                        <Entypo name='chevron-small-left' size={34} />
-                    </TouchableRipple>
+        <View style={styles.topSection}>
+            <View style={{ paddingTop: 5, }}>
+                <TouchableRipple style={{ width: '12%', height: '80%', borderRadius: 14, padding: 7, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', }} onPress={() => {
+                    navigation.goBack();
+                }}>
+                    <Entypo name='chevron-small-left' size={34} />
+                </TouchableRipple>
+            </View>
+
+        </View>
+
+        <View style={styles.bottomSection}>
+            <Text style={styles.paragraph}>During transit, customers' goods are exposed to a lot of risks like natural calamity, weather conditions and accidents so it is advisable for customers to buy an insurance plan although it is not necessary.</Text>
+            <View style={[styles.card, { backgroundColor: 'white' }]}>
+
+                <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center' }}>
+                    <Text style={[styles.cardText, { color: '#005761', fontSize: 26 }]}>
+                        1 Year Plan
+                    </Text>
+                    <TouchableOpacity
+                        onPress={() => {
+                            if (item.insurance.plan == "1 Year Plan") {
+                                Alert.alert("You have already subscribed to 1 Year Insurance Plan.");
+                            }
+                            else if (item.insurance.plan == "6 Months Plan") {
+                                Alert.alert("You have already subscribed to 6 Months Insurance Plan.");
+                            }
+                            else
+                                addInsurance("1 Year Plan", 20000)
+                        }}
+                        style={[styles.button, item.insurance.plan == "1 Year Plan" ? { backgroundColor: '#005761' } : { backgroundColor: '#00ABB2' }]} >
+                        <Text style={[styles.cardText, isInsurance ? { color: 'white' } : { color: '#005761' }]}>20,000 PKR </Text>
+                    </TouchableOpacity>
                 </View>
-
             </View>
 
-            <View style={styles.bottomSection}>
-                <TouchableOpacity
-                    onPress={() => { addInsurance("1 Year Plan", "20000") }}
-                    style={[styles.card, isInsurance ? { backgroundColor: 'red' } : { backgroundColor: 'white' }]}>
-                    <View>
-                        <Text style={styles.cardText}>Duration</Text>
-                        <Text style={styles.cardText}>1 Year Plan</Text>
-                    </View>
-                    <View>
-                        <Text style={styles.cardText}>Price</Text>
-                        <Text style={styles.cardText}>Rs 20,000</Text>
-                    </View>
-                </TouchableOpacity>
 
-                <TouchableOpacity
-                    onPress={() => { addInsurance("6 Month Plan", "12000") }}
-                    style={styles.card}>
-                        <View>
-                            <Text style={styles.cardText}>Duration</Text>
-                            <Text style={styles.cardText}>6 Month Plan</Text>
-                        </View>
-                        <View>
-                            <Text style={styles.cardText}>Price</Text>
-                            <Text style={styles.cardText}>Rs. 12,000</Text>
-                        </View>
-                </TouchableOpacity>
+            <View style={[styles.card, { backgroundColor: 'white' }]}>
+                <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center' }}>
+                    <Text style={[styles.cardText, { color: '#005761', fontSize: 26 }]}>
+                        6 Months Plan
+                    </Text>
+                    <TouchableOpacity
+                        onPress={() => {
+                            if (item.insurance.plan == "1 Year Plan") {
+                                Alert.alert("You have already subscribed to 1 Year Insurance Plan.");
+                            }
+                            else if (item.insurance.plan == "6 Months Plan") {
+                                Alert.alert("You have already subscribed to 6 Months Insurance Plan.");
+                            }
+                            else
+                                addInsurance("6 Months Plan", 12000)
+                        }}
+                        style={[styles.button, item.insurance.plan == "6 Months Plan" ? { backgroundColor: '#005761' } : { backgroundColor: '#00ABB2' }]} >
+                        <Text style={[styles.cardText, isInsurance ? { color: 'white' } : { color: '#005761' }]}>12,000 PKR </Text>
+                    </TouchableOpacity>
+                </View>
             </View>
-        </View >
-    );
+
+        </View>
+    </View >
+);
 };
 
 const styles = StyleSheet.create({
@@ -91,34 +115,37 @@ const styles = StyleSheet.create({
         backgroundColor: "#E0EFF6",
     },
     topSection: {
-        flex: 2,
+        flex: 1,
         paddingLeft: 20,
         paddingRight: 20,
         paddingTop: 20,
     },
     bottomSection: {
+        flex: 7,
         padding: 20,
-        justifyContent: 'center',
         alignContent: 'center'
     },
     card: {
         elevation: 5,
-        height: '40%',
+        height: '15%',
         width: "100%",
-        marginBottom: 20,
-        padding: 10,
+        padding: 15,
         borderRadius: 14,
-        paddingTop:"35%",
-        paddingHorizontal:20,
-        justifyContent:"space-between",
-        flexDirection:"row",
-        backgroundColor:"white",
+        marginBottom: 20
     },
     cardText: {
         fontSize: 17,
-        color: "#005761",
         fontWeight: "bold",
     },
+    button: {
+        padding: 20,
+        backgroundColor: 'white',
+        borderRadius: 14,
+
+    }, paragraph: {
+        color: 'grey',
+        marginBottom:20,
+    }
 });
 
 export default Insurance;

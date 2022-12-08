@@ -181,6 +181,7 @@ export default function App() {
         {loginState.userToken !== null ? (
           <Drawer.Navigator
             drawerContent={(props) => <CustomDrawer {...props} />}
+
             screenOptions={{
               headerShown: false,
             }}
@@ -246,30 +247,30 @@ function FreightBookingStack({ navigation, route }) {
       <Stack.Screen
         name="BookingScreen"
         component={BookingScreen}
-        options={{ title: "Booking" }}
+
       />
       <Stack.Screen
         name="ScheduleBooking"
         component={ScheduleBooking}
-        options={{ title: "Schedule Booking" }}
+
       />
 
       <Stack.Screen
         name="ScheduleExample"
         component={ScheduleExample}
-        options={{ title: "Schedule Example" }}
+
       />
       <Stack.Screen
         name="PendingBookings"
         component={PendingBookings}
-        options={{ title: "Pending Bookings" }}
+        options={{ headerShown: false }}
       />
       <Stack.Screen name="BookingDetails" component={BookingDetails} />
       <Stack.Screen name="BillofLading" component={BillofLading} />
       <Stack.Screen
         name="LiveTracking"
         component={LiveTracking}
-        options={{ title: "LiveTracking" }}
+
       />
       <Stack.Screen
         name="TopTabNavigatorStack"
@@ -348,17 +349,11 @@ function ProfileStack({ navigation, route }) {
       <Stack.Screen
         name="CompanyInformationScreen"
         component={CompanyInformationScreen}
-        options={{ title: "Company Info" }}
       />
       <Stack.Screen
         name="Addresses"
         component={Addresses}
-        options={{ title: "Addresses" }}
-      />
-      <Stack.Screen
-        name="AddAddress"
-        component={AddAddress}
-        options={{ title: "Add Address" }}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="ChangePassword"
@@ -395,12 +390,13 @@ function PaymentsStack({ navigation, route }) {
       <Stack.Screen
         name="Payment"
         component={Payment}
-        options={{ title: "Pay Now" }}
+        options={{ headerShown: false }}
+
       />
       <Stack.Screen
         name="PaymentMethod"
         component={PaymentMethod}
-        options={{ title: "Payment Method" }}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="PayByWallet"
