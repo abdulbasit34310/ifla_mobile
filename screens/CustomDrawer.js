@@ -6,7 +6,9 @@ import { AntDesign, Entypo, EvilIcons, Feather, FontAwesome, FontAwesome5, FontA
 import { AuthContext } from "../components/context";
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
-import { REST_API_LOCAL } from "@env";
+
+const REST_API_LOCAL = "http://192.168.0.113:4000";
+
 
 export function CustomDrawer(props) {
   const { signOut } = React.useContext(AuthContext);

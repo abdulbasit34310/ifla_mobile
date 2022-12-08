@@ -7,11 +7,11 @@ import { AntDesign, Entypo, EvilIcons, Feather, FontAwesome, FontAwesome5, FontA
 import * as SecureStore from "expo-secure-store";
 import moment from "moment";
 import axios from "axios";
-import { REST_API_LOCAL } from "@env";
+// import { REST_API_LOCAL } from "@env";
 
 import RadioButton from './RadioButton';
 
-const REST_API_LOCAL = "http://192.168.100.143:4000";
+const REST_API_LOCAL = "http://192.168.0.113:4000";
 
 function Ratings({ route, navigation }) {
 

@@ -10,7 +10,8 @@ import * as SecureStore from "expo-secure-store";
 import Avatar from "../../assets/Avatar.png";
 import { AuthContext } from "../../components/context";
 
-import { REST_API_LOCAL } from "@env";
+// import { REST_API_LOCAL } from "@env";
+const REST_API_LOCAL = "http://192.168.0.113:4000";
 
 const Theme = {
   Buttons: "#068E94",
@@ -115,32 +116,33 @@ const ProfileScreen = ({ route, navigation }) => {
         </TouchableOpacity>
 
         <TouchableOpacity
-            style={styles.infoBox}
-            onPress={() => {
-              navigation.navigate("Payments", 
-             { screen: 'Wallet',
-              initial: false,
-              params:{item: getData}
-            });
+          style={styles.infoBox}
+          onPress={() => {
+            navigation.navigate("Payments",
+              {
+                screen: 'Wallet',
+                initial: false,
+                params: { item: getData }
+              });
+          }}
+        >
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
             }}
           >
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <View style={[styles.iconView, { backgroundColor: "#FF7F50" }]}>
-                <MaterialCommunityIcons
-                  name="credit-card"
-                  color={"white"}
-                  size={24}
-                />
-              </View>
-              <Text style={styles.buttonTitle}>Wallet</Text>
+            <View style={[styles.iconView, { backgroundColor: "#FF7F50" }]}>
+              <MaterialCommunityIcons
+                name="credit-card"
+                color={"white"}
+                size={24}
+              />
             </View>
-            <FontAwesome name="chevron-right" size={25} color="lightgrey" />
-          </TouchableOpacity>
+            <Text style={styles.buttonTitle}>Wallet</Text>
+          </View>
+          <FontAwesome name="chevron-right" size={25} color="lightgrey" />
+        </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.infoBox}

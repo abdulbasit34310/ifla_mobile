@@ -234,17 +234,17 @@ function FreightBookingStack({ navigation, route }) {
       <Stack.Screen
         name="ViewQuotes"
         component={ViewQuotes}
-
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="QuoteDetails"
         component={QuoteDetails}
-
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="PendingBookings"
         component={PendingBookings}
-
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="BookingDetails"
@@ -279,12 +279,13 @@ function ProfileStack({ navigation, route }) {
       <Stack.Screen
         name="ProfileScreen"
         component={ProfileScreen}
+        options={{ headerShown: false }}
 
       />
       <Stack.Screen
         name="EditProfileScreen"
         component={EditProfileScreen}
-
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="CompanyInformationScreen"
@@ -293,12 +294,12 @@ function ProfileStack({ navigation, route }) {
       <Stack.Screen
         name="Addresses"
         component={Addresses}
-
+        options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="AddAddress"
-        component={AddAddress}
-
+        name="Insurance"
+        component={Insurance}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="ChangePassword"
@@ -315,21 +316,25 @@ function PaymentsStack({ navigation, route }) {
       <Stack.Screen
         name="Wallet"
         component={Wallet}
+        options={{ headerShown: false }}
+
       />
       <Stack.Screen
         name="LoadMoneyToWallet"
         component={LoadMoneyToWallet}
-        options={{ title: "Load Money" }}
+        options={{ headerShown: false }}
+
       />
       <Stack.Screen
         name="Payment"
         component={Payment}
-        options={{ title: "Pay Now" }}
+        options={{ headerShown: false }}
+
       />
       <Stack.Screen
         name="PaymentMethod"
         component={PaymentMethod}
-        options={{ title: "Payment Method" }}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="PayByWallet"

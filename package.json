@@ -26,7 +26,7 @@
     "caniuse-lite": "^1.0.30001431",
     "dotenv": "^16.0.2",
     "expo": "^47.0.0",
-    "expo-auth-session": "~3.7.2",
+    "expo-auth-session": "^3.7.3",
     "expo-checkbox": "~2.2.2",
     "expo-device": "~5.0.0",
     "expo-image-picker": "~14.0.2",

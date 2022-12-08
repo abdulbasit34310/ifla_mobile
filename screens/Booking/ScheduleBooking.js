@@ -1,16 +1,15 @@
 import * as React from "react";
 import { StyleSheet,ActivityIndicator,ToastAndroid } from "react-native";
 
-import axios from "axios";
-import { REST_API_LOCAL } from "@env";
-import * as SecureStore from "expo-secure-store";
-
 import GoodsDetails from "../../components/ScheduleBooking/GoodDetails";
 import ShipmentDetails from "../../components/ScheduleBooking/ShipmentDetails";
 import ScheduleDetails from "../../components/ScheduleBooking/ScheduleDetails";
 import PreviewBooking from "../../components/ScheduleBooking/PreviewBooking";
 
-// const REST_API_LOCAL = "http://192.168.100.143:4000";
+import axios from "axios";
+// import { REST_API_LOCAL } from "@env";
+import * as SecureStore from "expo-secure-store";
+const REST_API_LOCAL = "http://192.168.0.113:4000";
 
 const Success = ({
   navigation,
