@@ -10,6 +10,7 @@ import TopTabNavigator from "./navigation/TopTabNavigator";
 
 import MainScreen from "./screens/MainScreen";
 
+import Insurance from "./screens/Insurance/Insurance";
 import ProfileScreen from "./screens/Profile/ProfileScreen";
 import EditProfileScreen from "./screens/Profile/EditProfileScreen";
 import CompanyInformationScreen from "./screens/Profile/CompanyInformationScreen";
@@ -43,6 +44,7 @@ import PaymentMethod from "./screens/Payment/PaymentMethod";
 import PayByWallet from "./screens/Payment/PayByWallet";
 
 import Notification from "./screens/Notification";
+import PaymentHistory from "./screens/Payment/PaymentHistory";
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -52,6 +54,7 @@ export default function App() {
     isLoading: true,
     userName: null,
     userToken: null,
+    disablePrompt: false
   };
 
   const loginReducer = (prevState, action) => {
@@ -61,6 +64,7 @@ export default function App() {
           ...prevState,
           userToken: action.token,
           isLoading: false,
+          disablePrompt: false
         };
       case "LOGIN":
         return {
@@ -68,6 +72,15 @@ export default function App() {
           userName: action.id,
           userToken: action.token,
           isLoading: false,
+          disablePrompt: false
+        };
+      case "DISABLED_ACC_LOGIN":
+        return {
+          ...prevState,
+          userName: action.id,
+          userToken: action.token,
+          isLoading: false,
+          disablePrompt: true
         };
       case "LOGOUT":
         return {
@@ -75,6 +88,7 @@ export default function App() {
           userName: null,
           userToken: null,
           isLoading: false,
+          disablePrompt: false
         };
       case "REGISTER":
         return {
@@ -82,6 +96,7 @@ export default function App() {
           userName: action.id,
           userToken: action.token,
           isLoading: false,
+          disablePrompt: false
         };
     }
   };
@@ -123,7 +138,19 @@ export default function App() {
         }
         dispatch({ type: "REGISTER", id: email, token: userToken });
       },
+      disabledSignIn: async (foundUser) => {
+        const userToken = foundUser.userToken;
+        const email = foundUser.email;
+  
+        try {
+          await SecureStore.setItemAsync("userToken", userToken);
+        } catch (e) {
+          console.log(e);
+        }
+        dispatch({ type: "DISABLED_ACC_LOGIN", id: email, token: userToken });
+      }
     }),
+
     []
   );
 
@@ -154,6 +181,7 @@ export default function App() {
         {loginState.userToken !== null ? (
           <Drawer.Navigator
             drawerContent={(props) => <CustomDrawer {...props} />}
+
             screenOptions={{
               headerShown: false,
             }}
@@ -168,11 +196,11 @@ export default function App() {
               component={FreightBookingStack}
             />
             <Drawer.Screen name="QuoteStack" component={QuoteStack} />
-            <Drawer.Screen name="Profile" component={ProfileStack} />
+            <Drawer.Screen name="ProfileStack" component={ProfileStack} />
             <Drawer.Screen name="Payments" component={PaymentsStack} />
             <Drawer.Screen name="Feedback" component={Feedback} />
             <Drawer.Screen name="Complaint" component={Complaint} />
-            <Drawer.Screen name="Notification" component={Notification} />
+            <Drawer.Screen name="Notification" component={NotificationStack} />
           </Drawer.Navigator>
         ) : (
           <RegistrationNavigator />
@@ -180,6 +208,29 @@ export default function App() {
       </NavigationContainer>
     </AuthContext.Provider>
   );
+}
+
+function NotificationStack({ navigation, route }){
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerTintColor: "#005761",
+        headerTitleAlign: "center",
+        headerTitleStyle: { fontSize: 20 },
+        headerStyle: { backgroundColor: "white", padding: 0 },
+        headerShown: false,
+      }}
+    >
+      <Stack.Screen
+        name="NotificationScreen"
+        component={Notification}
+      />
+      <Stack.Screen
+        name="BookingDetails"
+        component={BookingDetails}
+      />
+    </Stack.Navigator>
+)
 }
 
 function FreightBookingStack({ navigation, route }) {
@@ -196,30 +247,30 @@ function FreightBookingStack({ navigation, route }) {
       <Stack.Screen
         name="BookingScreen"
         component={BookingScreen}
-        options={{ title: "Booking" }}
+
       />
       <Stack.Screen
         name="ScheduleBooking"
         component={ScheduleBooking}
-        options={{ title: "Schedule Booking" }}
+
       />
 
       <Stack.Screen
         name="ScheduleExample"
         component={ScheduleExample}
-        options={{ title: "Schedule Example" }}
+
       />
       <Stack.Screen
         name="PendingBookings"
         component={PendingBookings}
-        options={{ title: "Pending Bookings" }}
+        options={{ headerShown: false }}
       />
       <Stack.Screen name="BookingDetails" component={BookingDetails} />
       <Stack.Screen name="BillofLading" component={BillofLading} />
       <Stack.Screen
         name="LiveTracking"
         component={LiveTracking}
-        options={{ title: "LiveTracking" }}
+
       />
       <Stack.Screen
         name="TopTabNavigatorStack"
@@ -298,17 +349,11 @@ function ProfileStack({ navigation, route }) {
       <Stack.Screen
         name="CompanyInformationScreen"
         component={CompanyInformationScreen}
-        options={{ title: "Company Info" }}
       />
       <Stack.Screen
         name="Addresses"
         component={Addresses}
-        options={{ title: "Addresses" }}
-      />
-      <Stack.Screen
-        name="AddAddress"
-        component={AddAddress}
-        options={{ title: "Add Address" }}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="ChangePassword"
@@ -318,6 +363,11 @@ function ProfileStack({ navigation, route }) {
       <Stack.Screen
         name="Payments"
         component={PaymentsStack}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Insurance"
+        component={Insurance}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
@@ -340,17 +390,23 @@ function PaymentsStack({ navigation, route }) {
       <Stack.Screen
         name="Payment"
         component={Payment}
-        options={{ title: "Pay Now" }}
+        options={{ headerShown: false }}
+
       />
       <Stack.Screen
         name="PaymentMethod"
         component={PaymentMethod}
-        options={{ title: "Payment Method" }}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="PayByWallet"
         component={PayByWallet}
         options={{ title: "Paid By Wallet", headerShown: false }}
+      />
+      <Stack.Screen
+        name="PaymentHistory"
+        component={PaymentHistory}
+        options={{ title: "Payment History", headerShown: false }}
       />
     </Stack.Navigator>
   );
@@ -360,11 +416,7 @@ function TopTabNavigatorStack({ navigation, route }) {
   return <TopTabNavigator />;
 }
 
-const onOpenNotification = async (notify) => {
-  console.log("notify", notify);
-};
-
 // Buttons and Primary Foreground: #068E94
 // Secondary Foreground: #00ABB2
 // Background Primary and Text: #005761
-// Background Secondary: #E0EFF6 173340
+// Background Secondary: #E0EFF6

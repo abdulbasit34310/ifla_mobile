@@ -21,6 +21,7 @@ import AddAddress from "../../components/Profile/AddAddress";
 const Addresses = ({ navigation, route }) => {
   const addresses = route.params.item.addresses;
   console.log(addresses);
+  
   const [isVisible, setVisible] = useState(false);
   return (
     <View style={styles.container}>
@@ -50,7 +51,7 @@ const Addresses = ({ navigation, route }) => {
 
       <View style={{ marginTop: 10 }}>
         {addresses.map((address, index) => (
-          <View style={styles.addressContainer} id={index}>
+          <View style={styles.addressContainer} id={index} key={index}>
             <View>
               {/* <TouchableOpacity
                 style={{

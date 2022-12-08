@@ -147,7 +147,7 @@ export default function QuoteDetails({ navigation, route }) {
           >
             <Text style={{ fontSize: 18 }}>Total</Text>
             <Text style={styles.paymentStyle}>
-              {quoteData.payment.amount} Rs
+              Rs {quoteData.payment.amount}
             </Text>
           </View>
         </View>

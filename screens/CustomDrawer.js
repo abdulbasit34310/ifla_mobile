@@ -6,7 +6,8 @@ import { AntDesign, Entypo, EvilIcons, Feather, FontAwesome, FontAwesome5, FontA
 import { AuthContext } from "../components/context";
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
-import { REST_API_LOCAL } from "@env";
+import {REST_API_LOCAL} from '@env'
+
 
 export function CustomDrawer(props) {
   const { signOut } = React.useContext(AuthContext);
@@ -23,7 +24,7 @@ export function CustomDrawer(props) {
 
     const data = await response.data;
     setImage(data.personId.image);
-    setUser(data.personId);
+    setUser(data);
   };
 
   React.useEffect(() => {
@@ -36,7 +37,7 @@ export function CustomDrawer(props) {
       <DrawerContentScrollView {...props}>
         <View style={styles.drawerContent}>
 
-          <View style={styles.userInfoSection}>
+          <TouchableOpacity style={styles.userInfoSection} onPress={()=> props.navigation.navigate("ProfileStack", {screen:"ProfileScreen", params:{user:user}})}>
             <View style={{ marginTop: 20 }}>
               {image ? (
                 <Image
@@ -50,10 +51,10 @@ export function CustomDrawer(props) {
                 />
               ) : null}
               {user !== null ? (
-                <Caption style={styles.emailStyle}>{user.email}</Caption>
+                <Caption style={styles.emailStyle}>{user.personId.email}</Caption>
               ) : null}
             </View>
-          </View>
+          </TouchableOpacity>
 
           <Drawer.Section style={styles.drawerSection}>
             <DrawerItem
@@ -79,7 +80,7 @@ export function CustomDrawer(props) {
               )}
               label="Profile"
               onPress={() => {
-                props.navigation.navigate("Profile");
+                props.navigation.navigate("ProfileStack", {screen:"ProfileScreen", params:{user:user}});
               }}
             />
 
@@ -93,7 +94,7 @@ export function CustomDrawer(props) {
               )}
               label="Feedback"
               onPress={() => {
-                props.navigation.navigate("Feedback", user._id);
+                props.navigation.navigate("Feedback", user.personId._id);
               }}
             />
 
@@ -119,7 +120,7 @@ export function CustomDrawer(props) {
               )}
               label="Dark Mode"
               onPress={() => {
-                props.navigation.navigate("Complaint");
+                // props.navigation.navigate("Complaint");
               }}
             />
 

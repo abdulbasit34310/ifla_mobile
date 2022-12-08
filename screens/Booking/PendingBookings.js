@@ -9,7 +9,6 @@ import * as SecureStore from "expo-secure-store";
 import moment from "moment";
 
 import NoBookingIllustration from "../../assets/NoBooking.png";
-
 import { REST_API_LOCAL } from "@env";
 
 export default function PendingBookings({ route, navigation }) {
