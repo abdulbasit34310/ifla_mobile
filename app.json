@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "IFLA",
-    "slug": "IFLA",
+    "slug": "ifla-shipper",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/IFLA_icon.png",
@@ -10,7 +10,7 @@
     "splash": {
       "image": "./assets/IFLA.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#005761"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -22,13 +22,30 @@
       "supportsTablet": true
     },
     "android": {
+      "package":"com.IFLA.ifla_shipper",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/IFLA_icon_notifs.png",
+          "color": "#333333"
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "52d4633a-7eac-4e44-a6c9-7731ee91f081"
+      }
+    },
+    "owner": "isala1"
   }
 }

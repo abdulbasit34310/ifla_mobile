@@ -82,7 +82,7 @@ const Login = ({ route, navigation }) => {
   };
 
 
-  const { signIn } = React.useContext(AuthContext);
+  const { signIn, disabledSignIn } = React.useContext(AuthContext);
 
   const emailChange = (val) => {
     const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -152,11 +152,8 @@ const Login = ({ route, navigation }) => {
       return;
     }
 
-    console.log(data.email);
-
     // If Username & password is incorrect.
     const body = { email: data.email.trim().toLowerCase(), password: data.password };
-    console.log(body);
 
     const response = await axios.post(`${REST_API_LOCAL}/users/login`, body)
       .catch((error) => {
@@ -174,13 +171,15 @@ const Login = ({ route, navigation }) => {
     const token = data1.token;
     const email = data1.user.email;
     const foundUser = { userToken: token, email: email };
-    console.log(foundUser);
-
-    signIn(foundUser);
-
-    if (data1) {
-      showToastWithGravity();
+    if(data1.user.isDisabled)
+      createTwoButtonAlert(foundUser)
+    else{
+      signIn(foundUser);
+      if (data1) {
+        showToastWithGravity();
+      }
     }
+
   };
 
   const showToastWithGravity = () => {
@@ -190,6 +189,26 @@ const Login = ({ route, navigation }) => {
       ToastAndroid.BOTTOM
     );
   };
+
+  const createTwoButtonAlert = (user) =>
+  Alert.alert(
+    "Re-enable Account",
+    "Your account is disabled, Do you want to enable it?",
+    [
+      {
+        text: "No",
+        onPress: () => console.log("Don't enable"),
+        style: "cancel"
+      },
+      { text: "Yes", onPress: () => {
+        axios.get(`${REST_API_LOCAL}/shipper/enable`,{
+          withCredentials: true,
+          headers: { Authorization: `Bearer ${user.userToken}` },
+        }).then(function (response) { console.log(response.data);}).catch(function (error) {console.log(error);});
+        signIn(user)
+      } }
+    ]
+  );
 
   const passwordChange = (text) => {
     if (text.length >= 6) {

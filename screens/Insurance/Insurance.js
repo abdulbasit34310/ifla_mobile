@@ -43,6 +43,7 @@ const Insurance = ({ navigation, route }) => {
                 ToastAndroid.CENTER
             );
         }
+        navigation.navigate("Payments", { screen: "PaymentMethod", params: { isInsurance: true, amount: parseInt(y) } });
     }
 
     return (
@@ -148,7 +149,7 @@ const styles = StyleSheet.create({
 
     }, paragraph: {
         color: 'grey',
-        marginBottom:20,
+        marginBottom: 20,
     }
 });
 

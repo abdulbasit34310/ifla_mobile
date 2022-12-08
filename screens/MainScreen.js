@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef, useMemo } from 'react';
-import { ActivityIndicator, Alert, Button, Dimensions, FlatList, ImageBackground, Image, ImageScrollView, Modal, Picker, Platform, StyleSheet, Switch, Text, TextInput, ToastAndroid, TouchableOpacity, View } from 'react-native';
+import { LogBox, Image, Platform, StyleSheet, Switch, Text, TextInput, ToastAndroid, TouchableOpacity, View } from 'react-native';
 import { AntDesign, Entypo, EvilIcons, Feather, FontAwesome, FontAwesome5, FontAwesome5Brands, Fontisto, Foundation, Ionicons, MaterialCommunityIcons, MaterialIcons, Octicons, SimpleLineIcons, Zocial } from '@expo/vector-icons';
 import { Card } from "react-native-paper";
 import * as SecureStore from "expo-secure-store";
@@ -14,16 +14,19 @@ import gaqIllustration from "../assets/gaq.png";
 import walletIllustration from "../assets/Wallet.png";
 import trackingIllustration from "../assets/Tracking.png";
 // import { REST_API_LOCAL } from "@env";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const REST_API_LOCAL = "http://192.168.0.113:4000";
 import IFLAlogo from "../assets/IFLA.png";
 
 const axios = require("axios");
 
+// LogBox.ignoreLogs(['new NativeEventEmitter']);
+
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
-    shouldPlaySound: false,
-    shouldSetBadge: false,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
   }),
 });
 
@@ -79,6 +82,7 @@ const MainScreen = ({ route, navigation }) => {
 
   const [token, setToken] = React.useState();
   const [shipperName, setShipperName] = React.useState("");
+  const [user, setUser] = React.useState("");
 
   const getSignedInUserCredentials = async () => {
 
@@ -89,15 +93,26 @@ const MainScreen = ({ route, navigation }) => {
       headers: headers,
     });
 
-    const data = await response.data;
+    const data = response.data;
     setShipperName(data.personId.name);
+    setUser(data)
+    // await AsyncStorage.setItem('user', JSON.stringify(data))
+    // await SecureStore.setItemAsync("user", JSON.stringify(data));
+    // console.log("user stored?")
   };
 
+  // const getStoredUser = async ()=>{
+  //   const user = await AsyncStorage.getItem("user");
+  //   console.log(JSON.parse(user))
+  //   !user ? null : setUser(JSON.parse(user))
+  // }
+
   React.useEffect(() => {
-    navigation.addListener("focus", () => {
+    // navigation.addListener("focus", () => {
       getSignedInUserCredentials();
-    });
-  }, [navigation]);
+      // getStoredUser()
+    // });
+  }, []);
 
   useEffect(() => {
     getValueFor()
@@ -112,7 +127,7 @@ const MainScreen = ({ route, navigation }) => {
     // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
     responseListener.current =
       Notifications.addNotificationResponseReceivedListener((response) => {
-        console.log(response);
+        console.log(response.notification.request.content);
       });
 
     return () => {
@@ -128,10 +143,6 @@ const MainScreen = ({ route, navigation }) => {
       setToken(val)
     );
   }
-  const deleteToken = () => {
-    SecureStore.deleteItemAsync("userToken");
-    signOut();
-  };
 
   return (
 
@@ -144,7 +155,7 @@ const MainScreen = ({ route, navigation }) => {
           <Text style={{ color: "#E0EFF6", fontSize: 18, fontWeight: "bold" }}>
             Welcome {shipperName}
           </Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={()=>{navigation.navigate("Notification")}}>
             <MaterialCommunityIcons
               name="bell-outline"
               color={"#E0EFF6"}
@@ -161,7 +172,7 @@ const MainScreen = ({ route, navigation }) => {
           <TouchableOpacity
             style={styles.card}
             onPress={() => {
-              navigation.navigate("FreightBooking", { screen: "BookingScreen" });
+              navigation.navigate("FreightBooking", { screen: "BookingScreen", shipperData:shipperData });
             }}
           >
             <View>
@@ -171,7 +182,7 @@ const MainScreen = ({ route, navigation }) => {
                 style={{
                   width: 85,
                   height: 65,
-                  left: 80,
+                  left: "50%",
                 }}
               />
             </View>
@@ -180,7 +191,7 @@ const MainScreen = ({ route, navigation }) => {
           <TouchableOpacity
             style={styles.card}
             onPress={() => {
-              navigation.navigate("FreightBooking", { screen: "GetAQuote" });
+              navigation.navigate("QuoteStack", { screen: "GetAQuote" });
             }}
           >
             <Text>Get a Quote</Text>
@@ -189,7 +200,7 @@ const MainScreen = ({ route, navigation }) => {
               style={{
                 width: 82,
                 height: 70,
-                left: 70,
+                left: "47%",
               }}
             />
           </TouchableOpacity>
@@ -199,7 +210,7 @@ const MainScreen = ({ route, navigation }) => {
           <TouchableOpacity
             style={styles.card}
             onPress={() => {
-              navigation.navigate("Payments");
+              navigation.navigate("Payments", { screen:"Wallet", params:{user:user}});
             }}
           >
             <Text>Payments and Wallet</Text>
@@ -208,7 +219,7 @@ const MainScreen = ({ route, navigation }) => {
               style={{
                 width: 75,
                 height: 77,
-                left: 75,
+                left: "47%",
               }}
             />
           </TouchableOpacity>
@@ -216,7 +227,7 @@ const MainScreen = ({ route, navigation }) => {
           <TouchableOpacity
             style={styles.card}
             onPress={() => {
-              navigation.navigate("ProfileStack");
+              navigation.navigate("Profile");
             }}
           >
             <Text>Profile</Text>
@@ -225,7 +236,7 @@ const MainScreen = ({ route, navigation }) => {
               style={{
                 width: 75,
                 height: 77,
-                left: 75,
+                left: "47%",
               }}
             />
           </TouchableOpacity>
@@ -241,6 +252,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#068E94",
+    marginTop:"2%",
   },
   topSection: {
     flex: 2,

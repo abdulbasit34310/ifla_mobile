@@ -72,7 +72,7 @@ export default function PendingBookings({ route, navigation }) {
               style={styles.illustrationStyle}
               source={NoBookingIllustration}
             />
-            <Text style={styles.timeStyle}>Schedule A Booking</Text>
+            <Text style={[styles.timeStyle,{alignSelf:"center", marginTop:"5%"}]}>Schedule a Booking</Text>
           </View>
         }
         renderItem={({ item, index }) => (

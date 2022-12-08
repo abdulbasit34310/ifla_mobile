@@ -3,9 +3,9 @@ import { Text, View, TouchableOpacity, TextInput, StyleSheet } from 'react-nativ
 import { TouchableRipple } from "react-native-paper";
 import { Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
 
-const LoadMoneyToWallet = ({ navigation }) => {
+const LoadMoneyToWallet = ({ route, navigation }) => {
 
-  const [getNo, setNo] = React.useState("150");
+  const [getNo, setNo] = React.useState( !route.params ? "150":route.params.amount);
 
   return (
     <View style={styles.container}>
@@ -18,7 +18,7 @@ const LoadMoneyToWallet = ({ navigation }) => {
         </TouchableRipple>
       </View>
 
-      <View style={{justifyContent: 'center', alignItems: 'center'}}>
+      <View style={{justifyContent: 'center', alignItems: 'center', marginVertical:"20%"}}>
 
         <Text
           style={[
@@ -29,7 +29,7 @@ const LoadMoneyToWallet = ({ navigation }) => {
             },
           ]}
         >
-          Deposit
+          Enter Amount
         </Text>
 
       <View style={{ flexDirection: "row", alignItems: "center", margin: 20 }}>

@@ -25,7 +25,8 @@ export default function BookingDetails({ navigation, route }) {
   const [dropOffCoordinates, setDropOffCoordinates] = React.useState({
     latitude: receivedData.dropoffAddress.latitude,
     longitude: receivedData.dropoffAddress.longitude,
-    status: receivedData.status
+    status: receivedData.status,
+    bookingId: receivedData._id,
   });
 
   const deleteBookingData = async () => {
@@ -139,6 +140,22 @@ export default function BookingDetails({ navigation, route }) {
       </View>
     )
   }
+
+  const fetchDriverLocation = async () => {
+    const id = receivedData._id;
+    let token = await SecureStore.getItemAsync("userToken");
+    const response = await axios.get(`${REST_API_LOCAL}/drivers/getLocation/${id}`, {
+      withCredentials: true,
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+
+    const address = response.data;
+
+    navigation.push("LiveTracking", { driverLocation:address ,dropoffAddress:dropOffCoordinates})
+  }
+
 
   return (
     <ScrollView style={{ backgroundColor: "#E0EFF6", }}>
@@ -293,10 +310,10 @@ export default function BookingDetails({ navigation, route }) {
           </TouchableOpacity>
         ) : null}
 
-        {receivedData.status == 'Pending' ? (
+        {receivedData.payment.status == 'Created' ? (
           <TouchableOpacity style={[styles.customButton, { backgroundColor: "#068E94" }]}
             onPress={() => {
-              navigation.navigate("Payments", { payId: receivedData.payment._id });
+              navigation.navigate("Payments", { screen:"PaymentMethod", params:{ payId: receivedData.payment._id } });
             }}
           >
             <View style={{ flexDirection: 'row', alignItems: 'center', }}>
@@ -318,9 +335,7 @@ export default function BookingDetails({ navigation, route }) {
 
         {receivedData.status == 'Assigned' ? (
           <TouchableOpacity style={[styles.customButton, { backgroundColor: "#068E94" }]}
-            onPress={() => {
-              navigation.push("LiveTracking", dropOffCoordinates)
-            }}
+            onPress={() => {fetchDriverLocation() }}
           >
             <View style={{ flexDirection: 'row', alignItems: 'center', }}>
               <Ionicons
@@ -466,7 +481,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 14,
     marginTop: 20,
-    marginBottom: '50%',
+    marginBottom: '2%',
     elevation: 5,
   },
   to: {

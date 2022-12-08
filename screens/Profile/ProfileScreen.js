@@ -25,17 +25,12 @@ const Theme = {
 };
 
 const ProfileScreen = ({ route, navigation }) => {
-  var email = "";
   const { signOut } = React.useContext(AuthContext);
-  const [getData, setData] = React.useState({
-    key: " ",
-    personId: { name: "", email: "", phone: "" },
-    addresses: [{ City: "" }, { City: "" }],
-  });
+  const [getData, setData] = React.useState(route.params.user);
 
   const getSignedInUserCredentials = async () => {
-    let token1 = await SecureStore.getItemAsync("userToken");
-    const headers = { Authorization: `Bearer ${token1}` };
+    let token = await SecureStore.getItemAsync("userToken");
+    const headers = { Authorization: `Bearer ${token}` };
     const response = await axios.get(`${REST_API_LOCAL}/users/getUser`, {
       withCredentials: true,
       headers: headers,
@@ -44,6 +39,16 @@ const ProfileScreen = ({ route, navigation }) => {
     setData(data);
   };
 
+  const disableAccount = async ()=>{
+    let token = await SecureStore.getItemAsync("userToken");
+    const headers = { Authorization: `Bearer ${token}` };
+    const response = await axios.get(`${REST_API_LOCAL}/shipper/disable`, {
+      withCredentials: true,
+      headers: headers,
+    });
+    signOut()
+  }
+
   React.useEffect(() => {
     navigation.addListener("focus", () => {
       getSignedInUserCredentials();
@@ -51,6 +56,7 @@ const ProfileScreen = ({ route, navigation }) => {
   }, [navigation]);
 
   return (
+    <ScrollView>
     <View style={styles.container}>
 
       <View>
@@ -116,28 +122,29 @@ const ProfileScreen = ({ route, navigation }) => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={styles.infoBox}
-          onPress={() => {
-            navigation.navigate("Payments",
-              {
-                screen: 'Wallet',
-                initial: false,
-                params: { item: getData }
-              });
-          }}
-        >
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
+            style={styles.infoBox}
+            onPress={() => {
+              navigation.navigate("Payments", 
+             { screen: 'Wallet',
+              initial: false,
+              params:{user: getData}
+            });
             }}
           >
-            <View style={[styles.iconView, { backgroundColor: "#FF7F50" }]}>
-              <MaterialCommunityIcons
-                name="credit-card"
-                color={"white"}
-                size={24}
-              />
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <View style={[styles.iconView, { backgroundColor: "#FF7F50" }]}>
+                <MaterialCommunityIcons
+                  name="credit-card"
+                  color={"white"}
+                  size={24}
+                />
+              </View>
+              <Text style={styles.buttonTitle}>Wallet</Text>
             </View>
             <Text style={styles.buttonTitle}>Wallet</Text>
           </View>
@@ -190,7 +197,6 @@ const ProfileScreen = ({ route, navigation }) => {
           </View>
           <FontAwesome name="chevron-right" size={25} color="lightgrey" />
         </TouchableOpacity>
-
         <TouchableOpacity
           style={styles.infoBox}
           onPress={() => {
@@ -230,10 +236,19 @@ const ProfileScreen = ({ route, navigation }) => {
             </View>
           </TouchableOpacity>
         </View>
-
+        <TouchableOpacity style={[styles.customButton, { backgroundColor: "#ef4436" }]} onPress={disableAccount}>
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <MaterialCommunityIcons
+                name="close"
+                color={"white"}
+                size={24}
+              />
+              <Title style={styles.buttonText}>Disable Account</Title>
+            </View>
+        </TouchableOpacity>
       </View>
     </View>
-
+    </ScrollView>
   );
 };
 
@@ -289,7 +304,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 14,
     marginTop: 20,
-    marginBottom: '50%',
+    marginBottom: '2%',
     elevation: 5,
   },
   buttonText: {

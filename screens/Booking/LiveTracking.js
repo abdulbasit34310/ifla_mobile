@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import MapView, { Callout, Marker } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
 import { GOOGLE_API, REST_API_LOCAL } from "@env";
+import sourceTruck from "../../assets/TruckMarker-01.png";
 import { AntDesign, Entypo, EvilIcons, Feather, FontAwesome, FontAwesome5, FontAwesome5Brands, Fontisto, Foundation, Ionicons, MaterialCommunityIcons, MaterialIcons, Octicons, SimpleLineIcons, Zocial } from '@expo/vector-icons';
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
@@ -15,12 +16,12 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 const LiveTracking = ({ route, navigation }) => {
 
-  const [dropoffAddress, setData] = React.useState(route.params);
+  const [dropoffAddress, setData] = React.useState(route.params.dropoffAddress);
 
   const [state, setState] = React.useState({
     currentLocation: {
-      latitude: 0,
-      longitude: 0,
+      latitude: route.params.driverLocation.latitude,
+      longitude: route.params.driverLocation.longitude,
     },
     destination: {
       latitude: dropoffAddress.latitude,
@@ -45,7 +46,7 @@ const LiveTracking = ({ route, navigation }) => {
   const mapRef = useRef < MapView > null;
 
   const fetchDriverLocation = async () => {
-    const id = bookingData._id;
+    const id = dropoffAddress.bookingId;
     let token = await SecureStore.getItemAsync("userToken");
     const response = await axios.get(`${REST_API_LOCAL}/drivers/getLocation/${id}`, {
       withCredentials: true,
@@ -54,10 +55,7 @@ const LiveTracking = ({ route, navigation }) => {
       }
     })
     // deconstruct
-    const { latitude, longitude } = response.data;
-    console.log("Driver Coordinate");
-    console.log(latitude);
-    console.log(longitude);
+    const { latitude, longitude } = await response.data;
     // update the state
     updateState(
       {
@@ -68,12 +66,6 @@ const LiveTracking = ({ route, navigation }) => {
         }
       }
     )
-    console.log("Putting Driver Coordinate above in current Location of use State");
-    console.log(currentLocation.latitude);
-    console.log(currentLocation.longitude);
-
-    // setLatitude(latitude);
-    // setLongitude(longitude);
   }
 
   React.useEffect(() => {
@@ -112,8 +104,9 @@ const LiveTracking = ({ route, navigation }) => {
               });
           }}
         />
-
-        <Marker coordinate={currentLocation} />
+        <Marker coordinate={currentLocation}>
+          <Image source={sourceTruck} style={{ width: 26, height: 28 }}></Image>
+        </Marker>
         <Marker coordinate={destination} />
 
       </MapView>

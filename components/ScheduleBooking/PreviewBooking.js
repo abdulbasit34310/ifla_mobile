@@ -157,7 +157,7 @@ export default function PreviewBooking({
             </View>
             <View>
               <Text style={styles.heading}>Time</Text>
-              <Text style={styles.property}>{time.toFixed(0)} min</Text>
+              {/* <Text style={styles.property}>{time.toFixed(0)} min</Text> */}
             </View>
           </View>
 
@@ -165,13 +165,15 @@ export default function PreviewBooking({
 
         <View style={[styles.row, { paddingBottom: 10 }]}>
           <View>
-            <Text style={styles.heading}>Vehicle Type: </Text>
-            <Text style={styles.property}>{bookingData.vehicle} </Text>
-          </View>
-          <View>
             <Text style={styles.heading}>Weight: </Text>
             <Text style={styles.property}>{bookingData.weight} kg</Text>
           </View>
+          {bookingData.type == "LTL" ? null:(
+          <View>
+            <Text style={styles.heading}>Vehicle Type: </Text>
+            <Text style={styles.property}>{bookingData.vehicle} </Text>
+          </View>
+          )}
         </View>
 
         <View style={[styles.row, { paddingBottom: 10 }]}>

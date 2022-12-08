@@ -10,6 +10,7 @@ import {
   ToastAndroid,
   KeyboardAvoidingView,
   ScrollView,
+  LogBox
 } from "react-native";
 import { Title } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -18,13 +19,17 @@ import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
 import { REST_API_LOCAL } from "@env";
 import * as SecureStore from "expo-secure-store";
+import { TouchableRipple } from "react-native-paper";
+import { Entypo } from '@expo/vector-icons';
+
+LogBox.ignoreAllLogs()
 
 const EditProfileScreen = ({ navigation, route }) => {
   var item = route.params.item;
   console.log(item);
 
   const [hasGalleyPermission, setHasGalleryPermission] = React.useState(null);
-  const [image, setImage] = React.useState();
+  const [image, setImage] = React.useState(undefined);
 
   const [data, setData] = React.useState({
     key: item.key,
@@ -48,7 +53,6 @@ const EditProfileScreen = ({ navigation, route }) => {
   });
 
   const updateData = async () => {
-    // const id = key;
     try {
       if (
         data.validName &&
@@ -65,7 +69,6 @@ const EditProfileScreen = ({ navigation, route }) => {
           cnic: data.cnic,
         };
         let formData = new FormData();
-        console.log(objToSave);
         //Adding files to the formdata
         formData.append("image", {
           name: "r76fhtt.jpg",
@@ -73,48 +76,31 @@ const EditProfileScreen = ({ navigation, route }) => {
           type: "image/jpg",
         });
         let token1 = await SecureStore.getItemAsync("userToken");
-
-        const [res1, res2] = await Promise.all([
+        let requests = [
           axios.patch(`${REST_API_LOCAL}/users/update`, objToSave, {
             withCredentials: true,
             headers: { Authorization: `Bearer ${token1}` },
-          }),
-          axios.post(`${REST_API_LOCAL}/users/uploadImage`, formData, {
+          }), axios.post(`${REST_API_LOCAL}/users/uploadImage`, formData, {
             withCredentials: true,
             headers: {
               "Content-Type": "multipart/form-data",
               Accept: "application/json",
               Authorization: `Bearer ${token1}`,
-            },
-          }),
-        ]).catch((error) => {
-          if (error.response) {
-            // The request was made and the server responded with a status code
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-          } else if (error.request) {
-            // The request was made but no response was received
-            console.log(error.request);
-          } else {
-            // Something happened in setting up the request that triggered an Error
-            ToastAndroid.showWithGravity(
-              "Error Occured",
-              ToastAndroid.SHORT,
-              ToastAndroid.CENTER
-            );
-            console.log("Error", error.message);
-          }
+            }
+          })
+        ]
+        requests = requests.filter((val,index)=> index==1 && image===undefined? false:true)
+
+        const [res1, res2] = await Promise.all( requests
+        ).catch((error) => {
           console.log(error.config);
         });
-        console.log(res1.data);
-        console.log(res2.data);
         ToastAndroid.showWithGravity(
           "Profile Updated",
           ToastAndroid.SHORT,
           ToastAndroid.CENTER
         );
-        navigation.goBack();
+        navigation.goBack()   
       } else {
         ToastAndroid.showWithGravity(
           "Not Valid Format",
@@ -225,10 +211,8 @@ const EditProfileScreen = ({ navigation, route }) => {
       quality: 1,
     });
 
-    console.log(result);
-
-    if (!result.cancelled) {
-      setImage(result.uri);
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
       // var data = fs.readFileSync(result.uri);
       // const base64String = Buffer.from(data).toString("base64");
       // setImage64(base64String);
@@ -238,6 +222,11 @@ const EditProfileScreen = ({ navigation, route }) => {
   return (
     <ScrollView style={{ backgroundColor: "#E0EFF6" }}>
       <KeyboardAvoidingView style={styles.container}>
+          <TouchableRipple style={{ width: '12%', borderRadius: 14, padding: 7, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', }} onPress={() => {
+            navigation.goBack();
+          }}>
+            <Entypo name='chevron-small-left' size={34} />
+          </TouchableRipple>
         <View style={{ paddingTop: 20, alignItems: "center" }}>
           <TouchableOpacity onPress={() => pickImage()}>
             <View
@@ -408,20 +397,22 @@ const EditProfileScreen = ({ navigation, route }) => {
           <Text style={styles.errorText}>Wrong Phone No Format</Text>
         )}
 
-        <TouchableOpacity style={styles.submitButton} onPress={updateData}>
+        <TouchableOpacity
+          style={[styles.submitButton, {backgroundColor:"#E0EFF6", elevation:0, marginTop:10, height:30}]}
+          onPress={() => navigation.navigate("ChangePassword")}
+        >
+          <Text style={{ fontSize: 16, color: "#009387", textAlign: "center", textDecorationLine:"underline" }}>
+            Change Password
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.submitButton} onPress={()=>updateData()}>
           <Text style={{ fontSize: 18, color: "white", textAlign: "center" }}>
             Update
           </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.submitButton}
-          onPress={() => navigation.navigate("ChangePassword")}
-        >
-          <Text style={{ fontSize: 18, color: "white", textAlign: "center" }}>
-            Change Password
-          </Text>
-        </TouchableOpacity>
+
       </KeyboardAvoidingView>
     </ScrollView>
   );

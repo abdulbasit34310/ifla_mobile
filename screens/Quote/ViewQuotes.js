@@ -22,32 +22,18 @@ export default function ViewQuotes({ navigation, route }) {
   const getQuoteData = async () => {
     setLoading(true);
 
-    let token1 = await SecureStore.getItemAsync("userToken");
-    const headers = { Authorization: `Bearer ${token1}` };
+    let token = await SecureStore.getItemAsync("userToken");
+    const headers = { Authorization: `Bearer ${token}` };
 
     const response = await axios.get(`${REST_API_LOCAL}/shipper/getQuotes`, {
       withCredentials: true,
       headers: headers,
     });
     const data = await response.data.bookings;
-    //   var id=Object.keys(data);
-    //   var pendingData={};
-    //   console.log(id);
-    //   for (let i=0;i<id.length;i++){
-    //       let key=id[i];
-    //       console.log(data[key].Status);
-    //         if(data[key].Status==="In-Process"){
-    //             pendingData[key]=data[key];
-    //         }
-    // }
-    console.log(data);
+
     setQuoteData(data);
     setLoading(false);
   };
-
-  // React.useEffect(() => {
-  //   getQuoteData();
-  // }, [setQuoteData]);
 
   React.useEffect(() => {
     navigation.addListener("focus", () => {
@@ -104,7 +90,7 @@ export default function ViewQuotes({ navigation, route }) {
                     Estimated Price
                   </Text>
                   <Text style={styles.paymentStyle}>
-                    {item.payment.amount} PKR
+                    PKR {item.payment.amount}
                   </Text>
                 </View>
 

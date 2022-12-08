@@ -32,7 +32,7 @@ const Theme = {
 };
 
 export default function GetAQuote({ route, navigation }) {
-  const [category, setCategory] = React.useState(0);
+  const [category, setCategory] = React.useState(2);
   const [isPickup, setIsPickup] = React.useState(true);
   const [vehicleModal, setVehicleModal] = React.useState(false);
   const [modalVisible, setModalVisible] = React.useState(false);
@@ -56,18 +56,15 @@ export default function GetAQuote({ route, navigation }) {
 
   const SaveQuote = async () => {
     const body = quoteData;
-    console.log(quoteData);
-    var obj = quoteData;
-    let token1 = await SecureStore.getItemAsync("userToken");
-    const headers = { Authorization: `Bearer ${token1}` };
 
-    var response = await axios.post(
+    let token = await SecureStore.getItemAsync("userToken");
+    const headers = { Authorization: `Bearer ${token}` };
+
+    await axios.post(
       REST_API_LOCAL + "/shipper/saveQuoteMobile",
       body,
       { withCredentials: true, headers: headers }
     );
-    var data = response.data;
-    console.log(data);
     console.log("Saving Done!");
     showToastWithGravity();
     navigation.push("ViewQuotes")
@@ -81,39 +78,23 @@ export default function GetAQuote({ route, navigation }) {
     );
   };
 
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <TouchableOpacity
-          onPress={() => {
-            navigation.push("ViewQuotes");
-          }}
-          style={{
-            backgroundColor: "white",
-            padding: 10,
-            marginLeft: 10,
-            borderRadius: 10,
-          }}
-        >
-          <Text>View Quotes</Text>
-        </TouchableOpacity>
-      ),
-    });
-  });
-
   return (
     <ScrollView style={{backgroundColor: Theme.SecondaryBackground}}>
       <View style={styles.container}>
         <StatusBar style="dark" />
+        <View style={styles.flexView}>
+            <TouchableRipple style={{ borderRadius: 14, padding: 7, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', }} onPress={() => {
+              navigation.goBack();
+            }}>
+              <Entypo name='chevron-small-left' size={34} />
+            </TouchableRipple>
 
-        <View style={{ paddingBottom: 15, paddingTop: 10 }}>
-          <TouchableRipple style={{ width: '12%', borderRadius: 14, padding: 7, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', }} onPress={() => {
-            navigation.goBack();
-          }}>
-            <Entypo name='chevron-small-left' size={34} />
-          </TouchableRipple>
+            <TouchableRipple style={{ height:"100%", borderRadius: 14, padding: 7, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', }} onPress={() => {
+              navigation.push("ViewQuotes")
+            }}>
+              <Text>View Quotes</Text>
+            </TouchableRipple>
         </View>
-
         <Modal
           animationType="slide"
           transparent={true}
@@ -402,4 +383,10 @@ const styles = StyleSheet.create({
     padding: 20,
     justifyContent: "center",
   },
+  flexView:{
+    flex:1,
+    flexDirection:"row",
+    paddingBottom: 15, paddingTop: 10,
+    justifyContent:"space-between"
+  }
 });

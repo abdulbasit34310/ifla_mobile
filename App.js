@@ -42,6 +42,9 @@ import Complaint from "./screens/Complaint";
 import PaymentMethod from "./screens/Payment/PaymentMethod";
 import PayByWallet from "./screens/Payment/PayByWallet";
 
+import Notification from "./screens/Notification";
+import PaymentHistory from "./screens/Payment/PaymentHistory";
+
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -51,6 +54,7 @@ export default function App() {
     isLoading: true,
     userName: null,
     userToken: null,
+    disablePrompt: false
   };
 
   const loginReducer = (prevState, action) => {
@@ -60,6 +64,7 @@ export default function App() {
           ...prevState,
           userToken: action.token,
           isLoading: false,
+          disablePrompt: false
         };
       case "LOGIN":
         return {
@@ -67,6 +72,15 @@ export default function App() {
           userName: action.id,
           userToken: action.token,
           isLoading: false,
+          disablePrompt: false
+        };
+      case "DISABLED_ACC_LOGIN":
+        return {
+          ...prevState,
+          userName: action.id,
+          userToken: action.token,
+          isLoading: false,
+          disablePrompt: true
         };
       case "LOGOUT":
         return {
@@ -74,6 +88,7 @@ export default function App() {
           userName: null,
           userToken: null,
           isLoading: false,
+          disablePrompt: false
         };
       case "REGISTER":
         return {
@@ -81,6 +96,7 @@ export default function App() {
           userName: action.id,
           userToken: action.token,
           isLoading: false,
+          disablePrompt: false
         };
     }
   };
@@ -121,8 +137,20 @@ export default function App() {
           console.log(e);
         }
         dispatch({ type: "REGISTER", id: email, token: userToken });
+      },
+      disabledSignIn: async (foundUser) => {
+        const userToken = foundUser.userToken;
+        const email = foundUser.email;
+  
+        try {
+          await SecureStore.setItemAsync("userToken", userToken);
+        } catch (e) {
+          console.log(e);
+        }
+        dispatch({ type: "DISABLED_ACC_LOGIN", id: email, token: userToken });
       }
     }),
+
     []
   );
 
@@ -164,29 +192,32 @@ export default function App() {
               options={{ title: "Home" }}
             />
             <Drawer.Screen
-              options={{ headerShown: false }}
               name="FreightBooking"
               component={FreightBookingStack}
             />
             <Drawer.Screen
-              options={{ headerShown: false }}
+              name="QuoteStack"
+              component={QuoteStack}
+            />
+            <Drawer.Screen
               name="ProfileStack"
               component={ProfileStack}
             />
             <Drawer.Screen
-              options={{ headerShown: false }}
               name="Payments"
               component={PaymentsStack}
             />
             <Drawer.Screen
-              options={{ headerShown: false }}
               name="Feedback"
               component={Feedback}
             />
             <Drawer.Screen
-              options={{ headerShown: false }}
               name="Complaint"
               component={Complaint}
+            />
+            <Drawer.Screen
+              name="Notification"
+              component={Notification}
             />
           </Drawer.Navigator>
         ) : (
@@ -226,22 +257,6 @@ function FreightBookingStack({ navigation, route }) {
 
       />
       <Stack.Screen
-        name="GetAQuote"
-        component={GetAQuote}
-
-        options={{ title: "Get a Quote", headerShown: true  }}
-      />
-      <Stack.Screen
-        name="ViewQuotes"
-        component={ViewQuotes}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="QuoteDetails"
-        component={QuoteDetails}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
         name="PendingBookings"
         component={PendingBookings}
         options={{ headerShown: false }}
@@ -272,6 +287,63 @@ function FreightBookingStack({ navigation, route }) {
   );
 }
 
+function QuoteStack({navigation, route}){
+  return(
+    <Stack.Navigator
+    screenOptions={{
+      headerTintColor: "#005761",
+      headerTitleAlign: "center",
+      headerTitleStyle: { fontSize: 20 },
+      headerStyle: { backgroundColor: "white", padding: 0 },
+      headerShown: false,
+    }}
+    >
+      <Stack.Screen
+        name="GetAQuote"
+        component={GetAQuote}
+        options={{ title: "Get a Quote" }}
+      />
+      <Stack.Screen
+        name="ViewQuotes"
+        component={ViewQuotes}
+        options={{ title: "View Quote" }}
+      />
+      <Stack.Screen
+        name="QuoteDetails"
+        component={QuoteDetails}
+        options={{ title: "Quote Details", headerShown: true }}
+      />
+    </Stack.Navigator>
+)}
+
+function ProfileStack({ navigation, route }) {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerTintColor: "#005761",
+        headerTitleAlign: "center",
+        headerTitleStyle: { fontWeight: "bold", fontSize: 24 },
+        headerStyle: { backgroundColor: "white", padding: 0 },
+      }}
+    >
+      <Stack.Screen
+        name="GetAQuote"
+        component={GetAQuote}
+        options={{ title: "Get a Quote" }}
+      />
+      <Stack.Screen
+        name="ViewQuotes"
+        component={ViewQuotes}
+        options={{ title: "View Quote" }}
+      />
+      <Stack.Screen
+        name="QuoteDetails"
+        component={QuoteDetails}
+        options={{ title: "Quote Details", headerShown: true }}
+      />
+    </Stack.Navigator>
+)}
+
 function ProfileStack({ navigation, route }) {
   return (
     <Stack.Navigator>
@@ -279,12 +351,15 @@ function ProfileStack({ navigation, route }) {
       <Stack.Screen
         name="ProfileScreen"
         component={ProfileScreen}
+        options={{ title: "Profile", headerShown: false }}
+      />
         options={{ headerShown: false }}
 
       />
       <Stack.Screen
         name="EditProfileScreen"
         component={EditProfileScreen}
+        options={{ title: "Edit Profile", headerShown: false }}
         options={{ headerShown: false }}
       />
       <Stack.Screen
@@ -306,6 +381,16 @@ function ProfileStack({ navigation, route }) {
         component={ChangePassword}
         options={{ title: "Change Password" }}
       />
+      <Stack.Screen
+        name="Payments"
+        component={PaymentsStack}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Insurance"
+        component={Insurance}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 }
@@ -316,14 +401,12 @@ function PaymentsStack({ navigation, route }) {
       <Stack.Screen
         name="Wallet"
         component={Wallet}
-        options={{ headerShown: false }}
-
+        options={{ headerShown:false }}
       />
       <Stack.Screen
         name="LoadMoneyToWallet"
         component={LoadMoneyToWallet}
-        options={{ headerShown: false }}
-
+        options={{ title: "Load Money", headerShown:false }}
       />
       <Stack.Screen
         name="Payment"
@@ -341,6 +424,11 @@ function PaymentsStack({ navigation, route }) {
         component={PayByWallet}
         options={{ title: "Paid By Wallet", headerShown: false }}
       />
+      <Stack.Screen
+        name="PaymentHistory"
+        component={PaymentHistory}
+        options={{ title: "Payment History", headerShown: false }}
+      />
     </Stack.Navigator>
   );
 }
@@ -350,6 +438,7 @@ function TopTabNavigatorStack({ navigation, route }) {
     <TopTabNavigator />
   )
 }
+
 // Buttons and Primary Foreground: #068E94
 // Secondary Foreground: #00ABB2
 // Background Primary and Text: #005761

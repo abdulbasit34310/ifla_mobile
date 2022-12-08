@@ -73,7 +73,7 @@ const ChangePassword = ({ navigation }) => {
                 color: "white",
               },
             ]}
-          >Change It</Text>
+          >Change Password</Text>
         </TouchableOpacity>
       </View>
     </View>

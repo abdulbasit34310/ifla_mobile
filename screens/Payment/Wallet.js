@@ -8,8 +8,9 @@ import { REST_API_LOCAL } from "@env";
 import * as SecureStore from "expo-secure-store";
 
 export default function Wallet({ route, navigation }) {
-    const [balance, setBalance] = React.useState(0)
-    
+    const [balance, setBalance] = React.useState(route.params.user.wallet)
+    // if(route.params.user.wallet)
+    //     setBalance(route.params.user.wallet)
     async function getBalance() {
         let token1 = await SecureStore.getItemAsync("userToken");
         const headers = { Authorization: `Bearer ${token1}` };
@@ -21,9 +22,9 @@ export default function Wallet({ route, navigation }) {
     }
 
     React.useEffect(()=>{
-			navigation.addListener("focus", () => {
-				getBalance()
-			});
+        navigation.addListener("focus", () => {
+            getBalance()
+        });
     },[navigation])
 
     return (
@@ -39,7 +40,7 @@ export default function Wallet({ route, navigation }) {
 
             <View style={styles.topSection}>
                 <View style={{ flexDirection: 'row', }}>
-                    <TouchableOpacity style={[styles.currentBalanceCard, { backgroundColor: '#00ABB2' }]}>
+                    <TouchableOpacity onPress={()=>navigation.navigate("PaymentHistory")} style={[styles.currentBalanceCard, { backgroundColor: '#00ABB2' }]}>
                         <View>
                             <Text>Current Balance</Text>
                             <Title
@@ -49,7 +50,7 @@ export default function Wallet({ route, navigation }) {
                                 }}>
                                 PKR.{balance}
                             </Title>
-                            <EvilIcons name='arrow-right' size={28} style={{ left: 125, top: 90 }} />
+                            <EvilIcons name='arrow-right' size={28} style={{ left: "80%", top: 90 }} />
                         </View>
                     </TouchableOpacity>
 
@@ -61,7 +62,7 @@ export default function Wallet({ route, navigation }) {
                                 style={{
                                     fontSize: 24,
                                     fontWeight: 'bold',
-                                    left: 20, top: 110
+                                    left: "5%", top: 110
                                 }}>
                                 Load Money
                             </Title>
@@ -76,7 +77,7 @@ export default function Wallet({ route, navigation }) {
                 </View>
 
                 <Text style={{ color: 'grey', width: 300, alignSelf: 'center', }}>
-                    Tap the Teal Card to view your Wallet Details and access your card details
+                    Tap the Teal Card to view your Payment History
                 </Text>
 
                 <View style={{ backgroundColor: 'white', padding: 5, borderRadius: 14, alignSelf: 'center', margin: 10 }}>
