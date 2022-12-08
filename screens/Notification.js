@@ -1,24 +1,25 @@
 import React from 'react'
-import { ActivityIndicator, StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native'
+import { ActivityIndicator, StyleSheet, Text, View, FlatList, TouchableOpacity, Alert } from 'react-native'
 import { TouchableRipple } from "react-native-paper";
 import { Entypo } from '@expo/vector-icons';
 import axios from 'axios'
+import { StatusBar } from 'expo-status-bar';
 import { REST_API_LOCAL } from "@env"
 import * as SecureStore from "expo-secure-store";
 import moment from "moment";
 
 
 const Notification = ({ navigation }) => {
-    const [data,setData] = React.useState(null)
+    const [data, setData] = React.useState(null)
     const [loading, setLoading] = React.useState(false);
 
-    const getNotificationData = async ()=>{
+    const getNotificationData = async () => {
         setLoading(true);
         let token = await SecureStore.getItemAsync("userToken");
         const headers = { Authorization: `Bearer ${token}` };
-        const res = await axios.get(`${REST_API_LOCAL}/notifications/getNotifications`,{
-          withCredentials: true,
-          headers: headers,
+        const res = await axios.get(`${REST_API_LOCAL}/notifications/getNotifications`, {
+            withCredentials: true,
+            headers: headers,
         })
 
         setData(res.data)
@@ -26,62 +27,86 @@ const Notification = ({ navigation }) => {
 
     }
 
-    React.useEffect(()=>{
-    navigation.addListener("focus", () => {
-        getNotificationData()
-    });
+    const deleteNotifs = async ()=>{
+        let token = await SecureStore.getItemAsync("userToken");
+        const headers = { Authorization: `Bearer ${token}` };
+        const res = await axios.delete(`${REST_API_LOCAL}/notifications/deleteAll`, {
+            withCredentials: true,
+            headers: headers,
+        })
+        navigation.goBack()
+    }
+
+    React.useEffect(() => {
+        navigation.addListener("focus", () => {
+            getNotificationData()
+        });
     }, [navigation])
 
-  return (
-    <View style={styles.container}>
-        <View style={styles.flexView}>
-            <TouchableRipple style={{ width: '12%', height:"100%", borderRadius: 14, padding: 25, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center' }} onPress={() => {
-              navigation.goBack();
-            }}>
-              <Entypo name='chevron-small-left' size={34} />
-            </TouchableRipple>
+    return (
+        <View style={styles.container}>
+            <StatusBar style="dark" />
+            <View style={styles.flexView}>
+                <TouchableRipple style={{ width: 5, borderRadius: 14, padding: 25, elevation: 5, backgroundColor: 'white',alignItems: 'center', justifyContent: 'center' }} onPress={() => {
+                    navigation.goBack();
+                }}>
+                    <Entypo name='chevron-small-left' size={34} />
+                </TouchableRipple>
 
-            <TouchableRipple style={{ height:"100%", borderRadius: 14, padding: 25, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', }} onPress={() => {
-                console.log("pressed")
-            }}>
-              <Text>Clear</Text>
-            </TouchableRipple>
-        </View>
-        {loading ? (
-            <View style={[styles.flexView,{flexDirection:"column", justifyContent:"center"}]}>
-            <ActivityIndicator size="large"/>
+                <TouchableRipple style={{ borderRadius: 14, paddingHorizontal: 20, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', }} onPress={() => {
+                    Alert.alert("Clear Notifications", "Are you sure?", [
+                        {
+                          text: "Cancel",
+                          onPress: () => console.log("Cancel Pressed"),
+                          style: "cancel",
+                        },
+                        {
+                          text: "Confirm",
+                          onPress: () => {
+                            deleteNotifs()
+                          },
+                        },
+                      ]);
+                     }}>
+                    <Text>Clear</Text>
+                </TouchableRipple>
+                
             </View>
-        ):(
-            <FlatList
-                data={data}
-                refreshing={false}
-                onRefresh={getNotificationData}
-                keyExtractor={(item, index) => index}
-                ListEmptyComponent={
-                    <Text style={{ fontSize: 24, alignSelf: "center", marginTop: 30 }}>
-                        No Notifications Found
-                    </Text>
-                }
-                renderItem={({ item, index }) => (
-                    <TouchableOpacity style={styles.flatListStyle}
-                        onPress={()=>{
-                            if(item.hasOwnProperty("booking"))
-                                navigation.navigate("FreightBooking", { screen: "BookingDetails", params: item.booking})
-                        }}
-                    >
-                        <View  style={{flex:1, flexDirection:"row",alignContent:"space-between", marginVertical:"1%", paddingVertical:"10%"}}>
-                            <View style={{flex:1}}>
-                                <Text style={{fontSize:20, fontWeight:"bold", color:"#005761"}}>{ item.title }</Text>
-                                <Text style={{color:"#005761"}}>{ item.body }</Text>
+            {loading ? (
+                <View style={[styles.flexView, { flexDirection: "column", justifyContent: "center" }]}>
+                    <ActivityIndicator size="large" />
+                </View>
+            ) : (
+                <FlatList
+                    data={data}
+                    refreshing={false}
+                    onRefresh={getNotificationData}
+                    keyExtractor={(item, index) => index}
+                    ListEmptyComponent={
+                        <Text style={{ fontSize: 24, alignSelf: "center", marginTop: 30 }}>
+                            No Notifications Found
+                        </Text>
+                    }
+                    renderItem={({ item, index }) => (
+                        <TouchableOpacity style={styles.flatListStyle}
+                            onPress={() => {
+                                if (item.hasOwnProperty("booking"))
+                                    navigation.navigate( "BookingDetails",  item.booking )
+                            }}
+                        >
+                            <View style={{ flex: 1, flexDirection: "row", alignContent: "space-between", marginVertical: "1%", paddingVertical: "10%" }}>
+                                <View style={{ flex: 1 }}>
+                                    <Text style={{ fontSize: 20, fontWeight: "bold", color: "#005761" }}>{item.title}</Text>
+                                    <Text style={{ color: "#005761" }}>{item.body}</Text>
+                                </View>
+                                <Text style={{ color: "#005761" }}>{moment(item.time).utc().format("MMM Do, h:mm a")}</Text>
                             </View>
-                            <Text style={{color:"#005761"}}>{ moment(item.time).utc().format("MMM Do, h:mm a") }</Text>
-                        </View>
-                    </TouchableOpacity>                    
-                )}
-            />
-        )}
-    </View>
-  )
+                        </TouchableOpacity>
+                    )}
+                />
+            )}
+        </View>
+    )
 }
 
 export default Notification
@@ -89,14 +114,13 @@ export default Notification
 const styles = StyleSheet.create({
     container: {
         padding: 20,
-        backgroundColor: "#E0EFF6", height: "100%"
+        backgroundColor: "#E0EFF6", flex: 1,
     },
-    flexView:{
-        flex:1,
-        flexDirection:"row",
-        paddingBottom: 15, paddingTop: 10,
-        justifyContent:"space-between",
-        marginVertical:"15%"
+    flexView: {
+        // flex: 1,
+        flexDirection: "row",
+        justifyContent: "space-between",
+        marginVertical: 25 
     },
     flatListStyle: {
         padding: 15,

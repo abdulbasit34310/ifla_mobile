@@ -199,7 +199,7 @@ export default function App() {
             <Drawer.Screen name="Payments" component={PaymentsStack} />
             <Drawer.Screen name="Feedback" component={Feedback} />
             <Drawer.Screen name="Complaint" component={Complaint} />
-            <Drawer.Screen name="Notification" component={Notification} />
+            <Drawer.Screen name="Notification" component={NotificationStack} />
           </Drawer.Navigator>
         ) : (
           <RegistrationNavigator />
@@ -207,6 +207,29 @@ export default function App() {
       </NavigationContainer>
     </AuthContext.Provider>
   );
+}
+
+function NotificationStack({ navigation, route }){
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerTintColor: "#005761",
+        headerTitleAlign: "center",
+        headerTitleStyle: { fontSize: 20 },
+        headerStyle: { backgroundColor: "white", padding: 0 },
+        headerShown: false,
+      }}
+    >
+      <Stack.Screen
+        name="NotificationScreen"
+        component={Notification}
+      />
+      <Stack.Screen
+        name="BookingDetails"
+        component={BookingDetails}
+      />
+    </Stack.Navigator>
+)
 }
 
 function FreightBookingStack({ navigation, route }) {

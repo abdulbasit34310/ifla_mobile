@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef, useMemo } from 'react';
-import { LogBox, Image, Platform, StyleSheet, Switch, Text, TextInput, ToastAndroid, TouchableOpacity, View } from 'react-native';
+import { Image, Platform, StyleSheet, Switch, Text, TextInput, ToastAndroid, TouchableOpacity, View } from 'react-native';
 import { AntDesign, Entypo, EvilIcons, Feather, FontAwesome, FontAwesome5, FontAwesome5Brands, Fontisto, Foundation, Ionicons, MaterialCommunityIcons, MaterialIcons, Octicons, SimpleLineIcons, Zocial } from '@expo/vector-icons';
 import { Card } from "react-native-paper";
 import * as SecureStore from "expo-secure-store";
@@ -14,8 +14,7 @@ import gaqIllustration from "../assets/gaq.png";
 import walletIllustration from "../assets/Wallet.png";
 import trackingIllustration from "../assets/Tracking.png";
 import { REST_API_LOCAL } from "@env";
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import IFLAlogo from "../assets/IFLA.png";
+
 
 const axios = require("axios");
 
@@ -126,7 +125,8 @@ const MainScreen = ({ route, navigation }) => {
     // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
     responseListener.current =
       Notifications.addNotificationResponseReceivedListener((response) => {
-        console.log(response.notification.request.content);
+        // console.log(response.notification.request.content);
+        navigation.navigate("Notification")
       });
 
     return () => {
@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#068E94",
-    marginTop:"2%",
+    marginTop:8,
   },
   topSection: {
     flex: 2,
