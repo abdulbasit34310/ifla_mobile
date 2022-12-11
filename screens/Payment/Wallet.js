@@ -77,7 +77,7 @@ export default function Wallet({ route, navigation }) {
                 </View>
 
                 <Text style={{ color: 'grey', width: 300, alignSelf: 'center', }}>
-                    Tap the Teal Card to view your Payment History
+                    Tap the Teal Card to view your Bookings Payment History
                 </Text>
 
                 <View style={{ backgroundColor: 'white', padding: 5, borderRadius: 14, alignSelf: 'center', margin: 10 }}>

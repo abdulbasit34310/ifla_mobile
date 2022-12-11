@@ -1,7 +1,7 @@
 import React from 'react'
 import { ActivityIndicator, StyleSheet, Text, View, FlatList, TouchableOpacity, Alert } from 'react-native'
 import { TouchableRipple } from "react-native-paper";
-import { Entypo } from '@expo/vector-icons';
+import { Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
 import axios from 'axios'
 import { StatusBar } from 'expo-status-bar';
 import { REST_API_LOCAL } from "@env"
@@ -47,13 +47,13 @@ const Notification = ({ navigation }) => {
         <View style={styles.container}>
             <StatusBar style="dark" />
             <View style={styles.flexView}>
-                <TouchableRipple style={{ width: 5, borderRadius: 14, padding: 25, elevation: 5, backgroundColor: 'white',alignItems: 'center', justifyContent: 'center' }} onPress={() => {
+                <TouchableRipple style={{ width: 50, borderRadius: 14, padding: 5, elevation: 5, backgroundColor: 'white',alignItems: 'center', justifyContent: 'center' }} onPress={() => {
                     navigation.goBack();
                 }}>
                     <Entypo name='chevron-small-left' size={34} />
                 </TouchableRipple>
 
-                <TouchableRipple style={{ borderRadius: 14, paddingHorizontal: 20, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', }} onPress={() => {
+                <TouchableRipple style={{ borderRadius: 14, paddingHorizontal: 15, elevation: 5, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', }} onPress={() => {
                     Alert.alert("Clear Notifications", "Are you sure?", [
                         {
                           text: "Cancel",
@@ -68,7 +68,14 @@ const Notification = ({ navigation }) => {
                         },
                       ]);
                      }}>
-                    <Text>Clear</Text>
+                    <View style={{flexDirection:"row", }}>
+                        <MaterialCommunityIcons
+                            name="delete-sweep"
+                            size={22}
+                            color={"#C00001"}
+                        />
+                        <Text style={{marginLeft:3, fontSize:16}} >Clear</Text>
+                    </View>
                 </TouchableRipple>
                 
             </View>
@@ -113,7 +120,7 @@ export default Notification
 
 const styles = StyleSheet.create({
     container: {
-        padding: 20,
+        padding: 10,
         backgroundColor: "#E0EFF6", flex: 1,
     },
     flexView: {

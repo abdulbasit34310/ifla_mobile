@@ -25,10 +25,10 @@ const PaymentHistory = ({navigation}) => {
   }
 
   useEffect(()=>{
-    navigation.addListener("focus", () => {
+    // navigation.addListener("focus", () => {
       getData();
-    });
-  },[navigation])
+    // });
+  },[])
 
   return (
       <View style={styles.container}>
@@ -53,13 +53,13 @@ const PaymentHistory = ({navigation}) => {
             </Text>
           }
           renderItem={({ item, index }) => (
-            // <TouchableOpacity
-            //   style={styles.flatListStyle}
-            //   onPress={() => {
-            //     navigation.push("QuoteDetails", { item: item });
-            //   }}
-            // >
-              <View style={styles.flatListStyle}>
+            <TouchableOpacity
+              style={styles.flatListStyle}
+              onPress={() => {
+                navigation.push("PaymentReceipt", { item: item });
+              }}
+            >
+              <View>
                 <View
                   style={{
                     flexDirection: "row",
@@ -79,8 +79,30 @@ const PaymentHistory = ({navigation}) => {
                     Price
                   </Text>
                   <Text style={styles.paymentStyle}>
-                    PKR {item.amount}
+                    PKR {item.payment.amount}
                   </Text>
+                </View>
+
+
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    paddingTop: 10,
+                  }}
+                >
+                  <View>
+                    <Text style={styles.heading}>Source</Text>
+                    <Text style={styles.cityNameStyle}>
+                    {item.pickupAddress.city}
+                    </Text>
+                  </View>
+                  <View>
+                    <Text style={styles.heading}>Desitination</Text>
+                    <Text style={styles.cityNameStyle}>
+                    {item.dropoffAddress.city}
+                    </Text>
+                  </View>
                 </View>
 
                 <View
@@ -93,18 +115,19 @@ const PaymentHistory = ({navigation}) => {
                   <View>
                     <Text style={styles.heading}>Status</Text>
                     <Text style={styles.cityNameStyle}>
-                      {item.status}
+                      {item.payment.status}
                     </Text>
                   </View>
                   <View>
                     <Text style={styles.heading}>Date</Text>
                     <Text style={styles.cityNameStyle}>
-                      {moment(item.dateTime).utc().format("MMM Do, h:mm a")}
+                      {moment(item.payment.dateTime).utc().format("MMM D 'YY")}
                     </Text>
                   </View>
                 </View>
+
               </View>
-            // </TouchableOpacity>
+            </TouchableOpacity>
           )}
         />
       )}

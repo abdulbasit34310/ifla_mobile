@@ -154,6 +154,46 @@ export default function QuoteDetails({ navigation, route }) {
 
         <TouchableOpacity
           onPress={() => {
+            Alert.alert("Create Booking", "Are you sure?", [
+              {
+                text: "Cancel",
+                onPress: () => console.log("Cancel Pressed"),
+                style: "cancel",
+              },
+              {
+                text: "Confirm",
+                onPress: () => {
+                  navigation.navigate("FreightBooking",  {screen: "ScheduleBooking", params:{ item: quoteData }});
+                  // navigation.goBack();
+                },
+              },
+            ]);
+          }}
+          style={{
+            marginTop: 5,
+            padding: 10,
+            paddingVertical:15,
+            marginBottom: 20,
+            backgroundColor: "#068E94",
+            width: 290,
+            alignSelf: "center",
+            borderRadius: 12,
+          }}
+        >
+          <Text
+            style={{
+              alignSelf: "center",
+              color: "white",
+              fontWeight: "bold",
+              fontSize: 18,
+            }}
+          >
+            Create Booking
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => {
             Alert.alert("Delete Quote Record", "Are you sure?", [
               {
                 text: "Cancel",
@@ -170,13 +210,14 @@ export default function QuoteDetails({ navigation, route }) {
             ]);
           }}
           style={{
-            marginTop: 20,
+            marginTop: 10,
             padding: 10,
+            paddingVertical:15,
             marginBottom: 20,
-            backgroundColor: "#068E94",
-            width: 200,
+            backgroundColor: "#ef4436",
+            width: 290,
             alignSelf: "center",
-            borderRadius: 5,
+            borderRadius: 12,
           }}
         >
           <Text
@@ -191,44 +232,6 @@ export default function QuoteDetails({ navigation, route }) {
           </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={() => {
-            Alert.alert("Create Booking", "Are you sure?", [
-              {
-                text: "Cancel",
-                onPress: () => console.log("Cancel Pressed"),
-                style: "cancel",
-              },
-              {
-                text: "Confirm",
-                onPress: () => {
-                  navigation.navigate("ScheduleBooking", { item: quoteData });
-                  // navigation.goBack();
-                },
-              },
-            ]);
-          }}
-          style={{
-            marginTop: 20,
-            padding: 10,
-            marginBottom: 20,
-            backgroundColor: "#068E94",
-            width: 200,
-            alignSelf: "center",
-            borderRadius: 5,
-          }}
-        >
-          <Text
-            style={{
-              alignSelf: "center",
-              color: "white",
-              fontWeight: "bold",
-              fontSize: 18,
-            }}
-          >
-            Create Booking
-          </Text>
-        </TouchableOpacity>
       </View>
     </ScrollView>
   );

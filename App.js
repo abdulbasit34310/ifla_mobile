@@ -4,6 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as SecureStore from "expo-secure-store";
+import { StatusBar } from 'expo-status-bar';
 
 import RegistrationNavigator from "./navigation/RegistrationNavigator";
 import TopTabNavigator from "./navigation/TopTabNavigator";
@@ -45,6 +46,7 @@ import PayByWallet from "./screens/Payment/PayByWallet";
 
 import Notification from "./screens/Notification";
 import PaymentHistory from "./screens/Payment/PaymentHistory";
+import PayReceipt from "./screens/Payment/PayReceipt";
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -177,6 +179,7 @@ export default function App() {
   }
   return (
     <AuthContext.Provider value={authContext}>
+      <StatusBar hidden={true} />
       <NavigationContainer>
         {loginState.userToken !== null ? (
           <Drawer.Navigator
@@ -407,6 +410,11 @@ function PaymentsStack({ navigation, route }) {
         name="PaymentHistory"
         component={PaymentHistory}
         options={{ title: "Payment History", headerShown: false }}
+      />
+      <Stack.Screen
+        name="PaymentReceipt"
+        component={PayReceipt}
+        options={{ title: "Payment Receipt", headerShown: false }}
       />
     </Stack.Navigator>
   );

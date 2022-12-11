@@ -110,20 +110,6 @@ export function CustomDrawer(props) {
                 props.navigation.navigate("Complaint");
               }}
             />
-
-            <DrawerItem
-              icon={({ color, size }) => (
-                <Ionicons name='ios-moon'
-                  color={color}
-                  size={size}
-                />
-              )}
-              label="Dark Mode"
-              onPress={() => {
-                // props.navigation.navigate("Complaint");
-              }}
-            />
-
           </Drawer.Section>
         </View>
       </DrawerContentScrollView>

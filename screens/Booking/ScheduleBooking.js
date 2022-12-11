@@ -26,7 +26,7 @@ export default function ScheduleBooking({ route, navigation }) {
   const [date, setDate] = React.useState(new Date());
 
   var quote = "";
-  if (route.params) {
+  if (route.params && route.params.item) {
     quote = {
       type: route.params.item.shipmentDetails.type,
       step1: step,
