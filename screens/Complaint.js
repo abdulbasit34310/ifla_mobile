@@ -1,10 +1,37 @@
 import React, { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import { Card, Divider, TouchableRipple } from "react-native-paper";
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Animated, ActivityIndicator, Alert, Button, Dimensions, FlatList, Image, KeyboardAvoidingView, StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, ToastAndroid, Platform } from 'react-native';
 import { AntDesign, Entypo, EvilIcons, Feather, FontAwesome, FontAwesome5, FontAwesome5Brands, Fontisto, Foundation, Ionicons, MaterialCommunityIcons, MaterialIcons, Octicons, SimpleLineIcons, Zocial } from '@expo/vector-icons';
+import * as SecureStore from "expo-secure-store";
+import axios from 'axios';
+import { REST_API_LOCAL } from "@env";
 
-function Complaint({ navigation }) {
+function Complaint({ route,navigation }) {
+    const id = route.params
+    const [complain,setComplain] = useState("")
+
+    const sendComplaint = async ()=>{
+        let result = await SecureStore.getItemAsync("userToken")
+        var response = await axios.patch(
+            `${REST_API_LOCAL}/customerMobile/saveComplain`,
+            { complain:complain, shipperId:id }, {
+            withCredentials: true,
+            headers: { Authorization: `Bearer ${result}` },
+          }
+          );
+        console.log(response.data)
+        
+        if (Platform.OS == 'android') {
+            ToastAndroid.showWithGravity(
+                "Rating and Feedback Given",
+                ToastAndroid.SHORT,
+                ToastAndroid.CENTER
+            );
+        }
+        navigation.goBack()
+    }
+
     return (
         <View style={styles.container}>
 
@@ -26,11 +53,12 @@ function Complaint({ navigation }) {
                     style={styles.ti}
                     placeholder="Write your Complaint..."
                     placeholderTextColor="#666666"
+                    onChangeText={(text) => setComplain(text)}
                 >
                 </TextInput>
 
                 <View>
-                    <TouchableOpacity style={styles.to}>
+                    <TouchableOpacity style={styles.to} onPress={sendComplaint}>
                         <Text style={styles.buttonText}>Submit</Text>
                     </TouchableOpacity>
                 </View>

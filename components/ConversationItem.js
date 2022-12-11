@@ -39,7 +39,6 @@ const ConversationItem = ({ picture, username, lastMessage, time, isBlocked, isM
 			<TouchableOpacity style={styles.conversation}
 				onPress={() => navigation.navigate('MessagesScreen', {
 					username: username,
-
 					picture: picture,
 					isBlocked: isBlocked,
 					isMuted: isMuted

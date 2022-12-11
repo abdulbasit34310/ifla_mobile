@@ -7,6 +7,7 @@ import {
   Image,
   TouchableOpacity,
   ToastAndroid,
+  ScrollView
 } from "react-native";
 import Constants from "expo-constants";
 import { Avatar, Title } from "react-native-paper";
@@ -177,6 +178,7 @@ const CompanyInformationScreen = ({ navigation, route }) => {
   };
 
   return (
+    <ScrollView>
     <View style={styles.container}>
       <View
         style={{
@@ -272,6 +274,7 @@ const CompanyInformationScreen = ({ navigation, route }) => {
         <Text style={{ fontSize: 18, color: "white" }}>Update</Text>
       </TouchableOpacity>
     </View>
+    </ScrollView>
   );
 };
 

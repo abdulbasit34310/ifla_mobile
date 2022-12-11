@@ -11,7 +11,6 @@ import { REST_API_LOCAL } from "@env";
 
 import RadioButton from './RadioButton';
 
-
 function Ratings({ route, navigation }) {
 
     const id = route.params;

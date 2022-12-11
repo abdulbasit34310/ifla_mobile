@@ -3,9 +3,9 @@ import { Text, View, TouchableOpacity, TextInput, StyleSheet } from 'react-nativ
 import { TouchableRipple } from "react-native-paper";
 import { Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
 
-const LoadMoneyToWallet = ({ navigation }) => {
+const LoadMoneyToWallet = ({ route, navigation }) => {
 
-  const [getNo, setNo] = React.useState("150");
+  const [getNo, setNo] = React.useState( !route.params ? "150":route.params.amount);
 
   return (
     <View style={styles.container}>

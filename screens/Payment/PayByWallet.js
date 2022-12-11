@@ -18,7 +18,6 @@ export default function PayByWallet({navigation, route}){
           `${REST_API_LOCAL}/payments/payByWallet`, body,
           { withCredentials: true, headers: headers }
         );
-        console.log(response.data)
         isDisabled(false)
         // navigation.navigate("BookingScreen")
     }
@@ -32,16 +31,19 @@ export default function PayByWallet({navigation, route}){
             {
                 isPayable ? (
                     <View>
-                        <Text style={[styles.textStyle, {alignSelf:"center"}]}>Paid for Booking</Text>
+                        <Text style={[styles.textStyle, {alignSelf:"center"}]}>Paid for {bookingId ? "Booking":"Insurance"}</Text>
                         <View style={{flexDirection:"row", width:150, height:150, marginVertical:30, padding:30,borderRadius:100, backgroundColor:"#35BE25",alignItems:"center", alignSelf:"center", justifyContent:"center"}}>
                             <MaterialIcons name="check" size={70} color="#fff"/>
                         </View>
                         <View style={{marginVertical:30}}>
                             <Text style={[styles.textStyle, {alignSelf:"center"}]}>Paid PKR {amount}</Text>
-                            <TouchableOpacity disabled={disable} onPress={()=>navigation.navigate("BookingScreen")} style={styles.button}>
+                            <TouchableOpacity disabled={disable} onPress={()=>{ 
+                                bookingId ? navigation.navigate("BookingScreen"):navigation.navigate("Insurance")
+                                
+                                }} style={styles.button}>
                                 <MaterialIcons name="arrow-back-ios" size={20} color="#fff"/>
                                 <Text style={styles.buttonText}>
-                                    Bookings
+                                    {bookingId ? "Bookings":"Insurance"}
                                 </Text>
                             </TouchableOpacity>
                         </View>

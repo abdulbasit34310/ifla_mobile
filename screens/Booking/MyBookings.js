@@ -26,7 +26,7 @@ export default function MyBookings({ route, navigation }) {
     const data = resp.data.bookings;
     // console.log(data);
     let x = data.filter((a) => {
-      if (a.status == 'Assigned') {
+      if (a.status == 'Assigned' || a.status == "In Transit") {
         return a;
       }
     })

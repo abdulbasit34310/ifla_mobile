@@ -12,15 +12,17 @@ import {
   MaterialCommunityIcons,
   FontAwesome,
   EvilIcons,
+  Entypo,
   Octicons,
   Feather,
 } from "react-native-vector-icons";
 import { useState } from "react";
+import { TouchableRipple } from "react-native-paper";
 import AddAddress from "../../components/Profile/AddAddress";
 
 const Addresses = ({ navigation, route }) => {
   const addresses = route.params.item.addresses;
-  console.log(addresses);
+  
   const [isVisible, setVisible] = useState(false);
   return (
     <View style={styles.container}>
@@ -38,8 +40,15 @@ const Addresses = ({ navigation, route }) => {
           isCompany={false}
         />
       </Modal>
-      <View style={{ alignItems: "flex-end" }}>
+      <View style={{ flexDirection:"row", justifyContent:"space-between" }}>
+        <TouchableRipple style={{ width: '12%', borderRadius: 14, padding: 7, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', }} onPress={() => {
+          navigation.goBack();
+        }}>
+          <Entypo name='chevron-small-left' size={34} />
+        </TouchableRipple>
+
         <TouchableOpacity
+          style={{ marginTop:10}}
           onPress={() => {
             setVisible(true);
           }}
@@ -50,7 +59,7 @@ const Addresses = ({ navigation, route }) => {
 
       <View style={{ marginTop: 10 }}>
         {addresses.map((address, index) => (
-          <View style={styles.addressContainer} id={index}>
+          <View style={styles.addressContainer} id={index} key={index}>
             <View>
               {/* <TouchableOpacity
                 style={{
