@@ -39,7 +39,7 @@
           "icon": "./assets/IFLA_icon_notifs.png",
           "color": "#333333"
         }
-      ]
+      ] 
     ],
     "extra": {
       "eas": {

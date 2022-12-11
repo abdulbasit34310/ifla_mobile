@@ -10,8 +10,7 @@ import * as SecureStore from "expo-secure-store";
 import Avatar from "../../assets/Avatar.png";
 import { AuthContext } from "../../components/context";
 
-// import { REST_API_LOCAL } from "@env";
-const REST_API_LOCAL = "http://192.168.0.113:4000";
+import { REST_API_LOCAL } from "@env";
 
 const Theme = {
   Buttons: "#068E94",
@@ -146,10 +145,8 @@ const ProfileScreen = ({ route, navigation }) => {
               </View>
               <Text style={styles.buttonTitle}>Wallet</Text>
             </View>
-            <Text style={styles.buttonTitle}>Wallet</Text>
-          </View>
-          <FontAwesome name="chevron-right" size={25} color="lightgrey" />
-        </TouchableOpacity>
+            <FontAwesome name="chevron-right" size={25} color="lightgrey" />
+          </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.infoBox}

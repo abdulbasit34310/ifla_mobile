@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef, useMemo } from 'react';
-import { LogBox, Image, Platform, StyleSheet, Switch, Text, TextInput, ToastAndroid, TouchableOpacity, View } from 'react-native';
+import { LogBox, Image, Platform, Button, StyleSheet, Switch, Text, TextInput, ToastAndroid, TouchableOpacity, View } from 'react-native';
 import { AntDesign, Entypo, EvilIcons, Feather, FontAwesome, FontAwesome5, FontAwesome5Brands, Fontisto, Foundation, Ionicons, MaterialCommunityIcons, MaterialIcons, Octicons, SimpleLineIcons, Zocial } from '@expo/vector-icons';
 import { Card } from "react-native-paper";
 import * as SecureStore from "expo-secure-store";
@@ -14,8 +14,9 @@ import gaqIllustration from "../assets/gaq.png";
 import walletIllustration from "../assets/Wallet.png";
 import trackingIllustration from "../assets/Tracking.png";
 // import { REST_API_LOCAL } from "@env";
+const REST_API_LOCAL = "http://192.168.0.100:4000";
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
-const REST_API_LOCAL = "http://192.168.0.113:4000";
 import IFLAlogo from "../assets/IFLA.png";
 
 const axios = require("axios");
@@ -101,17 +102,8 @@ const MainScreen = ({ route, navigation }) => {
     // console.log("user stored?")
   };
 
-  // const getStoredUser = async ()=>{
-  //   const user = await AsyncStorage.getItem("user");
-  //   console.log(JSON.parse(user))
-  //   !user ? null : setUser(JSON.parse(user))
-  // }
-
   React.useEffect(() => {
-    // navigation.addListener("focus", () => {
-      getSignedInUserCredentials();
-      // getStoredUser()
-    // });
+    getSignedInUserCredentials();  
   }, []);
 
   useEffect(() => {
@@ -155,7 +147,7 @@ const MainScreen = ({ route, navigation }) => {
           <Text style={{ color: "#E0EFF6", fontSize: 18, fontWeight: "bold" }}>
             Welcome {shipperName}
           </Text>
-          <TouchableOpacity onPress={()=>{navigation.navigate("Notification")}}>
+          <TouchableOpacity onPress={() => { navigation.navigate("Notification") }}>
             <MaterialCommunityIcons
               name="bell-outline"
               color={"#E0EFF6"}
@@ -163,6 +155,12 @@ const MainScreen = ({ route, navigation }) => {
             />
           </TouchableOpacity>
         </View>
+
+        <Animatable.Image
+          animation="lightSpeedIn"
+          style={styles.IFLAlogo}
+          source={IFLAlogo}
+        />
       </View>
 
       <Animatable.View style={styles.bottomSection}
@@ -172,7 +170,7 @@ const MainScreen = ({ route, navigation }) => {
           <TouchableOpacity
             style={styles.card}
             onPress={() => {
-              navigation.navigate("FreightBooking", { screen: "BookingScreen", shipperData:shipperData });
+              navigation.navigate("FreightBooking", { screen: "BookingScreen", params: { user: user } });
             }}
           >
             <View>
@@ -210,7 +208,7 @@ const MainScreen = ({ route, navigation }) => {
           <TouchableOpacity
             style={styles.card}
             onPress={() => {
-              navigation.navigate("Payments", { screen:"Wallet", params:{user:user}});
+              navigation.navigate("Payments", { screen: "Wallet", params: { user: user } });
             }}
           >
             <Text>Payments and Wallet</Text>
@@ -227,7 +225,7 @@ const MainScreen = ({ route, navigation }) => {
           <TouchableOpacity
             style={styles.card}
             onPress={() => {
-              navigation.navigate("Profile");
+              navigation.navigate("ProfileStack", { screen: "ProfileScreen", params: { user: user } });
             }}
           >
             <Text>Profile</Text>
@@ -252,7 +250,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#068E94",
-    marginTop:"2%",
   },
   topSection: {
     flex: 2,
@@ -272,6 +269,11 @@ const styles = StyleSheet.create({
   cardRow: {
     flexDirection: "row",
     justifyContent: "space-between",
+  },
+  IFLAlogo: {
+    alignSelf: "center",
+    width: 200,
+    height: 175,
   },
   card: {
     elevation: 5,

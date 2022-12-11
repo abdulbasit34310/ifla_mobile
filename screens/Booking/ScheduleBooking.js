@@ -1,15 +1,15 @@
 import * as React from "react";
-import { StyleSheet,ActivityIndicator,ToastAndroid } from "react-native";
+import { StyleSheet, ActivityIndicator, ToastAndroid } from "react-native";
+
+import axios from "axios";
+import { REST_API_LOCAL } from "@env";
+import * as SecureStore from "expo-secure-store";
 
 import GoodsDetails from "../../components/ScheduleBooking/GoodDetails";
 import ShipmentDetails from "../../components/ScheduleBooking/ShipmentDetails";
 import ScheduleDetails from "../../components/ScheduleBooking/ScheduleDetails";
 import PreviewBooking from "../../components/ScheduleBooking/PreviewBooking";
 
-import axios from "axios";
-// import { REST_API_LOCAL } from "@env";
-import * as SecureStore from "expo-secure-store";
-const REST_API_LOCAL = "http://192.168.0.113:4000";
 
 const Success = ({
   navigation,
@@ -18,16 +18,18 @@ const Success = ({
   setBooking,
   bookingData,
 }) => {
-  return <div>Booking Done Successfully</div>;
+  return <div> Booking Done Successfully</div>;
 };
 
 export default function ScheduleBooking({ route, navigation }) {
+  console.log(route.params.shipperInsurance);
+
   const [step, setStep] = React.useState(0);
   const [loading, setLoading] = React.useState(false);
   const [date, setDate] = React.useState(new Date());
 
   var quote = "";
-  if (route.params) {
+  if (route.params.item) {
     quote = {
       type: route.params.item.shipmentDetails.type,
       step1: step,
@@ -42,6 +44,7 @@ export default function ScheduleBooking({ route, navigation }) {
       length: "",
       width: "",
       storage: "",
+      isInsured: false,
       date: date.toDateString(),
       time: date.toTimeString(),
       status: "Pending",
@@ -65,6 +68,7 @@ export default function ScheduleBooking({ route, navigation }) {
       length: "",
       width: "",
       storage: "",
+      isInsured: false,
       date: date.toDateString(),
       time: date.toTimeString(),
       status: "Pending",
@@ -85,6 +89,7 @@ export default function ScheduleBooking({ route, navigation }) {
       description: "",
       weight: "",
       offer: "",
+      isInsured: false,
       date: date.toDateString(),
       time: date.toTimeString(),
       status: "Pending",
@@ -140,6 +145,7 @@ export default function ScheduleBooking({ route, navigation }) {
               nextStep={nextStep}
               bookingData={bookingData}
               setBooking={setBooking}
+              shipperInsurance={shipperInsurance}
             />
           )}
         </>

@@ -19,7 +19,7 @@ import {
 } from "@env";
 WebBrowser.maybeCompleteAuthSession();
 // import { REST_API_LOCAL } from "@env";
-const REST_API_LOCAL="http://192.168.0.113:4000"
+const REST_API_LOCAL="http://192.168.0.100:4000"
 
 
 const Login = ({ route, navigation }) => {

@@ -7,7 +7,7 @@ import { AuthContext } from "../components/context";
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 
-const REST_API_LOCAL = "http://192.168.0.113:4000";
+const REST_API_LOCAL = "http://192.168.0.100:4000";
 
 
 export function CustomDrawer(props) {
@@ -114,14 +114,14 @@ export function CustomDrawer(props) {
 
             <DrawerItem
               icon={({ color, size }) => (
-                <Ionicons name='ios-moon'
+                <Ionicons name='md-chatbox-ellipses-sharp'
                   color={color}
                   size={size}
                 />
               )}
-              label="Dark Mode"
+              label="Chat"
               onPress={() => {
-                // props.navigation.navigate("Complaint");
+                props.navigation.navigate("MessagesScreen");
               }}
             />
 

@@ -11,7 +11,7 @@ import axios from "axios";
 
 import RadioButton from './RadioButton';
 
-const REST_API_LOCAL = "http://192.168.0.113:4000";
+const REST_API_LOCAL = "http://192.168.0.100:4000";
 
 function Ratings({ route, navigation }) {
 

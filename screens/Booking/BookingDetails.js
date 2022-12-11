@@ -9,7 +9,7 @@ import moment from "moment";
 import axios from "axios";
 // import { REST_API_LOCAL } from "@env";
 
-const REST_API_LOCAL = "http://192.168.0.113:4000";
+const REST_API_LOCAL = "http://192.168.0.100:4000";
 
 export default function BookingDetails({ navigation, route }) {
 

@@ -6,7 +6,7 @@ import * as SecureStore from "expo-secure-store";
 import axios from "axios";
 import { StatusBar } from 'expo-status-bar';
 
-const REST_API_LOCAL = "http://192.168.0.113:4000";
+const REST_API_LOCAL = "http://192.168.0.100:4000";
 
 const Insurance = ({ navigation, route }) => {
 
