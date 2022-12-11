@@ -352,6 +352,7 @@ function ProfileStack({ navigation, route }) {
       <Stack.Screen
         name="CompanyInformationScreen"
         component={CompanyInformationScreen}
+        options={{ title: "Company Information" }}
       />
       <Stack.Screen
         name="Addresses"

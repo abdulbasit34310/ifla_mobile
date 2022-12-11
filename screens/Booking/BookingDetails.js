@@ -17,6 +17,7 @@ import {
   Text,
   View,
   TouchableOpacity,
+  ToastAndroid,
   TextInput,
   ScrollView,
 } from "react-native";
@@ -149,7 +150,7 @@ export default function BookingDetails({ navigation, route }) {
     console.log("Body: " + body);
 
     let response1 = await axios.patch(
-      `${REST_API_LOCAL}/customerMobile/saveReviewAndFeedback`,
+      `${REST_API_LOCAL}/booking/saveReviewAndFeedback`,
       body,
       { withCredentials: true, headers: headers }
     );
@@ -363,7 +364,7 @@ export default function BookingDetails({ navigation, route }) {
           }}
         >
           <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <MaterialIcons name="payments" size={18} color={"white"} />
+            <MaterialCommunityIcons name="file-document" size={18} color={"white"} />
             <Text
               style={[
                 styles.buttonText,
@@ -419,6 +420,8 @@ export default function BookingDetails({ navigation, route }) {
             onPress={() => {
               navigation.navigate("Payments", { screen:"PaymentMethod", params:{
                 payId: receivedData.payment._id,
+                amount: receivedData.payment.amount,
+                bookingId: receivedData._id
               } });
             }}
           >
@@ -438,7 +441,7 @@ export default function BookingDetails({ navigation, route }) {
           </TouchableOpacity>
         ) : null}
 
-        {receivedData.status == "Assigned" ? (
+        {receivedData.status == "Assigned" || receivedData.status == "In Transit" ? (
           <TouchableOpacity
             style={[styles.customButton, { backgroundColor: "#068E94" }]}
             onPress={() => {fetchDriverLocation(); }}
@@ -475,14 +478,15 @@ export default function BookingDetails({ navigation, route }) {
               <CustomRatingBar />
             </View>
 
-            <TextInput
-              style={styles.ti}
-              placeholder="Tell us on how can we improve..."
-              placeholderTextColor="#666666"
-              onChangeText={(text) => setFeedback(text)}
-            ></TextInput>
+            <View style={{marginVertical:20, height:150}}>
+              <TextInput
+                style={styles.ti}
+                placeholder="Tell us on how can we improve..."
+                placeholderTextColor="#666666"
+                onChangeText={(text) => setFeedback(text)}
+              ></TextInput>
+            </View>
 
-            <View>
               <TouchableOpacity
                 style={[styles.customButton, { backgroundColor: "#068E94" }]}
                 onPress={saveRatingAndFeedback}
@@ -498,7 +502,6 @@ export default function BookingDetails({ navigation, route }) {
                   Submit
                 </Text>
               </TouchableOpacity>
-            </View>
           </View>
         ) : null}
       </View>
@@ -600,7 +603,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#AAAAAA",
     borderRadius: 5,
-    height: "30%",
+    height: "100%",
     padding: 10,
   },
 });

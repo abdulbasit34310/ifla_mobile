@@ -18,6 +18,7 @@ import {
   ToastAndroid,
   FlatList,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 import {
   AntDesign,
@@ -318,8 +319,16 @@ function Industry({ nextStep, data, setData, postData }) {
 }
 
 const Success = ({ navigation, nextStep, backStep, setData, data }) => {
+  const redirect = ()=> navigation.navigate("Login")
   return (
-    <View><Text> Nice</Text></View>
+    <View>
+      <ActivityIndicator/>
+      <TouchableOpacity 
+        style={styles.customButton}
+        onPress={redirect()}>
+        <Text> Redirect to login</Text>
+      </TouchableOpacity>
+    </View>
   )
 };
 

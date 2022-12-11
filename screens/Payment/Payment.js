@@ -104,6 +104,22 @@ const Payment = ({ route, navigation }) => {
   return (
     <StripeProvider publishableKey={publishableKey}>
       <View style={styles.container}>
+      <TouchableRipple
+        style={{
+          width: "12%",
+          borderRadius: 14,
+          padding: 7,
+          backgroundColor: "white",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+        onPress={() => {
+          navigation.goBack();
+        }}
+      >
+        <Entypo name="chevron-small-left" size={34} />
+      </TouchableRipple>
+      <View style={{marginTop:80}} ></View>
         <View style={styles.action}>
           <TextInput
             autoCapitalize="none"
@@ -172,9 +188,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#E0EFF6',
-    justifyContent: "center",
+    // justifyContent: "center",
     paddingHorizontal: 20,
     paddingBottom: 50,
+    paddingTop: 20
   },
   action: {
     flexDirection: "row",

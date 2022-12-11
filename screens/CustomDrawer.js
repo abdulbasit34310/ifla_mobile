@@ -107,7 +107,7 @@ export function CustomDrawer(props) {
               )}
               label="Complaint"
               onPress={() => {
-                props.navigation.navigate("Complaint");
+                props.navigation.navigate("Complaint", user.personId._id);
               }}
             />
           </Drawer.Section>

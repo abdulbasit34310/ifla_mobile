@@ -12,9 +12,7 @@ import { captureScreen } from "react-native-view-shot";
 import { DataTable, TouchableRipple } from "react-native-paper";
 import { AntDesign, Entypo, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import ZigzagView from "react-native-zigzag-view";
-
 import moment from "moment";
-import QRCode from "react-native-qrcode-svg";
 
 const PayReceipt = ({route, navigation}) => {
   const [date,setDate] = React.useState(Date.now())
@@ -181,7 +179,7 @@ const PayReceipt = ({route, navigation}) => {
         <DataTable.Row>
           <DataTable.Cell>Paid on</DataTable.Cell>
           <DataTable.Cell>
-          {moment(receivedData.payment.dateTime).utc().format("MMMM Do YYYY, h:mm a")}
+          {moment(receivedData.payment.dateTime).utc().format("MMMM Do 'YY,h:mm a")}
           </DataTable.Cell>
         </DataTable.Row>
 

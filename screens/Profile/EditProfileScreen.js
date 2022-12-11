@@ -26,8 +26,6 @@ LogBox.ignoreAllLogs()
 
 const EditProfileScreen = ({ navigation, route }) => {
   var item = route.params.item;
-  console.log(item);
-
   const [hasGalleyPermission, setHasGalleryPermission] = React.useState(null);
   const [image, setImage] = React.useState(undefined);
 
@@ -208,14 +206,11 @@ const EditProfileScreen = ({ navigation, route }) => {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1,
+      quality: 0.25,
     });
 
     if (!result.canceled) {
       setImage(result.assets[0].uri);
-      // var data = fs.readFileSync(result.uri);
-      // const base64String = Buffer.from(data).toString("base64");
-      // setImage64(base64String);
     }
   };
 

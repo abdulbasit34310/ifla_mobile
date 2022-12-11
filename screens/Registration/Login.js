@@ -293,7 +293,7 @@ const Login = ({ route, navigation }) => {
           <Text style={styles.errorMessage}>Password must be of length 6</Text>
         )}
 
-        <TouchableOpacity onPress={() => navigation.navigate("ForgotPassword")}>
+        {/* <TouchableOpacity onPress={() => navigation.navigate("ForgotPassword")}>
           <Text
             style={{
               color: "#009387",
@@ -305,7 +305,7 @@ const Login = ({ route, navigation }) => {
           >
             Forgot password?
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         <View>
           <TouchableOpacity
