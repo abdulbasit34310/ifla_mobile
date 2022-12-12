@@ -4,7 +4,9 @@ import Animated, { useSharedValue, withSpring, withTiming, useAnimatedStyle, } f
 import { AntDesign, Entypo, EvilIcons, Feather, FontAwesome, FontAwesome5, FontAwesome5Brands, Fontisto, Foundation, Ionicons, MaterialCommunityIcons, MaterialIcons, Octicons, SimpleLineIcons, Zocial } from '@expo/vector-icons';
 import * as SecureStore from "expo-secure-store";
 import axios from 'axios'
-const REST_API_LOCAL = "http://192.168.0.100:4000";
+import { REST_API_LOCAL } from "@env";
+
+// const REST_API_LOCAL = "http://192.168.0.117:4000";
 
 const ChatInput = ({ msg, setMsg, chatMessages, setChatMessages, chatId, personId }) => {
 

@@ -3,8 +3,9 @@ import { ScrollView } from "react-native";
 import * as SecureStore from "expo-secure-store";
 import axios from 'axios';
 import moment from "moment";
+import { REST_API_LOCAL } from "@env";
 
-const REST_API_LOCAL = "http://192.168.0.100:4000";
+// const REST_API_LOCAL = "http://192.168.0.117:4000";
 
 import Message from "./Message";
 
