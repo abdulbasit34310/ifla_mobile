@@ -67,7 +67,7 @@ export default function ViewQuotes({ navigation, route }) {
             <TouchableOpacity
               style={styles.flatListStyle}
               onPress={() => {
-                navigation.push("QuoteDetails", { item: item });
+                navigation.push("QuoteDetails", { item: item, insurance: route.params.insurance });
               }}
             >
               <View>

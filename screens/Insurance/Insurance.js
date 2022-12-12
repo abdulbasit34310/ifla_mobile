@@ -3,17 +3,18 @@ import { ActivityIndicator, Alert, Button, Dimensions, FlatList, ImageBackground
 import { AntDesign, Entypo, EvilIcons, Feather, FontAwesome, FontAwesome5, FontAwesome5Brands, Fontisto, Foundation, Ionicons, MaterialCommunityIcons, MaterialIcons, Octicons, SimpleLineIcons, Zocial } from '@expo/vector-icons';
 import { TouchableRipple } from "react-native-paper";
 import * as SecureStore from "expo-secure-store";
-import axios from "axios";
-import {REST_API_LOCAL} from '@env'
 import { StatusBar } from 'expo-status-bar';
+import axios from "axios";
+
+import {REST_API_LOCAL} from '@env'
 
 const Insurance = ({ navigation, route }) => {
 
-    var isInsurance = false;
     var item = route.params.item
-
+    if (item.insurance) {
+        var isInsurance = true;
+    }
     const [subscribed, setSubscribed] = React.useState();
-
     const addInsurance = async (x, y) => {
 
         const body =
@@ -33,12 +34,12 @@ const Insurance = ({ navigation, route }) => {
 
         if (Platform.OS == 'android') {
             ToastAndroid.showWithGravity(
-                "Insurance Added",
+                "Insurance Subscribed",
                 ToastAndroid.SHORT,
                 ToastAndroid.CENTER
             );
         }
-        navigation.navigate("Payments", { screen:"PaymentMethod", params:{ isInsurance:true, amount: parseInt(y) } });
+        navigation.navigate("Payments", { screen: "PaymentMethod", params: { isInsurance: true, amount: parseInt(y) } });
     }
 
     return (
@@ -54,11 +55,11 @@ const Insurance = ({ navigation, route }) => {
                 </TouchableRipple>
             </View>
 
-        </View>
+            </View>
 
-        <View style={styles.bottomSection}>
-            <Text style={styles.paragraph}>During transit, customers' goods are exposed to a lot of risks like natural calamity, weather conditions and accidents so it is advisable for customers to buy an insurance plan although it is not necessary.</Text>
-            <View style={[styles.card, { backgroundColor: 'white' }]}>
+            <View style={styles.bottomSection}>
+                <Text style={styles.paragraph}>During transit, customers' goods are exposed to a lot of risks like natural calamity, weather conditions and accidents so it is advisable for customers to buy an insurance plan although it is not necessary.</Text>
+                <View style={[styles.card, { backgroundColor: 'white' }]}>
 
                 <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center' }}>
                     <Text style={[styles.cardText, { color: '#005761', fontSize: 26 }]}>
@@ -82,31 +83,31 @@ const Insurance = ({ navigation, route }) => {
             </View>
 
 
-            <View style={[styles.card, { backgroundColor: 'white' }]}>
-                <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center' }}>
-                    <Text style={[styles.cardText, { color: '#005761', fontSize: 26 }]}>
-                        6 Months Plan
-                    </Text>
-                    <TouchableOpacity
-                        onPress={() => {
-                            if (item.insurance.plan == "1 Year Plan") {
-                                Alert.alert("You have already subscribed to 1 Year Insurance Plan.");
-                            }
-                            else if (item.insurance.plan == "6 Months Plan") {
-                                Alert.alert("You have already subscribed to 6 Months Insurance Plan.");
-                            }
-                            else
-                                addInsurance("6 Months Plan", 12000)
-                        }}
-                        style={[styles.button, item.insurance.plan == "6 Months Plan" ? { backgroundColor: '#005761' } : { backgroundColor: '#00ABB2' }]} >
-                        <Text style={[styles.cardText, isInsurance ? { color: 'white' } : { color: '#005761' }]}>12,000 PKR </Text>
-                    </TouchableOpacity>
+                <View style={[styles.card, { backgroundColor: 'white' }]}>
+                    <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center' }}>
+                        <Text style={[styles.cardText, { color: '#005761', fontSize: 26 }]}>
+                            6 Months Plan
+                        </Text>
+                        <TouchableOpacity
+                            onPress={() => {
+                                if (item.insurance.plan == "1 Year Plan") {
+                                    Alert.alert("You have already subscribed to 1 Year Insurance Plan.");
+                                }
+                                else if (item.insurance.plan == "6 Months Plan") {
+                                    Alert.alert("You have already subscribed to 6 Months Insurance Plan.");
+                                }
+                                else
+                                    addInsurance("6 Months Plan", 12000)
+                            }}
+                            style={[styles.button, item.insurance.plan == "6 Months Plan" ? { backgroundColor: '#005761' } : { backgroundColor: '#00ABB2' }]} >
+                            <Text style={[styles.cardText, isInsurance ? { color: 'white' } : { color: '#005761' }]}>12,000 PKR </Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-            </View>
 
-        </View>
-    </View >
-);
+            </View>
+        </View >
+    );
 };
 
 const styles = StyleSheet.create({
@@ -144,7 +145,7 @@ const styles = StyleSheet.create({
 
     }, paragraph: {
         color: 'grey',
-        marginBottom:20,
+        marginBottom: 20,
     }
 });
 
