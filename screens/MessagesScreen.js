@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
+import * as SecureStore from "expo-secure-store";
+import axios from 'axios'
+const REST_API_LOCAL = "http://192.168.0.100:4000";
 
 import ChatHeader from "../components/messages/ChatHeader";
 import ChatInput from "../components/messages/ChatInput";
@@ -7,8 +10,10 @@ import MessagesList from "../components/messages/MessagesList";
 
 const MessagesScreen = ({ navigation, route }) => {
 	const [msg, setMsg] = useState();
-
 	const [chatMessages, setChatMessages] = useState([]);
+
+	const [chatId, setChatId] = useState();
+	const [personId, setPersonId] = useState();
 
 	const [reply, setReply] = useState("");
 	const [isLeft, setIsLeft] = useState();
@@ -22,31 +27,22 @@ const MessagesScreen = ({ navigation, route }) => {
 		setReply("");
 	};
 
-	// const aaa = () => {
-	// 	socket.on('received_message'), (text) => {
-	// 		console.log("useEffect -> Recevied Message")
-	// 		console.log(text)
-	// 		let cloneArr = [...chatMessages]
-	// 		setChatMessages(cloneArr.concat({
-	// 			user: 0,
-	// 			time: "12:09",
-	// 			content: text
-	// 		}))
-	// 	}
-	// };
-	
 	return (
 		<View style={{ flex: 1 }}>
 
 			<ChatHeader />
-			<TouchableOpacity onPress={aaa} ><Text>dsafda</Text></TouchableOpacity>
 			<MessagesList onSwipeToReply={swipeToReply}
+				navigation={navigation}
 				msg={msg} setMsg={setMsg}
-				chatMessages={chatMessages} setChatMessages={setChatMessages} />
+				chatId={chatId} personId={personId}
+				chatMessages={chatMessages} setChatMessages={setChatMessages}
+				setChatId={setChatId} setPersonId={setPersonId} />
 
 			<ChatInput reply={reply} isLeft={isLeft} closeReply={closeReply}
+				chatId={chatId} personId={personId}
 				msg={msg} setMsg={setMsg}
-				chatMessages={chatMessages} setChatMessages={setChatMessages} />
+				chatMessages={chatMessages} setChatMessages={setChatMessages}
+				setChatId={setChatId} setPersonId={setPersonId} />
 
 		</View>
 	);

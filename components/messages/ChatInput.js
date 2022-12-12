@@ -1,48 +1,43 @@
 import React, { useState, useEffect, useRef, memo } from "react";
 import { ActivityIndicator, Alert, Button, Dimensions, FlatList, ImageBackground, Image, ImageScrollView, Picker, Platform, StyleSheet, Switch, Text, TextInput, ToastAndroid, TouchableOpacity, View } from 'react-native';
-import Animated, {
-	useSharedValue,
-	withSpring,
-	withTiming,
-	useAnimatedStyle,
-} from "react-native-reanimated";
+import Animated, { useSharedValue, withSpring, withTiming, useAnimatedStyle, } from "react-native-reanimated";
 import { AntDesign, Entypo, EvilIcons, Feather, FontAwesome, FontAwesome5, FontAwesome5Brands, Fontisto, Foundation, Ionicons, MaterialCommunityIcons, MaterialIcons, Octicons, SimpleLineIcons, Zocial } from '@expo/vector-icons';
+import * as SecureStore from "expo-secure-store";
+import axios from 'axios'
+const REST_API_LOCAL = "http://192.168.0.100:4000";
+
+const ChatInput = ({ msg, setMsg, chatMessages, setChatMessages, chatId, personId }) => {
+
+	const sendNewMessage = async () => {
+
+		if (msg !== "") {
+			let token1 = await SecureStore.getItemAsync("userToken");
+			const headers = { Authorization: `Bearer ${token1}` };
+			const res = await axios.put(
+				`${REST_API_LOCAL}/chat/message/${chatId}`,
+				{
+					msgBody: msg,
+					senderId: personId,
+				},
+				{
+					withCredentials: true,
+					headers: headers,
+				}
+			);
+			console.log(res.data);
+			setChatMessages(chatMessages.concat({
+				msgBody: msg,
+				senderId: personId,
+			},))
+		}
 
 
-const ChatInput = ({ reply, closeReply, isLeft, msg, setMsg, chatMessages, setChatMessages }) => {
-
-	const handleNewMessage = () => {
-		// const hour =
-		// 	new Date().getHours() < 10
-		// 		? `0${new Date().getHours()}`
-		// 		: `${new Date().getHours()}`; 
-
-		// const mins =
-		// 	new Date().getMinutes() < 10
-		// 		? `0${new Date().getMinutes()}`
-		// 		: `${new Date().getMinutes()}`;
-		console.log("HandleNewMessage")
-		// socket.emit("send_message", msg);
 
 		setMsg("");
 	};
 
 	return (
 		<Animated.View style={[styles.container]}>
-			{reply ? (
-				<View style={styles.replyContainer}>
-					<TouchableOpacity
-						onPress={closeReply}
-						style={styles.closeReply}
-					>
-						<AntDesign name="close" color="#000" size={20} />
-					</TouchableOpacity>
-					<Text style={styles.title}>
-						Response to {isLeft ? username : "Me"}
-					</Text>
-					<Text style={styles.reply}>{reply}</Text>
-				</View>
-			) : null}
 
 			<View style={styles.innerContainer}>
 				<View style={styles.action}>
@@ -57,7 +52,7 @@ const ChatInput = ({ reply, closeReply, isLeft, msg, setMsg, chatMessages, setCh
 				</View>
 
 				<TouchableOpacity style={styles.sendButton}
-					onPress={handleNewMessage}
+					onPress={sendNewMessage}
 				>
 					<Ionicons
 						name={"send-outline"}
