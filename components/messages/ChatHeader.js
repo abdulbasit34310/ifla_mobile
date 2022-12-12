@@ -1,41 +1,26 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import Icon from "@expo/vector-icons/FontAwesome";
+import { AntDesign, Entypo, EvilIcons, Feather, FontAwesome, FontAwesome5, FontAwesome5Brands, Fontisto, Foundation, Ionicons, MaterialCommunityIcons, MaterialIcons, Octicons, SimpleLineIcons, Zocial } from '@expo/vector-icons';
 
-const ChatHeader = ({ username, picture, onlineStatus, onPress }) => {
+const ChatHeader = () => {
 	const navigation = useNavigation();
 	return (
 		<View style={styles.container}>
 
-			<TouchableOpacity style={styles.backButton} onPress={onPress}>
-				<Icon name="angle-left" size={30} color={"white"} />
+			<TouchableOpacity style={styles.backButton} onPress={() => {
+				navigation.goBack();
+			}}>
+				<Entypo name='chevron-small-left' size={34} color={"white"} />
 			</TouchableOpacity>
 
 			<View style={styles.profileOptions}>
 				<TouchableOpacity style={styles.profile}>
-					<Image style={styles.image} source={{ uri: picture }} />
 					<View style={styles.usernameAndOnlineStatus}>
-						<Text style={styles.username}>{username}</Text>
-						<Text style={styles.onlineStatus}>{onlineStatus}</Text>
+						<Text style={styles.username}>Admin</Text>
 					</View>
 				</TouchableOpacity>
 
-				<View style={styles.options}>
-					<TouchableOpacity
-						onPress={() => navigation.navigate("OnCallScreen", {
-							username: username,
-							picture: picture
-						})}
-						style={{ paddingHorizontal: 5 }}
-					>
-						<Icon
-							name="phone"
-							size={30}
-							color={"white"}
-						/>
-					</TouchableOpacity>
-				</View>
 			</View>
 		</View>
 	);
@@ -45,10 +30,11 @@ const styles = StyleSheet.create({
 	container: {
 		flexDirection: "row",
 		backgroundColor: '#00ABB2',
+		 padding: 15
 	},
 	backButton: {
 		alignSelf: "center",
-		paddingHorizontal: 10,
+		
 	},
 	profileOptions: {
 		flex: 1,

@@ -5,7 +5,7 @@ import { ButtonGroup } from "react-native-elements";
 import { StatusBar } from 'expo-status-bar';
 import SelectLocation from "./SelectLocation";
 import ChooseTruck from "./ChooseTruck";
-import { Card, Divider, Chip, TouchableRipple } from "react-native-paper";
+import { Card, Divider, Chip, TouchableRipple, Checkbox } from "react-native-paper";
 
 const Theme = {
   Buttons: "#068E94",
@@ -23,6 +23,7 @@ export default function BookingDetails({
   nextStep,
   bookingData,
   setBooking,
+  shipperInsurance
 }) {
   const [isPickup, setIsPickup] = React.useState(true);
   const [modalVisible, setModalVisible] = React.useState(false);
@@ -171,7 +172,7 @@ export default function BookingDetails({
             </Text>
             {/* <Text>{dropoffCity === "" ? "Select City" : dropoffCity}</Text> */}
           </TouchableOpacity>
-          {type===1 ? null:(
+          {type === 1 ? null : (
             <View>
               <Text style={styles.buttonInsideText}>Select Vehicle Type: </Text>
 
@@ -190,6 +191,20 @@ export default function BookingDetails({
             </View>
           )}
 
+          {shipperInsurance ? null : (<TouchableOpacity onPress={() => { setBooking({ ...bookingData, isInsured: true }); }}
+            style={{ flexDirection: "row", alignItems: "center", marginTop: 10 }}
+          >
+            <Checkbox
+              status={bookingData.isInsured ? "checked" : "unchecked"}
+              onPress={() => {
+                // setChecked(!checked);
+                setBooking({ ...bookingData, isInsured: true });
+              }}
+            />
+            <Text style={{ fontSize: 16 }}>Do you want to have a insurance?</Text>
+          </TouchableOpacity>)}
+
+
           <View
             style={{
               justifyContent: "center",
@@ -201,7 +216,7 @@ export default function BookingDetails({
                 if (
                   bookingData.pickupAddress &&
                   bookingData.dropoffAddress &&
-                  bookingData.type  == "LTL" ||
+                  bookingData.type == "LTL" ||
                   (bookingData.vehicle && bookingData.type)
                 ) {
                   nextStep();
@@ -220,6 +235,7 @@ export default function BookingDetails({
 
             </TouchableOpacity>
           </View>
+
         </View>
       </View>
     </View >

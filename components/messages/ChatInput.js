@@ -1,63 +1,41 @@
 import React, { useState, useEffect, useRef, memo } from "react";
-import {
-	View,
-	Text,
-	StyleSheet,
-	TextInput,
-	Platform,
-	TouchableOpacity,
-} from "react-native";
-
+import { ActivityIndicator, Alert, Button, Dimensions, FlatList, ImageBackground, Image, ImageScrollView, Picker, Platform, StyleSheet, Switch, Text, TextInput, ToastAndroid, TouchableOpacity, View } from 'react-native';
 import Animated, {
 	useSharedValue,
 	withSpring,
 	withTiming,
 	useAnimatedStyle,
 } from "react-native-reanimated";
+import { AntDesign, Entypo, EvilIcons, Feather, FontAwesome, FontAwesome5, FontAwesome5Brands, Fontisto, Foundation, Ionicons, MaterialCommunityIcons, MaterialIcons, Octicons, SimpleLineIcons, Zocial } from '@expo/vector-icons';
 
-import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-// import { useKeyboard } from "@react-native-community/hooks";
+const ChatInput = ({ reply, closeReply, isLeft, msg, setMsg, chatMessages, setChatMessages }) => {
 
-import { theme } from "../../theme";
+	const handleNewMessage = () => {
+		// const hour =
+		// 	new Date().getHours() < 10
+		// 		? `0${new Date().getHours()}`
+		// 		: `${new Date().getHours()}`; 
 
-const ChatInput = ({ reply, closeReply, isLeft, username }) => {
-	const [message, setMessage] = useState("");
-	// const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-	const height = useSharedValue(70);
+		// const mins =
+		// 	new Date().getMinutes() < 10
+		// 		? `0${new Date().getMinutes()}`
+		// 		: `${new Date().getMinutes()}`;
+		console.log("HandleNewMessage")
+		// socket.emit("send_message", msg);
 
-	// useEffect(() => {
-	// 	if (showEmojiPicker) {
-	// 		height.value = withTiming(400);
-	// 	} else {
-	// 		height.value = reply ? withSpring(130) : withSpring(70);
-	// 	}
-	// }, [showEmojiPicker]);
-
-	// useEffect(() => {
-	// 	if (reply) {
-	// 		height.value = showEmojiPicker ? withTiming(450) : withTiming(130);
-	// 	} else {
-	// 		height.value = showEmojiPicker ? withSpring(400) : withSpring(70);
-	// 	}
-	// }, [reply]);
-
-	const heightAnimatedStyle = useAnimatedStyle(() => {
-		return {
-			height: height.value
-		}
-	})
-
+		setMsg("");
+	};
 
 	return (
-		<Animated.View style={[styles.container, heightAnimatedStyle]}>
+		<Animated.View style={[styles.container]}>
 			{reply ? (
 				<View style={styles.replyContainer}>
 					<TouchableOpacity
 						onPress={closeReply}
 						style={styles.closeReply}
 					>
-						<Icon name="close" color="#000" size={20} />
+						<AntDesign name="close" color="#000" size={20} />
 					</TouchableOpacity>
 					<Text style={styles.title}>
 						Response to {isLeft ? username : "Me"}
@@ -65,40 +43,24 @@ const ChatInput = ({ reply, closeReply, isLeft, username }) => {
 					<Text style={styles.reply}>{reply}</Text>
 				</View>
 			) : null}
-			<View style={styles.innerContainer}>
-				<View style={styles.inputAndMicrophone}>
-					<TouchableOpacity
-						style={styles.emoticonButton}
-					// onPress={() => setShowEmojiPicker((value) => !value)}
-					>
-						<Icon
-							// name={
-							// 	showEmojiPicker ? "close" : "emoticon-outline"
-							// }
-							size={23}
-							color={'#9f9f9f'}
-						/>
-					</TouchableOpacity>
 
+			<View style={styles.innerContainer}>
+				<View style={styles.action}>
 					<TextInput
 						multiline
-						placeholder={"Type something..."}
+						placeholder={"Message"}
 						style={styles.input}
-						value={message}
-						onChangeText={(text) => setMessage(text)}
+						value={msg}
+						onChangeText={(a) => { setMsg(a) }}
 					/>
 
-					<TouchableOpacity style={styles.rightIconButtonStyle}>
-						<Icon
-							name="camera"
-							size={23}
-							color={'#9f9f9f'}
-						/>
-					</TouchableOpacity>
 				</View>
-				<TouchableOpacity style={styles.sendButton}>
-					<Icon
-						name={message ? "send" : "microphone"}
+
+				<TouchableOpacity style={styles.sendButton}
+					onPress={handleNewMessage}
+				>
+					<Ionicons
+						name={"send-outline"}
 						size={23}
 						color={"white"}
 					/>
@@ -113,12 +75,15 @@ const styles = StyleSheet.create({
 	container: {
 		justifyContent: "center",
 		backgroundColor: "white",
+
 	},
 	replyContainer: {
-		paddingHorizontal: 10,
-		marginHorizontal: 10,
+		paddingHorizontal: 15,
+		marginHorizontal: 15,
 		justifyContent: "center",
 		alignItems: "flex-start",
+		backgroundColor: '#f0f0f0',
+		borderRadius: 14
 	},
 	title: {
 		marginTop: 5,
@@ -133,14 +98,14 @@ const styles = StyleSheet.create({
 		marginTop: 5,
 	},
 	innerContainer: {
-		paddingHorizontal: 10,
+		paddingVertical: 10,
 		marginHorizontal: 10,
 		justifyContent: "space-between",
 		alignItems: "center",
 		flexDirection: "row",
 		paddingVertical: 10,
 	},
-	inputAndMicrophone: {
+	action: {
 		flexDirection: "row",
 		backgroundColor: '#f0f0f0',
 		flex: 3,

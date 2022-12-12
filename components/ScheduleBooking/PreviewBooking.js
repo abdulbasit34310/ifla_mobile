@@ -35,6 +35,7 @@ export default function PreviewBooking({
   nextStep,
   prevStep,
   postData,
+  navigation
 }) {
   const [state, setState] = React.useState({
     curLoc: {
@@ -140,7 +141,7 @@ export default function PreviewBooking({
       >
         <TouchableOpacity
           // style={{ backgroundColor: "#E0EFF6", }}
-          onPress={() => { navigation.goBack() }}>
+          onPress={() => { prevStep() }}>
           <Ionicons name='md-chevron-back-circle-outline' size={34} />
         </TouchableOpacity>
       </View>
@@ -154,10 +155,6 @@ export default function PreviewBooking({
             <View>
               <Text style={styles.heading}>Distance</Text>
               <Text style={styles.property}>{distance.toFixed(0)} km</Text>
-            </View>
-            <View>
-              <Text style={styles.heading}>Time</Text>
-              {/* <Text style={styles.property}>{time.toFixed(0)} min</Text> */}
             </View>
           </View>
 
