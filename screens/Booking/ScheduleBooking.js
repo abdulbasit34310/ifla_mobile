@@ -1,14 +1,14 @@
 import * as React from "react";
-import { StyleSheet,ActivityIndicator,ToastAndroid } from "react-native";
+import { StyleSheet, ActivityIndicator, ToastAndroid } from "react-native";
+
+import axios from "axios";
+import { REST_API_LOCAL } from "@env";
+import * as SecureStore from "expo-secure-store";
 
 import GoodsDetails from "../../components/ScheduleBooking/GoodDetails";
 import ShipmentDetails from "../../components/ScheduleBooking/ShipmentDetails";
 import ScheduleDetails from "../../components/ScheduleBooking/ScheduleDetails";
 import PreviewBooking from "../../components/ScheduleBooking/PreviewBooking";
-
-import axios from "axios";
-import { REST_API_LOCAL } from "@env";
-import * as SecureStore from "expo-secure-store";
 
 const Success = ({
   navigation,
@@ -17,10 +17,11 @@ const Success = ({
   setBooking,
   bookingData,
 }) => {
-  return <div>Booking Done Successfully</div>;
+  return <div> Booking Done Successfully</div>;
 };
 
 export default function ScheduleBooking({ route, navigation }) {
+
   const [step, setStep] = React.useState(0);
   const [loading, setLoading] = React.useState(false);
   const [date, setDate] = React.useState(new Date());
@@ -41,6 +42,7 @@ export default function ScheduleBooking({ route, navigation }) {
       length: "",
       width: "",
       storage: "",
+      isInsured: route.params.shipperInsurance ? true:false,
       date: date.toDateString(),
       time: date.toTimeString(),
       status: "Pending",
@@ -64,6 +66,7 @@ export default function ScheduleBooking({ route, navigation }) {
       length: "",
       width: "",
       storage: "",
+      isInsured: route.params.shipperInsurance  ? true:false,
       date: date.toDateString(),
       time: date.toTimeString(),
       status: "Pending",
@@ -84,6 +87,7 @@ export default function ScheduleBooking({ route, navigation }) {
       description: "",
       weight: "",
       offer: "",
+      isInsured: false,
       date: date.toDateString(),
       time: date.toTimeString(),
       status: "Pending",
@@ -100,7 +104,7 @@ export default function ScheduleBooking({ route, navigation }) {
         body,
         { withCredentials: true, headers: headers }
       );
-      console.log(res.data);
+
       if (Platform.OS == 'android') {
         ToastAndroid.showWithGravity(
           "Booking Saved",
@@ -139,6 +143,7 @@ export default function ScheduleBooking({ route, navigation }) {
               nextStep={nextStep}
               bookingData={bookingData}
               setBooking={setBooking}
+              shipperInsurance={route.params.shipperInsurance}
             />
           )}
         </>
@@ -150,6 +155,7 @@ export default function ScheduleBooking({ route, navigation }) {
           prevStep={prevStep}
           bookingData={bookingData}
           setBooking={setBooking}
+          navigation={navigation}
         />
       );
     case 2:
@@ -162,6 +168,7 @@ export default function ScheduleBooking({ route, navigation }) {
           date={date}
           setDate={setDate}
           postData={postData}
+          navigation={navigation}
         />
       );
     case 3:
@@ -172,6 +179,7 @@ export default function ScheduleBooking({ route, navigation }) {
           bookingData={bookingData}
           setBooking={setBooking}
           postData={postData}
+          navigation={navigation}
         />
       );
     case 4:
@@ -181,6 +189,7 @@ export default function ScheduleBooking({ route, navigation }) {
           prevStep={prevStep}
           bookingData={bookingData}
           setBooking={setBooking}
+          navigation={navigation}
         />
       );
     default:

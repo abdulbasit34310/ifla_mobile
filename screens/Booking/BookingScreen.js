@@ -34,7 +34,7 @@ const BookingScreen = ({ navigation, route }) => {
           <TouchableOpacity
             style={styles.card}
             onPress={() => {
-              navigation.navigate("ScheduleBooking");
+              navigation.navigate("ScheduleBooking", { shipperInsurance: route.params.user.insurance });
             }}
           >
             <Text style={styles.cardText}>Schedule a Booking</Text>

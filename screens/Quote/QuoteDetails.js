@@ -163,7 +163,7 @@ export default function QuoteDetails({ navigation, route }) {
               {
                 text: "Confirm",
                 onPress: () => {
-                  navigation.navigate("FreightBooking",  {screen: "ScheduleBooking", params:{ item: quoteData }});
+                  navigation.navigate("FreightBooking",  {screen: "ScheduleBooking", params:{ item: quoteData, shipperInsurance: route.params.insurance }});
                   // navigation.goBack();
                 },
               },

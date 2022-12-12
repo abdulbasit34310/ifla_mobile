@@ -48,6 +48,8 @@ import Notification from "./screens/Notification";
 import PaymentHistory from "./screens/Payment/PaymentHistory";
 import PayReceipt from "./screens/Payment/PayReceipt";
 
+import MessagesScreen from "./screens/MessagesScreen";
+
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -204,6 +206,7 @@ export default function App() {
             <Drawer.Screen name="Feedback" component={Feedback} />
             <Drawer.Screen name="Complaint" component={Complaint} />
             <Drawer.Screen name="Notification" component={NotificationStack} />
+            <Drawer.Screen name="MessagesScreen" component={MessagesScreen} />
           </Drawer.Navigator>
         ) : (
           <RegistrationNavigator />

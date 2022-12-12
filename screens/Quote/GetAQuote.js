@@ -67,7 +67,7 @@ export default function GetAQuote({ route, navigation }) {
     );
     console.log("Saving Done!");
     showToastWithGravity();
-    navigation.push("ViewQuotes")
+    navigation.push("ViewQuotes", { insurance: route.params.insurance })
   };
 
   const showToastWithGravity = () => {
@@ -90,7 +90,7 @@ export default function GetAQuote({ route, navigation }) {
             </TouchableRipple>
 
             <TouchableRipple style={{ height:"100%", borderRadius: 14, padding: 7, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', }} onPress={() => {
-              navigation.push("ViewQuotes")
+              navigation.push("ViewQuotes", { insurance: route.params.insurance })
             }}>
               <Text>View Quotes</Text>
             </TouchableRipple>

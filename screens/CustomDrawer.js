@@ -110,6 +110,19 @@ export function CustomDrawer(props) {
                 props.navigation.navigate("Complaint", user.personId._id);
               }}
             />
+
+            <DrawerItem
+              icon={({ color, size }) => (
+                <Ionicons name='md-chatbox-ellipses-sharp'
+                  color={color}
+                  size={size}
+                />
+              )}
+              label="Chat"
+              onPress={() => {
+                props.navigation.navigate("MessagesScreen");
+              }}
+            />
           </Drawer.Section>
         </View>
       </DrawerContentScrollView>

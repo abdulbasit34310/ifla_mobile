@@ -310,7 +310,7 @@ export default function BookingDetails({ navigation, route }) {
 
             <View style={styles.row}>
               <Text>Insurance</Text>
-              <Text style={styles.propertyStyle}>No</Text>
+              <Text style={styles.propertyStyle}>{receivedData.isInsured ? "Yes":"No"}</Text>
             </View>
 
             <View style={styles.row}>
@@ -337,7 +337,7 @@ export default function BookingDetails({ navigation, route }) {
             </View>
             <View style={styles.row}>
               <Text>Insured Amount</Text>
-              <Text style={styles.propertyStyle}>N/A</Text>
+              <Text style={styles.propertyStyle}>{receivedData.isInsured ?  `${Math.ceil(receivedData.payment.amount/2)}`:"N/A"}</Text>
             </View>
             <View style={styles.row}>
               <Text>Tax</Text>
