@@ -14,7 +14,7 @@ import gaqIllustration from "../assets/gaq.png";
 import walletIllustration from "../assets/Wallet.png";
 import trackingIllustration from "../assets/Tracking.png";
 import { REST_API_LOCAL } from "@env";
-import IFLAlogo from "../assets/IFLA.png";
+import IFLAlogo from "../assets/IFLAji.png";
 
 const axios = require("axios");
 
@@ -142,13 +142,18 @@ const MainScreen = ({ route, navigation }) => {
 
       <View style={styles.topSection}>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-          <Text style={{ color: "#E0EFF6", fontSize: 18, fontWeight: "bold" }}>
-            Welcome {shipperName}
+          <View>
+          <Text style={{ color: "#068E94", fontSize: 18, fontWeight: "bold" }}>
+            Welcome
           </Text>
+          <Text style={{ color: "#005761", fontSize: 26, fontWeight: "bold" }}>
+          {shipperName}
+          </Text>
+          </View>
           <TouchableOpacity onPress={() => { navigation.navigate("Notification") }}>
             <MaterialCommunityIcons
               name="bell-outline"
-              color={"#E0EFF6"}
+              color={"#005761"}
               size={26}
             />
           </TouchableOpacity>
@@ -247,17 +252,17 @@ export default MainScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#068E94",
+    backgroundColor: "#EEF5F5",
   },
   topSection: {
     flex: 2,
-    backgroundColor: "#068E94",
+    backgroundColor: "#EEF5F5",
     paddingHorizontal: 20,
     paddingTop: 25,
   },
   bottomSection: {
     flex: 1,
-    backgroundColor: "#E0EFF6",
+    backgroundColor: "#00ABB2",
     borderTopLeftRadius: 14,
     borderTopRightRadius: 14,
     paddingVertical: 25,
@@ -270,8 +275,8 @@ const styles = StyleSheet.create({
   },
   IFLAlogo: {
     alignSelf: "center",
-    width: 200,
-    height: 175,
+    width: 250,
+    height: 225,
   },
   card: {
     elevation: 5,

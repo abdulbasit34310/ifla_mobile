@@ -4,7 +4,7 @@ import { AntDesign, Entypo, EvilIcons, Feather, FontAwesome, FontAwesome5, FontA
 import { TouchableRipple } from "react-native-paper";
 import * as Animatable from 'react-native-animatable';
 
-import IFLAlogo from "../../assets/IFLA.png";
+import IFLAlogo from "../../assets/IFLAji.png";
 
 const BookingScreen = ({ navigation, route }) => {
 
@@ -13,7 +13,9 @@ const BookingScreen = ({ navigation, route }) => {
 
       <View style={styles.topSection}>
         <View style={{ paddingTop: 5, }}>
-          <TouchableRipple style={{ width: '12%', borderRadius: 14, padding: 7, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', }} onPress={() => {
+          <TouchableRipple style={{ elevation: 5, width: '15%', elevation: 5, borderRadius: 14,
+           padding: 7, backgroundColor: 'white', alignItems: 'center',
+            justifyContent: 'center', }} onPress={() => {
             navigation.goBack();
           }}>
             <Entypo name='chevron-small-left' size={34} />
@@ -67,23 +69,23 @@ const BookingScreen = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#068E94",
+    backgroundColor: "#EEF5F5",
   },
   topSection: {
     flex: 2,
-    backgroundColor: "#068E94",
+    backgroundColor: "#EEF5F5",
     paddingLeft: 20,
     paddingRight: 20,
     paddingTop: 20,
   },
   IFLAlogo: {
     alignSelf: "center",
-    width: 200,
-    height: 175,
+    width: 250,
+    height: 225,
   },
   bottomSection: {
     flex: 1,
-    backgroundColor: "#E0EFF6",
+    backgroundColor: "#00ABB2",
     borderTopLeftRadius: 14,
     borderTopRightRadius: 14,
     paddingVertical: 20,
