@@ -48,13 +48,19 @@ const Insurance = ({ navigation, route }) => {
 
         <View style={styles.topSection}>
             <View style={{ paddingTop: 5, }}>
-                <TouchableRipple style={{ width: '12%', height: '80%', borderRadius: 14, padding: 7, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', }} onPress={() => {
+                <TouchableRipple style={{ width: '15%', height: '80%', borderRadius: 14, padding: 7, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', }} onPress={() => {
                     navigation.goBack();
                 }}>
                     <Entypo name='chevron-small-left' size={34} />
                 </TouchableRipple>
             </View>
-
+            <Text style={{
+    fontSize: 25,
+    textAlign: "center",
+    fontWeight: "bold",
+    color: "#005761",
+    paddingBottom: 10
+  }}>Insurance</Text>
             </View>
 
             <View style={styles.bottomSection}>

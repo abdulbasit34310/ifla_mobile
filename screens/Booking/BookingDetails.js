@@ -226,7 +226,7 @@ export default function BookingDetails({ navigation, route }) {
         >
           <TouchableRipple
             style={{
-              width: "12%",
+              elevation: 5, width: "15%",
               borderRadius: 14,
               padding: 7,
               backgroundColor: "white",
@@ -243,7 +243,7 @@ export default function BookingDetails({ navigation, route }) {
           {receivedData.status == "Completed" ? (
             <TouchableRipple
               style={{
-                width: "12%",
+                elevation: 5, width: "15%",
                 borderRadius: 14,
                 padding: 7,
                 backgroundColor: "white",
@@ -265,6 +265,8 @@ export default function BookingDetails({ navigation, route }) {
         </View>
 
         <View style={styles.card}>
+        <Text style={styles.header}>Booking Details</Text>
+
           <View style={{ paddingBottom: 10 }}>
             <View style={styles.row}>
               <Text style={styles.dataAndTimeStyle}>
@@ -588,6 +590,13 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: '2%',
     elevation: 5,
+  },
+  header: {
+    fontSize: 25,
+    textAlign: "center",
+    fontWeight: "bold",
+    color: "#005761",
+    paddingBottom: 10
   },
   to: {
     backgroundColor: "#068E94",

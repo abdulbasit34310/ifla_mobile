@@ -80,6 +80,7 @@ export default function GetAQuote({ route, navigation }) {
 
   return (
     <ScrollView style={{backgroundColor: Theme.SecondaryBackground}}>
+        
       <View style={styles.container}>
         <StatusBar style="dark" />
         <View style={styles.flexView}>
@@ -145,6 +146,7 @@ export default function GetAQuote({ route, navigation }) {
         </Modal>
 
         <View style={styles.card}>
+        <Text style={styles.header}>Get a Quote</Text>
           <View>
             <ButtonGroup
               buttons={["Less than Truckload", "Full Truckload"]}
@@ -330,7 +332,13 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginTop: 20,
   },
-
+  header: {
+    fontSize: 25,
+    textAlign: "center",
+    fontWeight: "bold",
+    color: Theme.PrimaryText,
+    paddingBottom: 10
+  },
   buttonInsideText: {
     marginVertical: 10,
     fontSize: 16,

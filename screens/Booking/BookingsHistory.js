@@ -80,7 +80,7 @@ export default function BookingsHistory({ route, navigation }) {
       <View style={{ paddingBottom: 15 }}>
         <TouchableRipple
           style={{
-            width: "12%",
+            elevation: 5, width: "15%",
             borderRadius: 14,
             padding: 7,
             backgroundColor: "white",

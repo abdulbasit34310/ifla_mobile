@@ -42,17 +42,18 @@ const PayReceipt = ({route, navigation}) => {
     );
   };
 
-  return (<ScrollView style={{ marginTop: 30 }}>
+  return (<ScrollView style={{ marginTop: 30, paddingHorizontal: 10, }}>
     <View
       style={{
         justifyContent: "space-between",
         flexDirection: "row",
         display: "flex",
+        marginBottom: 20
       }}
     >
       <TouchableRipple
         style={{
-          width: "12%",
+          elevation: 5, width: "15%",
           borderRadius: 14,
           padding: 7,
           backgroundColor: "white",
@@ -72,7 +73,7 @@ const PayReceipt = ({route, navigation}) => {
           alignItems: "center",
           borderRadius: 14,
           elevation: 5,
-          padding: 5,
+          padding: 9,
           backgroundColor: "#068E94",
         }}
         onPress={() => {

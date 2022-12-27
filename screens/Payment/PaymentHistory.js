@@ -32,13 +32,21 @@ const PaymentHistory = ({navigation}) => {
 
   return (
       <View style={styles.container}>
+        
        <View style={{ paddingBottom: 15, paddingTop: 10 }}>
-          <TouchableRipple style={{ width: '12%', borderRadius: 14, padding: 7, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', }} onPress={() => {
+          <TouchableRipple style={{ width: '15%', borderRadius: 14, padding: 7, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', }} onPress={() => {
             navigation.goBack();
           }}>
             <Entypo name='chevron-small-left' size={34} />
           </TouchableRipple>
         </View>
+        <Text style={{
+    fontSize: 25,
+    textAlign: "center",
+    fontWeight: "bold",
+    color: "#005761",
+    paddingBottom: 10
+  }}>Payment History</Text>
       {loading ? (
         <ActivityIndicator />
       ) : (

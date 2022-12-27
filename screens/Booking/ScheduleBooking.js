@@ -97,6 +97,10 @@ export default function ScheduleBooking({ route, navigation }) {
   const postData = async () => {
     let token1 = await SecureStore.getItemAsync("userToken");
     const body = bookingData;
+    console.log(bookingData)
+    console.log(bookingData.pickupAddress)
+    console.log(bookingData.dropoffAddress)
+
     const headers = { Authorization: `Bearer ${token1}` };
     try {
       let res = await axios.post(

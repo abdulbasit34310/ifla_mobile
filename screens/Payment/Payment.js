@@ -106,7 +106,7 @@ const Payment = ({ route, navigation }) => {
       <View style={styles.container}>
       <TouchableRipple
         style={{
-          width: "12%",
+          elevation: 5, width: "15%",
           borderRadius: 14,
           padding: 7,
           backgroundColor: "white",
@@ -119,6 +119,13 @@ const Payment = ({ route, navigation }) => {
       >
         <Entypo name="chevron-small-left" size={34} />
       </TouchableRipple>
+      <Text style={{
+    fontSize: 25,
+    textAlign: "center",
+    fontWeight: "bold",
+    color: "#005761",
+    paddingBottom: 10
+  }}>Payment</Text>
       <View style={{marginTop:80}} ></View>
         <View style={styles.action}>
           <TextInput

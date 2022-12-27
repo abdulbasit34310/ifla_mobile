@@ -48,7 +48,7 @@ export default function BookingDetails({
       <StatusBar style="dark" />
 
       <View style={{ paddingBottom: 15 }}>
-        <TouchableRipple style={{ width: '12%', borderRadius: 14, padding: 7, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', }} onPress={() => { navigation.goBack() }}>
+        <TouchableRipple style={{ width: '15%', borderRadius: 14, padding: 7, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', }} onPress={() => { navigation.goBack() }}>
           <Entypo name='chevron-small-left' size={34} />
         </TouchableRipple>
       </View>

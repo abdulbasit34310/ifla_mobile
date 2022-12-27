@@ -64,7 +64,7 @@ const BillofLading = ({ navigation, route }) => {
       >
         <TouchableRipple
           style={{
-            width: "12%",
+            elevation: 5, width: "15%",
             borderRadius: 14,
             padding: 7,
             backgroundColor: "white",

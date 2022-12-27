@@ -59,7 +59,7 @@ const ProfileScreen = ({ route, navigation }) => {
     <View style={styles.container}>
 
       <View>
-        <TouchableRipple style={{ width: '12%', borderRadius: 14, padding: 7, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', }} onPress={() => {
+        <TouchableRipple style={{ width: '15%', borderRadius: 14, padding: 7, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', }} onPress={() => {
           navigation.goBack();
         }}>
           <Entypo name='chevron-small-left' size={34} />
